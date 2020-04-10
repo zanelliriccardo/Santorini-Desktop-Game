@@ -9,6 +9,8 @@ public class App
 {
     public static void main( String[] args )
     {
-
+        //GameState.NewPlayer();
+        //GameState.NewPlayer();
+        //GameState.NewPlayer();
     }
 }
