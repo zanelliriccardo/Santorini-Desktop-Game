@@ -3,12 +3,20 @@
 bin/
 # ignore all target directories
 target/
+_windows/
+codestyles/
 # ignore Eclipse settings
 .project
 .classpath
 .settings
 # ignore all files ending with ~
 *~
+colors.scheme
+debugger
+editor
+ide.general
+markdown
+vcs
 # ignore metadata directories
 .metadata
 # ignore DS_Store and files starting with ._ (for Mac)
