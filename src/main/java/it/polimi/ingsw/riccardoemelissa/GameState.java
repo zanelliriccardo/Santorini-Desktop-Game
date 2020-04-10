@@ -1,8 +1,7 @@
 package it.polimi.ingsw.riccardoemelissa;
 
-import elementi.God;
-import elementi.Player;
-import elementi.Worker;
+import elements.Player;
+import elements.Worker;
 
 import java.io.BufferedReader;
 import java.io.IOException;

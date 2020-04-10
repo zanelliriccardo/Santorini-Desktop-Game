@@ -1,6 +1,4 @@
-package elementi;
-
-import it.polimi.ingsw.riccardoemelissa.GameState;
+package elements;
 
 public class Player {
     private String nickname;

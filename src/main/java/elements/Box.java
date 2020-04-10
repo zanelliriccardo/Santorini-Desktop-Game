@@ -1,4 +1,4 @@
-package elementi;
+package elements;
 
 public class Box {
     private boolean state;

@@ -1,10 +1,6 @@
 package it.polimi.ingsw.riccardoemelissa;
 
-import elementi.*;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import elements.*;
 
 public class Turn {
     private Player player;

@@ -1,4 +1,4 @@
-package elementi;
+package elements;
 
 public interface God {
     public boolean CheckMoment();
