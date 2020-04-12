@@ -10,7 +10,17 @@ public class Hephaestus implements God {
     }
 
     @Override
-    public void Power() {
+    public void Power(Worker worker) {
+
+        /*
+        POWER: "il W PUO' costruire due volte nella stessa box,
+        NO CUPOLA
+
+        CODICE:
+        - metodo build
+        - se LEVEL_BOX_SCELTA <= 2 --> message : "Vuoi costruire ancora?"
+        - SI --> aggiungo un blocco alla box scelta
+         */
 
     }
 

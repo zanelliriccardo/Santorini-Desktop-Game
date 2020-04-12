@@ -10,7 +10,16 @@ public class Minotaur implements God {
     }
 
     @Override
-    public void Power() {
+    public void Power(Worker worker) {
+
+        /*
+        POWER: il W PUO' spostarsi nella box di un W_avversario
+        SE la box successiva (box+1), nella stessa direzione, è FREE (non importa a che livello sia)
+        il W_avversario va spostato nella box+1
+
+        CODICE:
+        - metodo MOVE MODIFICATO -> una box è FREE anche nel caso in cui sia già occupata SSE la box+1 è libera
+         */
 
     }
 

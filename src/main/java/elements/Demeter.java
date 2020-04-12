@@ -10,7 +10,18 @@ public class Demeter implements God {
     }
 
     @Override
-    public void Power() {
+    public void Power(Worker worker) {
+        /*
+        POWER: "il W PUO' costruire una volta in più,
+        NON NELLA STESSA BOX
+         */
+
+        /*
+        CODICE:
+        -metodo build
+        -message: "Vuoi costruire ancora?"
+        -se risp = SI --> metodo build, ESCLUDENDO DALLE BOX POSSIBILI QUELLA IN CUI HA COSTRUITO LA PRIMA VOLTA
+         */
 
     }
 

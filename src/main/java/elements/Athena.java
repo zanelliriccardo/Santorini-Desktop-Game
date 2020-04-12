@@ -10,7 +10,7 @@ public class Athena implements God {
     }
 
     @Override
-    public void Power() {
+    public void Power(Worker worker) {
 
     }
 
