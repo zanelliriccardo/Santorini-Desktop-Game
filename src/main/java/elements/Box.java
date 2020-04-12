@@ -4,10 +4,9 @@ public class Box {
     private boolean state;
     private int level;
 
-    public Box ()
-    {
-        state = true;
-        level = 0;
+    public Box(boolean b, int i) {
+        state=b;
+        level=i;
     }
 
     public void ChangeState()

@@ -1,20 +1,20 @@
 package elements;
 
 public class BoardGame {
-    private Box[][] boxes;
+    private Box[][] Board;
 
-    public BoardGame (){
-        boxes = new Box [5][5];
+    public BoardGame(Box[][] boxes){
+        this.Board = boxes;
     }
 
     public boolean GetStateBox (int x, int y)
     {
-        return boxes[x][y].GetState();
+        return Board[x][y].GetState();
     }
 
     public int GetLevelBox (int x, int y)
     {
-        return boxes[x][y].GetLevel();
+        return Board[x][y].GetLevel();
     }
 }
 

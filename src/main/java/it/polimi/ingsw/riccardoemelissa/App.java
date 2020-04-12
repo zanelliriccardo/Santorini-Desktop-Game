@@ -1,11 +1,29 @@
 package it.polimi.ingsw.riccardoemelissa;
 
+import elements.BoardGame;
+import elements.Player;
+
 public class App
 {
+    public static GameState g;
     public static void main( String[] args )
     {
-        //GameState.NewPlayer();
-        //GameState.NewPlayer();
-        //GameState.NewPlayer();
+        MultiEchoServer echoServer = new MultiEchoServer(1337);
+        echoServer.startServer();
+
+        while(true)
+        {
+            Player[] p=g.GetPlayers();
+            if(p[g.GetPlayerNumber()]==null)
+                continue;
+
+            break;
+        }
+
+        g.SetTurnOrder();
+        g.SetProprietaryWorker();
+        g.GodsChosen();
+
     }
+
 }

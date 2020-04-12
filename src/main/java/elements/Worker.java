@@ -1,19 +1,17 @@
 package elements;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class Worker
 {
     private int[] position;
     private Player proprietary;
 
-    public Worker ()
+    public Worker(Player player)
     {
-        position = new int[2];
-    }
-
-    public void NewPosition (int x, int y)
-    {
-        position[0] = x;
-        position[1] = y;
+        proprietary=player;
     }
 
     public int GetX() {
@@ -28,12 +26,15 @@ public class Worker
         return proprietary;
     }
 
-    public void SetPosition (int x, int y) {}
+    public void SetPosition (int x, int y)
+    {
+        position[0] = x;
+        position[1] = y;
+    }
 
-
-   public void SetProprietary (Player p)
-   {
+    public void SetProprietary (Player p)
+    {
        proprietary = p;
-   }
+    }
 
 }
