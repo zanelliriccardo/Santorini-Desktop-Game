@@ -8,6 +8,7 @@ public class Worker
 {
     private int[] position;
     private Player proprietary;
+    private String color;
 
     public Worker(Player player)
     {
@@ -32,9 +33,23 @@ public class Worker
         position[1] = y;
     }
 
+    public void SetPosition (int[] pos)
+    {
+        position[0] = pos[0];
+        position[1] = pos[1];
+    }
+
     public void SetProprietary (Player p)
     {
        proprietary = p;
     }
 
+    public int[] GetPosition() {
+        return position;
+    }
+
+    public void SetColor(String s)
+    {
+        color=s;
+    }
 }

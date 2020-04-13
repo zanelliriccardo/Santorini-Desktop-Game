@@ -91,6 +91,11 @@ public class MultiEchoServer {
                     catch(IOException e) {
                         break; // entrerei qui se serverSocket venisse chiuso
                     }
+
+                while (App.g.GameReady()) { }
+
+                App.g.NextTurn();
+                notifyAll();
                 if(true) //inserire controllo su fine partita
                     break;
             } catch (IOException e) {

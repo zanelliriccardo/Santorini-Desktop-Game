@@ -6,6 +6,7 @@ public class Player {
     private String nickname;
     //private String worker_color;
     private God god_card;
+    private String color;
 
     public Player (String str)
     {
@@ -19,5 +20,10 @@ public class Player {
 
     public void SetGodCard(God god) {
         god_card=god;
+    }
+
+    public String GetColor()
+    {
+        return color;
     }
 }
