@@ -26,7 +26,7 @@ public class ClientHandler implements Runnable {
             String str;
 
             nickname=ChooseNickname(in,out);
-            
+
             m.Waiting(out);
 
             while (true)
@@ -40,59 +40,61 @@ public class ClientHandler implements Runnable {
                             int[] pos1=new int[2];
                             int[] pos2=new int[2];
 
-                            out.println("where do you want to put your first worker? \n");
-                            out.flush();
+                            m.InitialPositionFirstW(out);
 
                             while (true) {
-                                out.println("Position X: ");
-                                out.flush();
+
+                                m.PositioningX(out);
+
                                 try {
                                     pos1[0] = Integer.parseInt(in.nextLine());
                                 } catch (Exception e) {
-                                    out.println("Position must be between 1 and 5\n");
-                                    out.flush();
+
+                                    m.Verification(out);
                                     continue;
                                 }
                                 break;
                             }
 
                             while (true) {
-                                out.println("Position Y: ");
-                                out.flush();
+
+                                m.PositioningY(out);
+
                                 try {
                                     pos1[1] = Integer.parseInt(in.nextLine());
                                 } catch (Exception e) {
-                                    out.println("Position must be between 1 and 5\n");
-                                    out.flush();
+
+                                    m.Verification(out);
                                     continue;
                                 }
                                 break;
                             }
 
-                            out.println("where do you want to put your second worker? \n");
-                            out.flush();
+                            m.InitialPositionSecondW(out);
 
                             while (true) {
-                                out.println("Position X: ");
-                                out.flush();
+
+                                m.PositioningX(out);
+
                                 try {
                                     pos2[0] = Integer.parseInt(in.nextLine());
                                 } catch (Exception e) {
-                                    out.println("Position must be between 1 and 5\n");
-                                    out.flush();
+
+                                    m.Verification(out);
                                     continue;
                                 }
                                 break;
                             }
 
                             while (true) {
-                                    out.println("Position Y: ");
-                                    out.flush();
+
+                                m.PositioningY(out);
+
                                     try {
                                         pos2[1] = Integer.parseInt(in.nextLine());
                                     } catch (Exception e) {
-                                        out.println("Position must be between 1 and 5\n");
-                                        out.flush();
+
+                                        m.Verification(out);
                                         continue;
                                     }
                                     break;
@@ -106,8 +108,8 @@ public class ClientHandler implements Runnable {
             }
 
             App.g.NextTurn();
-            out.println("Waiting for your turn \n");
-            out.flush();
+
+            m.Waiting(out);
 
             while(true) {
                 try
@@ -123,13 +125,14 @@ public class ClientHandler implements Runnable {
 
                         //se non mossa possibile --> SCONFITTA
                         
-                        out.println("Your turn! \n");
-                        out.flush();
+                        m.YourTurn(out);
+
                         App.g.GetBoard();
                         while (true) {
-                            out.println("Which worker do you want to move? (1 or 2) \n");
-                            out.flush();
+
+                            m.WhichWorker(out);
                             str = in.nextLine();
+
                             try {
                                 int n = Integer.parseInt(str);
                                 if (n != 1 && n != 2)
@@ -143,30 +146,32 @@ public class ClientHandler implements Runnable {
                         }
 
                         while (true) {
-                            out.println("Where do you want to move your worker? \n");
-                            out.flush();
+
+                            m.WhereMove(out);
 
                             while (true) {
-                                out.println("Position X: ");
-                                out.flush();
+
+                                m.PositioningX(out);
+
                                 try {
                                     pos[0] = Integer.parseInt(in.nextLine());
                                 } catch (Exception ex) {
-                                    out.println("Position must be between 1 and 5\n");
-                                    out.flush();
+
+                                    m.Verification(out);
                                     continue;
                                 }
                                 break;
                             }
 
                             while (true) {
-                                out.println("Position Y: ");
-                                out.flush();
+
+                                m.PositioningY(out);
+
                                 try {
                                     pos[1] = Integer.parseInt(in.nextLine());
                                 } catch (Exception ex) {
-                                    out.println("Position must be between 1 and 5\n");
-                                    out.flush();
+
+                                    m.Verification(out);
                                     continue;
                                 }
                                 break;
@@ -177,45 +182,49 @@ public class ClientHandler implements Runnable {
                                 if(App.g.Win(activeWorker.GetPosition()))
                                 {
                                     App.g.AddWinner(activeWorker.GetProprietary());
-                                    out.println("Congratulations! You Win! \n");
-                                    out.flush();
+
+                                    m.Winner(out);
+
                                     break;
                                 }
-                                out.println("Move successful \n");
-                                out.flush();
+
+                                m.Success(out);
                                 break;
                             }
-                            out.println("Move not allowed \n");
-                            out.flush();
+
+                            m.Failure(out);
+
                         }
 
                         //build
 
                         while (true) {
-                            out.println("Where do you want to build? \n");
-                            out.flush();
+
+                            m.WhereBuild(out);
 
                             while (true) {
-                                out.println("Position X: ");
-                                out.flush();
+
+                                m.PositioningX(out);
+
                                 try {
                                     pos[0] = Integer.parseInt(in.nextLine());
                                 } catch (Exception ex) {
-                                    out.println("Position must be between 1 and 5\n");
-                                    out.flush();
+
+                                    m.Verification(out);
                                     continue;
                                 }
                                 break;
                             }
 
                             while (true) {
-                                out.println("Position Y: ");
-                                out.flush();
+
+                                m.PositioningY(out);
+
                                 try {
                                     pos[1] = Integer.parseInt(in.nextLine());
                                 } catch (Exception ex) {
-                                    out.println("Position must be between 1 and 5\n");
-                                    out.flush();
+
+                                    m.Verification(out);
                                     continue;
                                 }
                                 break;
@@ -223,12 +232,11 @@ public class ClientHandler implements Runnable {
 
                             if(App.g.DoBuild(pos,activeWorker))
                             {
-                                out.println("Build successful\n");
-                                out.flush();
+                                m.Success(out);
                                 break;
                             }
-                            out.println("Build not allowed! You can only build in adjacent boxes and at the same level as your worker. \n");
-                            out.flush();
+
+                            m.Failure(out);
                         }
 
                         //end turn da fare in grafica
@@ -258,14 +266,14 @@ public class ClientHandler implements Runnable {
     {
         String str;
         while(true) {
-            out.println("Enter your nickname:\n");
-            out.flush();
+
+            m.EnterNickname(out);
+
             str = in.nextLine();
             if(App.g.CheckNickname(str))
                 break;
 
-            out.println("Nickname already existing, please retry");
-            out.flush();
+            m.NicknameNotAvailable(out);
         }
         App.g.MemorizeNickname(str);
 
