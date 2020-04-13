@@ -13,6 +13,8 @@ import java.util.Scanner;
 public class ClientHandler implements Runnable {
     private Socket socket;
     private String nickname;
+    private Message m = new Message();
+
     public ClientHandler(Socket socket) {
         this.socket = socket;
     }
@@ -24,9 +26,8 @@ public class ClientHandler implements Runnable {
             String str;
 
             nickname=ChooseNickname(in,out);
-
-            out.println("Waiting for your turn \n");
-            out.flush();
+            
+            m.Waiting(out);
 
             while (true)
             {
@@ -119,6 +120,8 @@ public class ClientHandler implements Runnable {
                         int[] pos=new int[2];
 
                         App.g.HaveAPossibleMove(nickname);
+
+                        //se non mossa possibile --> SCONFITTA
                         
                         out.println("Your turn! \n");
                         out.flush();
@@ -131,7 +134,7 @@ public class ClientHandler implements Runnable {
                                 int n = Integer.parseInt(str);
                                 if (n != 1 && n != 2)
                                     throw new Exception();
-                                activeWorker = App.g.GetWorkerToMove(nickname, n);
+                                activeWorker = App.g.GetWorkerToMove(nickname, n-1);
                             } catch (Exception ex) {
                                 out.println("Input error, choose 1 or 2 \n");
                                 out.flush();
@@ -174,7 +177,7 @@ public class ClientHandler implements Runnable {
                                 if(App.g.Win(activeWorker.GetPosition()))
                                 {
                                     App.g.AddWinner(activeWorker.GetProprietary());
-                                    out.println("Congratulation! You Win! \n");
+                                    out.println("Congratulations! You Win! \n");
                                     out.flush();
                                     break;
                                 }

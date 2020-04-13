@@ -308,18 +308,18 @@ public class GameState {
                 }
                 else {
                     if(!b.GetStateBox(i,j))
-                        System.out.println(b.GetColor(i,j));
+                        System.out.println(b.GetColor(i,j)); //colora
 
                     if(b.GetLevelBox(i,j)==4)
                         System.out.print("D");
                     else
                         System.out.print(b.GetLevelBox(i,j));
 
-                    System.out.println("\u001B[0m");
+                    System.out.println("\u001B[0m"); //resetta il colore --> bianco
                 }
                 System.out.print(" ");
             }
-            System.out.println();
+            System.out.flush();
         }
     }
 
@@ -327,6 +327,8 @@ public class GameState {
     {
         return b.GetLevelBox(pos)==3;
     }
+
+    //Se giocatori sono 2 --> FINE
 
     public void AddWinner(Player winner)
     {
@@ -352,8 +354,8 @@ public class GameState {
     {
         if(b.IsABlockedWorker(workers[GetIndexPlayer(nickname)].GetPosition())) {
             if (b.IsABlockedWorker(workers[GetIndexPlayer(nickname) + 1].GetPosition()))
-                return true;
+                return false;
         }
-        return false;
+        return true;
     }
 }
