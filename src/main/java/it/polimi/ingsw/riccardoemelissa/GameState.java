@@ -29,7 +29,6 @@ public class GameState {
 
         players = new Player[numP];
         podium = new Player[numP];
-        //god = new God[numP];
         workers = new Worker[numP*2];
     }
 
@@ -114,7 +113,7 @@ public class GameState {
     public boolean CheckNickname(String nickname)
     {
         for (int i = 0; i < count; i++) {
-            if (nickname.equals(players[i]))
+            if (nickname.compareTo(players[i].GetNickname())==0)
                 return false;
         }
         return true;
@@ -212,33 +211,6 @@ public class GameState {
         }
     }
 
-    public void StartWorker ()
-    {
-        System.out.println("Enter initial position");
-
-        System.out.println("x : ");
-        int x = readCoordinate();
-
-        System.out.println("y : ");
-        int y = readCoordinate();
-
-        System.out.println("You decided to position your worker in the box ( " + x + "," + y + " )");
-    }
-
-    public int readCoordinate ()
-    {
-        InputStreamReader reader = new InputStreamReader(System.in);
-        BufferedReader myInput = new BufferedReader(reader);
-        int n = 0;
-        try {
-            n = Integer.parseInt(myInput.readLine());
-        } catch (IOException e) {
-            System.out.println("An error has occurred: " + e);
-            System.exit(-1);
-        }
-        return n;
-    }
-
     public void NextTurn ()
     {
        if (trace < players.length)
@@ -278,6 +250,10 @@ public class GameState {
             return false;
     }
 
+    public boolean IsAPossibleMove(int[] newpos,int[] oldpos)
+    {
+        return b.IsAPossibleMove(newpos,oldpos);
+    }
 
     public boolean DoBuild(int[] pos, Worker activeWorker)
     {
@@ -341,12 +317,10 @@ public class GameState {
                 break;
             }
 
-
         for(;i<players.length-1;i++)
         {
             players[i]=players[i+1];
         }
-
         players[i]=null;
     }
 
@@ -357,5 +331,63 @@ public class GameState {
                 return false;
         }
         return true;
+    }
+
+    public void Lose(String nickname)
+    {
+        int i=0;
+        for(;i<players.length;i++)
+            if(players[i].GetNickname()==nickname)
+                for (int j=podium.length-1;j>0;j--)
+                    if(podium[j]==null)
+                        podium[j]=players[i];
+
+        for(;i<players.length-1;i++)
+        {
+            players[i]=players[i+1];
+        }
+        players[i]=null;
+    }
+
+    public boolean CheckPower(String str)
+    {
+        for(int i=0;i<players.length;i++) {
+            players[i].GetGodCard().CheckMoment(players[trace], players[i], str);
+        }
+
+        return true;
+    }
+
+    public Worker GetOccupant(int[] pos)
+    {
+        for(int i=0;i<workers.length;i++)
+            if(workers[i].GetPosition()[0]==pos[0]&&workers[i].GetPosition()[1]==pos[1])
+                return workers[i];
+        return null;
+    }
+
+
+    public ArrayList PossibleMoves(int[] pos, int[] workerPosition)
+    {
+        ArrayList<int[]> possiblemoves=new ArrayList<int []>();
+        for(int x=workerPosition[0]-1;x<=workerPosition[0]+1;x++)
+            for(int y=workerPosition[1]-1;y<=workerPosition[1]+1;y++)
+            {
+                if(x==workerPosition[0]&&y==workerPosition[1])
+                    continue;
+
+                if(x>4||x<0)
+                    continue;
+
+                if(y>4||y<0)
+                    continue;
+
+                if(b.IsAPossibleMove(new int[]{x,y},workerPosition))
+                    possiblemoves.add(new int[]{x,y});
+            }
+
+
+
+        return null;
     }
 }

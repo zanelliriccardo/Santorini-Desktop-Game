@@ -1,5 +1,7 @@
 package elements;
 
+import it.polimi.ingsw.riccardoemelissa.App;
+
 public class Box {
     private boolean state;
     private int level;
@@ -13,13 +15,13 @@ public class Box {
     public void ChangeState(String nick)
     {
         color=nick;
-        state=!state;
+        state=false;
     }
 
     public void ChangeState()
     {
         color=null;
-        state=!state;
+        state=true;
     }
 
     public boolean GetState ()
@@ -41,4 +43,5 @@ public class Box {
     {
         return color;
     }
-}
+
+    }

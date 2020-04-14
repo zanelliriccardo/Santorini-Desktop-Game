@@ -26,4 +26,9 @@ public class Player {
     {
         return color;
     }
+
+    public God GetGodCard()
+    {
+        return god_card;
+    }
 }
