@@ -2,7 +2,11 @@ package elements;
 
 import it.polimi.ingsw.riccardoemelissa.Turn;
 
+import java.util.ArrayList;
+
 public class Athena implements God {
+    private boolean opponent_turn = true;
+    private String type= "move";
 
     private boolean ActivePower=false;
 
@@ -13,7 +17,7 @@ public class Athena implements God {
     }
 
     @Override
-    public void Power(Worker worker) {
+    public void Power(Worker worker, ArrayList<int[]> possiblemoves) {
 
     }
 

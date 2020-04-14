@@ -2,6 +2,8 @@ package elements;
 
 import it.polimi.ingsw.riccardoemelissa.Turn;
 
+import java.util.ArrayList;
+
 public class Pan implements God {
     @Override
     public boolean CheckMoment(Player ActivePlayer,Player CardOwner,String str) {
@@ -10,7 +12,7 @@ public class Pan implements God {
     }
 
     @Override
-    public void Power(Worker worker) {
+    public void Power(Worker worker, ArrayList<int[]> possiblemoves) {
 
         /* POWER : se il W scende di 2 o più livelli --> VITTORIA
 

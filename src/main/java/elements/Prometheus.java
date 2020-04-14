@@ -2,7 +2,12 @@ package elements;
 
 import it.polimi.ingsw.riccardoemelissa.Turn;
 
+import java.util.ArrayList;
+
 public class Prometheus implements God {
+    private boolean opponent_turn = false;
+    private String type= "move";
+
     @Override
     public boolean CheckMoment(Player ActivePlayer,Player CardOwner,String str) {
         if(ActivePlayer.GetNickname()==CardOwner.GetNickname() && str.compareTo("move")==0);
@@ -10,7 +15,7 @@ public class Prometheus implements God {
     }
 
     @Override
-    public void Power(Worker worker) {
+    public void Power(Worker worker, ArrayList<int[]> possiblemoves) {
 
         /*
         POWER: se il W NON sale di livello nella mossa,

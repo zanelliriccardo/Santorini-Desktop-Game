@@ -5,8 +5,12 @@ import it.polimi.ingsw.riccardoemelissa.App;
 import it.polimi.ingsw.riccardoemelissa.Turn;
 
 import javax.sound.midi.VoiceStatus;
+import java.util.ArrayList;
 
 public class Apollo implements God {
+    private boolean opponent_turn = false;
+    private String type= "move";
+
     @Override
     public boolean CheckMoment(Player ActivePlayer,Player CardOwner,String str) {
         if(ActivePlayer.GetNickname()==CardOwner.GetNickname() && str.compareTo("move")==0);
@@ -14,7 +18,7 @@ public class Apollo implements God {
     }
 
     @Override
-    public void Power(Worker worker, int[] pos) {
+    public void Power(Worker worker, ArrayList<int[]> possiblemoves) {
         /*
         POWER: "il W PUO' spostarsi anche in una box già occupata,
         in tal caso il W_AVVERSARIO sarebbe obbligato a spostarsi nella pos iniziale del MIO W"

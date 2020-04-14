@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ClientHandler implements Runnable {
@@ -161,7 +162,7 @@ public class ClientHandler implements Runnable {
                                 break;
                             }
 
-                            int[][] possiblemove=App.g.PossibleMoves(pos,activeWorker.GetPosition());//intervallo boardgame da controllare
+                            ArrayList<int[][]> possiblemove=App.g.PossibleMoves(pos,activeWorker.GetPosition());//intervallo boardgame da controllare
 
                             if(App.g.DoMove(pos,activeWorker))
                             {
