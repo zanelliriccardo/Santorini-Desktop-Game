@@ -1,8 +1,24 @@
 package it.polimi.ingsw.riccardoemelissa;
 
+import org.graalvm.compiler.core.phases.EconomyHighTier;
+
 import java.io.PrintWriter;
+import java.util.Scanner;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.text.ParseException;
+import java.util.ArrayList;
 
 public class Message {
+    private Scanner in;
+    private PrintWriter out;
+
+    public Message(Scanner inclient, PrintWriter outclient) {
+        this.in=inclient;
+        this.out=outclient;
+    }
+
     public void Waiting(PrintWriter out) {
         out.println("Waiting for your turn \n");
         out.flush();
@@ -76,6 +92,52 @@ public class Message {
     public void NicknameNotAvailable(PrintWriter out) {
         out.println("Nickname already existing, please retry");
         out.flush();
+    }
+
+    public int[] GetInputPosition()
+    {
+        int[] pos=new int[2];
+        while (true) {
+            PositioningX(out);
+            try {
+                pos[0] = Integer.parseInt(in.nextLine());
+            } catch (Exception e) {
+                Verification(out);
+                continue;
+            }
+            break;
+        }
+
+        while (true) {
+            PositioningY(out);
+            try {
+                pos[1] = Integer.parseInt(in.nextLine());
+            } catch (Exception e) {
+                Verification(out);
+                continue;
+            }
+            break;
+        }
+        return pos;
+    }
+
+    public boolean SecondMove()
+    {
+        out.println("Another move?(Yes or No)");
+        out.flush();
+
+        while (true) {
+            String str = in.nextLine();
+            if (str.equalsIgnoreCase("yes"))
+            {
+                return true;
+            } else if (str.equalsIgnoreCase("yes"))
+            {
+                return false;
+            }
+            else
+                continue;
+        }
     }
 
     // metodo : chiedere se vuole spostarsi ancora --> ARTEMIS

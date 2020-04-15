@@ -1,5 +1,6 @@
 package elements;
 
+import it.polimi.ingsw.riccardoemelissa.Message;
 import it.polimi.ingsw.riccardoemelissa.Turn;
 
 import java.util.ArrayList;
@@ -7,28 +8,41 @@ import java.util.ArrayList;
 public class Artemis implements God {
     private boolean opponent_turn = false;
     private String type= "move";
-
+    private int[] oldpos=new int[2];
+    private boolean ActivePower=false;
     @Override
-    public boolean CheckMoment(Player ActivePlayer,Player CardOwner,String str) {
-        if(ActivePlayer.GetNickname()==CardOwner.GetNickname() && str.compareTo("move")==0);
-        return true;
+    public boolean CheckMoment(Worker activeWorker, Player CardOwner, String str, int[] newpos, BoardGame b, Message m)
+    {
+        if(activeWorker.GetProprietary().GetNickname()==CardOwner.GetNickname() && str.compareTo("build")==0)
+        {
+            oldpos[0] = newpos[0];
+            oldpos[1] = newpos[1];
+            ActivePower=m.SecondMove();
+            if(ActivePower)
+            {
+                ArrayList<Worker> worker_list=new ArrayList<Worker>();
+                worker_list.add(activeWorker);
+                Power(worker_list,newpos,b);
+            }
+
+        }
+        return false;
     }
 
     @Override
-    public void Power(Worker worker, ArrayList<int[]> possiblemoves) {
-        /* POWER : il worker può spostarsi 2 volte,
-        MA NO RETROCESSIONE A POS INIZIALE
-         */
+    public boolean Power(ArrayList<Worker> worker_list,int[] newpos,BoardGame b) {
 
-        int [] initial_position = new int [2]; //inizializzo un array per salvarmi la pos iniziale del W
-        initial_position[0] = worker.GetX();
-        initial_position[1] = worker.GetY();
+        int[] oldpos=worker_list.get(0).GetPosition();
+        if(b.IsAPossibleMove(newpos,oldpos))
+        {
+            worker_list.get(0).SetPosition(newpos);
+            b.ChangeState(newpos,worker_list.get(0).GetProprietary().GetColor());
+            b.ChangeState(oldpos);
+            return true;
+        }
+        else
+            return false;
 
-        //metodo : CODICE MOVE CLASSICO
-
-        //metodo: chiedo se vuole muoversi ancora
-
-        //se SI, richiamo metodo move classico, ESCLUDENDO LA POS INIZIALE
 
     }
 

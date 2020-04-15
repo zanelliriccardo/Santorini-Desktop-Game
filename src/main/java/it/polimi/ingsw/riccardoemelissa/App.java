@@ -5,7 +5,8 @@ import elements.Player;
 
 public class App
 {
-    public static GameState g;
+    protected static GameState g;
+
     public static void main( String[] args )
     {
         MultiEchoServer echoServer = new MultiEchoServer(1337);

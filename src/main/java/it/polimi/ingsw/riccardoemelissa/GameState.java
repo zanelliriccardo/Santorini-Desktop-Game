@@ -225,8 +225,11 @@ public class GameState {
         return players[trace].GetNickname();
     }
 
-    public void SetInitialWorkerPosition(int getIndexPlayer, int[] pos1, int[] pos2)
+    public boolean SetInitialWorkerPosition(int getIndexPlayer, int[] pos1, int[] pos2)
     {
+        if(b.GetStateBox(pos1)||b.GetStateBox(pos2))
+            return false;
+
         String color="\u001B[3"+(getIndexPlayer+1)+"m";
         workers[getIndexPlayer].SetColor(color);
         workers[getIndexPlayer+1].SetColor(color);
@@ -234,6 +237,7 @@ public class GameState {
         workers[getIndexPlayer+1].SetPosition(pos2[0],pos2[1]);
         b.ChangeState(pos1,color);
         b.ChangeState(pos2,color);
+        return true;
     }
 
     public boolean DoMove(int[] newpos,Worker activeWorker)
@@ -244,6 +248,14 @@ public class GameState {
             activeWorker.SetPosition(newpos);
             b.ChangeState(newpos,activeWorker.GetProprietary().GetColor());
             b.ChangeState(oldpos);
+            return true;
+        }
+        else if(!b.GetStateBox(newpos))
+        {
+            ArrayList<Worker> worker_list=new ArrayList<Worker>();
+            worker_list.add(activeWorker);
+            worker_list.add(GetOccupant(newpos));
+            activeWorker.GetProprietary().GetGodCard().Power(worker_list,newpos,b);
             return true;
         }
         else
@@ -306,7 +318,7 @@ public class GameState {
 
     //Se giocatori sono 2 --> FINE
 
-    public void AddWinner(Player winner)
+    public boolean AddWinner(Player winner)
     {
         int i=0;
         for(;i<players.length;i++)
@@ -322,10 +334,17 @@ public class GameState {
             players[i]=players[i+1];
         }
         players[i]=null;
+
+        if(players[1]==null)
+            return true;
+        return false;
     }
 
     public boolean HaveAPossibleMove(String nickname)
     {
+
+
+
         if(b.IsABlockedWorker(workers[GetIndexPlayer(nickname)].GetPosition())) {
             if (b.IsABlockedWorker(workers[GetIndexPlayer(nickname) + 1].GetPosition()))
                 return false;
@@ -333,7 +352,7 @@ public class GameState {
         return true;
     }
 
-    public void Lose(String nickname)
+    public boolean Lose(String nickname)
     {
         int i=0;
         for(;i<players.length;i++)
@@ -347,12 +366,17 @@ public class GameState {
             players[i]=players[i+1];
         }
         players[i]=null;
+
+        if(players[1]==null)
+            return true;
+        return false;
     }
 
     public boolean CheckPower(String str)
     {
         for(int i=0;i<players.length;i++) {
-            players[i].GetGodCard().CheckMoment(players[trace], players[i], str);
+            //if(!players[i].GetGodCard().CheckMoment(players[trace], players[i], str))
+                //return false;
         }
 
         return true;
@@ -367,9 +391,15 @@ public class GameState {
     }
 
 
-    public ArrayList PossibleMoves(int[] pos, int[] workerPosition)
+    public ArrayList PossibleMoves( int index)
     {
         ArrayList<int[]> possiblemoves=new ArrayList<int []>();
+
+        ArrayList<Worker> worker_list=new ArrayList<Worker>();
+        worker_list.add(workers[index]);
+
+        int[] workerPosition=worker_list.get(0).GetPosition();
+
         for(int x=workerPosition[0]-1;x<=workerPosition[0]+1;x++)
             for(int y=workerPosition[1]-1;y<=workerPosition[1]+1;y++)
             {
@@ -382,12 +412,17 @@ public class GameState {
                 if(y>4||y<0)
                     continue;
 
-                if(b.IsAPossibleMove(new int[]{x,y},workerPosition))
-                    possiblemoves.add(new int[]{x,y});
+                if(worker_list.get(0).GetProprietary().GetGodCard().CheckMoment(worker_list.get(0),worker_list.get(0).GetProprietary(),"move",new int[]{x,y},b))
+                    for(int i=0;i<players.length;i++)
+                        if(players[i].GetNickname().compareTo(GetActivePlayer())!=0)
+                            if(players[i].GetGodCard().Power(worker_list,new int[]{x,y},b))
+                                possiblemoves.add(new int[]{x,y});
+
             }
 
 
 
-        return null;
+        return possiblemoves;
     }
+
 }
