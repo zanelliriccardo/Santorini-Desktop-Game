@@ -1,5 +1,6 @@
 package elements;
 
+import it.polimi.ingsw.riccardoemelissa.Message;
 import it.polimi.ingsw.riccardoemelissa.Turn;
 
 import java.util.ArrayList;
@@ -9,13 +10,13 @@ public class Hephaestus implements God {
     private String type= "build";
 
     @Override
-    public boolean CheckMoment(Player ActivePlayer,Player CardOwner,String str) {
-        if(ActivePlayer.GetNickname()==CardOwner.GetNickname() && str.compareTo("build")==0);
+    public boolean CheckMoment(Worker activeWorker, Player CardOwner, String str, int[] newpos, BoardGame b, Message m) {
+        if(activeWorker.GetProprietary().GetNickname()==CardOwner.GetNickname() && str.compareTo("build")==0);
         return true;
     }
 
     @Override
-    public void Power(Worker worker, ArrayList<int[]> possiblemoves) {
+    public boolean Power(ArrayList<Worker> worker_list,int[] newpos,BoardGame b) {
 
         /*
         POWER: "il W PUO' costruire due volte nella stessa box,
@@ -26,6 +27,7 @@ public class Hephaestus implements God {
         - se LEVEL_BOX_SCELTA <= 2 --> message : "Vuoi costruire ancora?"
         - SI --> aggiungo un blocco alla box scelta
          */
+        return true;
 
     }
 

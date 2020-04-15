@@ -101,7 +101,7 @@ public class ClientHandler implements Runnable {
                         }
 
                         while (true) {
-                            m.WhereMove(out);
+                            m.WhereMove(/*out*/);
 
                             pos=m.GetInputPosition();
 
@@ -131,28 +131,9 @@ public class ClientHandler implements Runnable {
                         }
 
                         while (true) {
-                            m.WhereBuild(out);
-                            while (true) {
-                                m.PositioningX(out);
-                                try {
-                                    pos[0] = Integer.parseInt(in.nextLine());
-                                } catch (Exception ex) {
-                                    m.Verification(out);
-                                    continue;
-                                }
-                                break;
-                            }
+                            m.WhereBuild(/*out*/);
 
-                            while (true) {
-                                m.PositioningY(out);
-                                try {
-                                    pos[1] = Integer.parseInt(in.nextLine());
-                                } catch (Exception ex) {
-                                    m.Verification(out);
-                                    continue;
-                                }
-                                break;
-                            }
+                            pos=m.GetInputPosition();
 
                             if(App.g.DoBuild(pos,activeWorker))
                             {

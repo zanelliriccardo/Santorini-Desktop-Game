@@ -59,7 +59,7 @@ public class Message {
         out.flush();
     }
 
-    public void WhereMove(PrintWriter out) {
+    public void WhereMove(/*PrintWriter out*/) {
         out.println("Where do you want to move your worker? \n");
         out.flush();
     }
@@ -79,7 +79,7 @@ public class Message {
         out.flush();
     }
 
-    public void WhereBuild(PrintWriter out) {
+    public void WhereBuild(/*PrintWriter out*/) {
         out.println("Where do you want to build? \n");
         out.flush();
     }
@@ -131,13 +131,32 @@ public class Message {
             if (str.equalsIgnoreCase("yes"))
             {
                 return true;
-            } else if (str.equalsIgnoreCase("yes"))
+            } else if (str.equalsIgnoreCase("no"))
             {
                 return false;
             }
             else
                 continue;
         }
+    }
+
+    public boolean UsePower() {
+        out.println("Do you want to use Prometheus's power? (Yes or No) ");
+        out.flush();
+
+        while (true) {
+            String str = in.nextLine();
+            if (str.equalsIgnoreCase("yes"))
+            {
+                return true;
+            } else if (str.equalsIgnoreCase("no"))
+            {
+                return false;
+            }
+            else
+                continue;
+        }
+
     }
 
     // metodo : chiedere se vuole spostarsi ancora --> ARTEMIS

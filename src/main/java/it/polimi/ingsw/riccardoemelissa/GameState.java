@@ -342,9 +342,6 @@ public class GameState {
 
     public boolean HaveAPossibleMove(String nickname)
     {
-
-
-
         if(b.IsABlockedWorker(workers[GetIndexPlayer(nickname)].GetPosition())) {
             if (b.IsABlockedWorker(workers[GetIndexPlayer(nickname) + 1].GetPosition()))
                 return false;
@@ -412,7 +409,7 @@ public class GameState {
                 if(y>4||y<0)
                     continue;
 
-                if(worker_list.get(0).GetProprietary().GetGodCard().CheckMoment(worker_list.get(0),worker_list.get(0).GetProprietary(),"move",new int[]{x,y},b))
+                if(worker_list.get(0).GetProprietary().GetGodCard().CheckMoment(worker_list.get(0),worker_list.get(0).GetProprietary(),"move",new int[]{x,y},b, null))
                     for(int i=0;i<players.length;i++)
                         if(players[i].GetNickname().compareTo(GetActivePlayer())!=0)
                             if(players[i].GetGodCard().Power(worker_list,new int[]{x,y},b))

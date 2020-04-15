@@ -10,6 +10,7 @@ public class Artemis implements God {
     private String type= "move";
     private int[] oldpos=new int[2];
     private boolean ActivePower=false;
+    private Box[][] Board;
     @Override
     public boolean CheckMoment(Worker activeWorker, Player CardOwner, String str, int[] newpos, BoardGame b, Message m)
     {
@@ -22,9 +23,21 @@ public class Artemis implements God {
             {
                 ArrayList<Worker> worker_list=new ArrayList<Worker>();
                 worker_list.add(activeWorker);
+
+                m.WhereMove();
+
+                while(true)
+                {
+                newpos = m.GetInputPosition();
+
+                if(!b.GetStateBox(newpos) && !(b.GetLevelBox(newpos) == 4) && (b.GetLevelBox(newpos) - b.GetLevelBox(oldpos)) > 1 )
+                {
+                    if (newpos[0]!= worker_list.get(0).GetX() && newpos[1]!= worker_list.get(1).GetY())
+                        break;
+                }
+                }
                 Power(worker_list,newpos,b);
             }
-
         }
         return false;
     }
@@ -33,18 +46,10 @@ public class Artemis implements God {
     public boolean Power(ArrayList<Worker> worker_list,int[] newpos,BoardGame b) {
 
         int[] oldpos=worker_list.get(0).GetPosition();
-        if(b.IsAPossibleMove(newpos,oldpos))
-        {
-            worker_list.get(0).SetPosition(newpos);
-            b.ChangeState(newpos,worker_list.get(0).GetProprietary().GetColor());
-            b.ChangeState(oldpos);
-            return true;
-        }
-        else
-            return false;
 
-
+        worker_list.get(0).SetPosition(newpos);
+        b.ChangeState(newpos,worker_list.get(0).GetProprietary().GetColor());
+        b.ChangeState(oldpos);
+        return true;
     }
-
-
 }
