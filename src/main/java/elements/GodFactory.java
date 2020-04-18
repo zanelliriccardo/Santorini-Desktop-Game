@@ -1,7 +1,26 @@
 package elements;
 
-public class GodFactory {
-    public static God getGod(String god)
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class GodFactory {
+    private List<God> gods;
+    private final int N = 9;
+
+    public GodFactory()
+    {
+        this.gods = new ArrayList<>();
+
+        for (int i = 0; i < this.N; i++) {
+            gods.add(createAction());
+        }
+    }
+
+    abstract protected God createAction();
+    // deleghiamo la parte di creazione del god alle sottoclassi
+
+
+   /*public static God getGod(String god)
     {
         if ( god.equalsIgnoreCase("Apollo") )
             return new Apollo();
@@ -22,4 +41,6 @@ public class GodFactory {
 
         return null;
     }
+
+    */
 }
