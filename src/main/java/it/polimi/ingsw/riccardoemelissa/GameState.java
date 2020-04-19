@@ -6,11 +6,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.*;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class GameState {
-    private static final int dimensiongame=5;
-    private Player[] players=new Player[1];
+    private static final int dimensiongame = 5;
+    private Player[] players = new Player[1];
     private Player[] podium;
     private Worker[] workers;
     private int count = 0;
@@ -18,58 +20,51 @@ public class GameState {
     private int trace = -1;
     private BoardGame b;
 
-    public GameState(int numP)
-    {
-        Box[][] boxes=new Box[dimensiongame][dimensiongame];
-        for(int i = 0; i < boxes.length; i++) {
+    public GameState(int numP) {
+        Box[][] boxes = new Box[dimensiongame][dimensiongame];
+        for (int i = 0; i < boxes.length; i++) {
             for (int j = 0; j < boxes.length; j++)
                 boxes[i][j] = new Box(true, 0);
         }
-        b=new BoardGame(boxes);
+        b = new BoardGame(boxes);
 
         players = new Player[numP];
         podium = new Player[numP];
-        workers = new Worker[numP*2];
+        workers = new Worker[numP * 2];
     }
 
-    public int GetPlayerNumber()
-    {
+    public int GetPlayerNumber() {
         return players.length;
     }
 
-    public Player[] GetPlayers()
-    {
+    public Player[] GetPlayers() {
         return players;
     }
 
-    public int GetIndexPlayer(String nick)
-    {
-        for(int i=0;i<players.length;i++)
-            if(players[i].GetNickname()==nick)
+    public int GetIndexPlayer(String nick) {
+        for (int i = 0; i < players.length; i++)
+            if (players[i].GetNickname() == nick)
                 return i;
 
         return -1;
     }
 
-    public boolean GameReady()
-    {
-        for(int i=0;i<players.length;i++)
-            if(players[i]==null)
+    public boolean GameReady() {
+        for (int i = 0; i < players.length; i++)
+            if (players[i] == null)
                 return false;
 
         return true;
     }
 
-    public Worker GetWorkerToMove(String nick, int n)
-    {
-        return workers[GetIndexPlayer(nick)+n];
+    public Worker GetWorkerToMove(String nick, int n) {
+        return workers[GetIndexPlayer(nick) + n];
     }
 
-    public void MemorizeNickname(String str)
-    {
-        for (int i=0;i<players.length;i++)
-            if(players[i]==null)
-                players[i]=new Player(str);
+    public void MemorizeNickname(String str) {
+        for (int i = 0; i < players.length; i++)
+            if (players[i] == null)
+                players[i] = new Player(str);
     }
 
     //public void NewPlayer()
@@ -110,10 +105,9 @@ public class GameState {
         }*/
     }
 
-    public boolean CheckNickname(String nickname)
-    {
+    public boolean CheckNickname(String nickname) {
         for (int i = 0; i < count; i++) {
-            if (nickname.compareTo(players[i].GetNickname())==0)
+            if (nickname.compareTo(players[i].GetNickname()) == 0)
                 return false;
         }
         return true;
@@ -136,18 +130,15 @@ public class GameState {
     }
      */
 
-    public void SetProprietaryWorker()
-    {
+    public void SetProprietaryWorker() {
 
-        for(int i=0;i<workers.length;i=i+2)
-        {
-            workers[i]=new Worker(players[i]);
-            workers[i+1]=new Worker(players[i]);
+        for (int i = 0; i < workers.length; i = i + 2) {
+            workers[i] = new Worker(players[i]);
+            workers[i + 1] = new Worker(players[i]);
         }
     }
 
-    public void SetTurnOrder()
-    {
+    public void SetTurnOrder() {
         ArrayList<Player> array = new ArrayList<Player>(); //creo array
 
         for (int i = 0; i < players.length; i++) {
@@ -186,25 +177,23 @@ public class GameState {
 
     //generazione di diversi numeri casuali in numero uguale a quello dei giocatori
     //e da un range uguale al numero di carte
-    public int[] uniqueRandomNumbers()
-    {
+    public int[] uniqueRandomNumbers() {
         ArrayList<Integer> list = new ArrayList<Integer>();
 
-        int[] random=new int[players.length];
+        int[] random = new int[players.length];
 
-        for (int i=1; i<gods_name.length; i++) {
+        for (int i = 1; i < gods_name.length; i++) {
             list.add(i);
         }
         Collections.shuffle(list);
-        for (int i=0; i<players.length; i++) {
-            random[i]=list.get(i);
+        for (int i = 0; i < players.length; i++) {
+            random[i] = list.get(i);
         }
         return random;
     }
 
-    public void GodsChosen ()
-    {
-        int [] random_numbers = uniqueRandomNumbers();
+    public void GodsChosen() {
+        int[] random_numbers = uniqueRandomNumbers();
 
         for (int i = 0; i < random_numbers.length; i++) {
             players[i].SetGodCard(GodFactory.getGod(gods_name[random_numbers[i]]));

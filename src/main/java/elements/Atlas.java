@@ -1,8 +1,17 @@
 package elements;
 
-public class Atlas extends GodFactory {
+import it.polimi.ingsw.riccardoemelissa.Message;
+import it.polimi.ingsw.riccardoemelissa.Turn;
+
+import java.util.ArrayList;
+
+public class Atlas extends God {
+    private boolean opponent_turn = false;
+
     @Override
-    protected God createAction() {
-        return new AtlasAction();
+    public void Build()
+    {
     }
+
+
 }

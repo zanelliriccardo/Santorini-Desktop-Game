@@ -1,8 +1,10 @@
 package elements;
 
-public class Athena extends GodFactory {
-    @Override
-    protected God createAction() {
-        return new AthenaAction();
-    }
+import it.polimi.ingsw.riccardoemelissa.Message;
+
+import java.util.ArrayList;
+
+public class Athena extends God {
+    private boolean opponent_turn = true;
+
 }

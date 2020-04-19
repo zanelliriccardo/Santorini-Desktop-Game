@@ -1,8 +1,22 @@
 package elements;
 
-public class Apollo extends GodFactory {
+
+import it.polimi.ingsw.riccardoemelissa.App;
+import it.polimi.ingsw.riccardoemelissa.Message;
+import it.polimi.ingsw.riccardoemelissa.Turn;
+
+import javax.sound.midi.VoiceStatus;
+import java.util.ArrayList;
+
+public class Apollo extends God {
+    private boolean opponent_turn = false;
+
+    public Apollo (){}
+
+
     @Override
-    protected God createAction() {
-        return new ApolloAction();
+    public void Move() {
+
     }
 }
+

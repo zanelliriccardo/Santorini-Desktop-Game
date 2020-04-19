@@ -1,8 +1,15 @@
 package elements;
 
-public class Pan extends GodFactory {
+import it.polimi.ingsw.riccardoemelissa.Message;
+import it.polimi.ingsw.riccardoemelissa.Turn;
+
+import java.util.ArrayList;
+
+public class Pan extends God {
     @Override
-    protected God createAction() {
-        return new PanAction();
+    public void Build(){
+
     }
+
+
 }

@@ -1,8 +1,14 @@
 package elements;
 
-public class Demeter extends GodFactory {
+import it.polimi.ingsw.riccardoemelissa.Message;
+import it.polimi.ingsw.riccardoemelissa.Turn;
+
+import java.util.ArrayList;
+
+public class Demeter extends God {
+    private boolean opponent_turn = false;
+
     @Override
-    protected God createAction() {
-        return new DemeterAction();
+    public void Build(){
     }
 }
