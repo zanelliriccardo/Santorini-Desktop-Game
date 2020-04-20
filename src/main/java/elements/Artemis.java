@@ -9,7 +9,7 @@ public class Artemis extends God {
     private boolean opponent_turn = false;
 
     @Override
-    public void Move(){
+    public boolean Move(){
 
     }
 }

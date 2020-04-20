@@ -15,7 +15,7 @@ public class Apollo extends God {
 
 
     @Override
-    public void Move() {
+    public boolean Move() {
 
     }
 }

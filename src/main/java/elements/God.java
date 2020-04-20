@@ -1,10 +1,5 @@
 package elements;
 
-import it.polimi.ingsw.riccardoemelissa.Message;
-
-import java.util.ArrayList;
-import java.util.Objects;
-
 public abstract class God {
 
     public void Turn()
@@ -12,19 +7,29 @@ public abstract class God {
 
     }
 
-    public void Move()
+    public boolean Move(BoardGame b, Worker activeWorker, int[] newpos)
     {
-
+            int[] oldpos=activeWorker.GetPosition();
+            if(b.IsAPossibleMove(newpos,oldpos))
+            {
+                activeWorker.SetPosition(newpos);
+                b.ChangeState(newpos,activeWorker.GetProprietary().GetColor());
+                b.ChangeState(oldpos);
+                return true;
+            }
+        return false;
     }
 
-    public void Build()
+    public boolean Build(BoardGame b, Worker activeWorker, int[] pos)
     {
+            int[] workerpos=activeWorker.GetPosition();
 
+            if(b.IsAPossibleBuild(pos,workerpos))
+            {
+                b.DoBuild(pos);
+                return true;
+            }
+            else
+                return false;
+        }
     }
-
-    /*public boolean CheckMoment(Worker activeWorker, Player CardOwner, String str, int[] newpos, BoardGame b, Message m);
-    public boolean Power(ArrayList<Worker> worker, int[] newpos, BoardGame b);
-
-     */
-}
-
