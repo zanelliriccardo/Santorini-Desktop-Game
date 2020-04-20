@@ -1,6 +1,7 @@
 package it.polimi.ingsw.riccardoemelissa;
 
 import elements.*;
+import javafx.beans.Observable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class GameState {
+    private Player[] players=new Player[1];
     private static final int dimensiongame = 5;
     private Player[] players = new Player[1];
     private Player[] podium;
@@ -19,6 +21,9 @@ public class GameState {
     private String[] gods_name = {"Apollo", "Artemis", "Athena", "Atlas", "Demeter", "Hephaestus", "Minotaur", "Pan", "Prometheus"};
     private int trace = -1;
     private BoardGame b;
+    private Worker activeworker;
+    private String moment;
+=======
 
     public GameState(int numP) {
         Box[][] boxes = new Box[dimensiongame][dimensiongame];
@@ -32,6 +37,7 @@ public class GameState {
         podium = new Player[numP];
         workers = new Worker[numP * 2];
     }
+>>>>>>> 6f5af1e8c0052c181eef676bb9c83124fb426cc2
 
     public int GetPlayerNumber() {
         return players.length;
@@ -196,7 +202,14 @@ public class GameState {
         int[] random_numbers = uniqueRandomNumbers();
 
         for (int i = 0; i < random_numbers.length; i++) {
-            players[i].SetGodCard(GodFactory.getGod(gods_name[random_numbers[i]]));
+            //players[i].SetGodCard(GodFactory.getGod(gods_name[random_numbers[i]]));
+        }
+    }
+
+    public void GodFactory (String[] gods) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        for (int i = 0; i< gods.length; i++)
+        {
+            players[i].SetGodCard((God)Class.forName(gods[i]).newInstance());
         }
     }
 
@@ -212,6 +225,11 @@ public class GameState {
         while(players[trace]==null)
             NextTurn();
         return players[trace].GetNickname();
+    }
+
+    public Worker GetActiveWorker()
+    {
+        return activeworker;
     }
 
     public boolean SetInitialWorkerPosition(int getIndexPlayer, int[] pos1, int[] pos2)
@@ -232,6 +250,7 @@ public class GameState {
     public boolean DoMove(int[] newpos,Worker activeWorker)
     {
         int[] oldpos=activeWorker.GetPosition();
+
         if(b.IsAPossibleMove(newpos,oldpos))
         {
             activeWorker.SetPosition(newpos);
@@ -241,10 +260,10 @@ public class GameState {
         }
         else if(!b.GetStateBox(newpos))
         {
-            ArrayList<Worker> worker_list=new ArrayList<Worker>();
-            worker_list.add(activeWorker);
-            worker_list.add(GetOccupant(newpos));
-            activeWorker.GetProprietary().GetGodCard().Power(worker_list,newpos,b);
+            if(activeWorker.GetProprietary().GetGodCard().CheckMoment(activeWorker,activeWorker.GetProprietary(),"move",newpos,b, null))
+                for(int i=0;i<players.length;i++)
+                    if(players[i].GetNickname().compareTo(GetActivePlayer())!=0)
+                        //if(players[i].GetGodCard().CheckMoment(worker_list,newpos,b))
             return true;
         }
         else
@@ -269,7 +288,7 @@ public class GameState {
             return false;
     }
 
-    public void GetBoard()
+    public void GetOutputBoard()
     {
         String[] numbers = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
         for (int i = 0 ; i <= dimensiongame ; i++){
@@ -323,6 +342,8 @@ public class GameState {
             players[i]=players[i+1];
         }
         players[i]=null;
+
+        NextTurn();
 
         if(players[1]==null)
             return true;
@@ -411,4 +432,33 @@ public class GameState {
         return possiblemoves;
     }
 
+    public BoardGame GetBoard()
+    {
+        return b;
+    }
+
+    public void SetActiveWorker(Worker worker)
+    {
+        activeworker=worker;
+    }
+
+    public void ChangeMoment(String str)
+    {
+        moment=str;
+    }
+
+    public void setNumplayer(int numplayer)
+    {
+        Box[][] boxes=new Box[5][5];
+        for(int i = 0; i < boxes.length; i++) {
+            for (int j = 0; j < boxes.length; j++)
+                boxes[i][j] = new Box(true, 0);
+        }
+
+        b=new BoardGame(boxes);
+
+        players = new Player[numplayer];
+        podium = new Player[numplayer];
+        workers = new Worker[numplayer*2];
+    }
 }

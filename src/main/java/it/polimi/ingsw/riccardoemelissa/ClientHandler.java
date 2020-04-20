@@ -5,48 +5,67 @@ import elements.Worker;
 
 import javax.naming.NoInitialContextException;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Scanner;
 
-public class ClientHandler implements Runnable {
-    private Socket socket;
+public class ClientHandler implements Runnable,Observer {
     private String nickname;
     private Message m;
-    //private Move move=new Move();
-    public ClientHandler(Socket socket) {
-        this.socket = socket;
+    private GameState game;
+    private ObjectOutputStream oos;
+
+    public ClientHandler(Socket socket) throws IOException {
+
+        m=new Message(socket);
+        oos=new ObjectOutputStream(socket.getOutputStream());
     }
 
     public void run() {
         try {
-            Scanner in = new Scanner(socket.getInputStream());
-            PrintWriter out = new PrintWriter(socket.getOutputStream());
-            String str;
-            m=new Message(in,out);
-            nickname=ChooseNickname(in,out);
-            m.Waiting(out);
+            if(m==null)
+            {
+                return;
+            }
 
+            nickname=ChooseNickname(m);
+            m.OutMessage("Waiting for other players...");
+            GameState game=new GameState();
             while (true)
             {
                 try {
                     wait(500);
                 }
                 catch (InterruptedException i) {
-                    if (nickname.compareTo(App.g.GetActivePlayer())==0) {
+                    if (nickname.compareTo(game.GetActivePlayer())==0) {
                         {
                             int[] pos1;
                             int[] pos2;
 
-                            m.InitialPositionFirstW(out);
+                            m.OutMessage("Choose where position first worker");
                             pos1=m.GetInputPosition();
-                            m.InitialPositionSecondW(out);
+
+                            if(!game.GetBoard().GetStateBox(pos1))//fare metodo
+                            {
+                                m.OutMessage("Posizione worker n°1 già occupata");
+                                continue;
+                            }
+
+                            m.OutMessage("Choose where position second worker");
                             pos2=m.GetInputPosition();
 
-                            if(!App.g.SetInitialWorkerPosition(App.g.GetIndexPlayer(nickname), pos1, pos2))//posizioni già prese da dire in out
+                            if(!game.GetBoard().GetStateBox(pos2))
+                            {
+                                m.OutMessage("Posizione worker n°2 già occupata");
+                                continue;
+                            }
+                            if(!game.SetInitialWorkerPosition(game.GetIndexPlayer(nickname), pos1, pos2))
                                 continue;;
                             break;
                         }
@@ -54,13 +73,9 @@ public class ClientHandler implements Runnable {
                 }
             }
 
-            App.g.NextTurn();
+            game.NextTurn();
 
-            m.Waiting(out);
-            if(App.g.CheckPower("move"))
-            {
-
-            }
+            m.OutMessage("Waiting for your turn...");
 
             while(true) {
                 try
@@ -68,42 +83,43 @@ public class ClientHandler implements Runnable {
                     wait(500);
                 }
                 catch (Exception e) {
-                    if (nickname.compareTo(App.g.GetActivePlayer())==0) {
+                    if (nickname.compareTo(game.GetActivePlayer())==0) {
                         Worker activeWorker = null;
                         int[] pos=new int[2];
 
-                        ArrayList<int[][]> possiblemovesfirstw=App.g.PossibleMoves( App.g.GetIndexPlayer(nickname)*2);//intervallo boardgame da controllare
-                        ArrayList<int[][]> possiblemovessecondw=App.g.PossibleMoves( App.g.GetIndexPlayer(nickname)*2+1);
+                        //ArrayList<int[][]> possiblemovesfirstw=App.g.PossibleMoves( App.g.GetIndexPlayer(nickname)*2);//intervallo boardgame da controllare
+                        //ArrayList<int[][]> possiblemovessecondw=App.g.PossibleMoves( App.g.GetIndexPlayer(nickname)*2+1);
 
-                        if(possiblemovesfirstw==null&&possiblemovessecondw==null)//se non mossa possibile --> SCONFITTA
+                        /*if(possiblemovesfirstw==null&&possiblemovessecondw==null)//se non mossa possibile --> SCONFITTA
                         {
                             App.g.Lose(nickname);
                             App.g.NextTurn();
                             break;
-                        }
+                        }*/
 
-                        App.g.GetBoard();
-                        m.YourTurn(out);
+                        game.GetBoard();
+                        m.OutMessage("Your turn!");
+                        game.ChangeMoment("move");
 
                         while (true) {
-                            m.WhichWorker(out);
-                            str = in.nextLine();
-                            try {
-                                int n = Integer.parseInt(str);
-                                if (n != 1 && n != 2)
-                                    throw new Exception();
-                                activeWorker = App.g.GetWorkerToMove(nickname, n-1);
-                            } catch (Exception ex) {
-                                out.println("Input error, choose 1 or 2 \n");
-                                out.flush();
-                                break;
+                            m.OutMessage("Which worker do you want to move?");
+                            int num_worker=m.WhichWorker();
+                            if(num_worker==0)
+                            {
+                                m.OutMessage("Error, please retry");
+                                continue;
                             }
+                            activeWorker = game.GetWorkerToMove(nickname, n-1);
+                            App.g.SetActiveWorker(activeWorker);
                         }
+
+
 
                         while (true) {
                             m.WhereMove(/*out*/);
 
                             pos=m.GetInputPosition();
+
 
                             if(App.g.DoMove(pos,activeWorker))
                             {
@@ -113,14 +129,12 @@ public class ClientHandler implements Runnable {
                             m.Failure(out);
                         }
 
-                        if(App.g.Win(activeWorker.GetPosition()))
+                        if(App.g.GetActiveWorker().GetProprietary().GetGodCard().CheckMoment(pos,App.g)||App.g.Win(activeWorker.GetPosition()))
                         {
                             App.g.AddWinner(activeWorker.GetProprietary());
                             m.Winner(out);
-                            App.g.NextTurn();
                             break;
                         }
-
 
 
                         //build
@@ -156,12 +170,12 @@ public class ClientHandler implements Runnable {
         catch (IOException e) {System.err.println(e.getMessage());}
     }
 
-    public String ChooseNickname(Scanner in, PrintWriter out)
+    public String ChooseNickname(Message m)
     {
         String str;
         while(true) {
-            m.EnterNickname(out);
-            str = in.nextLine();
+            m.OutMessage("Enter nickname: ");
+            str = m.inputString();
             if(App.g.CheckNickname(str))
                 break;
             m.NicknameNotAvailable(out);
@@ -170,4 +184,17 @@ public class ClientHandler implements Runnable {
         return str;
     }
 
+    @Override
+    public void update(Observable o, Object arg)
+    {
+        game = (GameState) arg;
+        while (true) {
+            try {
+                oos.writeObject(game.GetBoard());
+                break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -10,48 +10,26 @@ import java.util.concurrent.Executors;
 
 public class MultiEchoServer {
     private int port;
-    protected static int numplayer=0;
+    private static int numplayer=0;
+    private static GameState game;
+
     public MultiEchoServer(int port)
     {
         this.port = port;
     }
 
-    public void startServer2() { //non usare questo, l altro è meglio
-        ExecutorService executor = Executors.newCachedThreadPool();
-        ServerSocket serverSocket;
-        try {
-            serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            System.err.println(e.getMessage()); // porta non disponibile
-            return;
-        }
-        System.out.println("Server ready");
-        while (true) {
-            try {
-                Socket socket = serverSocket.accept();
-                executor.submit(new ClientHandler(socket));
-            } catch (IOException e) {
-                break; // entrerei qui se serverSocket venisse chiuso
-            }
-        }
-        executor.shutdown();
-        try {
-            serverSocket.close();
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            return;
-        }
-    }
-
     public void startServer() {
         ServerSocket serverSocket;
         ExecutorService executor=null;
+        Controller game_controller=new Controller();
+
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             System.err.println(e.getMessage()); // porta non disponibile
             return;
         }
+
         System.out.println("Server ready");
 
         while (true) {
@@ -70,6 +48,8 @@ public class MultiEchoServer {
                 in.close();
                 out.close();
 
+
+
                 if (mod == "1") {
                     numplayer=2;
                     executor = Executors.newFixedThreadPool(numplayer);
@@ -81,20 +61,27 @@ public class MultiEchoServer {
                 else
                     continue;
 
-                executor.submit(new ClientHandler(socket));
+                game_controller.initializeGame(numplayer);
+                ClientHandler c=new ClientHandler(socket);
+                game_controller.addObserver(c);
+                executor.submit(c);
 
                 for(int i=1;i<numplayer;i++)
                     try {
                         socket = serverSocket.accept();
-                        executor.submit(new ClientHandler(socket));
+                        ClientHandler c2=new ClientHandler(socket);
+                        game_controller.addObserver(c2);
+                        executor.submit(c2);
                     }
                     catch(IOException e) {
                         break; // entrerei qui se serverSocket venisse chiuso
                     }
 
-                while (App.g.GameReady()) { }
 
-                App.g.NextTurn();
+
+                while (!game.GameReady()) { }
+
+                game.NextTurn();
                 notifyAll();
                 if(true) //inserire controllo su fine partita
                     break;

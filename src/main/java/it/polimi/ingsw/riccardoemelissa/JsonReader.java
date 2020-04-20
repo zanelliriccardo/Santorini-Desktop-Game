@@ -38,7 +38,7 @@ public class JsonReader {
         String[] gods = new String[n];
 
         try {
-            obj = (JSONObject) parser.parse((new FileReader("/Users/Utente/Desktop/PROGETTO INGSW/progettoingsw/src/main/java/Resource/GodList.json")));
+            obj = (JSONObject) parser.parse((new FileReader("@../Resource/GodList.json")));
         } catch (FileNotFoundException e)
         {
             System.out.println(("File Not Found Exception!\n"));
