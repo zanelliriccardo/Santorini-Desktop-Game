@@ -302,7 +302,7 @@ public class GameState {
     }
 
 
-    public ArrayList PossibleMoves( int index)
+    public ArrayList PossibleMoves(int index)
     {
         ArrayList<int[]> possiblemoves=new ArrayList<int []>();
 
@@ -324,9 +324,6 @@ public class GameState {
                     continue;
 
             }
-
-
-
         return possiblemoves;
     }
 
