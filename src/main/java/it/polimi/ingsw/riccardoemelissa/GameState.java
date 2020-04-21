@@ -19,7 +19,7 @@ public class GameState {
     private static BoardGame b;
     private static Worker activeworker;
 
-    public GameState(int numP) {
+    /*public GameState(int numP) {
         Box[][] boxes = new Box[5][5];
         for (int i = 0; i < boxes.length; i++) {
             for (int j = 0; j < boxes.length; j++)
@@ -30,7 +30,7 @@ public class GameState {
         players = new Player[numP];
         podium = new Player[numP];
         workers = new Worker[numP * 2];
-    }
+    }*/
 
 
     public int GetPlayerNumber()
@@ -136,11 +136,11 @@ public class GameState {
        else trace = 0;
     }
 
-    public String GetActivePlayer()
+    public Player GetActivePlayer()
     {
         while(players[trace]==null)
             NextTurn();
-        return players[trace].GetNickname();
+        return players[trace];
     }
 
     public Worker GetActiveWorker()

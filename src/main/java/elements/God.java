@@ -1,9 +1,12 @@
 package elements;
 
+import it.polimi.ingsw.riccardoemelissa.GameState;
+
 import java.util.ArrayList;
 
 public abstract class God {
 
+    private boolean opponent_turn;
     //worker_list: 1 -> ACTIVE_WORKER, 2-> WORKER_AVV
     public boolean Move(BoardGame b, ArrayList<Worker> worker_list, int[] newpos, Player[] players)
     {
@@ -29,5 +32,22 @@ public abstract class God {
             }
             else
                 return false;
-        }
+
     }
+
+    public ArrayList<God> checkOpponentCondition()
+    {
+        ArrayList<God> list=new ArrayList<God>();
+        GameState game = new GameState();
+        for (int i =0;i<game.GetPlayerNumber();i++)
+            if(game.GetPlayers()[i].GetNickname()!=game.GetActivePlayer().GetNickname())
+                if(game.GetActivePlayer().GetGodCard().GetOpponentTurn())
+                    list.add(game.GetActivePlayer().GetGodCard());
+
+        return list;
+    }
+
+    public boolean GetOpponentTurn() {
+         return opponent_turn;
+    }
+}
