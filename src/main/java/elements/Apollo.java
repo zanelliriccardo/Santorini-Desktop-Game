@@ -3,7 +3,6 @@ package elements;
 
 import it.polimi.ingsw.riccardoemelissa.App;
 import it.polimi.ingsw.riccardoemelissa.Message;
-import it.polimi.ingsw.riccardoemelissa.Turn;
 
 import javax.sound.midi.VoiceStatus;
 import java.util.ArrayList;
@@ -11,11 +10,11 @@ import java.util.ArrayList;
 public class Apollo extends God {
     private boolean opponent_turn = false;
 
-    public Apollo (){}
-
 
     @Override
-    public boolean Move() {
+    public boolean Move(BoardGame b, ArrayList<Worker> worker_list, int[] newpos, Player[] players) {
+
+        return true;
 
     }
 }

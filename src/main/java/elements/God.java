@@ -1,28 +1,26 @@
 package elements;
 
+import java.util.ArrayList;
+
 public abstract class God {
 
-    public void Turn()
+    //worker_list: 1 -> ACTIVE_WORKER, 2-> WORKER_AVV
+    public boolean Move(BoardGame b, ArrayList<Worker> worker_list, int[] newpos, Player[] players)
     {
-
-    }
-
-    public boolean Move(BoardGame b, Worker activeWorker, int[] newpos)
-    {
-            int[] oldpos=activeWorker.GetPosition();
+            int[] oldpos=worker_list.get(0).GetPosition();
             if(b.IsAPossibleMove(newpos,oldpos))
             {
-                activeWorker.SetPosition(newpos);
-                b.ChangeState(newpos,activeWorker.GetProprietary().GetColor());
+                worker_list.get(0).SetPosition(newpos);
+                b.ChangeState(newpos,worker_list.get(0).GetProprietary().GetColor());
                 b.ChangeState(oldpos);
                 return true;
             }
         return false;
     }
 
-    public boolean Build(BoardGame b, Worker activeWorker, int[] pos)
+    public boolean Build(BoardGame b, ArrayList<Worker> worker_list, int[] pos)
     {
-            int[] workerpos=activeWorker.GetPosition();
+            int[] workerpos = worker_list.get(0).GetPosition();
 
             if(b.IsAPossibleBuild(pos,workerpos))
             {
