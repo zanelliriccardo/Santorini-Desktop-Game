@@ -6,6 +6,7 @@ public class Box {
     private boolean state;
     private int level;
     private String color;
+    private Worker occupant;
 
     public Box(boolean b, int i) {
         state=b;
@@ -44,4 +45,12 @@ public class Box {
         return color;
     }
 
+    public Worker GetOccupant() {
+        return occupant;
     }
+
+    public void SetOccupant(Worker worker) {
+        occupant= worker;
+        state=false;
+    }
+}

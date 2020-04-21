@@ -19,19 +19,6 @@ public class App
     public static void main( String[] args ) throws IOException {
         MultiEchoServer echoServer = new MultiEchoServer(1337);
         echoServer.startServer();
-
-        /*while(true)
-        {
-            Player[] p=g.GetPlayers();
-            if(p[g.GetPlayerNumber()]==null)
-                continue;
-
-            break;
-        }
-        g.SetTurnOrder();
-        g.SetProprietaryWorker();
-        g.GodsChosen();
-        */
     }
 }
 

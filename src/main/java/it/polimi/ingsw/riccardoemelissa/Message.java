@@ -36,22 +36,18 @@ public class Message {
     {
         int[] pos=new int[2];
         while (true) {
-            PositioningX(out);
             try {
                 pos[0] = Integer.parseInt(in.nextLine());
             } catch (Exception e) {
-                Verification(out);
                 continue;
             }
             break;
         }
 
         while (true) {
-            PositioningY(out);
             try {
                 pos[1] = Integer.parseInt(in.nextLine());
             } catch (Exception e) {
-                Verification(out);
                 continue;
             }
             break;

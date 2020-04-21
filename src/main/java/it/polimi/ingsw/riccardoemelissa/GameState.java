@@ -12,21 +12,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class GameState {
-    private Player[] players=new Player[1];
-    private static final int dimensiongame = 5;
-    private Player[] players = new Player[1];
-    private Player[] podium;
-    private Worker[] workers;
-    private int count = 0;
-    private String[] gods_name = {"Apollo", "Artemis", "Athena", "Atlas", "Demeter", "Hephaestus", "Minotaur", "Pan", "Prometheus"};
-    private int trace = -1;
-    private BoardGame b;
-    private Worker activeworker;
-    private String moment;
-=======
+    private static Player[] players=new Player[1];
+    private static Player[] podium;
+    private static Worker[] workers;
+    private static int trace = -1;
+    private static BoardGame b;
+    private static Worker activeworker;
 
     public GameState(int numP) {
-        Box[][] boxes = new Box[dimensiongame][dimensiongame];
+        Box[][] boxes = new Box[5][5];
         for (int i = 0; i < boxes.length; i++) {
             for (int j = 0; j < boxes.length; j++)
                 boxes[i][j] = new Box(true, 0);
@@ -37,17 +31,20 @@ public class GameState {
         podium = new Player[numP];
         workers = new Worker[numP * 2];
     }
->>>>>>> 6f5af1e8c0052c181eef676bb9c83124fb426cc2
 
-    public int GetPlayerNumber() {
+
+    public int GetPlayerNumber()
+    {
         return players.length;
     }
 
-    public Player[] GetPlayers() {
+    public Player[] GetPlayers()
+    {
         return players;
     }
 
-    public int GetIndexPlayer(String nick) {
+    public int GetIndexPlayer(String nick)
+    {
         for (int i = 0; i < players.length; i++)
             if (players[i].GetNickname() == nick)
                 return i;
@@ -55,86 +52,31 @@ public class GameState {
         return -1;
     }
 
-    public boolean GameReady() {
+    public boolean GameReady()
+    {
         for (int i = 0; i < players.length; i++)
             if (players[i] == null)
                 return false;
-
         return true;
     }
 
-    public Worker GetWorkerToMove(String nick, int n) {
+    public Worker GetWorkerToMove(String nick, int n)
+    {
         return workers[GetIndexPlayer(nick) + n];
     }
 
-    public void MemorizeNickname(String str) {
+    public void MemorizeNickname(String str)
+    {
         for (int i = 0; i < players.length; i++)
             if (players[i] == null)
                 players[i] = new Player(str);
     }
 
-    //public void NewPlayer()
-    {
-        /*if (count == 0) {
-            System.out.println("Enter the number of players");
-            InputStreamReader reader = new InputStreamReader(System.in);
-            BufferedReader myInput = new BufferedReader(reader);
-            int n = 0;
-            try {
-                n = Integer.parseInt(myInput.readLine());
-            } catch (IOException e) {
-                System.out.println("An error has occurred: " + e);
-                System.exit(-1);
-            }
-            System.out.println("You decided to play with " + n + " players ");
-
-            players = new Player[n];
-            workers = new Worker[2 * n];
-        }
-        */
-
-       /* String str = ChooseNickname(in, out);
-
-        if (CheckNickname(str)) {
-            System.out.println("Your nickname is : " + str);
-
-            Player p = new Player(str);
-            players[count] = p;
-            count++;
-        } else {
-            System.out.println("This nickname is already taken");
-            str = ChooseNickname(in, out);
-            while (!CheckNickname(str)) {
-                System.out.println("This nickname is already taken");
-                str = ChooseNickname(in, out);
-            }
-        }*/
-    }
-
     public boolean CheckNickname(String nickname) {
-        for (int i = 0; i < count; i++) {
-            if (nickname.compareTo(players[i].GetNickname()) == 0)
-                return false;
-        }
+        //da rifare evitando count
+
         return true;
     }
-
-    /*public void SetTurnOrder() {
-        Random r = new Random();
-        int first = r.nextInt(players.length);
-
-        Player temp = players[0];
-        players[0] = players[first];
-        players[first] = temp;
-
-        if (players.length == 3) {
-            int second = r.nextInt(1) + 1;
-            temp = players[1];
-            players[1] = players[second];
-            players[second] = temp;
-        }
-    }
-     */
 
     public void SetProprietaryWorker() {
 
@@ -154,36 +96,9 @@ public class GameState {
         players = array.toArray(new Player[]{});
     }
 
-    //god cards are chosen in a random way. The server draws three numbers between 0 and 8 which correspond to the nine god's names
-    /*public int[] RandomNumbers()
-    {
-        Random r = new Random(System.currentTimeMillis());
-
-        int [] random_numbers = new int[players.length];
-
-        for (int i = 0; i < players.length; i++)
-        {
-            random_numbers[i]= r.nextInt(9);
-        }
-        return random_numbers;
-    }
-    */
-
-    /*public boolean CheckRandomNumbers (int[] a)
-    {
-        for (int i = 0; i<players.length; i++)
-        {
-            for(int j = i+1; j< players.length; j++)
-                if (a[i]==a[j])
-                    return false;
-
-        }
-        return true;
-    }*/
-
     //generazione di diversi numeri casuali in numero uguale a quello dei giocatori
     //e da un range uguale al numero di carte
-    public int[] uniqueRandomNumbers() {
+    /*public int[] uniqueRandomNumbers() {
         ArrayList<Integer> list = new ArrayList<Integer>();
 
         int[] random = new int[players.length];
@@ -204,12 +119,13 @@ public class GameState {
         for (int i = 0; i < random_numbers.length; i++) {
             //players[i].SetGodCard(GodFactory.getGod(gods_name[random_numbers[i]]));
         }
-    }
+    } */
 
-    public void GodFactory (String[] gods) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public void GodFactory (String[] gods) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         for (int i = 0; i< gods.length; i++)
         {
-            players[i].SetGodCard((God)Class.forName(gods[i]).newInstance());
+            //players[i].SetGodCard((God)Class.forName(gods[i]).newInstance());
+            players[i].SetGodCard((God)Class.forName(gods[i]).getDeclaredConstructor().newInstance());
         }
     }
 
@@ -238,12 +154,11 @@ public class GameState {
             return false;
 
         String color="\u001B[3"+(getIndexPlayer+1)+"m";
-        workers[getIndexPlayer].SetColor(color);
-        workers[getIndexPlayer+1].SetColor(color);
+
+        b.setOccupant(pos1,workers[getIndexPlayer]);
+        b.setOccupant(pos1,workers[getIndexPlayer+1]);
         workers[getIndexPlayer].SetPosition(pos1[0],pos1[1]);
         workers[getIndexPlayer+1].SetPosition(pos2[0],pos2[1]);
-        b.ChangeState(pos1,color);
-        b.ChangeState(pos2,color);
         return true;
     }
 
@@ -258,16 +173,8 @@ public class GameState {
             b.ChangeState(oldpos);
             return true;
         }
-        else if(!b.GetStateBox(newpos))
-        {
-            if(activeWorker.GetProprietary().GetGodCard().CheckMoment(activeWorker,activeWorker.GetProprietary(),"move",newpos,b, null))
-                for(int i=0;i<players.length;i++)
-                    if(players[i].GetNickname().compareTo(GetActivePlayer())!=0)
-                        //if(players[i].GetGodCard().CheckMoment(worker_list,newpos,b))
-            return true;
-        }
-        else
-            return false;
+
+        return false;
     }
 
     public boolean IsAPossibleMove(int[] newpos,int[] oldpos)
@@ -291,8 +198,8 @@ public class GameState {
     public void GetOutputBoard()
     {
         String[] numbers = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-        for (int i = 0 ; i <= dimensiongame ; i++){
-            for (int j = 0 ; j <= dimensiongame ; j++){
+        for (int i = 0 ; i <= 5 ; i++){
+            for (int j = 0 ; j <= 5 ; j++){
 
                 if (i == 0)
                 {
@@ -391,10 +298,7 @@ public class GameState {
 
     public Worker GetOccupant(int[] pos)
     {
-        for(int i=0;i<workers.length;i++)
-            if(workers[i].GetPosition()[0]==pos[0]&&workers[i].GetPosition()[1]==pos[1])
-                return workers[i];
-        return null;
+        return b.GetOccupant(pos);
     }
 
 
@@ -419,12 +323,6 @@ public class GameState {
                 if(y>4||y<0)
                     continue;
 
-                if(worker_list.get(0).GetProprietary().GetGodCard().CheckMoment(worker_list.get(0),worker_list.get(0).GetProprietary(),"move",new int[]{x,y},b, null))
-                    for(int i=0;i<players.length;i++)
-                        if(players[i].GetNickname().compareTo(GetActivePlayer())!=0)
-                            if(players[i].GetGodCard().Power(worker_list,new int[]{x,y},b))
-                                possiblemoves.add(new int[]{x,y});
-
             }
 
 
@@ -440,11 +338,6 @@ public class GameState {
     public void SetActiveWorker(Worker worker)
     {
         activeworker=worker;
-    }
-
-    public void ChangeMoment(String str)
-    {
-        moment=str;
     }
 
     public void setNumplayer(int numplayer)

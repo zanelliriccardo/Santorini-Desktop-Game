@@ -21,7 +21,6 @@ public class MultiEchoServer {
     public void startServer() {
         ServerSocket serverSocket;
         ExecutorService executor=null;
-        Controller game_controller=new Controller();
 
         try {
             serverSocket = new ServerSocket(port);
@@ -48,8 +47,6 @@ public class MultiEchoServer {
                 in.close();
                 out.close();
 
-
-
                 if (mod == "1") {
                     numplayer=2;
                     executor = Executors.newFixedThreadPool(numplayer);
@@ -61,16 +58,13 @@ public class MultiEchoServer {
                 else
                     continue;
 
-                game_controller.initializeGame(numplayer);
                 ClientHandler c=new ClientHandler(socket);
-                game_controller.addObserver(c);
                 executor.submit(c);
 
                 for(int i=1;i<numplayer;i++)
                     try {
                         socket = serverSocket.accept();
                         ClientHandler c2=new ClientHandler(socket);
-                        game_controller.addObserver(c2);
                         executor.submit(c2);
                     }
                     catch(IOException e) {

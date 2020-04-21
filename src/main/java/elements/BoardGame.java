@@ -81,5 +81,15 @@ public class BoardGame {
             }
         return true;
     }
+
+    public Worker GetOccupant(int[] pos)
+    {
+        return Board[pos[0]][pos[1]].GetOccupant();
+    }
+
+    public void setOccupant(int[] pos, Worker worker)
+    {
+        Board[pos[0]][pos[1]].SetOccupant(worker);
+    }
 }
 

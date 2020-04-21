@@ -1,15 +1,19 @@
 package client;
 
 import elements.BoardGame;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
-public class Listener extends Thread  {
+public class ListenerBoard extends Thread  {
     ObjectInputStream in;
 
-    public Listener(Socket s) throws IOException
+    public ListenerBoard(Socket s) throws IOException
     {
         in=new ObjectInputStream(s.getInputStream());
     }
@@ -36,6 +40,13 @@ public class Listener extends Thread  {
         }
     }
 
+    @FXML
+    public void selectedCell(MouseEvent mouseEvent)
+    {
+        Node source=(Node)mouseEvent.getSource();
+        int colIndex=(GridPane.getColumnIndex(source))==null ? 0:(GridPane.getColumnIndex(source)) ;
+        int rowIndex=(GridPane.getRowIndex(source))==null ? 0:(GridPane.getRowIndex(source));
 
+    }
 
 }

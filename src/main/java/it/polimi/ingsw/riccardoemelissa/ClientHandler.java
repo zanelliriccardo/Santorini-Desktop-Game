@@ -18,8 +18,8 @@ import java.util.Scanner;
 public class ClientHandler implements Runnable,Observer {
     private String nickname;
     private Message m;
-    private GameState game;
     private ObjectOutputStream oos;
+    private GameState game;
 
     public ClientHandler(Socket socket) throws IOException {
 
@@ -36,7 +36,7 @@ public class ClientHandler implements Runnable,Observer {
 
             nickname=ChooseNickname(m);
             m.OutMessage("Waiting for other players...");
-            GameState game=new GameState();
+
             while (true)
             {
                 try {
@@ -99,7 +99,6 @@ public class ClientHandler implements Runnable,Observer {
 
                         game.GetBoard();
                         m.OutMessage("Your turn!");
-                        game.ChangeMoment("move");
 
                         while (true) {
                             m.OutMessage("Which worker do you want to move?");
@@ -110,32 +109,19 @@ public class ClientHandler implements Runnable,Observer {
                                 continue;
                             }
                             activeWorker = game.GetWorkerToMove(nickname, n-1);
-                            App.g.SetActiveWorker(activeWorker);
+                            game.SetActiveWorker(activeWorker);
                         }
 
 
 
                         while (true) {
-                            m.WhereMove(/*out*/);
-
                             pos=m.GetInputPosition();
 
-
-                            if(App.g.DoMove(pos,activeWorker))
+                            if(game.DoMove(pos,activeWorker))
                             {
-                                m.Success(out);
                                 break;
                             }
-                            m.Failure(out);
                         }
-
-                        if(App.g.GetActiveWorker().GetProprietary().GetGodCard().CheckMoment(pos,App.g)||App.g.Win(activeWorker.GetPosition()))
-                        {
-                            App.g.AddWinner(activeWorker.GetProprietary());
-                            m.Winner(out);
-                            break;
-                        }
-
 
                         //build
 
