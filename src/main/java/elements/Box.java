@@ -53,4 +53,9 @@ public class Box {
         occupant= worker;
         state=false;
     }
+
+    public void SetDome()
+    {
+        level=4;
+    }
 }

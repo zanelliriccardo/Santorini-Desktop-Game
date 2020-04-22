@@ -91,5 +91,10 @@ public class BoardGame {
     {
         Board[pos[0]][pos[1]].SetOccupant(worker);
     }
+
+    public void BuildDome(int[] pos)
+    {
+        Board[pos[0]][pos[1]].SetDome();
+    }
 }
 

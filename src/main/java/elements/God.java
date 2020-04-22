@@ -38,9 +38,9 @@ public abstract class God {
         b.ChangeState(worker_list.get(0).GetPosition());
     }
 
-    public boolean Build(BoardGame b, ArrayList<Worker> worker_list, int[] pos)
+    public boolean Build(BoardGame b, Worker activeWorker, int[] pos)
     {
-            int[] workerpos = worker_list.get(0).GetPosition();
+            int[] workerpos = activeWorker.GetPosition();
 
             if(b.IsAPossibleBuild(pos,workerpos))
             {

@@ -43,7 +43,7 @@ public class ClientHandler implements Runnable,Observer {
                     wait(500);
                 }
                 catch (InterruptedException i) {
-                    if (nickname.compareTo(game.GetActivePlayer())==0) {
+                    if (nickname.compareTo(game.GetActivePlayer().GetNickname())==0) {
                         {
                             int[] pos1;
                             int[] pos2;
