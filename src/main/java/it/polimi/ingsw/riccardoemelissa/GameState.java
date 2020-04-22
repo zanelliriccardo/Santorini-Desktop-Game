@@ -32,7 +32,10 @@ public class GameState {
         workers = new Worker[numP * 2];
     }*/
 
-
+    /**
+     *
+     * @return
+     */
     public int GetPlayerNumber()
     {
         return players.length;

@@ -7,9 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.scene.control.*;
 
-import java.awt.*;
 import java.awt.TextField;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,7 +22,7 @@ public class Client extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        root = FXMLLoader.load(getClass().getResource("menu.fxml"));
+        root = FXMLLoader.load(getClass().getResource("filefxml/menu.fxml"));
         primaryStage.setTitle("Santorini");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();

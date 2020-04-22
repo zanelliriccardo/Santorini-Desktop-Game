@@ -44,8 +44,8 @@ public class ListenerBoard extends Thread  {
     public void selectedCell(MouseEvent mouseEvent)
     {
         Node source=(Node)mouseEvent.getSource();
-        int colIndex=(GridPane.getColumnIndex(source))==null ? 0:(GridPane.getColumnIndex(source)) ;
         int rowIndex=(GridPane.getRowIndex(source))==null ? 0:(GridPane.getRowIndex(source));
+        int colIndex=(GridPane.getColumnIndex(source))==null ? 0:(GridPane.getColumnIndex(source)) ;
 
     }
 

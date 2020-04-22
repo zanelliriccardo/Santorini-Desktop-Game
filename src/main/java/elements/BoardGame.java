@@ -1,6 +1,9 @@
 package elements;
 
-public class BoardGame {
+import java.io.Serializable;
+import java.util.Observable;
+
+public class BoardGame extends Observable implements Serializable {
     private Box[][] Board;
 
     public BoardGame(Box[][] boxes){

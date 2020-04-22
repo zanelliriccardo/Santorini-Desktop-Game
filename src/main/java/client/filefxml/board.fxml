@@ -12,7 +12,7 @@
    <children>
       <ImageView fx:id="imageBoard" fitHeight="660.0" fitWidth="660.0">
          <image>
-            <Image url="@../Resources/Cliff_v001.png" />
+            <Image url="@../../Resources/Cliff_v001.png" />
          </image>
       </ImageView>
       <GridPane fx:id="myBoard" hgap="15.0" layoutX="25.0" layoutY="25.0" onMouseClicked="#selectedCell" prefHeight="610.0" prefWidth="615.0" vgap="15.0">
