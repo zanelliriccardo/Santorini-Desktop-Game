@@ -307,7 +307,7 @@ public class GameState {
 
     public ArrayList PossibleMoves(int index)
     {
-        ArrayList<int[]> possiblemoves=new ArrayList<int []>();
+        ArrayList<int[]> possiblemoves = new ArrayList<int []>();
 
         ArrayList<Worker> worker_list=new ArrayList<Worker>();
         worker_list.add(workers[index]);

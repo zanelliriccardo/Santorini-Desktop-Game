@@ -6,10 +6,12 @@ public class Atlas extends God {
     @Override
     public boolean Build(BoardGame b, Worker activeWorker, int[] pos)
     {
+        if(CheckAdjacentBox(pos, activeWorker.GetPosition())) {
 
-        if(/*messagio per la possibilità di costruire cupola*/true&&b.IsAPossibleBuild(pos,activeWorker.GetPosition()))
-        {
-            b.BuildDome(pos);
+            if (/*messagio per la possibilità di costruire cupola*/true && b.IsAPossibleBuild(pos, activeWorker.GetPosition())) {
+                b.BuildDome(pos);
+                return true;
+            }
         }
         return false;
     }

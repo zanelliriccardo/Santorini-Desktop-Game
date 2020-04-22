@@ -64,13 +64,9 @@ public class Athena extends God {
      */
         public boolean Action ( int[] new_pos, int[] old_pos, BoardGame b)
         {
-            boolean action_allowed;
-
             if ((b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)) < 1)
                 return true;
             return false;
-
-
         }
 
     }
