@@ -48,13 +48,13 @@ public abstract class God {
     }
 
 
-    public boolean Move(BoardGame b, ArrayList<Worker> worker_list, int[] newpos)
+    public boolean Move(BoardGame b, Worker active_worker, int[] newpos)
     {
         ArrayList<God> opponents_action = checkOpponentCondition();
-        int[] oldpos = worker_list.get(0).GetPosition();
+        int[] oldpos = active_worker.GetPosition();
         int n=0;
 
-        if(CheckAdjacentBox(newpos, worker_list.get(0).GetPosition())) {
+        if(CheckAdjacentBox(newpos, active_worker.GetPosition())) {
             for (God g : opponents_action) {
                 if (g.Move(b, worker_list, newpos) && b.IsAPossibleMove(newpos, oldpos)) {
                     n++;
