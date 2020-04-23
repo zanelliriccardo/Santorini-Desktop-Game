@@ -12,7 +12,7 @@ public class MultiEchoServer {
     private int port;
     private static int numplayer=0;
     private static GameState game;
-
+    private ExecutorClientCommand cmd_executor =new ExecutorClientCommand();
     public MultiEchoServer(int port)
     {
         this.port = port;
@@ -60,13 +60,17 @@ public class MultiEchoServer {
 
                 ClientHandler c=new ClientHandler(socket);
                 game.GetBoard().addObserver(c);
+                c.addObserver(cmd_executor);
                 executor.submit(c);
+
+                while (game.GetPlayerNumber()==0);
 
                 for(int i=1;i<numplayer;i++)
                     try {
                         socket = serverSocket.accept();
                         ClientHandler c2=new ClientHandler(socket);
-                        game.GetBoard().addObserver(c);
+                        game.GetBoard().addObserver(c2);
+                        c2.addObserver(cmd_executor);
                         executor.submit(c2);
                     }
                     catch(IOException e) {

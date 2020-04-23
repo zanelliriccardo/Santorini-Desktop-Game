@@ -1,6 +1,8 @@
 package client;
 
 import elements.BoardGame;
+import it.polimi.ingsw.riccardoemelissa.Message;
+import it.polimi.ingsw.riccardoemelissa.MessageToClient;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -9,11 +11,12 @@ import javafx.scene.layout.GridPane;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.Observable;
 
-public class ListenerBoard extends Thread  {
+public class ListenerServer extends Thread {
     ObjectInputStream in;
 
-    public ListenerBoard(Socket s) throws IOException
+    public ListenerServer(Socket s) throws IOException
     {
         in=new ObjectInputStream(s.getInputStream());
     }
@@ -23,11 +26,12 @@ public class ListenerBoard extends Thread  {
 
         while (true)
         {
-            BoardGame b=null;
+            MessageToClient fromServer=null;
+            fromServer.addObserver();
             try {
-                b=(BoardGame) in.readObject();
+                fromServer=(MessageToClient) in.readObject();
 
-                if(b!=null)
+                if(fromServer!=null)
                 {
                     //fare GUIIIIIIIIIIIIIIII
                 }
@@ -38,15 +42,6 @@ public class ListenerBoard extends Thread  {
             }
 
         }
-    }
-
-    @FXML
-    public void selectedCell(MouseEvent mouseEvent)
-    {
-        Node source=(Node)mouseEvent.getSource();
-        int rowIndex=(GridPane.getRowIndex(source))==null ? 0:(GridPane.getRowIndex(source));
-        int colIndex=(GridPane.getColumnIndex(source))==null ? 0:(GridPane.getColumnIndex(source)) ;
-
     }
 
 }

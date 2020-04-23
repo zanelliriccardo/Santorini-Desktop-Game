@@ -1,4 +1,8 @@
-package elements;
+package elements.card;
+
+import elements.BoardGame;
+import elements.God;
+import elements.Worker;
 
 public class Demeter extends God {
     private boolean opponent_turn = false;

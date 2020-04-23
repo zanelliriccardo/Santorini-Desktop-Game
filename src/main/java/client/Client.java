@@ -3,18 +3,22 @@ package client;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.awt.TextField;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Scanner;
 
-public class Client extends Application {
+public class Client extends Application implements Observer {
 
     private static Parent root;
     @FXML
@@ -36,10 +40,10 @@ public class Client extends Application {
         Scanner socketIn = new Scanner(socket.getInputStream());
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
 
-        ListenerBoard listening_boardupdate = new ListenerBoard(socket);
+        ListenerServer listening_boardupdate = new ListenerServer(socket);
         listening_boardupdate.start();
 
-        Controller listen_server=new Controller(socket,root);
+        ControllerBoard listen_server=new ControllerBoard(socket,root);
         listen_server.start();
 
 
@@ -58,5 +62,20 @@ public class Client extends Application {
 
     private void changeScene(String s) throws IOException {
         root= FXMLLoader.load(getClass().getResource(s));
+    }
+
+    @FXML
+    public void selectedCell(MouseEvent mouseEvent)
+    {
+        Node source=(Node)mouseEvent.getSource();
+        int rowIndex=(GridPane.getRowIndex(source))==null ? 0:(GridPane.getRowIndex(source));
+        int colIndex=(GridPane.getColumnIndex(source))==null ? 0:(GridPane.getColumnIndex(source)) ;
+
+    }
+
+    @Override
+    public void update(Observable o, Object arg)
+    {
+
     }
 }

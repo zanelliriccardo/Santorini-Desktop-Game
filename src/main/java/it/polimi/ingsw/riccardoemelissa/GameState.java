@@ -1,7 +1,6 @@
 package it.polimi.ingsw.riccardoemelissa;
 
 import elements.*;
-import javafx.beans.Observable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +12,6 @@ import java.util.*;
 
 public class GameState {
     private static Player[] players=new Player[1];
-    private static Player[] podium;
     private static Worker[] workers;
     private static int trace = -1;
     private static BoardGame b;
@@ -156,8 +154,6 @@ public class GameState {
         if(b.GetStateBox(pos1)||b.GetStateBox(pos2))
             return false;
 
-        String color="\u001B[3"+(getIndexPlayer+1)+"m";
-
         b.setOccupant(pos1,workers[getIndexPlayer]);
         b.setOccupant(pos1,workers[getIndexPlayer+1]);
         workers[getIndexPlayer].SetPosition(pos1[0],pos1[1]);
@@ -198,68 +194,6 @@ public class GameState {
             return false;
     }
 
-    public void GetOutputBoard()
-    {
-        String[] numbers = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-        for (int i = 0 ; i <= 5 ; i++){
-            for (int j = 0 ; j <= 5 ; j++){
-
-                if (i == 0)
-                {
-                    System.out.print(numbers[j]);
-                }
-                else if (j == 0)
-                {
-                    System.out.print(numbers[i]);
-                }
-                else {
-                    if(!b.GetStateBox(i,j))
-                        System.out.println(b.GetColor(i,j)); //colora
-
-                    if(b.GetLevelBox(i,j)==4)
-                        System.out.print("D");
-                    else
-                        System.out.print(b.GetLevelBox(i,j));
-
-                    System.out.println("\u001B[0m"); //resetta il colore --> bianco
-                }
-                System.out.print(" ");
-            }
-            System.out.flush();
-        }
-    }
-
-    public boolean Win(int[] pos)
-    {
-        return b.GetLevelBox(pos)==3;
-    }
-
-    //Se giocatori sono 2 --> FINE
-
-    public boolean AddWinner(Player winner)
-    {
-        int i=0;
-        for(;i<players.length;i++)
-            if(players[i].GetNickname()==winner.GetNickname()) {
-                for (int j = 0; j < podium.length; j++) {
-                    podium[j] = winner;
-                }
-                break;
-            }
-
-        for(;i<players.length-1;i++)
-        {
-            players[i]=players[i+1];
-        }
-        players[i]=null;
-
-        NextTurn();
-
-        if(players[1]==null)
-            return true;
-        return false;
-    }
-
     public boolean HaveAPossibleMove(String nickname)
     {
         if(b.IsABlockedWorker(workers[GetIndexPlayer(nickname)].GetPosition())) {
@@ -267,26 +201,6 @@ public class GameState {
                 return false;
         }
         return true;
-    }
-
-    public boolean Lose(String nickname)
-    {
-        int i=0;
-        for(;i<players.length;i++)
-            if(players[i].GetNickname()==nickname)
-                for (int j=podium.length-1;j>0;j--)
-                    if(podium[j]==null)
-                        podium[j]=players[i];
-
-        for(;i<players.length-1;i++)
-        {
-            players[i]=players[i+1];
-        }
-        players[i]=null;
-
-        if(players[1]==null)
-            return true;
-        return false;
     }
 
     public boolean CheckPower(String str)
@@ -351,7 +265,49 @@ public class GameState {
         b=new BoardGame(boxes);
 
         players = new Player[numplayer];
-        podium = new Player[numplayer];
         workers = new Worker[numplayer*2];
+    }
+
+    public void EndGame()
+    {
+
+    }
+
+    public void SetNumPlayer(int num_player)
+    {
+        Box[][] boxes = new Box[5][5];
+        for (int i = 0; i < boxes.length; i++) {
+            for (int j = 0; j < boxes.length; j++)
+                boxes[i][j] = new Box(true, 0);
+        }
+        b = new BoardGame(boxes);
+
+        players = new Player[num_player];
+        workers = new Worker[num_player * 2];
+    }
+
+    public void NewPlayer(String str)
+    {
+        for(int i=0;i<players.length;i++)
+            if(players[i]==null)
+                players[i]=new Player(str);
+    }
+
+    public void SetNewWorker(Worker ActiveWorker)
+    {
+        int index=GetIndexPlayer((ActiveWorker.GetProprietary().GetNickname()));
+        if(workers[index*2]==null)
+            workers[index*2]=ActiveWorker;
+        workers[index*2+1]=ActiveWorker;
+    }
+
+    public boolean CheckOpponentGod(Worker getActiveWorker, int[] getPos)
+    {
+        for (Player opponent : players)//!=giocatore attivo da fare
+        {
+            if(!opponent.GetGodCard().Move(b,getActiveWorker,getPos));
+                return false;
+        }
+        return true;
     }
 }

@@ -99,5 +99,10 @@ public class BoardGame extends Observable implements Serializable {
     {
         Board[pos[0]][pos[1]].SetDome();
     }
+
+    public Box[][] GetBoard()
+    {
+        return Board;
+    }
 }
 

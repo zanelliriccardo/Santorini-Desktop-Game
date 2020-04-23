@@ -9,16 +9,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Scanner;
 
-public class Controller extends Thread
+public class ControllerBoard extends Thread implements Observer
 {
     ObjectInputStream in;
     private Scanner inString;
     private PrintWriter outString;
     Parent root;
 
-    public Controller(Socket s, Parent root) throws IOException
+    public ControllerBoard(Socket s, Parent root) throws IOException
     {
         in=new ObjectInputStream(s.getInputStream());
         inString=new Scanner( s.getInputStream());
@@ -37,4 +39,8 @@ public class Controller extends Thread
     }
 
 
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }

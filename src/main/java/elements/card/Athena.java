@@ -1,5 +1,8 @@
-package elements;
+package elements.card;
 
+import elements.BoardGame;
+import elements.God;
+import elements.Worker;
 import it.polimi.ingsw.riccardoemelissa.GameState;
 import it.polimi.ingsw.riccardoemelissa.Message;
 
@@ -40,7 +43,7 @@ public class Athena extends God {
     }
 
     @Override
-    public boolean Move (BoardGame b, ArrayList < Worker > worker_list,int[] newpos) {
+    public boolean Move (BoardGame b, ArrayList <Worker> worker_list, int[] newpos) {
         GameState game = new GameState();
         for (int i = 0; i < game.GetPlayerNumber(); i++) {
             if (game.GetPlayers()[i].GetNickname().equals(GetOwner())) {

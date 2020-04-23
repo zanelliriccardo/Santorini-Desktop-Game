@@ -31,4 +31,9 @@ public class Player {
     {
         return god_card;
     }
+
+    public void SetNickname(String getObj)
+    {
+        nickname=getObj;
+    }
 }

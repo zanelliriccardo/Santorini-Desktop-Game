@@ -11,7 +11,7 @@
    <children>
       <ImageView fitHeight="660.0" fitWidth="660.0">
          <image>
-            <Image url="@../../Resources/Santorini.png" />
+            <Image url="@../images/Santorini.png" />
          </image>
       </ImageView>
       <Pane layoutX="526.0" layoutY="526.0" prefHeight="120.0" prefWidth="120.0">
