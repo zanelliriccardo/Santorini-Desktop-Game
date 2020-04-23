@@ -301,13 +301,21 @@ public class GameState {
         workers[index*2+1]=ActiveWorker;
     }
 
-    public boolean CheckOpponentGod(Worker getActiveWorker, int[] getPos)
+    public boolean CheckMove(Worker getActiveWorker, int[] getPos)
     {
-        for (Player opponent : players)//!=giocatore attivo da fare
+        for (Player opponent : players)
         {
-            if(!opponent.GetGodCard().Move(b,getActiveWorker,getPos));
-                return false;
+            if((opponent.GetNickname().compareTo(GetActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                if(!opponent.GetGodCard().Move(b,getActiveWorker,getPos));//check move is possible for opponent card
+                    return false;
         }
+        if(!b.IsAdjacentBox(getActiveWorker.GetPosition(),getPos))//check newposition is adjacent at worker position
+            return false;
         return true;
+    }
+
+    public boolean checkBuild(Worker getActiveWorker, int[] getPos)
+    {
+        return b.IsAdjacentBox(activeworker.GetPosition(),getPos);
     }
 }

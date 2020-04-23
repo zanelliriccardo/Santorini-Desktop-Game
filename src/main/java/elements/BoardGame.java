@@ -1,6 +1,7 @@
 package elements;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Observable;
 
 public class BoardGame extends Observable implements Serializable {
@@ -104,5 +105,36 @@ public class BoardGame extends Observable implements Serializable {
     {
         return Board;
     }
+
+    public boolean IsAdjacentBox(int[] workerpos, int[] newpos)
+    {
+        return AdjacentBox(workerpos).contains(newpos);
+    }
+
+    public ArrayList<int[]> AdjacentBox (int[] worker_pos)
+    {
+        ArrayList<int[]> adj_boxes = new ArrayList<>();
+        int[] pos = new int[2];
+
+        for (int x = worker_pos[0] - 1; x <= worker_pos[0] + 1; x++) {
+            for (int y = worker_pos[1] - 1; y <= worker_pos[1] + 1; y++) {
+                if (x == worker_pos[0] && y == worker_pos[1])
+                    continue;
+
+                if (x > 4 || x < 0)
+                    continue;
+
+                if (y > 4 || y < 0)
+                    continue;
+
+                pos[0] = x;
+                pos[1] = y;
+
+                adj_boxes.add(pos);
+            }
+        }
+        return adj_boxes;
+    }
+
 }
 

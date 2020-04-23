@@ -29,7 +29,6 @@ public class ExecutorClientCommand implements Observer {
         if(CommandType.NICKNAME==cmd.GetType())
         {
             game.NewPlayer((String)cmd.GetObj());
-            //game.GetActivePlayer().SetNickname((String)cmd.GetObj());
         }
         if(CommandType.NEWWORKER==cmd.GetType())
         {
@@ -37,13 +36,14 @@ public class ExecutorClientCommand implements Observer {
         }
         if(CommandType.MOVE==cmd.GetType())
         {
-            if(game.CheckOpponentGod(cmd.GetActiveWorker(),cmd.GetPos()))
+            if(game.CheckMove(cmd.GetActiveWorker(),cmd.GetPos()))
                 game.GetActivePlayer().GetGodCard().Move(game.GetBoard(),cmd.GetActiveWorker(),cmd.GetPos());
         }
         if(CommandType.BUILD==cmd.GetType())
         {
             //aggiungere costruzione possibile da altri god
-            game.GetActivePlayer().GetGodCard().Build(game.GetBoard(),cmd.GetActiveWorker(),cmd.GetPos());
+            if(game.checkBuild(cmd.GetActiveWorker(),cmd.GetPos()))
+                game.GetActivePlayer().GetGodCard().Build(game.GetBoard(),cmd.GetActiveWorker(),cmd.GetPos());
         }
 
     }
