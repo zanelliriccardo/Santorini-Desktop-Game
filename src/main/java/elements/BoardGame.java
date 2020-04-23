@@ -9,6 +9,7 @@ public class BoardGame extends Observable implements Serializable {
 
     public BoardGame(Box[][] boxes){
         this.Board = boxes;
+        notifyObservers();
     }
 
     public boolean GetStateBox (int[] pos)
@@ -46,11 +47,13 @@ public class BoardGame extends Observable implements Serializable {
     public void ChangeState(int[] pos)
     {
         Board[pos[0]][pos[1]].ChangeState();
+        notifyObservers();
     }
 
     public void ChangeState(int[] pos, String color)
     {
         Board[pos[0]][pos[1]].ChangeState(color);
+        notifyObservers();
     }
 
     public boolean IsAPossibleBuild(int[] pos, int[] workerpos)
@@ -67,12 +70,7 @@ public class BoardGame extends Observable implements Serializable {
     public void DoBuild(int[] pos)
     {
         Board[pos[0]][pos[1]].Build();
-    }
-
-
-    public String GetColor(int i, int j)
-    {
-        return Board[i][j].GetColor();
+        notifyObservers();
     }
 
     public boolean IsABlockedWorker(int[] pos)
@@ -94,11 +92,13 @@ public class BoardGame extends Observable implements Serializable {
     public void setOccupant(int[] pos, Worker worker)
     {
         Board[pos[0]][pos[1]].SetOccupant(worker);
+        notifyObservers();
     }
 
     public void BuildDome(int[] pos)
     {
         Board[pos[0]][pos[1]].SetDome();
+        notifyObservers();
     }
 
     public Box[][] GetBoard()

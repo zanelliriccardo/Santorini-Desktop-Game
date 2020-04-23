@@ -1,5 +1,7 @@
 package it.polimi.ingsw.riccardoemelissa;
 
+import elements.Worker;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -22,28 +24,28 @@ public class ExecutorClientCommand implements Observer {
         {
             game.SetNumPlayer((int)cmd.GetObj());
         }
-        if(CommandType.CHANGE_TURN==cmd.GetType())
+        else if(CommandType.CHANGE_TURN==cmd.GetType())
         {
             game.NextTurn();
         }
-        if(CommandType.NICKNAME==cmd.GetType())
+        else if(CommandType.NICKNAME==cmd.GetType())
         {
             game.NewPlayer((String)cmd.GetObj());
         }
-        if(CommandType.NEWWORKER==cmd.GetType())
+        else if(CommandType.NEWWORKER==cmd.GetType())
         {
-            game.SetNewWorker(cmd.GetActiveWorker());
+            game.SetNewWorker((Worker) cmd.GetObj());
         }
-        if(CommandType.MOVE==cmd.GetType())
+        else if(CommandType.MOVE==cmd.GetType())
         {
-            if(game.CheckMove(cmd.GetActiveWorker(),cmd.GetPos()))
-                game.GetActivePlayer().GetGodCard().Move(game.GetBoard(),cmd.GetActiveWorker(),cmd.GetPos());
+            if(game.CheckMove((Worker)cmd.GetObj(),cmd.GetPos()))
+                game.GetActivePlayer().GetGodCard().Move(game.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
         }
-        if(CommandType.BUILD==cmd.GetType())
+        else if(CommandType.BUILD==cmd.GetType())
         {
             //aggiungere costruzione possibile da altri god
-            if(game.checkBuild(cmd.GetActiveWorker(),cmd.GetPos()))
-                game.GetActivePlayer().GetGodCard().Build(game.GetBoard(),cmd.GetActiveWorker(),cmd.GetPos());
+            if(game.checkBuild((Worker)cmd.GetObj(),cmd.GetPos()))
+                game.GetActivePlayer().GetGodCard().Build(game.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
         }
 
     }

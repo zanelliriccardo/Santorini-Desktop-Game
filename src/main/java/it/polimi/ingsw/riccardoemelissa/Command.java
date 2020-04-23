@@ -5,18 +5,19 @@ import elements.Worker;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Observable;
 
-public class Command implements Serializable
-{
+public class Command extends Observable implements Serializable {
     private Object Obj;
     private CommandType type;
     //private Worker activeWorker;
     private int[] newpos;
 
-    public Command(CommandType t,Worker w,int[] pos)
+    public Command(CommandType t,Object obj_client,int[] pos)
     {
         type=t;
-        activeWorker=w;
+        Obj=obj_client;
+        //activeWorker=w;
         newpos=pos;
     }
 
@@ -24,10 +25,10 @@ public class Command implements Serializable
         return type;
     }
 
-    public Worker GetActiveWorker()
+    /*public Worker GetActiveWorker()
     {
         return activeWorker;
-    }
+    }*/
 
     public int[] GetPos()
     {

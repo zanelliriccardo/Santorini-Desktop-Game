@@ -19,7 +19,6 @@ import java.util.Scanner;
 
 public class ClientHandler extends Observable implements Runnable,Observer {
     private String nickname;
-    private Message m;
     private Socket socketConnection;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
@@ -27,7 +26,7 @@ public class ClientHandler extends Observable implements Runnable,Observer {
 
     public ClientHandler(Socket socket) throws IOException {
 
-        m=new Message(socket);
+        ois=new ObjectInputStream(socket.getInputStream());
         oos=new ObjectOutputStream(socket.getOutputStream());
     }
 
@@ -39,14 +38,16 @@ public class ClientHandler extends Observable implements Runnable,Observer {
             while (true) {
                 try {
                     //server in attesa di messaggi
+                    ExecutorClientCommand cmd_executor=new ExecutorClientCommand();
                     Command cmd = (Command) ois.readObject();
+                    cmd.addObserver(cmd_executor);
                     if(cmd!=null)
                         notifyObservers(cmd);
                 } catch (IOException | ClassNotFoundException e) {
                     notifyObservers(new Command(CommandType.DISCONNECTED,null,null));
                 }
             }
-        //errore per chiusura connesione
+        //errore per chiusura connessione
     }
 
     /**

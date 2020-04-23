@@ -60,7 +60,7 @@ public class MultiEchoServer {
 
                 ClientHandler c=new ClientHandler(socket);
                 game.GetBoard().addObserver(c);
-                c.addObserver(cmd_executor);
+                //c.addObserver(cmd_executor);
                 executor.submit(c);
 
                 while (game.GetPlayerNumber()==0);
@@ -70,7 +70,7 @@ public class MultiEchoServer {
                         socket = serverSocket.accept();
                         ClientHandler c2=new ClientHandler(socket);
                         game.GetBoard().addObserver(c2);
-                        c2.addObserver(cmd_executor);
+                        //c2.addObserver(cmd_executor);
                         executor.submit(c2);
                     }
                     catch(IOException e) {

@@ -1,17 +1,10 @@
 package client;
 
-import elements.BoardGame;
-import it.polimi.ingsw.riccardoemelissa.Message;
 import it.polimi.ingsw.riccardoemelissa.MessageToClient;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.util.Observable;
 
 public class ListenerServer extends Thread {
     ObjectInputStream in;

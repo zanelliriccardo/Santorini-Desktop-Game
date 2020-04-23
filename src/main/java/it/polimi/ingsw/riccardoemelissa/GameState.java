@@ -17,19 +17,6 @@ public class GameState {
     private static BoardGame b;
     private static Worker activeworker;
 
-    /*public GameState(int numP) {
-        Box[][] boxes = new Box[5][5];
-        for (int i = 0; i < boxes.length; i++) {
-            for (int j = 0; j < boxes.length; j++)
-                boxes[i][j] = new Box(true, 0);
-        }
-        b = new BoardGame(boxes);
-
-        players = new Player[numP];
-        podium = new Player[numP];
-        workers = new Worker[numP * 2];
-    }*/
-
     /**
      *
      * @return

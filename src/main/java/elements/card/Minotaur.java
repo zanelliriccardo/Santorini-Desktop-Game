@@ -3,7 +3,6 @@ package elements.card;
 import elements.BoardGame;
 import elements.God;
 import elements.Worker;
-import it.polimi.ingsw.riccardoemelissa.Message;
 
 import java.util.ArrayList;
 

@@ -3,9 +3,7 @@ package elements.card;
 import elements.BoardGame;
 import elements.God;
 import elements.Worker;
-import it.polimi.ingsw.riccardoemelissa.Message;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Artemis extends God {
