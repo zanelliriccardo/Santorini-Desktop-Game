@@ -7,32 +7,36 @@ import elements.Worker;
 import java.util.ArrayList;
 
 public class Pan extends God {
+    private Boolean winner;
+
+    public Pan()
+    {
+        winner = false;
+    }
 
     @Override
-    public boolean Move (BoardGame b, ArrayList<Worker> worker_list, int[] newpos)
+    public boolean Move (BoardGame b, Worker active_worker, int[] newpos)
     {
-        ArrayList<God> opponents_action = checkOpponentCondition();
-        int[] oldpos = worker_list.get(0).GetPosition();
-        int n=0;
+        int[] oldpos = active_worker.GetPosition();
 
-        if(CheckAdjacentBox(newpos, worker_list.get(0).GetPosition())) {
-            for (God g : opponents_action) {
-                if (g.Move(b, worker_list, newpos) && b.IsAPossibleMove(newpos, oldpos)) {
-                    n++;
-                }
-            }
-
-            if (n == opponents_action.size()) {
-                SetPosition(worker_list, newpos, b);
-
-                if (b.GetLevelBox(oldpos) - b.GetLevelBox(newpos) > 2)
-                    //VINTO
-
-                    return true;
-            }
+        if(super.Move(b, active_worker, newpos))
+        {
+            if (b.GetLevelBox(oldpos) - b.GetLevelBox(newpos) > 2)
+            SetWinner();
+            return true;
         }
-        return false;
+
+        else return false;
     }
+
+    public void SetWinner ()
+    {
+        winner = true;
+    }
+
+
+
+
 
 
 }

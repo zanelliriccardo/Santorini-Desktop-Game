@@ -9,24 +9,42 @@ public class Demeter extends God {
     @Override
     public boolean Build(BoardGame b, Worker activeWorker, int[] pos)
     {
-        if(CheckAdjacentBox(pos, activeWorker.GetPosition()) && b.IsAPossibleBuild(pos,activeWorker.GetPosition()))
-        {
-            b.DoBuild(pos);
-            if(/*messaggio per costruire ancora and position*/true) {
-                return secondBuild(b, activeWorker, pos);
-            }
-            return true;
-        }
-        return false;
+        super.Build(b, activeWorker, pos);
+
+        if(BuildAgain() && CanBuildAgain(b, pos))
+            secondBuild(b, activeWorker, pos);
+        return true;
     }
 
-    public boolean secondBuild(BoardGame b, Worker activeWorker, int[] pos)
+    public void secondBuild(BoardGame b, Worker activeWorker, int[] pos)
     {
         if(b.IsAPossibleBuild(pos,activeWorker.GetPosition()))
-        {
             b.DoBuild(pos);
+    }
+
+    public boolean BuildAgain ()
+    {
+        return true;
+    }
+
+    public boolean CanBuildAgain(BoardGame b, int[] last_build)
+    {
+        int[] pos = GetPosSecondBuild();
+
+        if(DemeterAction(b, pos, last_build))
             return true;
-        }
-        return false;
+        else return false;
+    }
+
+    public int[] GetPosSecondBuild ()
+    {
+        return new int[]{0, 0};
+    }
+
+    public boolean DemeterAction (BoardGame b, int[] pos, int[] last_build)
+    {
+        if(pos[0] != last_build[0] && pos[1] != last_build[1])
+            return true;
+        else return false;
     }
 }

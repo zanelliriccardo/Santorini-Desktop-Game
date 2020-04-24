@@ -10,51 +10,60 @@ public abstract class God {
     private boolean opponent_turn;
     private boolean in_action;
 
-    //worker_list: 1 -> ACTIVE_WORKER, 2-> WORKER_AVV
-
+    /**
+     *This method is used to move the worker:
+     * if the newpos respects the classic conditions of move,
+     * the worker does his move and the method returns true
+     * @param b
+     * @param active_worker : worker chosen to do the move
+     * @param newpos : the new worker's position given by the player belongs to an adjacent box and the move is allow by opponents' god cards
+     * @return
+     */
     public boolean Move(BoardGame b, Worker active_worker, int[] newpos)
     {
-        ArrayList<God> opponents_action = checkOpponentCondition();
-        int[] oldpos = active_worker.GetPosition();
-        int n=0;
-
-        if(CheckAdjacentBox(newpos, active_worker.GetPosition())) {
-            for (God g : opponents_action) {
-                if (g.Move(b, worker_list, newpos) && b.IsAPossibleMove(newpos, oldpos)) {
-                    n++;
-                }
-            }
-
-            if (n == opponents_action.size()) {
-                SetPosition(worker_list, newpos, b);
-                return true;
-            }
+        if(b.IsAPossibleMove(newpos, active_worker.GetPosition())) {
+            SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
+            return true;
         }
-        return false;
+        else return false;
     }
 
-    public void SetPosition (ArrayList<Worker> worker_list, int[] newpos, BoardGame b)
+    /**
+     * This method sets the new worker's position
+     * @param active_worker : worker chosen to do the move
+     * @param oldpos : initial position
+     * @param newpos : new positon choose by the player
+     * @param b
+     */
+    public void SetPosition (Worker active_worker, int[] oldpos, int[] newpos, BoardGame b)
     {
-        worker_list.get(0).SetPosition(newpos);
-        b.ChangeState(newpos,worker_list.get(0).GetProprietary().GetColor());
-        b.ChangeState(worker_list.get(0).GetPosition());
+        active_worker.SetPosition(newpos);
+        b.ChangeState(newpos, active_worker.GetProprietary().GetColor());
+        b.ChangeState(oldpos);
     }
 
+    /**
+     * This method is used to build:
+     * if the pos respects the classic conditions of build,
+     * the worker does his build and the method returns true
+     * @param b
+     * @param activeWorker : worker chosen to do the build
+     * @param pos -> the build position given by the player belongs to an adjacent box
+     * @return
+     */
     public boolean Build(BoardGame b, Worker activeWorker, int[] pos)
     {
             int[] workerpos = activeWorker.GetPosition();
 
-            if(CheckAdjacentBox(pos, activeWorker.GetPosition()) && b.IsAPossibleBuild(pos,workerpos))
+            if(b.IsAPossibleBuild(pos,workerpos))
             {
                 b.DoBuild(pos);
                 return true;
             }
-            else
-                return false;
-
+            else return false;
     }
 
-    public ArrayList<God> checkOpponentCondition()
+    /*public ArrayList<God> checkOpponentCondition()
     {
         ArrayList<God> list=new ArrayList<God>();
         GameState game = new GameState();
@@ -73,4 +82,6 @@ public abstract class God {
     public boolean GetInAction() {
         return in_action;
     }
+
+     */
 }

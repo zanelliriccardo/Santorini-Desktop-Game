@@ -10,53 +10,40 @@ public class Minotaur extends God {
     private boolean opponent_turn = false;
 
     @Override
-    public boolean Move(BoardGame b, ArrayList<Worker> worker_list, int[] newpos) {
-        ArrayList<God> opponents_action = checkOpponentCondition();
-        int n = 0;
-
-        if (CheckAdjacentBox(newpos, worker_list.get(0).GetPosition()))
+    public boolean Move(BoardGame b, Worker active_worker, int[] newpos) {
+        if(MinotaurAction (b, active_worker, newpos))
         {
-            for (God g : opponents_action)
-            {
-                if (g.Move(b, worker_list, newpos) && MinotaurAction (b, worker_list, newpos))
-                    n++;
-            }
+            if (!b.GetStateBox(newpos))
+                SetMinotaurPosition(active_worker, newpos, b);
 
-            if(n==opponents_action.size()) {
-                if (!b.GetStateBox(newpos))
-                    SetMinotaurPosition(worker_list, newpos, b);
-                SetPosition(worker_list, newpos, b);
-                return true;
-            }
+            else SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
+            return true;
         }
-        return false;
+        else return false;
     }
 
-    public void SetMinotaurPosition (ArrayList<Worker> worker_list, int[] newpos, BoardGame b)
+    public void SetMinotaurPosition (Worker active_worker, int[] newpos, BoardGame b)
     {
-        int[] newpos_opponent = new int[]{(newpos[0] - worker_list.get(0).GetX()) + newpos[0], (newpos[1] - worker_list.get(0).GetY()) + newpos[1]};
+        int[] newpos_opponent = new int[]{(newpos[0] - active_worker.GetX()) + newpos[0], (newpos[1] - active_worker.GetY()) + newpos[1]};
 
             b.GetOccupant(newpos).SetPosition(newpos_opponent);
             b.ChangeState(newpos_opponent, b.GetOccupant(newpos).GetProprietary().GetColor());
 
-            b.ChangeState(worker_list.get(0).GetPosition());
-            worker_list.get(0).SetPosition(newpos);
-            b.ChangeState(newpos, worker_list.get(0).GetProprietary().GetColor());
+            b.ChangeState(active_worker.GetPosition());
+            active_worker.SetPosition(newpos);
+            b.ChangeState(newpos, active_worker.GetProprietary().GetColor());
     }
 
-    private boolean MinotaurAction(BoardGame b, ArrayList<Worker> worker_list, int[] newpos) {
-        int[] newpos_opponent=new int[]{(newpos[0]-worker_list.get(0).GetX())+newpos[0],(newpos[1]-worker_list.get(0).GetY())+newpos[1]};
+    private boolean MinotaurAction(BoardGame b, Worker active_worker, int[] newpos) {
+        int[] newpos_opponent=new int[]{(newpos[0]-active_worker.GetX())+newpos[0],(newpos[1]-active_worker.GetY())+newpos[1]};
 
-        if (b.GetOccupant(newpos).GetProprietary().GetNickname().equals(worker_list.get(0).GetProprietary().GetNickname()))
+        if (b.GetOccupant(newpos).GetProprietary().GetNickname().equals(active_worker.GetProprietary().GetNickname()))
             return false;
         if(b.GetLevelBox(newpos)==4)
             return  false;
-        if(b.GetLevelBox(newpos)-b.GetLevelBox(worker_list.get(0).GetPosition()) > 1)
-            return false;
-        if (!CheckAdjacentBox(newpos_opponent, newpos))
+        if(b.GetLevelBox(newpos)-b.GetLevelBox(active_worker.GetPosition()) > 1)
             return false;
 
-
-        return true;
+        else return true;
     }
 }

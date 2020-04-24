@@ -10,7 +10,7 @@ public class Hephaestus extends God {
     @Override
     public boolean Build(BoardGame b, Worker activeWorker, int[] pos)
     {
-        if(CheckAdjacentBox(pos, activeWorker.GetPosition()) && b.IsAPossibleBuild(pos,activeWorker.GetPosition()))
+        if(b.IsAPossibleBuild(pos,activeWorker.GetPosition()))
         {
             b.DoBuild(pos);
             if(/*messaggio per costruire ancora*/true) {

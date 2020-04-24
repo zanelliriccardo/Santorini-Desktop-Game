@@ -42,23 +42,23 @@ public class Athena extends God {
 
     @Override
     public boolean Move (BoardGame b, Worker active_worker, int[] newpos) {
-        if(active_worker.GetProprietary().GetGodCard() instanceof Athena) {
+        if(active_worker.GetProprietary().GetGodCard() instanceof Athena)
+        {
             super.Move(b, active_worker, newpos);
             in_action = SetInAction(active_worker.GetPosition(), newpos, b);
+            return true;
         }
 
-        if (in_action)
-        {
-            if (AthenaAction(active_worker.GetPosition(), newpos, b))
-                    return true;
+        else if (in_action) {
+            return RespectAthenaAction(active_worker.GetPosition(), newpos, b);
         }
-        return false;
+        else return false;
     }
 
     /*
     If Athena allows the action, Action returns true
      */
-        public boolean AthenaAction (int[] old_pos, int[] new_pos, BoardGame b)
+        public boolean RespectAthenaAction(int[] old_pos, int[] new_pos, BoardGame b)
         {
             if ((b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)) < 1)
                 return true;

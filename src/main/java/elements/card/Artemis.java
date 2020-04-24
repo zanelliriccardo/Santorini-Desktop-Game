@@ -10,33 +10,40 @@ public class Artemis extends God {
     private boolean opponent_turn = false;
 
     @Override
-    public boolean Move(BoardGame b, ArrayList<Worker> worker_list, int[] newpos) {
-        ArrayList<God> opponents_action = checkOpponentCondition();
-        int[] oldpos = worker_list.get(0).GetPosition();
-        int n = 0;
+    public boolean Move(BoardGame b, Worker active_worker, int[] newpos)
+    {
+        int[] oldpos =active_worker.GetPosition();
 
-        if(CheckAdjacentBox(newpos, worker_list.get(0).GetPosition()))
+        if (b.IsAPossibleMove(newpos, oldpos))
         {
-            for (God g : opponents_action)
-            {
-            if (g.Move(b, worker_list, newpos) && b.IsAPossibleMove(newpos, oldpos))
-                n++;
-            }
+            SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
 
-            if (n == opponents_action.size())
-            SetPosition(worker_list, newpos, b);
+            if(MoveAgain() && CanMoveAgain())
+            ArtemisAction(b, active_worker, oldpos);
 
-            if(ArtemisAction(b, worker_list, oldpos))
             return true;
-    }
-        return false;
+        }
+        else return false;
     }
 
 
+    /**
+     * This method asks to player if he wants to move again the active worker
+     * @return
+     */
     public boolean MoveAgain ()
     {
         //CLIENT
             return true;
+    }
+
+    /**
+     * This method checks if the new position is allow
+     * @return
+     */
+    public boolean CanMoveAgain()
+    {
+        return true;
     }
 
     public int[] GetNewPosition ()
@@ -45,38 +52,25 @@ public class Artemis extends God {
         int[] newpos = new int[2];
         newpos[0] = 0;
         newpos[1] = 1;
-        return newpos;
+        return newpos; //va controllata in board game, nel caso in cui non sia consentita,
     }
 
-    public boolean ArtemisAction (BoardGame b, ArrayList<Worker> worker_list, int[] oldpos)
+    public void ArtemisAction (BoardGame b, Worker active_worker, int[] oldpos)
     {
-        if (MoveAgain())
+        int[] newpos = GetNewPosition();
+
+        if (!b.GetStateBox(newpos))
+            return;
+        if (b.GetLevelBox(newpos) == 4)
+            return;
+        if ((b.GetLevelBox(newpos) - b.GetLevelBox(active_worker.GetPosition())) > 1)
+            return;
+        if (newpos[0] == oldpos[0] && newpos[1] == oldpos[1])
+            return;
+
+        else
         {
-            int[] newpos = GetNewPosition();
-            ArrayList<God> opponents_action = checkOpponentCondition();
-            int n = 0;
-
-            if(CheckAdjacentBox(newpos, worker_list.get(0).GetPosition())) {
-                for (God g : opponents_action) {
-                    if (g.Move(b, worker_list, newpos)) {
-                        if (!b.GetStateBox(newpos))
-                            return false;
-                        if (b.GetLevelBox(newpos) == 4)
-                            return false;
-                        if ((b.GetLevelBox(newpos) - b.GetLevelBox(worker_list.get(0).GetPosition())) > 1)
-                            return false;
-                        if (newpos[0] == oldpos[0] && newpos[1] == oldpos[1])
-                            return false;
-                    }
-                    n++;
-                }
-
-                if (n == opponents_action.size()) {
-                    SetPosition(worker_list, newpos, b);
-                    return true;
-                }
-            }
+            SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
         }
-        return false;
     }
 }

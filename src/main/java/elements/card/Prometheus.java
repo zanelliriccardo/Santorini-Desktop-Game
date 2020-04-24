@@ -11,51 +11,45 @@ public class Prometheus extends God {
     private boolean opponent_turn = false;
 
     @Override
-    public boolean Move(BoardGame b, ArrayList<Worker> worker_list, int[] newpos) {
-        GameState game = new GameState();
+    public boolean Move(BoardGame b, Worker active_worker, int[] newpos) {
 
-        int[] oldpos = worker_list.get(0).GetPosition();
-        int n = 0;
-
-        ArrayList<int[]> adj_moves = AdjacentBox(worker_list.get(0).GetPosition());
+        ArrayList<int[]> adj_moves = b.AdjacentBox(active_worker.GetPosition());
+        int n=0;
 
         for (int[] pos : adj_moves) {
-            if ((b.GetLevelBox(pos) - b.GetLevelBox(oldpos)) > 1)
+            if ((b.GetLevelBox(pos) - b.GetLevelBox(active_worker.GetPosition())) > 1)
                 n++;
         }
-        if (n == 0) {
+
+        if (n == 0 && PrometheusAction(b, active_worker)) {
+            int[] pos = FirstBuild();
+            b.DoBuild(pos);
+        }
+
+        if(super.Move(b, active_worker,newpos))
+            return true;
+        else return false;
+    }
+
+    public boolean BuildBeforeMove() //MSG CLIENT
+    {
+        return true;
+    }
+
+    public boolean PrometheusAction(BoardGame b, Worker active_worker)
+    {
+        if(BuildBeforeMove())
+        {
             int[] pos = FirstBuild();
 
-            if (Build(b, worker_list.get(0), pos))
-                if (DoMove(b, worker_list, newpos))
-                    return true;
-        } else if (DoMove(b, worker_list, newpos))
-            return true;
-
-        return false;
+            if(b.IsAPossibleBuild(pos, active_worker.GetPosition()))
+                return true;
+            else return false;
+        }
+        else return false;
     }
 
     public int[] FirstBuild() {
         return new int[]{0, 0};
-    }
-
-    public boolean DoMove(BoardGame b, ArrayList<Worker> worker_list, int[] newpos) {
-        ArrayList<God> opponents_action = checkOpponentCondition();
-        int[] oldpos = worker_list.get(0).GetPosition();
-        int n = 0;
-
-        if (CheckAdjacentBox(newpos, worker_list.get(0).GetPosition())) {
-            for (God g : opponents_action) {
-                if (g.Move(b, worker_list, newpos) && b.IsAPossibleMove(newpos, oldpos)) {
-                    n++;
-                }
-            }
-
-            if (n == opponents_action.size()) {
-                SetPosition(worker_list, newpos, b);
-                return true;
-            }
-        }
-        return false;
     }
 }

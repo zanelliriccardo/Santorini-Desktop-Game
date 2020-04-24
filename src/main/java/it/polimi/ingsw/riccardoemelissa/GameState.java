@@ -109,7 +109,10 @@ public class GameState {
         }
     } */
 
-    public void GodFactory (String[] gods) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    public void GodFactory () throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+        JsonReader read_god = new JsonReader();
+        String[] gods  = read_god.GodsInGame(players.length);
+
         for (int i = 0; i< gods.length; i++)
         {
             //players[i].SetGodCard((God)Class.forName(gods[i]).newInstance());
