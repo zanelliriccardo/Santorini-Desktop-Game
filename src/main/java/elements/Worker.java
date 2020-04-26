@@ -10,11 +10,10 @@ public class Worker
     private Player proprietary;
     private String color;
 
-    public Worker(Player player )
+    public Worker(Player proprietary)
     {
-        position = null;
-        proprietary=player;
-        color = "";
+        position = new int[2];
+        this.proprietary=proprietary;
     }
 
     public int GetX() {
@@ -39,11 +38,6 @@ public class Worker
     {
         position[0] = pos[0];
         position[1] = pos[1];
-    }
-
-    public void SetProprietary (Player p)
-    {
-       proprietary = p;
     }
 
     public int[] GetPosition() {
