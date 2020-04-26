@@ -22,6 +22,11 @@ public class Minotaur extends God {
         else return false;
     }
 
+    @Override
+    public boolean GetOpponentTurn() {
+        return opponent_turn;
+    }
+
     public void SetMinotaurPosition (Worker active_worker, int[] newpos, BoardGame b)
     {
         int[] newpos_opponent = new int[]{(newpos[0] - active_worker.GetX()) + newpos[0], (newpos[1] - active_worker.GetY()) + newpos[1]};

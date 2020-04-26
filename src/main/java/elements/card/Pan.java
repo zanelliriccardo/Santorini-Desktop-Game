@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class Pan extends God {
     private Boolean winner;
+    private boolean opponent_turn;
 
     public Pan()
     {
@@ -27,6 +28,11 @@ public class Pan extends God {
         }
 
         else return false;
+    }
+
+    @Override
+    public boolean GetOpponentTurn() {
+        return opponent_turn;
     }
 
     public void SetWinner ()

@@ -22,6 +22,11 @@ public class Apollo extends God {
         else return false;
     }
 
+    @Override
+    public boolean GetOpponentTurn() {
+        return opponent_turn;
+    }
+
     public void SetApolloPosition(Worker active_worker, int[] newpos, BoardGame b)
     {
         b.GetOccupant(newpos).SetPosition(active_worker.GetPosition());
@@ -30,7 +35,7 @@ public class Apollo extends God {
 
     public boolean ApolloAction (BoardGame b, Worker active_worker, int[] newpos)
     {
-        if (b.GetOccupant(newpos).GetProprietary().GetNickname().equals(active_worker.GetProprietary().GetNickname()))
+        if (b.GetOccupant(newpos).GetProprietary().GetNickname().compareTo(active_worker.GetProprietary().GetNickname())==0)
             return false;
         if(b.GetLevelBox(newpos)==4)
             return  false;

@@ -21,6 +21,7 @@ import java.util.Scanner;
 public class Client extends Application implements Observer {
 
     private static Parent root;
+    private static ControllerBoard controller;
     @FXML
     public TextField nickname;
 
@@ -40,38 +41,13 @@ public class Client extends Application implements Observer {
         Scanner socketIn = new Scanner(socket.getInputStream());
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
 
-        ListenerServer listening_boardupdate = new ListenerServer(socket);
+        ListenerServer listening_boardupdate = new ListenerServer(socket,root);
         listening_boardupdate.start();
 
-        ControllerBoard listen_server=new ControllerBoard(socket,root);
-        listen_server.start();
-
-
+        ControllerBoard controller=new ControllerBoard(socket,root);
         launch(args);
-
-
     }
 
-
-
-    @FXML
-    public void startGame(MouseEvent mouseEvent) throws IOException {
-
-        changeScene("mode.fxml");//portarlo su scelta 1 o 2 giocatori
-    }
-
-    private void changeScene(String s) throws IOException {
-        root= FXMLLoader.load(getClass().getResource(s));
-    }
-
-    @FXML
-    public void selectedCell(MouseEvent mouseEvent)
-    {
-        Node source=(Node)mouseEvent.getSource();
-        int rowIndex=(GridPane.getRowIndex(source))==null ? 0:(GridPane.getRowIndex(source));
-        int colIndex=(GridPane.getColumnIndex(source))==null ? 0:(GridPane.getColumnIndex(source)) ;
-
-    }
 
     @Override
     public void update(Observable o, Object arg)

@@ -26,6 +26,11 @@ public class Artemis extends God {
         else return false;
     }
 
+    @Override
+    public boolean GetOpponentTurn() {
+        return opponent_turn;
+    }
+
 
     /**
      * This method asks to player if he wants to move again the active worker

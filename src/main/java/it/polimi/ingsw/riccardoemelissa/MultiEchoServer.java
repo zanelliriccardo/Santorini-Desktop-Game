@@ -34,56 +34,29 @@ public class MultiEchoServer {
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
-                Scanner in = new Scanner(socket.getInputStream());
-                PrintWriter out = new PrintWriter(socket.getOutputStream());
 
-                out.println("Choose game mode:");
-                out.flush();
-                out.println("1) 2 players");
-                out.flush();
-                out.println("2) 3 players");
-                out.flush();
-                String mod = in.nextLine();
-                in.close();
-                out.close();
+                ClientHandler firstClient=new ClientHandler(socket);
+                game.GetBoard().addObserver(firstClient);
+                executor.submit(firstClient);
 
-                if (mod == "1") {
-                    numplayer=2;
-                    executor = Executors.newFixedThreadPool(numplayer);
-                }
-                else if(mod == "2") {
-                    numplayer=3;
-                    executor = Executors.newFixedThreadPool(numplayer);
-                }
-                else
-                    continue;
-
-                ClientHandler c=new ClientHandler(socket);
-                game.GetBoard().addObserver(c);
-                //c.addObserver(cmd_executor);
-                executor.submit(c);
-
-                while (game.GetPlayerNumber()==0);
+                while (game.GetPlayerNumber()==1);
 
                 for(int i=1;i<numplayer;i++)
                     try {
                         socket = serverSocket.accept();
-                        ClientHandler c2=new ClientHandler(socket);
-                        game.GetBoard().addObserver(c2);
-                        //c2.addObserver(cmd_executor);
-                        executor.submit(c2);
+                        ClientHandler otherClient=new ClientHandler(socket);
+                        game.GetBoard().addObserver(otherClient);
+                        executor.submit(otherClient);
                     }
                     catch(IOException e) {
                         break; // entrerei qui se serverSocket venisse chiuso
                     }
 
-
-
                 while (!game.GameReady()) { }
 
                 game.NextTurn();
                 notifyAll();
-                if(true) //inserire controllo su fine partita
+                if(game.getGameOver()) //inserire controllo su fine partita
                     break;
             } catch (IOException e) {
                 break; // entrerei qui se serverSocket venisse chiuso

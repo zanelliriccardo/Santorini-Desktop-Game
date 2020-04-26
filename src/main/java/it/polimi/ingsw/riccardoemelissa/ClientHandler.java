@@ -1,28 +1,22 @@
 package it.polimi.ingsw.riccardoemelissa;
 
-import elements.BoardGame;
-import elements.Player;
-import elements.Worker;
+import elements.CustomObservable;
+import elements.CustomObserver;
 
-import javax.naming.NoInitialContextException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Scanner;
 
-public class ClientHandler extends Observable implements Runnable,Observer {
+public class ClientHandler extends CustomObservable implements Runnable, CustomObserver {
     private String nickname;
     private Socket socketConnection;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private GameState game;
+    ExecutorClientCommand cmd_executor=new ExecutorClientCommand();
 
     public ClientHandler(Socket socket) throws IOException {
 
@@ -34,38 +28,37 @@ public class ClientHandler extends Observable implements Runnable,Observer {
      * This method receives command from client
      */
     public void run() {
+        Command cmd = null;
+        cmd.addObserver(cmd_executor);
         if(!socketConnection.isClosed()&&socketConnection.isConnected())
             while (true) {
                 try {
                     //server in attesa di messaggi
-                    ExecutorClientCommand cmd_executor=new ExecutorClientCommand();
-                    Command cmd = (Command) ois.readObject();
-                    cmd.addObserver(cmd_executor);
+                    cmd = (Command) ois.readObject();
                     if(cmd!=null)
-                        notifyObservers(cmd);
+                        cmd.custom_notifyAll();
                 } catch (IOException | ClassNotFoundException e) {
-                    notifyObservers(new Command(CommandType.DISCONNECTED,null,null));
+                    new Command(CommandType.DISCONNECTED,null,null).custom_notifyAll();
                 }
             }
         //errore per chiusura connessione
+        new Command(CommandType.DISCONNECTED,null,null).custom_notifyAll();
     }
 
     /**
      * It manages the board update
      *
      *
-     *
-     * @param o
      * @param arg
      */
     @Override
-    public void update(Observable o, Object arg)
+    public void update(Object arg)
     {
-        final MessageToClient toClient=new MessageToClient(game.GetBoard(),game.GetActivePlayer());
-
-        while (true) {
+        final GameProxy toClient=new GameProxy(game.GetBoard(),game.GetActivePlayer(),game.GetPlayers());
+        while (true)
+        {
             try {
-                oos.writeObject(toClient);//sostituire con toclient
+                oos.writeObject(toClient);
                 break;
             } catch (IOException e) {
                 e.printStackTrace();

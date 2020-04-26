@@ -63,6 +63,8 @@ public abstract class God {
             else return false;
     }
 
+    public abstract boolean GetOpponentTurn();
+
     /*public ArrayList<God> checkOpponentCondition()
     {
         ArrayList<God> list=new ArrayList<God>();

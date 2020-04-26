@@ -21,6 +21,11 @@ public class Hephaestus extends God {
         return false;
     }
 
+    @Override
+    public boolean GetOpponentTurn() {
+        return opponent_turn;
+    }
+
     public boolean secondBuild(BoardGame b, Worker activeWorker, int[] pos)
     {
         if(b.IsAPossibleBuild(pos,activeWorker.GetPosition()))

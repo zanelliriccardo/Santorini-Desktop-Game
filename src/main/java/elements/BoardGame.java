@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 
-public class BoardGame extends Observable implements Serializable {
+public class BoardGame extends CustomObservable implements Serializable {
     private Box[][] Board;
 
     public BoardGame(Box[][] boxes){
         this.Board = boxes;
-        notifyObservers();
+        custom_notifyAll();
     }
 
     public boolean GetStateBox (int[] pos)
@@ -47,13 +47,13 @@ public class BoardGame extends Observable implements Serializable {
     public void ChangeState(int[] pos)
     {
         Board[pos[0]][pos[1]].ChangeState();
-        notifyObservers();
+        custom_notifyAll();
     }
 
     public void ChangeState(int[] pos, String color)
     {
         Board[pos[0]][pos[1]].ChangeState(color);
-        notifyObservers();
+        custom_notifyAll();
     }
 
     public boolean IsAPossibleBuild(int[] pos, int[] workerpos)
@@ -70,7 +70,7 @@ public class BoardGame extends Observable implements Serializable {
     public void DoBuild(int[] pos)
     {
         Board[pos[0]][pos[1]].Build();
-        notifyObservers();
+        custom_notifyAll();
     }
 
     public boolean IsABlockedWorker(int[] pos)
@@ -92,13 +92,13 @@ public class BoardGame extends Observable implements Serializable {
     public void setOccupant(int[] pos, Worker worker)
     {
         Board[pos[0]][pos[1]].SetOccupant(worker);
-        notifyObservers();
+        custom_notifyAll();
     }
 
     public void BuildDome(int[] pos)
     {
         Board[pos[0]][pos[1]].SetDome();
-        notifyObservers();
+        custom_notifyAll();
     }
 
     public Box[][] GetBoard()

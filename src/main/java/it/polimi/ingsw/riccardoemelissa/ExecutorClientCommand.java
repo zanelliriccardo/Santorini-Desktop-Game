@@ -1,28 +1,35 @@
 package it.polimi.ingsw.riccardoemelissa;
 
+import elements.CustomObserver;
+import elements.Player;
 import elements.Worker;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Observable;
 import java.util.Observer;
 
-public class ExecutorClientCommand implements Observer {
+public class ExecutorClientCommand implements CustomObserver {
 
     private GameState game;
 
     @Override
-    public void update(Observable o, Object arg)
+    public void update(Object arg)
     {
         Command cmd=(Command) arg;
         if(cmd.GetType()==CommandType.DISCONNECTED)
         {
-            game.EndGame();//da implementare
+            game.EndGame((Player) cmd.GetObj());
             game=null;
         }
 
         //gestione comandi
+        if(cmd.GetType()==CommandType.WIN)
+        {
+            game.EndGame((Player) cmd.GetObj());
+        }
         if(cmd.GetType()==CommandType.MODE)
         {
-            game.SetNumPlayer((int)cmd.GetObj());
+            game.SetNumPlayer((int) cmd.GetObj());
         }
         else if(CommandType.CHANGE_TURN==cmd.GetType())
         {
@@ -34,7 +41,7 @@ public class ExecutorClientCommand implements Observer {
         }
         else if(CommandType.NEWWORKER==cmd.GetType())
         {
-            game.SetNewWorker((Worker) cmd.GetObj());
+            game.SetNewWorker((Worker)cmd.GetObj());
         }
         else if(CommandType.MOVE==cmd.GetType())
         {
@@ -43,7 +50,6 @@ public class ExecutorClientCommand implements Observer {
         }
         else if(CommandType.BUILD==cmd.GetType())
         {
-            //aggiungere costruzione possibile da altri god
             if(game.checkBuild((Worker)cmd.GetObj(),cmd.GetPos()))
                 game.GetActivePlayer().GetGodCard().Build(game.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
         }

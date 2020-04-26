@@ -22,6 +22,11 @@ public class Atlas extends God {
         else return false;
     }
 
+    @Override
+    public boolean GetOpponentTurn() {
+        return opponent_turn;
+    }
+
     public boolean BuildDome () //messaggio client
     {
         return true;

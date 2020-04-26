@@ -31,6 +31,11 @@ public class Prometheus extends God {
         else return false;
     }
 
+    @Override
+    public boolean GetOpponentTurn() {
+        return opponent_turn;
+    }
+
     public boolean BuildBeforeMove() //MSG CLIENT
     {
         return true;

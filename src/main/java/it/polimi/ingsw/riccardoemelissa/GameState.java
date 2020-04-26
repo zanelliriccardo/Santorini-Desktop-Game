@@ -16,6 +16,7 @@ public class GameState {
     private static int trace = -1;
     private static BoardGame b;
     private static Worker activeworker;
+    private boolean gameover=false;
 
     /**
      *
@@ -51,19 +52,6 @@ public class GameState {
     public Worker GetWorkerToMove(String nick, int n)
     {
         return workers[GetIndexPlayer(nick) + n];
-    }
-
-    public void MemorizeNickname(String str)
-    {
-        for (int i = 0; i < players.length; i++)
-            if (players[i] == null)
-                players[i] = new Player(str);
-    }
-
-    public boolean CheckNickname(String nickname) {
-        //da rifare evitando count
-
-        return true;
     }
 
     public void SetProprietaryWorker() {
@@ -139,101 +127,6 @@ public class GameState {
         return activeworker;
     }
 
-    public boolean SetInitialWorkerPosition(int getIndexPlayer, int[] pos1, int[] pos2)
-    {
-        if(b.GetStateBox(pos1)||b.GetStateBox(pos2))
-            return false;
-
-        b.setOccupant(pos1,workers[getIndexPlayer]);
-        b.setOccupant(pos1,workers[getIndexPlayer+1]);
-        workers[getIndexPlayer].SetPosition(pos1[0],pos1[1]);
-        workers[getIndexPlayer+1].SetPosition(pos2[0],pos2[1]);
-        return true;
-    }
-
-    public boolean DoMove(int[] newpos,Worker activeWorker)
-    {
-        int[] oldpos=activeWorker.GetPosition();
-
-        if(b.IsAPossibleMove(newpos,oldpos))
-        {
-            activeWorker.SetPosition(newpos);
-            b.ChangeState(newpos,activeWorker.GetProprietary().GetColor());
-            b.ChangeState(oldpos);
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean IsAPossibleMove(int[] newpos,int[] oldpos)
-    {
-        return b.IsAPossibleMove(newpos,oldpos);
-    }
-
-    public boolean DoBuild(int[] pos, Worker activeWorker)
-    {
-        int[] workerpos=activeWorker.GetPosition();
-
-        if(b.IsAPossibleBuild(pos,workerpos))
-        {
-            b.DoBuild(pos);
-            return true;
-        }
-        else
-            return false;
-    }
-
-    public boolean HaveAPossibleMove(String nickname)
-    {
-        if(b.IsABlockedWorker(workers[GetIndexPlayer(nickname)].GetPosition())) {
-            if (b.IsABlockedWorker(workers[GetIndexPlayer(nickname) + 1].GetPosition()))
-                return false;
-        }
-        return true;
-    }
-
-    public boolean CheckPower(String str)
-    {
-        for(int i=0;i<players.length;i++) {
-            //if(!players[i].GetGodCard().CheckMoment(players[trace], players[i], str))
-                //return false;
-        }
-
-        return true;
-    }
-
-    public Worker GetOccupant(int[] pos)
-    {
-        return b.GetOccupant(pos);
-    }
-
-
-    public ArrayList PossibleMoves(int index)
-    {
-        ArrayList<int[]> possiblemoves = new ArrayList<int []>();
-
-        ArrayList<Worker> worker_list=new ArrayList<Worker>();
-        worker_list.add(workers[index]);
-
-        int[] workerPosition=worker_list.get(0).GetPosition();
-
-        for(int x=workerPosition[0]-1;x<=workerPosition[0]+1;x++)
-            for(int y=workerPosition[1]-1;y<=workerPosition[1]+1;y++)
-            {
-                if(x==workerPosition[0]&&y==workerPosition[1])
-                    continue;
-
-                if(x>4||x<0)
-                    continue;
-
-                if(y>4||y<0)
-                    continue;
-
-            }
-        return possiblemoves;
-    }
-
     public BoardGame GetBoard()
     {
         return b;
@@ -244,27 +137,21 @@ public class GameState {
         activeworker=worker;
     }
 
-    public void setNumplayer(int numplayer)
+    public boolean EndGame(Player activePlayer)
     {
-        Box[][] boxes=new Box[5][5];
-        for(int i = 0; i < boxes.length; i++) {
-            for (int j = 0; j < boxes.length; j++)
-                boxes[i][j] = new Box(true, 0);
-        }
-
-        b=new BoardGame(boxes);
-
-        players = new Player[numplayer];
-        workers = new Worker[numplayer*2];
-    }
-
-    public void EndGame()
-    {
+        setGameOver(true);
+        if(activePlayer==null)
+            return true;
+        else
+            return false;
 
     }
 
-    public void SetNumPlayer(int num_player)
-    {
+    private void setGameOver(boolean b) {
+        gameover=b;
+    }
+
+    public void SetNumPlayer(int num_player) {
         Box[][] boxes = new Box[5][5];
         for (int i = 0; i < boxes.length; i++) {
             for (int j = 0; j < boxes.length; j++)
@@ -274,6 +161,12 @@ public class GameState {
 
         players = new Player[num_player];
         workers = new Worker[num_player * 2];
+
+        try {
+            GodFactory();
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     public void NewPlayer(String str)
@@ -299,7 +192,7 @@ public class GameState {
                 if(!opponent.GetGodCard().Move(b,getActiveWorker,getPos));//check move is possible for opponent card
                     return false;
         }
-        if(!b.IsAdjacentBox(getActiveWorker.GetPosition(),getPos))//check newposition is adjacent at worker position
+        if(!b.IsAdjacentBox(getActiveWorker.GetPosition(),getPos))//check newposition is adjacent at  actual worker position
             return false;
         return true;
     }
@@ -307,5 +200,10 @@ public class GameState {
     public boolean checkBuild(Worker getActiveWorker, int[] getPos)
     {
         return b.IsAdjacentBox(activeworker.GetPosition(),getPos);
+    }
+
+    public boolean getGameOver()
+    {
+        return gameover;
     }
 }

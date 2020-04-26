@@ -16,6 +16,11 @@ public class Demeter extends God {
         return true;
     }
 
+    @Override
+    public boolean GetOpponentTurn() {
+        return opponent_turn;
+    }
+
     public void secondBuild(BoardGame b, Worker activeWorker, int[] pos)
     {
         if(b.IsAPossibleBuild(pos,activeWorker.GetPosition()))

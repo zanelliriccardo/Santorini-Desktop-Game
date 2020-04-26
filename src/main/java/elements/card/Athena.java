@@ -55,6 +55,11 @@ public class Athena extends God {
         else return false;
     }
 
+    @Override
+    public boolean GetOpponentTurn() {
+        return opponent_turn;
+    }
+
     /*
     If Athena allows the action, Action returns true
      */

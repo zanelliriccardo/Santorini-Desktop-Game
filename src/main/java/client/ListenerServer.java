@@ -1,17 +1,19 @@
 package client;
 
-import it.polimi.ingsw.riccardoemelissa.MessageToClient;
+import it.polimi.ingsw.riccardoemelissa.GameProxy;
+import javafx.scene.Parent;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
 public class ListenerServer extends Thread {
-    ObjectInputStream in;
-
-    public ListenerServer(Socket s) throws IOException
+    private ObjectInputStream in;
+    private ControllerBoard controller;
+    public ListenerServer(Socket s, Parent root) throws IOException
     {
         in=new ObjectInputStream(s.getInputStream());
+        controller=new ControllerBoard(s,root);
     }
 
     public void run()
@@ -19,14 +21,13 @@ public class ListenerServer extends Thread {
 
         while (true)
         {
-            MessageToClient fromServer=null;
-            fromServer.addObserver();
+            GameProxy fromServer=null;
+            fromServer.addObserver(controller);
             try {
-                fromServer=(MessageToClient) in.readObject();
-
+                fromServer=(GameProxy) in.readObject();
                 if(fromServer!=null)
                 {
-                    //fare GUIIIIIIIIIIIIIIII
+                    fromServer.notifyAll();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
