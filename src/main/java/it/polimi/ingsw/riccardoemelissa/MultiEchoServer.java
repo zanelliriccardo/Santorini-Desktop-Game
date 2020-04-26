@@ -13,6 +13,7 @@ public class MultiEchoServer {
     private static int numplayer=0;
     private static GameState game;
     private ExecutorClientCommand cmd_executor =new ExecutorClientCommand();
+
     public MultiEchoServer(int port)
     {
         this.port = port;

@@ -6,19 +6,15 @@ import java.io.InputStreamReader;
 
 public class Worker
 {
-    private int ID;
     private int[] position;
     private Player proprietary;
     private String color;
 
-    public Worker(Player player)
+    public Worker(Player player )
     {
+        position = null;
         proprietary=player;
-    }
-
-    public int GetID()
-    {
-        return ID;
+        color = "";
     }
 
     public int GetX() {
