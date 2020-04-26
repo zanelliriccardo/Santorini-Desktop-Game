@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class Minotaur extends God {
     private boolean opponent_turn = false;
+    private boolean activable=false;
 
     @Override
     public boolean Move(BoardGame b, Worker active_worker, int[] newpos) {
@@ -20,11 +21,6 @@ public class Minotaur extends God {
             return true;
         }
         else return false;
-    }
-
-    @Override
-    public boolean GetOpponentTurn() {
-        return opponent_turn;
     }
 
     public void SetMinotaurPosition (Worker active_worker, int[] newpos, BoardGame b)

@@ -5,69 +5,37 @@ import elements.God;
 import elements.Worker;
 
 public class Athena extends God {
-    private boolean opponent_turn;
-    private boolean in_action;
+    private boolean opponent_turn=true;
+    private boolean activable=false;
 
-    public Athena()
-    {
-        opponent_turn = true;
-        in_action = false;
-    }
-
-    /*public String GetOwner()
-    {
-        GameState game = new GameState();
-        String owner = "";
-
-        for (int i = 0; i < game.GetPlayerNumber(); i++)
-        {
-            if (game.GetPlayers()[i].GetGodCard().equals("Athena"))
-                owner = game.GetPlayers()[i].GetNickname();
-
-        }
-        return owner;
-    }
-
-     */
+    private boolean in_action=false;
 
     /*
     If Athena can act during the current turn, CanAct return true
      */
-    public boolean SetInAction ( int[] old_pos, int[] new_pos, BoardGame b)
-    {
-            if ((b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)) == 1)
-                return true;
-            return false;
-    }
-
-    @Override
-    public boolean Move (BoardGame b, Worker active_worker, int[] newpos) {
-        if(active_worker.GetProprietary().GetGodCard() instanceof Athena)
-        {
-            super.Move(b, active_worker, newpos);
-            in_action = SetInAction(active_worker.GetPosition(), newpos, b);
+    public boolean SetInAction(int[] old_pos, int[] new_pos, BoardGame b) {
+        if ((b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)) == 1)
             return true;
-        }
-
-        else if (in_action) {
-            return RespectAthenaAction(active_worker.GetPosition(), newpos, b);
-        }
-        else return false;
+        return false;
     }
 
     @Override
-    public boolean GetOpponentTurn() {
-        return opponent_turn;
+    public boolean Move(BoardGame b, Worker active_worker, int[] newpos) {
+        if (active_worker.GetProprietary().GetGodCard() instanceof Athena) {
+            in_action = SetInAction(active_worker.GetPosition(), newpos, b);
+            super.Move(b, active_worker, newpos);
+            return true;
+        } else if (in_action) {
+            return RespectAthenaAction(active_worker.GetPosition(), newpos, b);
+        } else return false;
     }
 
     /*
     If Athena allows the action, Action returns true
      */
-        public boolean RespectAthenaAction(int[] old_pos, int[] new_pos, BoardGame b)
-        {
-            if ((b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)) < 1)
-                return true;
-            return false;
-        }
-
+    public boolean RespectAthenaAction(int[] old_pos, int[] new_pos, BoardGame b) {
+        if ((b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)) < 1)
+            return true;
+        return false;
     }
+}

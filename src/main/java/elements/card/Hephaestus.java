@@ -6,6 +6,9 @@ import elements.Worker;
 
 public class Hephaestus extends God {
     private boolean opponent_turn = false;
+    private boolean activable=true;
+
+    private boolean in_action=false;
 
     @Override
     public boolean Build(BoardGame b, Worker activeWorker, int[] pos)
@@ -19,11 +22,6 @@ public class Hephaestus extends God {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean GetOpponentTurn() {
-        return opponent_turn;
     }
 
     public boolean secondBuild(BoardGame b, Worker activeWorker, int[] pos)

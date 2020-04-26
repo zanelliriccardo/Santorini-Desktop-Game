@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class Apollo extends God {
     private boolean opponent_turn = false;
+    private boolean activable=false;
 
     @Override
     public boolean Move(BoardGame b, Worker active_worker, int[] newpos) {
@@ -16,15 +17,11 @@ public class Apollo extends God {
         {
             if (!b.GetStateBox(newpos))
                 SetApolloPosition(active_worker, newpos, b);
-            else SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
+            else
+                super.SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
             return true;
         }
         else return false;
-    }
-
-    @Override
-    public boolean GetOpponentTurn() {
-        return opponent_turn;
     }
 
     public void SetApolloPosition(Worker active_worker, int[] newpos, BoardGame b)

@@ -53,6 +53,10 @@ public class ExecutorClientCommand implements CustomObserver {
             if(game.checkBuild((Worker)cmd.GetObj(),cmd.GetPos()))
                 game.GetActivePlayer().GetGodCard().Build(game.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
         }
+        else if(CommandType.RESET==cmd.GetType())
+        {
+            game.undoTurn();//da implementare
+        }
 
     }
 }

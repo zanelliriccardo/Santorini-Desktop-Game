@@ -8,7 +8,9 @@ import java.util.ArrayList;
 
 public class Artemis extends God {
     private boolean opponent_turn = false;
+    private boolean activable=true;
 
+    private boolean in_action=false;
     @Override
     public boolean Move(BoardGame b, Worker active_worker, int[] newpos)
     {
@@ -16,7 +18,7 @@ public class Artemis extends God {
 
         if (b.IsAPossibleMove(newpos, oldpos))
         {
-            SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
+            super.SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
 
             if(MoveAgain() && CanMoveAgain())
             ArtemisAction(b, active_worker, oldpos);
@@ -25,12 +27,6 @@ public class Artemis extends God {
         }
         else return false;
     }
-
-    @Override
-    public boolean GetOpponentTurn() {
-        return opponent_turn;
-    }
-
 
     /**
      * This method asks to player if he wants to move again the active worker

@@ -6,25 +6,24 @@ import elements.Worker;
 
 public class Atlas extends God {
     private boolean opponent_turn = false;
+    private boolean activable=true;
 
+    private boolean in_action=false;
     @Override
     public boolean Build(BoardGame b, Worker activeWorker, int[] pos)
     {
-        if (AtlasAction(b, pos))
+        //controllo su adjacent box
+        if (AtlasAction(b, pos)&&BuildDome())
         {
-            if(BuildDome())
-                b.BuildDome(pos);
-
-            else b.DoBuild(pos);
-
+            b.BuildDome(pos);
             return true;
         }
-        else return false;
-    }
+        else
+        {
+            super.Build(b,activeWorker,pos);
+            return true;
+        }
 
-    @Override
-    public boolean GetOpponentTurn() {
-        return opponent_turn;
     }
 
     public boolean BuildDome () //messaggio client

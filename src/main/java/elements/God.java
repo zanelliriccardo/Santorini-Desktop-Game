@@ -7,8 +7,9 @@ import java.util.ArrayList;
 
 public abstract class God {
 
-    private boolean opponent_turn;
-    private boolean in_action;
+    private boolean opponent_turn=false;
+    private boolean activable=false;
+
 
     /**
      *This method is used to move the worker:
@@ -63,7 +64,7 @@ public abstract class God {
             else return false;
     }
 
-    public abstract boolean GetOpponentTurn();
+    public boolean GetOpponentTurn(){return opponent_turn;}
 
     /*public ArrayList<God> checkOpponentCondition()
     {

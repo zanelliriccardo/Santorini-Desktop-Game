@@ -55,6 +55,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
     public void update(Object arg)
     {
         final GameProxy toClient=new GameProxy(game.GetBoard(),game.GetActivePlayer(),game.GetPlayers());
+
         while (true)
         {
             try {

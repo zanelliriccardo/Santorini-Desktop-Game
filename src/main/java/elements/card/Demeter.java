@@ -6,19 +6,26 @@ import elements.Worker;
 
 public class Demeter extends God {
     private boolean opponent_turn = false;
+    private boolean activable=true;
+
+    private int[] old_build;
+    private boolean first_build=true;
+
+
+    private boolean in_action=false;
     @Override
     public boolean Build(BoardGame b, Worker activeWorker, int[] pos)
     {
-        super.Build(b, activeWorker, pos);
-
-        if(BuildAgain() && CanBuildAgain(b, pos))
-            secondBuild(b, activeWorker, pos);
+        if(first_build) {//controlli su adjacent e not dome
+            super.Build(b, activeWorker, pos);
+            old_build = pos;
+            first_build=false;
+        }
+        else {
+            if (BuildAgain() && CanBuildAgain(b, pos))
+                secondBuild(b, activeWorker, pos);
+        }
         return true;
-    }
-
-    @Override
-    public boolean GetOpponentTurn() {
-        return opponent_turn;
     }
 
     public void secondBuild(BoardGame b, Worker activeWorker, int[] pos)

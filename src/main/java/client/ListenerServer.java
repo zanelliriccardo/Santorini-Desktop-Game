@@ -29,9 +29,9 @@ public class ListenerServer extends Thread {
                 {
                     fromServer.notifyAll();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            }
+            catch (IOException | ClassNotFoundException e)
+            {
                 e.printStackTrace();
             }
 

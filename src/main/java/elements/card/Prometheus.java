@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 public class Prometheus extends God {
     private boolean opponent_turn = false;
+    private boolean activable=true;
+    private boolean in_action=false;
 
     @Override
     public boolean Move(BoardGame b, Worker active_worker, int[] newpos) {
@@ -29,11 +31,6 @@ public class Prometheus extends God {
         if(super.Move(b, active_worker,newpos))
             return true;
         else return false;
-    }
-
-    @Override
-    public boolean GetOpponentTurn() {
-        return opponent_turn;
     }
 
     public boolean BuildBeforeMove() //MSG CLIENT
@@ -57,4 +54,20 @@ public class Prometheus extends God {
     public int[] FirstBuild() {
         return new int[]{0, 0};
     }
+
+    public void setIn_action(BoardGame boardGame,int [] worker_position)
+    {
+        for (int x = worker_position[0] - 1; x <= worker_position[0] + 1; x++) {
+            for (int y = worker_position[1] - 1; y <= worker_position[1] + 1; y++) {
+                if (x == worker_position[0] && y == worker_position[1])
+                    continue;
+                if (x > 4 || x < 0)
+                    continue;
+                if (y > 4 || y < 0)
+                    continue;
+
+            }
+        }
+    }
+
 }

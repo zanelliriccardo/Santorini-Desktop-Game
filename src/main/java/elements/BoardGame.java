@@ -2,10 +2,10 @@ package elements;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Observable;
 
 public class BoardGame extends CustomObservable implements Serializable {
     private Box[][] Board;
+    private Player active_player;
 
     public BoardGame(Box[][] boxes){
         this.Board = boxes;
@@ -95,10 +95,11 @@ public class BoardGame extends CustomObservable implements Serializable {
         custom_notifyAll();
     }
 
-    public void BuildDome(int[] pos)
+    public boolean BuildDome(int[] pos)
     {
         Board[pos[0]][pos[1]].SetDome();
         custom_notifyAll();
+        return true;
     }
 
     public Box[][] GetBoard()
@@ -136,5 +137,9 @@ public class BoardGame extends CustomObservable implements Serializable {
         return adj_boxes;
     }
 
+    public void setActivePlayer(Player player)
+    {
+        active_player=player;
+    }
 }
 
