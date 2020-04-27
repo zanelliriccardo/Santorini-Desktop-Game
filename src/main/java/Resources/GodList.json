@@ -2,30 +2,39 @@
   "GodList": [
     {
       "name": "Apollo"
+      "path" : "@../images/Apollo.png"
     },
     {
       "name": "Artemis"
+      "path" : "@../images/Artemis.png"
     },
     {
       "name": "Athena"
+      "path" : "@../images/Athena.png"
     },
     {
       "name": "Atlas"
+      "path" : "@../images/Atlas.png"
     },
     {
       "name": "Demeter"
+      "path" : "@../images/Demeter.png"
     },
     {
       "name": "Hephaestus"
+      "path" : "@../images/Hephaestus.png"
     },
     {
       "name": "Minotaur"
+      "path" : "@../images/Minotaur.png"
     },
     {
       "name": "Pan"
+      "path" : "@../images/Pan.png"
     },
     {
       "name": "Prometheus"
+      "path" : "@../images/Prometheus.png"
     }
   ]
 }
