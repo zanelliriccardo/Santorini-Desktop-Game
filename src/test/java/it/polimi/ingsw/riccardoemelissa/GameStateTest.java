@@ -1,13 +1,7 @@
 package it.polimi.ingsw.riccardoemelissa;
 
-import elements.God;
 import elements.card.Apollo;
-import elements.Player;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.InvocationTargetException;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class GameStateTest extends Object {
 
