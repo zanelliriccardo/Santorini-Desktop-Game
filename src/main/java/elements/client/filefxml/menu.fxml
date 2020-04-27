@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ControllerBoard">
+   <children>
+      <ImageView fitHeight="660.0" fitWidth="660.0">
+         <image>
+            <Image url="@../images/Santorini.png" />
+         </image>
+      </ImageView>
+      <Pane layoutX="526.0" layoutY="526.0" prefHeight="120.0" prefWidth="120.0">
+         <children>
+            <ImageView fitHeight="120.0" fitWidth="120.0" onMouseClicked="#startGame">
+               <image>
+                  <Image url="@../../../../../../Sprite/button-play-normal-ITA.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane layoutX="14.0" layoutY="550.0" prefHeight="96.0" prefWidth="498.0">
+         <children>
+            <Label layoutX="50.0" layoutY="15.0" prefHeight="60.0" prefWidth="220.0" text="NICKNAME: ">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+            <TextField fx:id="nickname" layoutX="270.0" layoutY="15.0" prefHeight="60.0" prefWidth="220.0">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </TextField>
+         </children>
+      </Pane>
+   </children>
+</Pane>

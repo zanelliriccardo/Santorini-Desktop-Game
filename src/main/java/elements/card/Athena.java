@@ -2,11 +2,12 @@ package elements.card;
 
 import elements.BoardGame;
 import elements.God;
+import elements.GodCardType;
 import elements.Worker;
 
 public class Athena extends God {
     private boolean opponent_turn=true;
-    private boolean activable=false;
+    private GodCardType type=GodCardType.PASSIVE;
 
     private boolean in_action=false;
 
@@ -20,22 +21,26 @@ public class Athena extends God {
     }
 
     @Override
-    public boolean Move(BoardGame b, Worker active_worker, int[] newpos) {
-        if (active_worker.GetProprietary().GetGodCard() instanceof Athena) {
+    public GodCardType Move(BoardGame b, Worker active_worker, int[] newpos)
+    {
+        if (active_worker.GetProprietary().GetGodCard() instanceof Athena)
+        {
             in_action = SetInAction(active_worker.GetPosition(), newpos, b);
             super.Move(b, active_worker, newpos);
-            return true;
-        } else if (in_action) {
+            return GodCardType.OK;
+        } else if (in_action)
+        {
             return RespectAthenaAction(active_worker.GetPosition(), newpos, b);
-        } else return false;
+        }
+        return GodCardType.OK;
     }
 
     /*
     If Athena allows the action, Action returns true
      */
-    public boolean RespectAthenaAction(int[] old_pos, int[] new_pos, BoardGame b) {
+    public GodCardType RespectAthenaAction(int[] old_pos, int[] new_pos, BoardGame b) {
         if ((b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)) < 1)
-            return true;
-        return false;
+            return GodCardType.OK;
+        return GodCardType.NOTPOSSIBLE;
     }
 }

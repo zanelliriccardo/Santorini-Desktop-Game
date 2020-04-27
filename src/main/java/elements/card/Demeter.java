@@ -2,30 +2,37 @@ package elements.card;
 
 import elements.BoardGame;
 import elements.God;
+import elements.GodCardType;
 import elements.Worker;
+
+import java.util.ArrayList;
 
 public class Demeter extends God {
     private boolean opponent_turn = false;
-    private boolean activable=true;
+    private GodCardType type=GodCardType.BUILD;
 
-    private int[] old_build;
+    private int[] old_position=null;
     private boolean first_build=true;
 
 
     private boolean in_action=false;
     @Override
-    public boolean Build(BoardGame b, Worker activeWorker, int[] pos)
+    public GodCardType Build(BoardGame b, Worker active_Worker, int[] pos)
     {
-        if(first_build) {//controlli su adjacent e not dome
-            super.Build(b, activeWorker, pos);
-            old_build = pos;
-            first_build=false;
+        if(in_action)
+        {
+            old_position = pos;
+            super.Build(b,active_Worker,pos);
+            in_action=false;
+            this.type=GodCardType.BUILD;
+            return GodCardType.OK;
         }
-        else {
-            if (BuildAgain() && CanBuildAgain(b, pos))
-                secondBuild(b, activeWorker, pos);
+        else
+        {
+            super.Build(b, active_Worker, pos);
+            type=GodCardType.ENDTURN;
+            return GodCardType.OK;
         }
-        return true;
     }
 
     public void secondBuild(BoardGame b, Worker activeWorker, int[] pos)
@@ -58,5 +65,19 @@ public class Demeter extends God {
         if(pos[0] != last_build[0] && pos[1] != last_build[1])
             return true;
         else return false;
+    }
+
+    public void setIn_action(boolean set)
+    {
+        in_action=set;
+    }
+
+    @Override
+    public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
+        ArrayList<int[]> possibleBox=super.adjacentBoxNotOccupiedNotDome(b, worker_pos);
+        if(!in_action&&old_position!=null&&type==GodCardType.BUILD)
+            possibleBox.remove(old_position);
+
+        return possibleBox;
     }
 }
