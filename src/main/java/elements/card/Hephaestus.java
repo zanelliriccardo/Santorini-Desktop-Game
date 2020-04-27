@@ -2,36 +2,53 @@ package elements.card;
 
 import elements.BoardGame;
 import elements.God;
+import elements.GodCardType;
 import elements.Worker;
+
+import java.util.ArrayList;
 
 public class Hephaestus extends God {
     private boolean opponent_turn = false;
-    private boolean activable=true;
+    private GodCardType type=GodCardType.BUILD;
 
     private boolean in_action=false;
 
+    public void setIn_action(boolean set)
+    {
+        in_action=set;
+    }
+
     @Override
-    public boolean Build(BoardGame b, Worker activeWorker, int[] pos)
-    {
-        if(b.IsAPossibleBuild(pos,activeWorker.GetPosition()))
-        {
-            b.DoBuild(pos);
-            if(/*messaggio per costruire ancora*/true) {
-                return secondBuild(b, activeWorker,pos);
+    public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
+        ArrayList<int[]> adj_boxes = new ArrayList<>();
+        int[] pos = new int[2];
+
+        for (int x = worker_pos[0] - 1; x <= worker_pos[0] + 1; x++) {
+            for (int y = worker_pos[1] - 1; y <= worker_pos[1] + 1; y++) {
+                if (x == worker_pos[0] && y == worker_pos[1])
+                    continue;
+
+                if (x > 4 || x < 0)
+                    continue;
+
+                if (y > 4 || y < 0)
+                    continue;
+
+                pos[0] = x;
+                pos[1] = y;
+
+                if(!b.GetStateBox(pos))
+                    continue;
+
+                if(b.GetLevelBox(pos)==4)
+                    continue;
+
+                if(b.GetLevelBox(pos)==3&&in_action)
+                    continue;
+
+                adj_boxes.add(pos);
             }
-            return true;
         }
-        return false;
+        return adj_boxes;
     }
-
-    public boolean secondBuild(BoardGame b, Worker activeWorker, int[] pos)
-    {
-        if(b.IsAPossibleBuild(pos,activeWorker.GetPosition()))
-        {
-            b.DoBuild(pos);
-            return true;
-        }
-        return false;
-    }
-
 }

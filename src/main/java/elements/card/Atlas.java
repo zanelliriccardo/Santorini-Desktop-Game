@@ -2,11 +2,12 @@ package elements.card;
 
 import elements.BoardGame;
 import elements.God;
+import elements.GodCardType;
 import elements.Worker;
 
 public class Atlas extends God {
     private boolean opponent_turn = false;
-    private boolean activable=true;
+    private GodCardType type=GodCardType.BUILD;
 
     private boolean in_action=false;
     @Override
@@ -38,5 +39,8 @@ public class Atlas extends God {
         else return false;
     }
 
-
+    public void setIn_action(boolean set)
+    {
+        in_action=set;
+    }
 }

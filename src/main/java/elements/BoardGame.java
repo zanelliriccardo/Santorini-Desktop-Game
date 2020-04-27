@@ -141,5 +141,16 @@ public class BoardGame extends CustomObservable implements Serializable {
     {
         active_player=player;
     }
+
+    public ArrayList<Worker> getWorkers(Player activePlayer) {
+        ArrayList<Worker> workers=new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if(Board[i][j].GetOccupant().GetProprietary().GetNickname().compareTo(activePlayer.GetNickname())==0)
+                    workers.add(Board[i][j].GetOccupant());
+            }
+        }
+        return workers;
+    }
 }
 

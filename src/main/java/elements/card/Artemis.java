@@ -2,30 +2,35 @@ package elements.card;
 
 import elements.BoardGame;
 import elements.God;
+import elements.GodCardType;
 import elements.Worker;
 
 import java.util.ArrayList;
 
 public class Artemis extends God {
     private boolean opponent_turn = false;
-    private boolean activable=true;
+    private GodCardType type=GodCardType.MOVE;
 
+    private int[] old_position=null;
     private boolean in_action=false;
+
     @Override
-    public boolean Move(BoardGame b, Worker active_worker, int[] newpos)
+    public GodCardType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
-        int[] oldpos =active_worker.GetPosition();
-
-        if (b.IsAPossibleMove(newpos, oldpos))
+        if(in_action)
         {
-            super.SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
-
-            if(MoveAgain() && CanMoveAgain())
-            ArtemisAction(b, active_worker, oldpos);
-
-            return true;
+            old_position = active_worker.GetPosition();
+            super.Move(b,active_worker,newpos);
+            in_action=false;
+            this.type=GodCardType.MOVE;
+            return GodCardType.OK;
         }
-        else return false;
+        else
+        {
+            super.Move(b, active_worker, newpos);
+            type=GodCardType.BUILD;
+            return GodCardType.OK;
+        }
     }
 
     /**
@@ -73,5 +78,14 @@ public class Artemis extends God {
         {
             SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
         }
+    }
+
+    @Override
+    public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
+        ArrayList<int[]> possibleBox=super.adjacentBoxNotOccupiedNotDome(b, worker_pos);
+        if(!in_action&&old_position!=null&&type==GodCardType.MOVE)
+            possibleBox.remove(old_position);
+
+        return possibleBox;
     }
 }
