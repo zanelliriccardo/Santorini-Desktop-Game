@@ -22,7 +22,7 @@ public class JsonReader {
 
     public String[] GodsInGame (int n) {
         ArrayList<String> gods = new ArrayList<>();
-        String[] gods_chosen = new String[n];
+        String[] gods_chosen = new String[n*2];
 
         try {
             obj = (JSONObject) parser.parse((new FileReader("/Users/Utente/Desktop/PROGETTO INGSW/progettoingsw/src/main/java/Resources/GodList.json")));
@@ -34,20 +34,29 @@ public class JsonReader {
             System.out.print("Parse EXCEPTION!\n");
         }
 
-        JSONArray array = (JSONArray) obj.get("GodList");
-        JSONObject name;
+        JSONArray god_list = (JSONArray) obj.get("GodList");
+        JSONObject god;
 
-        for (Object o : array) {
-            name = (JSONObject) o;
-            gods.add((String) name.get("name"));
+        for (Object o : god_list) {
+            god = (JSONObject) o;
+            gods.add((String) god.get("name"));
         }
 
         Collections.shuffle(gods);
 
         for (int i = 0; i<n ; i++)
         {
-            gods_chosen[i] = gods.get(i);
+            gods_chosen[i*2] = gods.get(i);
+
+            for(Object o : god_list)
+            {
+                god = (JSONObject) o;
+
+                if(god.get("name").equals(gods_chosen[i*2]))
+                    gods_chosen[i*2 + 1] = (String) god.get("path");
+            }
         }
+
         return gods_chosen;
     }
 }
