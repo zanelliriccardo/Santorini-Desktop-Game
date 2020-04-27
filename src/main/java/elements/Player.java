@@ -22,6 +22,11 @@ public class Player {
         god_card=god;
     }
 
+    public void SetColor(String color)
+    {
+        this.color = color;
+    }
+
     public String GetColor()
     {
         return color;

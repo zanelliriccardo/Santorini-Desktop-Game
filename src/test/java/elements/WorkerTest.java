@@ -53,8 +53,10 @@ class WorkerTest extends Object {
 
         w.SetPosition(pos);
 
-        assertEquals(pos, w.GetPosition());
+        int [] actual = w.GetPosition();
 
+        assertEquals(pos[0], actual[0]);
+        assertEquals(pos[1], actual[1]);
     }
 
     @Test

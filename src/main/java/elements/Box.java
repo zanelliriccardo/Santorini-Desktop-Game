@@ -8,14 +8,14 @@ public class Box {
     private String color;
     private Worker occupant;
 
-    public Box(boolean b, int i) {
-        state=b;
-        level=i;
+    public Box(boolean state, int level) {
+        this.state=state;
+        this.level=level;
     }
 
-    public void ChangeState(String nick)
+    public void ChangeState(String color)
     {
-        color=nick;
+        this.color=color;
         state=false;
     }
 
