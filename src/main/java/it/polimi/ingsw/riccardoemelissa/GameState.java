@@ -189,7 +189,7 @@ public class GameState {
         for (Player opponent : players)
         {
             if((opponent.GetNickname().compareTo(GetActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                if(!opponent.GetGodCard().Move(b,getActiveWorker,getPos));//check move is possible for opponent card
+                //if(!opponent.GetGodCard().Move(b,getActiveWorker,getPos));//check move is possible for opponent card
                     return false;
         }
         if(!b.IsAdjacentBox(getActiveWorker.GetPosition(),getPos))//check newposition is adjacent at  actual worker position

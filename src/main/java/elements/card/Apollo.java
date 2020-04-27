@@ -5,6 +5,8 @@ import elements.BoardGame;
 import elements.God;
 import elements.GodCardType;
 import elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.Command;
+import it.polimi.ingsw.riccardoemelissa.GameState;
 
 import java.util.ArrayList;
 
@@ -55,19 +57,17 @@ public class Apollo extends God {
 
     public void SetApolloPosition(Worker active_worker, int[] newpos, BoardGame b)
     {
-        b.GetOccupant(newpos).SetPosition(active_worker.GetPosition());
+        b.GetOccupant(newpos).SetPosition(active_worker.GetPosition());//da controllare
+        b.setOccupant(active_worker.GetPosition(),b.GetOccupant(newpos));
+
         active_worker.SetPosition(newpos);
+        b.setOccupant(newpos,active_worker);
     }
 
-    public boolean ApolloAction (BoardGame b, Worker active_worker, int[] newpos)
+    @Override
+    public void doPower(GameState game, Command cmd)
     {
-        if (b.GetOccupant(newpos).GetProprietary().GetNickname().compareTo(active_worker.GetProprietary().GetNickname())==0)
-            return false;
-        if(b.GetLevelBox(newpos)==4)
-            return  false;
-        if(b.GetLevelBox(newpos)-b.GetLevelBox(active_worker.GetPosition()) > 1)
-            return false;
-        else return true;
+        SetApolloPosition((Worker) cmd.GetObj(),cmd.GetPos(),game.GetBoard());
     }
 }
 

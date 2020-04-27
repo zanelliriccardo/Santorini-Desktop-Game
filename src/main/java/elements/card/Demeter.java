@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Demeter extends God {
     private boolean opponent_turn = false;
-    private GodCardType type=GodCardType.BUILD;
+    private GodCardType type=GodCardType.MOVE;
 
     private int[] old_position=null;
     private boolean first_build=true;
@@ -33,43 +33,6 @@ public class Demeter extends God {
             type=GodCardType.ENDTURN;
             return GodCardType.OK;
         }
-    }
-
-    public void secondBuild(BoardGame b, Worker activeWorker, int[] pos)
-    {
-        if(b.IsAPossibleBuild(pos,activeWorker.GetPosition()))
-            b.DoBuild(pos);
-    }
-
-    public boolean BuildAgain ()
-    {
-        return true;
-    }
-
-    public boolean CanBuildAgain(BoardGame b, int[] last_build)
-    {
-        int[] pos = GetPosSecondBuild();
-
-        if(DemeterAction(b, pos, last_build))
-            return true;
-        else return false;
-    }
-
-    public int[] GetPosSecondBuild ()
-    {
-        return new int[]{0, 0};
-    }
-
-    public boolean DemeterAction (BoardGame b, int[] pos, int[] last_build)
-    {
-        if(pos[0] != last_build[0] && pos[1] != last_build[1])
-            return true;
-        else return false;
-    }
-
-    public void setIn_action(boolean set)
-    {
-        in_action=set;
     }
 
     @Override

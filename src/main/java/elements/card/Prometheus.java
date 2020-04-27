@@ -14,13 +14,6 @@ public class Prometheus extends God {
     private boolean in_action=false;
 
     @Override
-    public GodCardType Move(BoardGame b, Worker active_worker, int[] newpos)
-    {
-        super.Move(b, active_worker,newpos);
-    }
-
-
-    @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> adj_boxes = new ArrayList<>();
         int[] pos = new int[2];
@@ -40,35 +33,13 @@ public class Prometheus extends God {
                 pos[0] = x;
                 pos[1] = y;
 
-                if(b.GetLevelBox(pos)>b.GetLevelBox(worker_pos)&&in_action)
+                if(b.GetLevelBox(pos)>b.GetLevelBox(worker_pos)&&in_action&&type==GodCardType.MOVE)
                     continue;
 
                 adj_boxes.add(pos);
             }
         }
         return adj_boxes;
-    }
-
-    public boolean BuildBeforeMove() //MSG CLIENT
-    {
-        return true;
-    }
-
-    public boolean PrometheusAction(BoardGame b, Worker active_worker)
-    {
-        if(BuildBeforeMove())
-        {
-            int[] pos = FirstBuild();
-
-            if(b.IsAPossibleBuild(pos, active_worker.GetPosition()))
-                return true;
-            else return false;
-        }
-        else return false;
-    }
-
-    public int[] FirstBuild() {
-        return new int[]{0, 0};
     }
 
     @Override

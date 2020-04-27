@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Hephaestus extends God {
     private boolean opponent_turn = false;
-    private GodCardType type=GodCardType.BUILD;
+    private GodCardType type=GodCardType.MOVE;
 
     private boolean in_action=false;
 
@@ -43,7 +43,7 @@ public class Hephaestus extends God {
                 if(b.GetLevelBox(pos)==4)
                     continue;
 
-                if(b.GetLevelBox(pos)==3&&in_action)
+                if(b.GetLevelBox(pos)>1&&in_action)
                     continue;
 
                 adj_boxes.add(pos);

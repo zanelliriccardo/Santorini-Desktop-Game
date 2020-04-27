@@ -9,19 +9,17 @@ import java.util.ArrayList;
 
 public class Minotaur extends God {
     private boolean opponent_turn = false;
-    private GodCardType type=GodCardType.PASSIVE;
+    private GodCardType type=GodCardType.MOVE;
 
     @Override
-    public GodCardType Move(BoardGame b, Worker active_worker, int[] newpos) {
-        if(MinotaurAction (b, active_worker, newpos))
-        {
-            if (!b.GetStateBox(newpos))
-                SetMinotaurPosition(active_worker, newpos, b);
+    public GodCardType Move(BoardGame b, Worker active_worker, int[] newpos)
+    {
+        if (!b.GetStateBox(newpos))
+            SetMinotaurPosition(active_worker, newpos, b);
+        else
+            SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
 
-            else SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
-            return true;
-        }
-        else return false;
+        return GodCardType.BUILD;
     }
 
     @Override
@@ -44,6 +42,14 @@ public class Minotaur extends God {
                 pos[0] = x;
                 pos[1] = y;
 
+                int[] newpos_opponent = new int[]{(x - worker_pos[0]) + x, (y - worker_pos[1]) + y};
+
+                if(newpos_opponent[0]>4||newpos_opponent[1]>4)
+                    continue;
+
+                if(!b.GetStateBox(newpos_opponent))
+                    continue;
+
                 if(b.GetLevelBox(pos)==4)
                     continue;
 
@@ -65,16 +71,4 @@ public class Minotaur extends God {
             b.ChangeState(newpos, active_worker.GetProprietary().GetColor());
     }
 
-    private boolean MinotaurAction(BoardGame b, Worker active_worker, int[] newpos) {
-        int[] newpos_opponent=new int[]{(newpos[0]-active_worker.GetX())+newpos[0],(newpos[1]-active_worker.GetY())+newpos[1]};
-
-        if (b.GetOccupant(newpos).GetProprietary().GetNickname().equals(active_worker.GetProprietary().GetNickname()))
-            return false;
-        if(b.GetLevelBox(newpos)==4)
-            return  false;
-        if(b.GetLevelBox(newpos)-b.GetLevelBox(active_worker.GetPosition()) > 1)
-            return false;
-
-        else return true;
-    }
 }

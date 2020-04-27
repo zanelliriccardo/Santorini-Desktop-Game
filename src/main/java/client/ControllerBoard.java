@@ -23,7 +23,7 @@ public class ControllerBoard implements CustomObserver
 {
     private ObjectInputStream in;
     private ObjectOutputStream out;
-    private Parent root;
+    private Parent root=FXMLLoader.load(getClass().getResource("@../filefxml/menu.fxml"));
     private GameProxy from_server;
     private Stage primary_stage;
     private Scene input_scene;
@@ -32,13 +32,12 @@ public class ControllerBoard implements CustomObserver
     private ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
     private Worker activeWorker;
 
-    public ControllerBoard(Socket s, Parent root) throws IOException
+    public ControllerBoard(Socket s) throws IOException
     {
         primary_stage=new Stage();
         input_scene =new Scene(root);
         in=new ObjectInputStream(s.getInputStream());
         out=new ObjectOutputStream(s.getOutputStream());
-        this.root=root;
     }
 
     @FXML
@@ -68,34 +67,36 @@ public class ControllerBoard implements CustomObserver
     {
         Node source=(Node)mouseEvent.getSource();
         int rowIndex=(GridPane.getRowIndex(source))==null ? 0:(GridPane.getRowIndex(source));
-        int colIndex=(GridPane.getColumnIndex(source))==null ? 0:(GridPane.getColumnIndex(source)) ;
+        int colIndex=(GridPane.getColumnIndex(source))==null ? 0:(GridPane.getColumnIndex(source));
         int[] new_position= new int[]{rowIndex,colIndex};
+
+        if(activeWorker==null){return;}
 
         if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)
         {
             activeWorker = from_server.getBoard().GetOccupant(new_position);
             if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.MOVE)
                 activeMoveCells();
-            if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.BUILD)
+            else if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.BUILD)
                 activeBuildCells();
         }
 
         if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.MOVE&&possibleCells_activeWorker.contains(new_position))
             from_server.getActivePlayer().GetGodCard().Move(from_server.getBoard(),activeWorker,new_position);
-        if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.BUILD&&possibleCells_activeWorker.contains(new_position))
+        else if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.BUILD&&possibleCells_activeWorker.contains(new_position))
             from_server.getActivePlayer().GetGodCard().Build(from_server.getBoard(),activeWorker,new_position);
-    }
 
-    private void activeBuildCells()
-    {
-        ArrayList<Worker> workers=from_server.getBoard().getWorkers(from_server.getActivePlayer());
-        possibleCells_activeWorker=checkBuild(from_server,activeWorker);
+        //aggiungere click su endturn active worker=null
     }
 
     private void activeMoveCells()
     {
-        ArrayList<Worker> workers=from_server.getBoard().getWorkers(from_server.getActivePlayer());
-        possibleCells_activeWorker=checkMove(from_server,activeWorker);
+        possibleCells_activeWorker= checkMoves(from_server);
+    }
+
+    private void activeBuildCells()
+    {
+        possibleCells_activeWorker= checkBuilds(from_server,activeWorker);
     }
 
     @Override
@@ -133,26 +134,25 @@ public class ControllerBoard implements CustomObserver
         //command lose da fare
     }
 
-    public ArrayList<int[]> checkMove(GameProxy game,Worker worker_toControl)
+    public ArrayList<int[]> checkMoves(GameProxy game)
     {
-        ArrayList<int[]> possiblemoves=game.getBoard().AdjacentBox(worker_toControl.GetPosition());
+        ArrayList<int[]> possiblemoves=activeWorker.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(game.getBoard(),activeWorker.GetPosition());
 
-        possiblemoves.removeIf(pos -> game.getBoard().GetLevelBox(pos) - game.getBoard().GetLevelBox(worker_toControl.GetPosition()) < 2);
+        possiblemoves.removeIf(pos -> game.getBoard().GetLevelBox(pos) - game.getBoard().GetLevelBox(activeWorker.GetPosition()) > 1);
 
         for (int[] pos: possiblemoves)
         {
             for (Player opponent : game.getPlayers())
             {
                 if((opponent.GetNickname().compareTo(game.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Move(game.getBoard(),worker_toControl,pos)==GodCardType.NOTPOSSIBLE);//check move is possible for opponent card
+                    if(opponent.GetGodCard().Move(game.getBoard(),activeWorker,pos)==GodCardType.NOTPOSSIBLE);//check move is possible for opponent card
                         possiblemoves.remove(pos);
             }
         }
-
         return possiblemoves;
     }
 
-    public ArrayList<int[]> checkBuild(GameProxy game,Worker worker_toControl)
+    public ArrayList<int[]> checkBuilds(GameProxy game, Worker worker_toControl)
     {
         ArrayList<int[]> possiblebuild=game.getBoard().AdjacentBox(worker_toControl.GetPosition());
 

@@ -7,7 +7,7 @@ import elements.Worker;
 
 public class Pan extends God {
     private boolean opponent_turn;
-    private GodCardType type=GodCardType.PASSIVE;
+    private GodCardType type=GodCardType.MOVE;
 
     @Override
     public GodCardType Move (BoardGame b, Worker active_worker, int[] newpos)
@@ -17,8 +17,8 @@ public class Pan extends God {
         if(super.Move(b, active_worker, newpos)==GodCardType.OK)
         {
             if (b.GetLevelBox(oldpos) - b.GetLevelBox(newpos) > 1)
-            b.setActivePlayer(null);
+                return GodCardType.WIN;
         }
-        return GodCardType.OK;
+        return GodCardType.BUILD;
     }
 }

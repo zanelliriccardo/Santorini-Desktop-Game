@@ -7,22 +7,22 @@ import elements.Worker;
 
 public class Atlas extends God {
     private boolean opponent_turn = false;
-    private GodCardType type=GodCardType.BUILD;
+    private GodCardType type=GodCardType.MOVE;
 
     private boolean in_action=false;
     @Override
-    public boolean Build(BoardGame b, Worker activeWorker, int[] pos)
+    public GodCardType Build(BoardGame b, Worker activeWorker, int[] pos)
     {
         //controllo su adjacent box
         if (AtlasAction(b, pos)&&BuildDome())
         {
             b.BuildDome(pos);
-            return true;
+            return GodCardType.OK;
         }
         else
         {
             super.Build(b,activeWorker,pos);
-            return true;
+            return GodCardType.OK;
         }
 
     }

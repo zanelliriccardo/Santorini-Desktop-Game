@@ -1,5 +1,9 @@
 package elements;
 
+import it.polimi.ingsw.riccardoemelissa.Command;
+import it.polimi.ingsw.riccardoemelissa.GameProxy;
+import it.polimi.ingsw.riccardoemelissa.GameState;
+
 import java.util.ArrayList;
 
 public abstract class God {
@@ -94,5 +98,10 @@ public abstract class God {
 
     public void setIn_action(boolean in_action){
         this.in_action=in_action;
+    }
+
+    public void doPower(GameState game, Command cmd)
+    {
+
     }
 }
