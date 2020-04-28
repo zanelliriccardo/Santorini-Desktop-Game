@@ -44,7 +44,7 @@ public class Client extends Application implements Observer {
         ListenerServer listening_boardupdate = new ListenerServer(socket,root);
         listening_boardupdate.start();
 
-        ControllerBoard controller=new ControllerBoard(socket,root);
+        ControllerBoard controller=new ControllerBoard(socket);
         launch(args);
     }
 

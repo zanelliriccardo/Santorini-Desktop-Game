@@ -39,8 +39,8 @@ public abstract class God {
     public void SetPosition (Worker active_worker, int[] oldpos, int[] newpos, BoardGame b)
     {
         active_worker.SetPosition(newpos);
-        b.ChangeState(newpos, active_worker.GetProprietary().GetColor());
-        b.ChangeState(oldpos);
+        b.GetBoard()[newpos[0]][newpos[1]].ChangeState(active_worker);
+        b.GetBoard()[oldpos[0]][oldpos[1]].ChangeState();
     }
 
     /**
@@ -62,6 +62,7 @@ public abstract class God {
     }
 
     public boolean GetOpponentTurn(){return opponent_turn;}
+
     public GodCardType GetType(){return type;}
 
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos)

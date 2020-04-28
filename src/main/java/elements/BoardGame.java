@@ -45,18 +45,6 @@ public class BoardGame extends CustomObservable implements Serializable {
         return true;
     }
 
-    public void ChangeState(int[] pos)
-    {
-        Board[pos[0]][pos[1]].ChangeState();
-        custom_notifyAll();
-    }
-
-    public void ChangeState(int[] pos, String color)
-    {
-        Board[pos[0]][pos[1]].ChangeState(color);
-        custom_notifyAll();
-    }
-
     public boolean IsAPossibleBuild(int[] pos, int[] workerpos)
     {
         if(Math.abs(pos[0]-workerpos[0])>1)
