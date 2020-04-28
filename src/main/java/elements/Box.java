@@ -5,7 +5,6 @@ import it.polimi.ingsw.riccardoemelissa.App;
 public class Box {
     private boolean state;
     private int level;
-    private String color;
     private Worker occupant;
 
     public Box(boolean state, int level) {
@@ -13,15 +12,14 @@ public class Box {
         this.level=level;
     }
 
-    public void ChangeState(String color)
+    public void ChangeState(Worker worker)
     {
-        this.color=color;
+        occupant=worker;
         state=false;
     }
 
     public void ChangeState()
     {
-        color=null;
         state=true;
     }
 
@@ -38,11 +36,6 @@ public class Box {
     public void Build()
     {
         level++;
-    }
-
-    public String GetColor()
-    {
-        return color;
     }
 
     public Worker GetOccupant() {
