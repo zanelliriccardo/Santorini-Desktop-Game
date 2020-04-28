@@ -27,7 +27,7 @@ public class ExecutorClientCommand implements CustomObserver {
 
         if(cmd.GetType()==CommandType.SETPOWER)
         {
-            game.GetActivePlayer().GetGodCard().setIn_action((boolean) cmd.GetObj());
+            game.getActivePlayer().GetGodCard().setIn_action((boolean) cmd.GetObj());
             game.GetBoard().custom_notifyAll();
         }
         if(cmd.GetType()==CommandType.BOARDCHANGE)
@@ -56,12 +56,22 @@ public class ExecutorClientCommand implements CustomObserver {
         else if(CommandType.MOVE==cmd.GetType())
         {
             //ricontrollare se mossa possibile però qua mossa singola se si riesce
+            if(!game.IsPossibleMove((Worker)cmd.GetObj(),cmd.GetPos()))
+            {
+                update(new Command(CommandType.LOSE, null, null));//dafare
+                return;
+            }
             ((Worker)cmd.GetObj()).GetProprietary().GetGodCard().Move(game.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
             game.GetBoard().custom_notifyAll();
         }
         else if(CommandType.BUILD==cmd.GetType())
         {
             //ricontrollare se build possibile però qua build singola se si riesce
+            if(!game.IsPossibleBuild((Worker)cmd.GetObj(),cmd.GetPos()))
+            {
+                update(new Command(CommandType.LOSE, null, null));//dafare
+                return;
+            }
             ((Worker)cmd.GetObj()).GetProprietary().GetGodCard().Build(game.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
             game.GetBoard().custom_notifyAll();
         }

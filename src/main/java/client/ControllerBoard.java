@@ -98,13 +98,13 @@ public class ControllerBoard implements CustomObserver
 
     private void activeMoveCells()
     {
-        possibleCells_activeWorker= checkMoves(from_server,activeWorker);
+        possibleCells_activeWorker= checkMoves(from_server.getBoard(),activeWorker);
         //metttere celle blu
     }
 
     private void activeBuildCells()
     {
-        possibleCells_activeWorker= checkBuilds(from_server,activeWorker);
+        possibleCells_activeWorker= checkBuilds(from_server.getBoard(),activeWorker);
         //metttere celle blu
     }
 
@@ -130,7 +130,7 @@ public class ControllerBoard implements CustomObserver
 
         for (Worker w : workers)
         {
-            possibleCells_activeWorker.addAll(checkMoves(from_server,w));
+            possibleCells_activeWorker.addAll(checkMoves(from_server.getBoard(),w));
         }
 
         if(possibleCells_activeWorker.isEmpty())
@@ -185,36 +185,36 @@ public class ControllerBoard implements CustomObserver
         }
     }
 
-    public ArrayList<int[]> checkMoves(GameProxy game, Worker worker_toMove)
+    public ArrayList<int[]> checkMoves(BoardGame board, Worker worker_toMove)
     {
-        ArrayList<int[]> possiblemoves= worker_toMove.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(game.getBoard(), worker_toMove.GetPosition());
+        ArrayList<int[]> possiblemoves= worker_toMove.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board, worker_toMove.GetPosition());
 
-        possiblemoves.removeIf(pos -> game.getBoard().GetLevelBox(pos) - game.getBoard().GetLevelBox(worker_toMove.GetPosition()) > 1);
+        possiblemoves.removeIf(pos -> board.GetLevelBox(pos) - board.GetLevelBox(worker_toMove.GetPosition()) > 1);
 
         for (int[] pos: possiblemoves)
         {
-            for (Player opponent : game.getPlayers())
+            for (Player opponent : from_server.getPlayers())
             {
-                if((opponent.GetNickname().compareTo(game.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Move(game.getBoard(), worker_toMove,pos)==CommandType.ERROR);//check move is possible for opponent card
+                if((opponent.GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                    if(opponent.GetGodCard().Move(board, worker_toMove,pos)==CommandType.ERROR);//check move is possible for opponent card
                         possiblemoves.remove(pos);
             }
         }
         return possiblemoves;
     }
 
-    public ArrayList<int[]> checkBuilds(GameProxy game, Worker builder)
+    public ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
     {
-        ArrayList<int[]> possiblebuild=game.getBoard().AdjacentBox(builder.GetPosition());
+        ArrayList<int[]> possiblebuild=board.AdjacentBox(builder.GetPosition());
 
-        possiblebuild.removeIf(pos -> game.getBoard().GetLevelBox(pos) == 4);
+        possiblebuild.removeIf(pos -> board.GetLevelBox(pos) == 4);
 
         for (int[] pos: possiblebuild)
         {
-            for (Player opponent : game.getPlayers())
+            for (Player opponent : from_server.getPlayers())
             {
-                if((opponent.GetNickname().compareTo(game.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Build(game.getBoard(),builder,pos)==CommandType.ERROR);//check build is possible for opponent card
+                if((opponent.GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                    if(opponent.GetGodCard().Build(board,builder,pos)==CommandType.ERROR);//check build is possible for opponent card
                         possiblebuild.remove(pos);
             }
         }

@@ -15,7 +15,6 @@ public class GameState {
     private static Worker[] workers;
     private static int trace = -1;
     private static BoardGame b;
-    private static Worker activeworker;
     private boolean gameover=false;
 
     /**
@@ -52,14 +51,6 @@ public class GameState {
     public Worker GetWorkerToMove(String nick, int n)
     {
         return workers[GetIndexPlayer(nick) + n];
-    }
-
-    public void SetProprietaryWorker() {
-
-        for (int i = 0; i < workers.length; i = i + 2) {
-            workers[i] = new Worker(players[i]);
-            workers[i + 1] = new Worker(players[i]);
-        }
     }
 
     public void SetTurnOrder() {
@@ -115,26 +106,16 @@ public class GameState {
        else trace = 0;
     }
 
-    public Player GetActivePlayer()
+    public Player getActivePlayer()
     {
         while(players[trace]==null)
             NextTurn();
         return players[trace];
     }
 
-    public Worker GetActiveWorker()
-    {
-        return activeworker;
-    }
-
     public BoardGame GetBoard()
     {
         return b;
-    }
-
-    public void SetActiveWorker(Worker worker)
-    {
-        activeworker=worker;
     }
 
     public boolean EndGame(Player activePlayer)
@@ -188,18 +169,13 @@ public class GameState {
     {
         for (Player opponent : players)
         {
-            if((opponent.GetNickname().compareTo(GetActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+            if((opponent.GetNickname().compareTo(getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
                 //if(!opponent.GetGodCard().Move(b,getActiveWorker,getPos));//check move is possible for opponent card
                     return false;
         }
         if(!b.IsAdjacentBox(getActiveWorker.GetPosition(),getPos))//check newposition is adjacent at  actual worker position
             return false;
         return true;
-    }
-
-    public boolean checkBuild(Worker getActiveWorker, int[] getPos)
-    {
-        return b.IsAdjacentBox(activeworker.GetPosition(),getPos);
     }
 
     public boolean getGameOver()
@@ -216,7 +192,7 @@ public class GameState {
         {
             for (int j = 0; j < 5; j++)
             {
-                if(b.GetOccupant(i,j).GetProprietary().GetNickname().compareTo(GetActivePlayer().GetNickname())==0)
+                if(b.GetOccupant(i,j).GetProprietary().GetNickname().compareTo(getActivePlayer().GetNickname())==0)
                     b.removeWorker(i,j);
             }
         }
@@ -225,7 +201,7 @@ public class GameState {
         {
             if(i==players.length-1)
                 players[i]=null;
-            if(players[i].GetNickname().compareTo(GetActivePlayer().GetNickname())==0)
+            if(players[i].GetNickname().compareTo(getActivePlayer().GetNickname())==0)
                 players[i]=players[i+1];
         }
 
@@ -236,4 +212,55 @@ public class GameState {
     {
         b=board;
     }
+
+    public boolean IsPossibleMove(Worker activeWorker, int[] pos)
+    {
+        ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
+        possibleCells_activeWorker= checkMoves(b,activeWorker);
+        return possibleCells_activeWorker.contains(pos);
+    }
+
+    public boolean IsPossibleBuild(Worker activeWorker, int[] pos)
+    {
+        ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
+        possibleCells_activeWorker= checkBuilds(b,activeWorker);
+        return possibleCells_activeWorker.contains(pos);
+    }
+
+    public ArrayList<int[]> checkMoves(BoardGame board, Worker worker_toMove)
+    {
+        ArrayList<int[]> possiblemoves= worker_toMove.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board, worker_toMove.GetPosition());
+
+        possiblemoves.removeIf(pos -> board.GetLevelBox(pos) - board.GetLevelBox(worker_toMove.GetPosition()) > 1);
+
+        for (int[] pos: possiblemoves)
+        {
+            for (Player opponent : players)
+            {
+                if((opponent.GetNickname().compareTo(getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                    if(opponent.GetGodCard().Move(board, worker_toMove,pos)==CommandType.ERROR);//check move is possible for opponent card
+                possiblemoves.remove(pos);
+            }
+        }
+        return possiblemoves;
+    }
+
+    public ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
+    {
+        ArrayList<int[]> possiblebuild=board.AdjacentBox(builder.GetPosition());
+
+        possiblebuild.removeIf(pos -> board.GetLevelBox(pos) == 4);
+
+        for (int[] pos: possiblebuild)
+        {
+            for (Player opponent : players)
+            {
+                if((opponent.GetNickname().compareTo(getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                    if(opponent.GetGodCard().Build(board,builder,pos)==CommandType.ERROR);//check build is possible for opponent card
+                possiblebuild.remove(pos);
+            }
+        }
+        return possiblebuild;
+    }
+
 }

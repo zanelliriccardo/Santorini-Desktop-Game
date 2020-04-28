@@ -40,7 +40,7 @@ public abstract class God {
     {
         active_worker.SetPosition(newpos);
         b.GetBoard()[newpos[0]][newpos[1]].ChangeState(active_worker);
-        b.GetBoard()[oldpos[0]][oldpos[1]].ChangeState();
+        b.GetBoard()[oldpos[0]][oldpos[1]].removeOccupant();
     }
 
     /**
