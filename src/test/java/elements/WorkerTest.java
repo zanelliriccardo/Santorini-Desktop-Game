@@ -9,44 +9,36 @@ class WorkerTest extends Object {
     @Test
     void getX() {
         String str = "name";
-        Player p = new Player(str);
-        Worker w = new Worker(p);
-        int[] pos = new int[2];
+        Player player = new Player(str);
+        Worker worker = new Worker(player, new int[]{1,2});
 
-        pos[0] = 1;
-        w.SetPosition(pos);
-
-        assertEquals(1, w.GetX());
+        assertEquals(1, worker.GetX());
     }
 
     @Test
     void getY() {
         String str = "name";
-        Player p = new Player(str);
-        Worker w = new Worker(p);
-        int[] pos = new int[2];
+        Player player = new Player(str);
+        Worker worker = new Worker(player, new int[]{1,2});
 
-        pos[1] = 2;
-        w.SetPosition(pos[0], pos[1]);
-
-        assertEquals(2, w.GetY());
+        assertEquals(2, worker.GetY());
     }
 
     @Test
     void getProprietary() {
         String str = "name";
-        Player p = new Player(str);
-        Worker w = new Worker(p);
-
-        assertEquals(p, w.GetProprietary());
+        Player player = new Player(str);
+        Worker worker = new Worker(player, new int[]{1,2});
+        assertEquals(player, worker.GetProprietary());
     }
 
     @Test
     void getPosition() {
         String str = "name";
         Player p = new Player(str);
-        Worker w = new Worker(p);
         int[] pos = new int[2];
+        Worker w = new Worker(p, pos);
+
 
         pos[0]= 1;
         pos[1]= 2;
