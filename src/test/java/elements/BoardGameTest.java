@@ -66,7 +66,7 @@ class BoardGameTest extends Object {
         BoardGame boardGame = new BoardGame(boxes);
 
         Player player = new Player("name");
-        Worker worker = new Worker(player);
+        Worker worker = new Worker();
         int[] oldpos = new int[]{2,3};
         worker.SetPosition(oldpos);
         boardGame.DoBuild(oldpos);

@@ -45,8 +45,9 @@ class WorkerTest extends Object {
     void getPosition() {
         String str = "name";
         Player p = new Player(str);
-        Worker w = new Worker(p);
         int[] pos = new int[2];
+        Worker w = new Worker(p, pos);
+
 
         pos[0]= 1;
         pos[1]= 2;
