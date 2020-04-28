@@ -23,11 +23,17 @@ public class ExecutorClientCommand implements CustomObserver {
             game=null;
         }
 
-        //gestione comandi
+        //gestione comandi da cambiare con switch
 
+        if(cmd.GetType()==CommandType.SETPOWER)
+        {
+            game.GetActivePlayer().GetGodCard().setIn_action((boolean) cmd.GetObj());
+            game.GetBoard().custom_notifyAll();
+        }
         if(cmd.GetType()==CommandType.BOARDCHANGE)
         {
             game.UpdateBoard((BoardGame) cmd.GetObj());
+            game.GetBoard().custom_notifyAll();
         }
         if(cmd.GetType()==CommandType.MODE)
         {
@@ -36,6 +42,7 @@ public class ExecutorClientCommand implements CustomObserver {
         else if(CommandType.CHANGE_TURN==cmd.GetType())
         {
             game.NextTurn();
+            game.GetBoard().custom_notifyAll();
         }
         else if(CommandType.NICKNAME==cmd.GetType())
         {
@@ -43,7 +50,8 @@ public class ExecutorClientCommand implements CustomObserver {
         }
         else if(CommandType.NEWWORKER==cmd.GetType())
         {
-            game.SetNewWorker((Worker)cmd.GetObj());
+            game.SetNewWorker((Worker)cmd.GetObj());//da cambiare
+            game.GetBoard().custom_notifyAll();
         }
         else if(CommandType.MOVE==cmd.GetType())
         {

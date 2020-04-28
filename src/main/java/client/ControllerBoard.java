@@ -49,15 +49,14 @@ public class ControllerBoard implements CustomObserver
         root= FXMLLoader.load(getClass().getResource(s));
     }
 
-    public void activedPower()
+    public void activedPower(boolean bool)
     {
-        from_server.getActivePlayer().GetGodCard().setIn_action(true);
+        messageToServer(CommandType.SETPOWER,bool);
+    }
 
-        if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.MOVE)
-            activeMoveCells();
-        if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.BUILD)
-            activeBuildCells();
-        //mettere le celle possibile blu
+    public void setNickname(String nickname)
+    {
+        messageToServer(CommandType.NICKNAME,nickname);
     }
 
     @FXML
@@ -69,6 +68,9 @@ public class ControllerBoard implements CustomObserver
         int[] new_position= new int[]{rowIndex,colIndex};
 
         if(activeWorker==null){return;}
+
+        if(getWorkers().size()<2)
+            messageToServer(CommandType.NEWWORKER,new Worker(from_server.getActivePlayer(),new_position));
 
         if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)
         {
@@ -97,19 +99,18 @@ public class ControllerBoard implements CustomObserver
     private void activeMoveCells()
     {
         possibleCells_activeWorker= checkMoves(from_server,activeWorker);
+        //metttere celle blu
     }
 
     private void activeBuildCells()
     {
         possibleCells_activeWorker= checkBuilds(from_server,activeWorker);
+        //metttere celle blu
     }
 
-    @Override
-    public void update(Object obj) {
-        from_server=(GameProxy) obj;
-
+    public ArrayList<Worker> getWorkers()
+    {
         ArrayList<Worker> workers=new ArrayList<Worker>();
-
         for (int i = 0; i < 5; i++)
         {
             for (int j = 0; j < 5; j++)
@@ -118,33 +119,41 @@ public class ControllerBoard implements CustomObserver
                     workers.add(from_server.getBoard().GetOccupant(i,j));
             }
         }
+        return workers;
+    }
+
+    @Override
+    public void update(Object obj) {
+        from_server=(GameProxy) obj;
+
+        ArrayList<Worker> workers=getWorkers();
 
         for (Worker w : workers)
         {
-            possibleCells_activeWorker.addAll(checkMoves(from_server,activeWorker));
+            possibleCells_activeWorker.addAll(checkMoves(from_server,w));
         }
 
         if(possibleCells_activeWorker.isEmpty())
             messageToServer(CommandType.LOSE);
         possibleCells_activeWorker.clear();
+
         //fare guiii
 
-        //controllo se carta dice endturn e abilito bottone
         if(from_server.getActivePlayer().GetGodCard().GetType()==GodCardType.ENDTURN)
         {
-            from_server.getActivePlayer().GetGodCard().resetCard(GodCardType.MOVE);
-            //abilita click fine turno bottone di endturno()
+            //abilita click fine turno bottone di endturn() e disabilita il resto
         }
 
     }
 
     public void endTurn()
     {
+        from_server.getActivePlayer().GetGodCard().resetCard(GodCardType.MOVE);
         messageToServer(CommandType.CHANGE_TURN);
     }
 
-    public void messageToServer(CommandType cmd_type,BoardGame b) {
-        Command cmd_toserver=new Command(cmd_type,b,null);
+    public void messageToServer(CommandType cmd_type,Object obj) {
+        Command cmd_toserver=new Command(cmd_type,obj,null);
         while (true) {
             try {
                 out.writeObject(cmd_toserver);
@@ -155,7 +164,7 @@ public class ControllerBoard implements CustomObserver
     }
 
     public void messageToServer(CommandType cmd_type,Object obj,int[] new_pos) {
-        Command cmd_toserver=new Command(cmd_type,from_server.getActivePlayer(),new_pos);
+        Command cmd_toserver=new Command(cmd_type,obj,new_pos);
         while (true) {
             try {
                 out.writeObject(cmd_toserver);
@@ -165,7 +174,7 @@ public class ControllerBoard implements CustomObserver
         }
     }
 
-    public void messageToServer(CommandType cmd_type) {
+    public void messageToServer(CommandType cmd_type) {//controllo
         Command cmd_toserver=new Command(cmd_type,from_server.getActivePlayer(),null);
         while (true) {
             try {

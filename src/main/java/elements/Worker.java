@@ -6,9 +6,9 @@ public class Worker
     private Player proprietary;
     private String color;
 
-    public Worker(Player proprietary)
+    public Worker(Player proprietary,int[] pos)
     {
-        position = new int[2];
+        position = pos;
         this.proprietary=proprietary;
     }
 
