@@ -209,4 +209,31 @@ public class GameState {
 
     public void undoTurn() {
     }
+
+    public void RemovePlayer()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                if(b.GetOccupant(i,j).GetProprietary().GetNickname().compareTo(GetActivePlayer().GetNickname())==0)
+                    b.removeWorker(i,j);
+            }
+        }
+
+        for (int i = 0; i < players.length; i++)
+        {
+            if(i==players.length-1)
+                players[i]=null;
+            if(players[i].GetNickname().compareTo(GetActivePlayer().GetNickname())==0)
+                players[i]=players[i+1];
+        }
+
+
+    }
+
+    public void UpdateBoard(BoardGame board)
+    {
+        b=board;
+    }
 }

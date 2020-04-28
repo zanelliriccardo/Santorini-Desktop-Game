@@ -4,6 +4,7 @@ import elements.BoardGame;
 import elements.God;
 import elements.GodCardType;
 import elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.CommandType;
 
 public class Athena extends God {
     private boolean opponent_turn=true;
@@ -18,22 +19,28 @@ public class Athena extends God {
     }
 
     @Override
-    public GodCardType Move(BoardGame b, Worker active_worker, int[] newpos)
+    public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
         if (active_worker.GetProprietary().GetGodCard() instanceof Athena)
         {
             in_action = SetInAction(active_worker.GetPosition(), newpos, b);
             super.Move(b, active_worker, newpos);
-        } else if (in_action)
+        }
+        else if (in_action)
         {
             return RespectAthenaAction(active_worker.GetPosition(), newpos, b);
         }
-        return GodCardType.OK;
+        return CommandType.BUILD;
     }
 
-    public GodCardType RespectAthenaAction(int[] old_pos, int[] new_pos, BoardGame b) {
+    public CommandType RespectAthenaAction(int[] old_pos, int[] new_pos, BoardGame b) {
         if ((b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)) < 1)
-            return GodCardType.OK;
-        return GodCardType.NOTPOSSIBLE;
+            return CommandType.ERROR;
+        return CommandType.MOVE;
+    }
+
+    @Override
+    public void resetCard(GodCardType move) {
+        type=move;
     }
 }

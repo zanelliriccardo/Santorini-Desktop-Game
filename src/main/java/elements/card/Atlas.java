@@ -4,6 +4,7 @@ import elements.BoardGame;
 import elements.God;
 import elements.GodCardType;
 import elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.CommandType;
 
 public class Atlas extends God {
     private boolean opponent_turn = false;
@@ -11,36 +12,17 @@ public class Atlas extends God {
 
     private boolean in_action=false;
     @Override
-    public GodCardType Build(BoardGame b, Worker activeWorker, int[] pos)
+    public CommandType Build(BoardGame b, Worker activeWorker, int[] pos)
     {
-        //controllo su adjacent box
-        if (AtlasAction(b, pos)&&BuildDome())
+        if (in_action)
         {
             b.BuildDome(pos);
-            return GodCardType.OK;
+            type=GodCardType.ENDTURN;
+            return CommandType.BUILD;
         }
         else
         {
-            super.Build(b,activeWorker,pos);
-            return GodCardType.OK;
+            return super.Build(b,activeWorker,pos);
         }
-
-    }
-
-    public boolean BuildDome () //messaggio client
-    {
-        return true;
-    }
-
-    public boolean AtlasAction(BoardGame b, int[] pos)
-    {
-        if(b.GetLevelBox(pos) < 4)
-            return true;
-        else return false;
-    }
-
-    public void setIn_action(boolean set)
-    {
-        in_action=set;
     }
 }

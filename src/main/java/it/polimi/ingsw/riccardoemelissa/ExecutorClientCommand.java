@@ -1,5 +1,6 @@
 package it.polimi.ingsw.riccardoemelissa;
 
+import elements.BoardGame;
 import elements.CustomObserver;
 import elements.Player;
 import elements.Worker;
@@ -23,9 +24,10 @@ public class ExecutorClientCommand implements CustomObserver {
         }
 
         //gestione comandi
-        if(cmd.GetType()==CommandType.WIN)
+
+        if(cmd.GetType()==CommandType.BOARDCHANGE)
         {
-            game.EndGame((Player) cmd.GetObj());
+            game.UpdateBoard((BoardGame) cmd.GetObj());
         }
         if(cmd.GetType()==CommandType.MODE)
         {
@@ -45,17 +47,19 @@ public class ExecutorClientCommand implements CustomObserver {
         }
         else if(CommandType.MOVE==cmd.GetType())
         {
-            if(game.CheckMove((Worker)cmd.GetObj(),cmd.GetPos()))
-                game.GetActivePlayer().GetGodCard().Move(game.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
+            //ricontrollare se mossa possibile però qua mossa singola se si riesce
+            ((Worker)cmd.GetObj()).GetProprietary().GetGodCard().Move(game.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
+            game.GetBoard().custom_notifyAll();
         }
         else if(CommandType.BUILD==cmd.GetType())
         {
-            if(game.checkBuild((Worker)cmd.GetObj(),cmd.GetPos()))
-                game.GetActivePlayer().GetGodCard().Build(game.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
+            //ricontrollare se build possibile però qua build singola se si riesce
+            ((Worker)cmd.GetObj()).GetProprietary().GetGodCard().Build(game.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
+            game.GetBoard().custom_notifyAll();
         }
         else if(CommandType.RESET==cmd.GetType())
         {
-            game.undoTurn();//da implementare
+            game.undoTurn();//da implementare molto facile per 3 punti in più
         }
 
     }

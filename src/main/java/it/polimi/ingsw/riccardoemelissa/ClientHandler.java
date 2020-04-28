@@ -2,6 +2,8 @@ package it.polimi.ingsw.riccardoemelissa;
 
 import elements.CustomObservable;
 import elements.CustomObserver;
+import elements.Player;
+import elements.Worker;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -35,8 +37,24 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
                 try {
                     //server in attesa di messaggi
                     cmd = (Command) ois.readObject();
-                    if(cmd!=null)
-                        cmd.custom_notifyAll();
+                    if(cmd.GetType()==CommandType.WIN)
+                    {
+                        //verifica mossa
+                        game.EndGame(((Worker) cmd.GetObj()).GetProprietary());
+                        ois.close();
+                        oos.close();
+                        socketConnection.close();
+                    }
+                    else if(cmd.GetType()==CommandType.LOSE)
+                    {
+                        //verifica
+                        game.RemovePlayer();
+                        ois.close();
+                        oos.close();
+                        socketConnection.close();
+                    }
+
+                    cmd.custom_notifyAll();
                 } catch (IOException | ClassNotFoundException e) {
                     new Command(CommandType.DISCONNECTED,null,null).custom_notifyAll();
                 }

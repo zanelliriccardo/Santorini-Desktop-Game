@@ -4,6 +4,7 @@ import elements.BoardGame;
 import elements.God;
 import elements.GodCardType;
 import elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.CommandType;
 
 import java.util.ArrayList;
 
@@ -13,9 +14,10 @@ public class Hephaestus extends God {
 
     private boolean in_action=false;
 
-    public void setIn_action(boolean set)
-    {
-        in_action=set;
+    @Override
+    public CommandType Build(BoardGame b, Worker activeWorker, int[] pos) {
+        super.Build(b,activeWorker,pos);
+        return super.Build(b,activeWorker,pos);
     }
 
     @Override

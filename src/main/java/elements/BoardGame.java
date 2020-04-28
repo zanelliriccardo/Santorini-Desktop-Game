@@ -156,5 +156,13 @@ public class BoardGame extends CustomObservable implements Serializable {
         }
         return workers;
     }
+
+    public Worker GetOccupant(int i, int j) {
+        return Board[i][j].GetOccupant();
+    }
+
+    public void removeWorker(int i, int j) {
+        Board[i][j].removeOccupant();
+    }
 }
 

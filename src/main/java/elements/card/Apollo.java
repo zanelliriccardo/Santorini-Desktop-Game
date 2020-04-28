@@ -6,6 +6,7 @@ import elements.God;
 import elements.GodCardType;
 import elements.Worker;
 import it.polimi.ingsw.riccardoemelissa.Command;
+import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.GameState;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class Apollo extends God {
     private GodCardType type=GodCardType.MOVE;
 
     @Override
-    public GodCardType Move(BoardGame b, Worker active_worker, int[] newpos)
+    public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
         if (!b.GetStateBox(newpos))
             SetApolloPosition(active_worker, newpos, b);
@@ -23,7 +24,7 @@ public class Apollo extends God {
             super.SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
 
         this.type=GodCardType.BUILD;
-        return GodCardType.OK;
+        return CommandType.MOVE;
     }
 
     @Override

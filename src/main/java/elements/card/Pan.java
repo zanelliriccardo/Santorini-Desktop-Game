@@ -4,21 +4,18 @@ import elements.BoardGame;
 import elements.God;
 import elements.GodCardType;
 import elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.CommandType;
 
 public class Pan extends God {
-    private boolean opponent_turn;
+    private boolean opponent_turn=false;
     private GodCardType type=GodCardType.MOVE;
 
     @Override
-    public GodCardType Move (BoardGame b, Worker active_worker, int[] newpos)
+    public CommandType Move (BoardGame b, Worker active_worker, int[] newpos)
     {
-        int[] oldpos = active_worker.GetPosition();
+        if (b.GetLevelBox(active_worker.GetPosition()) - b.GetLevelBox(newpos) > 1)
+            return CommandType.WIN;
 
-        if(super.Move(b, active_worker, newpos)==GodCardType.OK)
-        {
-            if (b.GetLevelBox(oldpos) - b.GetLevelBox(newpos) > 1)
-                return GodCardType.WIN;
-        }
-        return GodCardType.BUILD;
+       return super.Move(b, active_worker, newpos);
     }
 }

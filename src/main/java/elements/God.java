@@ -1,6 +1,7 @@
 package elements;
 
 import it.polimi.ingsw.riccardoemelissa.Command;
+import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.GameProxy;
 import it.polimi.ingsw.riccardoemelissa.GameState;
 
@@ -21,11 +22,11 @@ public abstract class God {
      * @param newpos : the new worker's position given by the player belongs to an adjacent box and the move is allow by opponents' god cards
      * @return
      */
-    public GodCardType Move(BoardGame b, Worker active_worker, int[] newpos)
+    public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
-        SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
+        SetPosition(b.GetOccupant(active_worker.GetPosition()), active_worker.GetPosition(), newpos, b);
         this.type=GodCardType.BUILD;
-        return GodCardType.OK;
+        return CommandType.MOVE;
     }
 
     /**
@@ -51,13 +52,13 @@ public abstract class God {
      * @param pos -> the build position given by the player belongs to an adjacent box
      * @return
      */
-    public GodCardType Build(BoardGame b, Worker activeWorker, int[] pos)
+    public CommandType Build(BoardGame b, Worker activeWorker, int[] pos)
     {
         int[] workerpos = activeWorker.GetPosition();
 
         b.DoBuild(pos);
-        this.type=GodCardType.MOVE;
-        return GodCardType.OK;
+        this.type=GodCardType.ENDTURN;
+        return CommandType.BUILD;
     }
 
     public boolean GetOpponentTurn(){return opponent_turn;}
@@ -102,6 +103,11 @@ public abstract class God {
 
     public void doPower(GameState game, Command cmd)
     {
+        return;
+    }
 
+    public void resetCard(GodCardType move) {
+        type=move;
+        in_action=false;
     }
 }

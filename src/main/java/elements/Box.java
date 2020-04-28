@@ -58,4 +58,9 @@ public class Box {
     {
         level=4;
     }
+
+    public void removeOccupant() {
+        occupant=null;
+        state=true;
+    }
 }

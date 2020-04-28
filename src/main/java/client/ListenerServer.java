@@ -13,7 +13,7 @@ public class ListenerServer extends Thread {
     public ListenerServer(Socket s, Parent root) throws IOException
     {
         in=new ObjectInputStream(s.getInputStream());
-        controller=new ControllerBoard(s,root);
+        controller=new ControllerBoard(s);
     }
 
     public void run()

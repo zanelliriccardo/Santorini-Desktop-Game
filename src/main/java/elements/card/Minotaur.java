@@ -4,6 +4,7 @@ import elements.BoardGame;
 import elements.God;
 import elements.GodCardType;
 import elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.CommandType;
 
 import java.util.ArrayList;
 
@@ -12,14 +13,17 @@ public class Minotaur extends God {
     private GodCardType type=GodCardType.MOVE;
 
     @Override
-    public GodCardType Move(BoardGame b, Worker active_worker, int[] newpos)
+    public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
         if (!b.GetStateBox(newpos))
+        {
             SetMinotaurPosition(active_worker, newpos, b);
+            type=GodCardType.BUILD;
+        }
         else
-            SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
+            super.Move(b,active_worker,newpos);
 
-        return GodCardType.BUILD;
+        return CommandType.MOVE;
     }
 
     @Override
@@ -61,6 +65,7 @@ public class Minotaur extends God {
 
     public void SetMinotaurPosition (Worker active_worker, int[] newpos, BoardGame b)
     {
+        //da fare
         int[] newpos_opponent = new int[]{(newpos[0] - active_worker.GetX()) + newpos[0], (newpos[1] - active_worker.GetY()) + newpos[1]};
 
             b.GetOccupant(newpos).SetPosition(newpos_opponent);
