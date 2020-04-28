@@ -16,17 +16,16 @@ class BoardGameTest extends Object {
         }
 
         BoardGame boardGame = new BoardGame(boxes);
-        int[] pos = new int[]{2,3};
+        int[] worker_pos = new int[]{2,3};
+        int[] pos = new int[]{3,3};
+        Player player = new Player("name");
+        Worker worker = new Worker(player, worker_pos);
 
-        boardGame.ChangeState(pos);
-        boolean actual = boardGame.GetStateBox(pos);
+        assertTrue(boardGame.GetStateBox(pos));
 
-        assertTrue(actual);
+        boardGame.GetBoard()[worker_pos[0]][worker_pos[1]].ChangeState(worker);
 
-        boardGame.ChangeState(pos, "red");
-        actual = boardGame.GetStateBox(pos);
-
-        assertFalse(actual);
+        assertFalse(boardGame.GetStateBox(pos));
 
     }
 
@@ -66,9 +65,9 @@ class BoardGameTest extends Object {
         BoardGame boardGame = new BoardGame(boxes);
 
         Player player = new Player("name");
-        Worker worker = new Worker();
         int[] oldpos = new int[]{2,3};
-        worker.SetPosition(oldpos);
+        Worker worker = new Worker(player, oldpos);
+
         boardGame.DoBuild(oldpos);
 
         int[] newpos = new int[]{2,4};
@@ -82,7 +81,7 @@ class BoardGameTest extends Object {
             boardGame.DoBuild(newpos);
         }
 
-        boardGame.ChangeState(newpos, "red");
+        boardGame.GetBoard()[newpos[0]][newpos[1]].ChangeState(worker);
         assertFalse(boardGame.IsAPossibleMove(newpos, oldpos));
     }
 
@@ -113,7 +112,8 @@ class BoardGameTest extends Object {
     @Test
     void getOccupant() {
         Player player = new Player("name");
-        Worker worker = new Worker(player);
+        int [] pos = new int[]{1,2};
+        Worker worker = new Worker(player, pos);
 
         Box[][] boxes = new Box[5][5];
 
@@ -123,7 +123,7 @@ class BoardGameTest extends Object {
         }
 
         BoardGame boardGame = new BoardGame(boxes);
-        int [] pos = new int[]{1,2};
+
 
         boardGame.setOccupant(pos, worker);
 

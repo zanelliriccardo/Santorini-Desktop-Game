@@ -10,15 +10,16 @@ class BoxTest extends Object {
     void getState() {
         Box b1 = new Box(true, 2);
         Box b2 = new Box(false, 1);
+        Player player = new Player("name");
+        Worker worker = new Worker(player, new int[]{1,1});
 
         b2.ChangeState();
 
-        assertEquals(true, b1.GetState());
-        assertEquals(true, b2.GetState());
+        assertTrue(b2.GetState());
 
-        b1.ChangeState("color");
+        b1.ChangeState(worker);
 
-        assertEquals(false, b1.GetState());
+        assertFalse(b1.GetState());
     }
 
     @Test
@@ -35,27 +36,17 @@ class BoxTest extends Object {
         assertEquals(4, b.GetLevel());
     }
 
-    @Test
-    void getColor() {
-        Box b = new Box(true, 1);
-
-        assertEquals(null, b.GetColor());
-
-        b.ChangeState("red");
-
-        assertEquals("red", b.GetColor());
-    }
 
     @Test
     void getOccupant() {
-        Box b = new Box(true, 1);
-        Player p = new Player("name");
-        Worker w = new Worker(p);
+        Box box = new Box(true, 1);
+        Player player = new Player("name");
+        Worker worker = new Worker(player, new int[]{1,1});
 
-        assertEquals(null, b.GetOccupant());
+        assertEquals(null, box.GetOccupant());
 
-        b.SetOccupant(w);
+        box.SetOccupant(worker);
 
-        assertEquals(w, b.GetOccupant());
+        assertEquals(worker, box.GetOccupant());
     }
 }
