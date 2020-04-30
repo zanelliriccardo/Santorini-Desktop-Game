@@ -65,15 +65,13 @@ public class Minotaur extends God {
 
     public void SetMinotaurPosition (Worker active_worker, int[] newpos, BoardGame b)
     {
-        //da fare
         int[] newpos_opponent = new int[]{(newpos[0] - active_worker.GetX()) + newpos[0], (newpos[1] - active_worker.GetY()) + newpos[1]};
 
-            b.GetOccupant(newpos).SetPosition(newpos_opponent);
-            b.ChangeState(newpos_opponent, b.GetOccupant(newpos).GetProprietary().GetColor());
-
-            b.ChangeState(active_worker.GetPosition());
-            active_worker.SetPosition(newpos);
-            b.ChangeState(newpos, active_worker.GetProprietary().GetColor());
+        b.GetOccupant(newpos).SetPosition(newpos_opponent);
+        b.setOccupant(newpos_opponent,b.GetOccupant(newpos));
+        b.setOccupant(newpos,active_worker);
+        b.removeWorker(active_worker.GetPosition());
+        active_worker.SetPosition(newpos);
     }
 
 }

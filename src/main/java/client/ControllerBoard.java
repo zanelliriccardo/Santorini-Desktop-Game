@@ -1,5 +1,6 @@
 package client;
 
+import com.sun.prism.Image;
 import elements.*;
 import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
@@ -11,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,6 +31,7 @@ public class ControllerBoard implements CustomObserver
     private Scene input_scene;
     private ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
     private Worker activeWorker;
+    private MouseEvent event;
 
     public ControllerBoard(Socket s) throws IOException
     {
@@ -39,19 +42,32 @@ public class ControllerBoard implements CustomObserver
     }
 
     @FXML
-    public void startGame(MouseEvent mouseEvent) throws IOException {
-
+    public void chooseGameMode(MouseEvent mouseEvent) throws IOException
+    {
         changeScene("mode.fxml");//portarlo su scelta 1 o 2 giocatori
     }
 
-    private void changeScene(String s) throws IOException
+    @FXML
+    public void startGame(MouseEvent mouseEvent) throws IOException
     {
-        root= FXMLLoader.load(getClass().getResource(s));
+        //prendere il percorso della carta e metterci l immagine nella board
+    }
+
+    private void changeScene(String path) throws IOException
+    {
+        root= FXMLLoader.load(getClass().getResource(path));
+    }
+
+    public void clickImageGodPower(MouseEvent mouseEvent)
+    {
+        Image image=(Image)mouseEvent.getSource();
     }
 
     public void activedPower(boolean bool)
     {
         messageToServer(CommandType.SETPOWER,bool);
+        if(from_server.getActivePlayer().GetGodCard().GetType()==GodCardType.MOVE) activeMoveCells();
+        if(from_server.getActivePlayer().GetGodCard().GetType()==GodCardType.BUILD) activeBuildCells();
     }
 
     public void setNickname(String nickname)
@@ -100,6 +116,7 @@ public class ControllerBoard implements CustomObserver
     {
         possibleCells_activeWorker= checkMoves(from_server.getBoard(),activeWorker);
         //metttere celle blu
+
     }
 
     private void activeBuildCells()
@@ -134,7 +151,11 @@ public class ControllerBoard implements CustomObserver
         }
 
         if(possibleCells_activeWorker.isEmpty())
+        {
             messageToServer(CommandType.LOSE);
+            //schermata sconfitta
+            return;
+        }
         possibleCells_activeWorker.clear();
 
         //fare guiii
