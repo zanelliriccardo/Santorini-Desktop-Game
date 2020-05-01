@@ -1,38 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.effect.Light.Distant?>
-<?import javafx.scene.effect.Lighting?>
-<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ControllerBoard">
    <children>
-      <ImageView fitHeight="400.0" fitWidth="600.0">
+      <ImageView disable="true" fitHeight="400.0" fitWidth="600.0">
          <image>
-            <Image url="@../../../../../../../Progetto/DESIGN/startImage.jpg" />
+            <Image url="@../images/start_image.jpg" />
          </image>
       </ImageView>
-      <ProgressBar layoutX="152.0" layoutY="200.0" prefHeight="31.0" prefWidth="297.0" progress="0.78">
-         <effect>
-            <Lighting diffuseConstant="1.33">
-               <bumpInput>
-                  <Shadow />
-               </bumpInput>
-               <light>
-                  <Light.Distant />
-               </light>
-            </Lighting>
-         </effect>
-      </ProgressBar>
-      <Text fill="#000000dc" fontSmoothingType="LCD" layoutX="273.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="loading...">
-         <font>
-            <Font name="Franklin Gothic Medium Cond" size="18.0" />
-         </font>
-      </Text>
+      <ImageView fx:id="play" accessibleRole="BUTTON" fitHeight="87.0" fitWidth="71.0" layoutX="496.0" layoutY="304.0" onMouseClicked="#startGame" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/button-play.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
    </children>
 </AnchorPane>

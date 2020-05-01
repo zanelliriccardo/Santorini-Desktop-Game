@@ -42,20 +42,46 @@ public class ControllerBoard implements CustomObserver
     }
 
     @FXML
-    public void chooseGameMode(MouseEvent mouseEvent) throws IOException
-    {
-        changeScene("mode.fxml");//portarlo su scelta 1 o 2 giocatori
+    public void startGame(MouseEvent mouseEvent) throws IOException {
+        changeScene("mode.fxml");
     }
 
     @FXML
-    public void startGame(MouseEvent mouseEvent) throws IOException
+    public void chooseGameMode(MouseEvent mouseEvent) throws IOException
     {
-        //prendere il percorso della carta e metterci l immagine nella board
+        changeScene("mode.fxml");
     }
 
     private void changeScene(String path) throws IOException
     {
         root= FXMLLoader.load(getClass().getResource(path));
+    }
+
+    @FXML
+    public void twoPlayers (MouseEvent event) throws IOException{
+        out.writeObject(new Command(CommandType.MODE, 2, null));
+    }
+
+    @FXML
+    public void threePlayers (MouseEvent event) throws IOException{
+        out.writeObject(new Command(CommandType.MODE, 3, null));
+    }
+
+    @FXML
+    public void modeOK (MouseEvent event) throws IOException
+    {
+        changeScene("choose_nickname.fxml");
+    }
+
+    @FXML
+    public void nicknameOK (MouseEvent mouseEvent) throws IOException
+    {
+
+
+    }
+    @FXML
+    public void chooseNickname(MouseEvent mouseEvent) throws IOException {
+        changeScene("choose_nickname.fxml");
     }
 
     public void clickImageGodPower(MouseEvent mouseEvent)
