@@ -152,5 +152,9 @@ public class BoardGame extends CustomObservable implements Serializable {
     public void removeWorker(int i, int j) {
         Board[i][j].removeOccupant();
     }
+
+    public void removeWorker(int[] pos) {
+        Board[pos[0]][pos[1]].removeOccupant();
+    }
 }
 

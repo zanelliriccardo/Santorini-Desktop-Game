@@ -1,7 +1,9 @@
 package it.polimi.ingsw.riccardoemelissa;
 
 import elements.*;
+import elements.Box;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.*;
@@ -263,4 +265,30 @@ public class GameState {
         return possiblebuild;
     }
 
+    public ArrayList<int[]> possibleMoves()
+    {
+        ArrayList<Worker> workers=getWorkers();
+        ArrayList<int[]> possiblemoves = null;
+
+        for (Worker w : workers)
+        {
+            possiblemoves.addAll(checkMoves(b,w));
+        }
+        return possiblemoves;
+    }
+
+    public ArrayList<Worker> getWorkers()
+    {
+        ArrayList<Worker> workers=new ArrayList<Worker>();
+
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                if(b.GetOccupant(i,j).GetProprietary().GetNickname().compareTo(getActivePlayer().GetNickname())==0)
+                    workers.add(b.GetOccupant(i,j));
+            }
+        }
+        return workers;
+    }
 }

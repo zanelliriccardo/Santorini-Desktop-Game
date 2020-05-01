@@ -40,12 +40,18 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
                     if(cmd.GetType()==CommandType.WIN)
                     {
                         //verifica mossa
+                        if(!game.IsPossibleMove((Worker)cmd.GetObj(),cmd.GetPos()))
+                        {
+                            cmd=new Command(CommandType.LOSE,null,null);//dafare
+                            return;
+                        }
                         game.EndGame(((Worker) cmd.GetObj()).GetProprietary());
                         ois.close();
                         oos.close();
                         socketConnection.close();
                     }
-                    else if(cmd.GetType()==CommandType.LOSE)
+
+                    if(cmd.GetType()==CommandType.LOSE)
                     {
                         //verifica
                         game.RemovePlayer();
@@ -72,7 +78,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
     @Override
     public void update(Object arg)
     {
-        final GameProxy toClient=new GameProxy(game.GetBoard(),game.GetActivePlayer(),game.GetPlayers());
+        final GameProxy toClient=new GameProxy(game.GetBoard(),game.getActivePlayer(),game.GetPlayers());
 
         while (true)
         {

@@ -20,11 +20,27 @@ public class ExecutorClientCommand implements CustomObserver {
         if(cmd.GetType()==CommandType.DISCONNECTED)
         {
             game.EndGame((Player) cmd.GetObj());
+            game.GetBoard().custom_notifyAll();
             game=null;
         }
 
         //gestione comandi da cambiare con switch
 
+        if(cmd.GetType()==CommandType.WIN)
+        {
+            if(!game.IsPossibleMove((Worker)cmd.GetObj(),cmd.GetPos()))
+            {
+                game.RemovePlayer();
+                return;
+            }
+            game.EndGame(((Worker) cmd.GetObj()).GetProprietary());
+        }
+        if(cmd.GetType()==CommandType.LOSE)
+        {
+            //verifica
+            if(game.possibleMoves())
+                game.RemovePlayer();
+        }
         if(cmd.GetType()==CommandType.SETPOWER)
         {
             game.getActivePlayer().GetGodCard().setIn_action((boolean) cmd.GetObj());
@@ -47,6 +63,7 @@ public class ExecutorClientCommand implements CustomObserver {
         else if(CommandType.NICKNAME==cmd.GetType())
         {
             game.NewPlayer((String)cmd.GetObj());
+            game.GetBoard().custom_notifyAll();
         }
         else if(CommandType.NEWWORKER==cmd.GetType())
         {
