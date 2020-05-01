@@ -1,9 +1,7 @@
 package it.polimi.ingsw.riccardoemelissa;
 
-import elements.BoardGame;
-import elements.CustomObserver;
-import elements.Player;
-import elements.Worker;
+import elements.*;
+import it.polimi.ingsw.riccardoemelissa.exception.EndGameException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Observable;
@@ -17,85 +15,55 @@ public class ExecutorClientCommand implements CustomObserver {
     public void update(Object arg)
     {
         Command cmd=(Command) arg;
-        if(cmd.GetType()==CommandType.DISCONNECTED)
-        {
-            game.EndGame((Player) cmd.GetObj());
-            game.GetBoard().custom_notifyAll();
-            game=null;
-        }
 
-        //gestione comandi da cambiare con switch
-
-        if(cmd.GetType()==CommandType.WIN)
+        switch (cmd.GetType())
         {
-            if(!game.IsPossibleMove((Worker)cmd.GetObj(),cmd.GetPos()))
-            {
+            case MODE:
+                game.SetNumPlayer((int) cmd.GetObj());
+                break;
+            case NICKNAME:
+                game.NewPlayer((String)cmd.GetObj());
+                break;
+            case NEWWORKER:
+                game.GetBoard().setOccupant(cmd.GetPos(),(Worker)cmd.GetObj());
+                break;
+            case SETPOWER:
+                game.getActivePlayer().GetGodCard().setIn_action((boolean) cmd.GetObj());
+                break;
+            case BOARDCHANGE:
+                game.UpdateBoard((BoardGame) cmd.GetObj());//se passiamo la board da client a server in questo momento no prof sconsiglia
+                break;
+            case DISCONNECTED://da rivedere
+                game.EndGame();
+                game=null;
+                break;
+            case MOVE:
+                if(!game.IsPossibleMove((Worker)cmd.GetObj(),cmd.GetPos())) {
+                    update(new Command(CommandType.LOSE, null, null));//dafare
+                    return;
+                }
+                ((Worker)cmd.GetObj()).GetProprietary().GetGodCard().Move(game.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
+                if(((Worker)cmd.GetObj()).GetProprietary().GetGodCard().GetType()== GodCardType.WIN)
+                    this.update(new Command(CommandType.WIN,game.getActivePlayer(),null));
+                break;
+            case BUILD:
+                if(!game.IsPossibleBuild((Worker)cmd.GetObj(),cmd.GetPos())) {
+                    this.update(new Command(CommandType.LOSE, null, null));//dafare
+                    return;
+                }
+                ((Worker)cmd.GetObj()).GetProprietary().GetGodCard().Build(game.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
+                break;
+            case WIN:
+                game.EndGame();
+                break;
+            case LOSE:
                 game.RemovePlayer();
-                return;
-            }
-            game.EndGame(((Worker) cmd.GetObj()).GetProprietary());
-        }
-        if(cmd.GetType()==CommandType.LOSE)
-        {
-            //verifica
-            if(game.possibleMoves())
-                game.RemovePlayer();
-        }
-        if(cmd.GetType()==CommandType.SETPOWER)
-        {
-            game.getActivePlayer().GetGodCard().setIn_action((boolean) cmd.GetObj());
-            game.GetBoard().custom_notifyAll();
-        }
-        if(cmd.GetType()==CommandType.BOARDCHANGE)
-        {
-            game.UpdateBoard((BoardGame) cmd.GetObj());
-            game.GetBoard().custom_notifyAll();
-        }
-        if(cmd.GetType()==CommandType.MODE)
-        {
-            game.SetNumPlayer((int) cmd.GetObj());
-        }
-        else if(CommandType.CHANGE_TURN==cmd.GetType())
-        {
-            game.NextTurn();
-            game.GetBoard().custom_notifyAll();
-        }
-        else if(CommandType.NICKNAME==cmd.GetType())
-        {
-            game.NewPlayer((String)cmd.GetObj());
-            game.GetBoard().custom_notifyAll();
-        }
-        else if(CommandType.NEWWORKER==cmd.GetType())
-        {
-            game.SetNewWorker((Worker)cmd.GetObj());//da cambiare
-            game.GetBoard().custom_notifyAll();
-        }
-        else if(CommandType.MOVE==cmd.GetType())
-        {
-            //ricontrollare se mossa possibile però qua mossa singola se si riesce
-            if(!game.IsPossibleMove((Worker)cmd.GetObj(),cmd.GetPos()))
-            {
-                update(new Command(CommandType.LOSE, null, null));//dafare
-                return;
-            }
-            ((Worker)cmd.GetObj()).GetProprietary().GetGodCard().Move(game.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
-            game.GetBoard().custom_notifyAll();
-        }
-        else if(CommandType.BUILD==cmd.GetType())
-        {
-            //ricontrollare se build possibile però qua build singola se si riesce
-            if(!game.IsPossibleBuild((Worker)cmd.GetObj(),cmd.GetPos()))
-            {
-                update(new Command(CommandType.LOSE, null, null));//dafare
-                return;
-            }
-            ((Worker)cmd.GetObj()).GetProprietary().GetGodCard().Build(game.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
-            game.GetBoard().custom_notifyAll();
-        }
-        else if(CommandType.RESET==cmd.GetType())
-        {
-            game.undoTurn();//da implementare molto facile per 3 punti in più
+                break;
+            case RESET:
+                game.undoTurn();
+                break;
         }
 
+        game.GetBoard().custom_notifyAll();
     }
 }

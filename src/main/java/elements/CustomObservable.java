@@ -1,5 +1,7 @@
 package elements;
 
+import it.polimi.ingsw.riccardoemelissa.exception.EndGameException;
+
 import java.util.ArrayList;
 
 public class CustomObservable
@@ -11,8 +13,7 @@ public class CustomObservable
         observers.add(new_observer);
     }
 
-    public void custom_notifyAll()
-    {
+    public void custom_notifyAll(){
         for (CustomObserver obs :
                 observers) {
             obs.update(this);

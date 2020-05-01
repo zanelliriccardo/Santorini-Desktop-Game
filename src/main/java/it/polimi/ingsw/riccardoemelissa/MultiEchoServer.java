@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 public class MultiEchoServer {
     private int port;
     private static int numplayer=0;
-    private static GameState game;
+    private static GameState game=new GameState();
     private ExecutorClientCommand cmd_executor =new ExecutorClientCommand();
 
     public MultiEchoServer(int port)
@@ -35,6 +35,7 @@ public class MultiEchoServer {
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
+                game=null;
 
                 ClientHandler firstClient=new ClientHandler(socket);
                 game.GetBoard().addObserver(firstClient);

@@ -13,9 +13,12 @@ public class Pan extends God {
     @Override
     public CommandType Move (BoardGame b, Worker active_worker, int[] newpos)
     {
-        if (b.GetLevelBox(active_worker.GetPosition()) - b.GetLevelBox(newpos) > 1)
-            return CommandType.WIN;
+        int[] old_position=active_worker.GetPosition();
+        super.Move(b, active_worker, newpos);
 
-       return super.Move(b, active_worker, newpos);
+        if (b.GetLevelBox(old_position) - b.GetLevelBox(newpos) > 1)
+            type=GodCardType.WIN;//settare anche position
+
+       return CommandType.BUILD;
     }
 }

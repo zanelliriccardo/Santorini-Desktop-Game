@@ -7,6 +7,7 @@ import java.util.Arrays;
 public class BoardGame extends CustomObservable implements Serializable {
     private Box[][] Board;
     private Player active_player;
+    private boolean gameover=false;
 
     public BoardGame(Box[][] boxes){
         this.Board = boxes;
@@ -155,6 +156,10 @@ public class BoardGame extends CustomObservable implements Serializable {
 
     public void removeWorker(int[] pos) {
         Board[pos[0]][pos[1]].removeOccupant();
+    }
+
+    public void setGameOver(boolean b) {
+        gameover=b;
     }
 }
 

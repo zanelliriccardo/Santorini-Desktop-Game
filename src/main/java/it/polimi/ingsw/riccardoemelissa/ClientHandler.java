@@ -17,11 +17,11 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
     private Socket socketConnection;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
-    private GameState game;
+    private GameState game=new GameState();
     ExecutorClientCommand cmd_executor=new ExecutorClientCommand();
 
-    public ClientHandler(Socket socket) throws IOException {
-
+    public ClientHandler(Socket socket) throws IOException
+    {
         ois=new ObjectInputStream(socket.getInputStream());
         oos=new ObjectOutputStream(socket.getOutputStream());
     }
@@ -37,36 +37,21 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
                 try {
                     //server in attesa di messaggi
                     cmd = (Command) ois.readObject();
-                    if(cmd.GetType()==CommandType.WIN)
-                    {
-                        //verifica mossa
-                        if(!game.IsPossibleMove((Worker)cmd.GetObj(),cmd.GetPos()))
-                        {
-                            cmd=new Command(CommandType.LOSE,null,null);//dafare
-                            return;
-                        }
-                        game.EndGame(((Worker) cmd.GetObj()).GetProprietary());
-                        ois.close();
-                        oos.close();
-                        socketConnection.close();
-                    }
-
-                    if(cmd.GetType()==CommandType.LOSE)
-                    {
-                        //verifica
-                        game.RemovePlayer();
-                        ois.close();
-                        oos.close();
-                        socketConnection.close();
-                    }
 
                     cmd.custom_notifyAll();
-                } catch (IOException | ClassNotFoundException e) {
-                    new Command(CommandType.DISCONNECTED,null,null).custom_notifyAll();
+
+                    if(game.GetPlayers()==null) {
+                        ois.close();
+                        oos.close();
+                        socketConnection.close();
+                    }
+                }
+                catch (IOException | ClassNotFoundException e) {
+                    new Command(CommandType.DISCONNECTED,nickname,null).custom_notifyAll();
                 }
             }
         //errore per chiusura connessione
-        new Command(CommandType.DISCONNECTED,null,null).custom_notifyAll();
+        new Command(CommandType.DISCONNECTED,nickname,null).custom_notifyAll();
     }
 
     /**

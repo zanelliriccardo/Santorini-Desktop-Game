@@ -65,38 +65,12 @@ public class GameState {
         players = array.toArray(new Player[]{});
     }
 
-    //generazione di diversi numeri casuali in numero uguale a quello dei giocatori
-    //e da un range uguale al numero di carte
-    /*public int[] uniqueRandomNumbers() {
-        ArrayList<Integer> list = new ArrayList<Integer>();
-
-        int[] random = new int[players.length];
-
-        for (int i = 1; i < gods_name.length; i++) {
-            list.add(i);
-        }
-        Collections.shuffle(list);
-        for (int i = 0; i < players.length; i++) {
-            random[i] = list.get(i);
-        }
-        return random;
-    }
-
-    public void GodsChosen() {
-        int[] random_numbers = uniqueRandomNumbers();
-
-        for (int i = 0; i < random_numbers.length; i++) {
-            //players[i].SetGodCard(GodFactory.getGod(gods_name[random_numbers[i]]));
-        }
-    } */
-
     public void GodFactory () throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         JsonReader read_god = new JsonReader();
         String[] gods  = read_god.GodsInGame(players.length);
 
         for (int i = 0; i< gods.length; i++)
         {
-            //players[i].SetGodCard((God)Class.forName(gods[i]).newInstance());
             players[i].SetGodCard((God)Class.forName(gods[i]).getDeclaredConstructor().newInstance());
         }
     }
@@ -120,14 +94,10 @@ public class GameState {
         return b;
     }
 
-    public boolean EndGame(Player activePlayer)
+    public void EndGame()
     {
-        setGameOver(true);
-        if(activePlayer==null)
-            return true;
-        else
-            return false;
-
+        b.setGameOver(true);
+        players=null;
     }
 
     private void setGameOver(boolean b) {
@@ -165,6 +135,8 @@ public class GameState {
         if(workers[index*2]==null)
             workers[index*2]=ActiveWorker;
         workers[index*2+1]=ActiveWorker;
+
+
     }
 
     public boolean CheckMove(Worker getActiveWorker, int[] getPos)
@@ -290,5 +262,15 @@ public class GameState {
             }
         }
         return workers;
+    }
+
+    public Player getPlayer(String nickname)
+    {
+        for (Player p : players)
+        {
+            if (p.GetNickname().compareTo(nickname) == 0) return p;
+
+        }
+        return null;
     }
 }
