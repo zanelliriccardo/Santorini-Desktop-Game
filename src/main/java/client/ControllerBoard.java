@@ -9,6 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -40,8 +42,35 @@ public class ControllerBoard implements CustomObserver
 
     @FXML
     public void startGame(MouseEvent mouseEvent) throws IOException {
+        changeScene("mode.fxml");
+    }
 
-        changeScene("mode.fxml");//portarlo su scelta 1 o 2 giocatori
+    @FXML
+    public void twoPlayers (MouseEvent event) throws IOException{
+        out.writeObject(new Command(CommandType.MODE, 2, null));
+    }
+
+    @FXML
+    public void threePlayers (MouseEvent event) throws IOException{
+        out.writeObject(new Command(CommandType.MODE, 3, null));
+    }
+
+    @FXML
+    public void modeOK (MouseEvent event) throws IOException
+    {
+        changeScene("choose_nickname.fxml");
+    }
+
+    @FXML
+    public void nicknameOK (MouseEvent mouseEvent) throws IOException
+    {
+
+
+    }
+
+    @FXML
+    public void chooseNickname(MouseEvent mouseEvent) throws IOException{
+        changeScene("choose_nickname.fxml");
     }
 
     private void changeScene(String s) throws IOException

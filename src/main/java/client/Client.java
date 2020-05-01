@@ -27,7 +27,7 @@ public class Client extends Application implements Observer {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        root = FXMLLoader.load(getClass().getResource("filefxml/menu.fxml"));
+        root = FXMLLoader.load(getClass().getResource("filefxml/start.fxml"));
         primaryStage.setTitle("Santorini");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
