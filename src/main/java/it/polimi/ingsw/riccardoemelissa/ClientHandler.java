@@ -61,7 +61,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
      * @param arg
      */
     @Override
-    public void update(Object arg)
+    public void update(Object arg)//usare game come riferimneto cosi tolgo game da variabile in questa classe, da cambiare quindi nache il controllo dsopra che utiliazza game
     {
         final GameProxy toClient=new GameProxy(game.GetBoard(),game.getActivePlayer(),game.GetPlayers());
 

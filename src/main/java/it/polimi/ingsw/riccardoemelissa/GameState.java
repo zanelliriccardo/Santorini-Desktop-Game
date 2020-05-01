@@ -19,6 +19,16 @@ public class GameState {
     private static BoardGame b;
     private boolean gameover=false;
 
+    public GameState()
+    {
+        Box[][] boxes=new Box[5][5];
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                boxes[i][j]=new Box();
+            }
+        }
+        b=new BoardGame(boxes);
+    }
     /**
      *
      * @return

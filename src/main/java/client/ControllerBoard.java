@@ -11,7 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -20,14 +19,12 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 
 public class ControllerBoard implements CustomObserver
 {
-    private ObjectInputStream in;
     private ObjectOutputStream out;
-    private Parent root=FXMLLoader.load(getClass().getResource("@../filefxml/menu.fxml"));
+    private Parent root;//=FXMLLoader.load(getClass().getResource("@../filefxml/menu.fxml"));
     private GameProxy from_server;
     private Stage primary_stage;
     private Scene input_scene;
@@ -38,12 +35,11 @@ public class ControllerBoard implements CustomObserver
     @FXML
     public TextField nickname;
 
-    public ControllerBoard(Socket s) throws IOException
+    public ControllerBoard(ObjectOutputStream oos)
     {
         primary_stage=new Stage();
-        input_scene =new Scene(root);
-        in=new ObjectInputStream(s.getInputStream());
-        out=new ObjectOutputStream(s.getOutputStream());
+        //input_scene =new Scene(root);
+        out=oos;
     }
 
     @FXML

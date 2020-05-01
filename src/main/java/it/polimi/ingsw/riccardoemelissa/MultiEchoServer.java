@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 public class MultiEchoServer {
     private int port;
     private static int numplayer=0;
-    private static GameState game=new GameState();
+    private static GameState game;
     private ExecutorClientCommand cmd_executor =new ExecutorClientCommand();
 
     public MultiEchoServer(int port)
@@ -29,20 +29,22 @@ public class MultiEchoServer {
             System.err.println(e.getMessage()); // porta non disponibile
             return;
         }
-
+        game=new GameState();
         System.out.println("Server ready");
 
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
-                game=null;
 
+                System.out.println("Server ready");
                 ClientHandler firstClient=new ClientHandler(socket);
                 game.GetBoard().addObserver(firstClient);
+                System.out.println("Server ready");
+                assert executor != null;
                 executor.submit(firstClient);
 
                 while (game.GetPlayerNumber()==1);
-
+                System.out.println("Server ready");
                 for(int i=1;i<numplayer;i++)
                     try {
                         socket = serverSocket.accept();
@@ -60,7 +62,7 @@ public class MultiEchoServer {
                 notifyAll();
                 if(game.getGameOver()) //inserire controllo su fine partita
                     break;
-            } catch (IOException e) {
+            } catch (IOException|NullPointerException e) {
                 break; // entrerei qui se serverSocket venisse chiuso
             }
         }

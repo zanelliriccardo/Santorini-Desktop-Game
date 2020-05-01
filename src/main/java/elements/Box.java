@@ -7,6 +7,11 @@ public class Box {
     private int level;
     private Worker occupant;
 
+    public Box() {
+        this.state=true;
+        this.level=0;
+    }
+
     public Box(boolean state, int level) {
         this.state=state;
         this.level=level;

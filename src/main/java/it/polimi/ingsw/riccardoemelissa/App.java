@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class App
 {
-    public static void main( String[] args ) throws IOException {
+    public static void main( String[] args ) {
         MultiEchoServer echoServer = new MultiEchoServer(1337);
         echoServer.startServer();
     }

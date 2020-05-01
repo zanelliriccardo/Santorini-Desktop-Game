@@ -10,10 +10,11 @@ import java.net.Socket;
 public class ListenerServer extends Thread {
     private ObjectInputStream in;
     private ControllerBoard controller;
-    public ListenerServer(Socket s, Parent root) throws IOException
+
+    public ListenerServer(ObjectInputStream ois,ControllerBoard controller)
     {
-        in=new ObjectInputStream(s.getInputStream());
-        controller=new ControllerBoard(s);
+        in=ois;
+        this.controller=controller;
     }
 
     public void run()
@@ -21,6 +22,7 @@ public class ListenerServer extends Thread {
 
         while (true)
         {
+            System.out.println("ok");
             GameProxy fromServer=null;
             fromServer.addObserver(controller);
             try {
