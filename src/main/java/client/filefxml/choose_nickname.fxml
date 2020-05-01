@@ -24,7 +24,7 @@
             <Font name="System Italic" size="20.0" />
          </font>
       </TextField>
-      <Button fx:id="ok_nickname" layoutX="501.0" layoutY="315.0" mnemonicParsing="false" onMouseClicked="#nicknameOK" opacity="0.9" prefHeight="30.0" prefWidth="75.0" text="OK">
+      <Button fx:id="ok_nickname" layoutX="501.0" layoutY="315.0" mnemonicParsing="false" onMouseClicked="#nicknameOk" opacity="0.9" prefHeight="30.0" prefWidth="75.0" text="OK">
          <font>
             <Font name="Franklin Gothic Medium Cond" size="17.0" />
          </font>

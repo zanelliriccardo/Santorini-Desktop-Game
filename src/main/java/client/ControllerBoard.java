@@ -1,20 +1,22 @@
 package client;
 
+import it.polimi.ingsw.riccardoemelissa.GameProxy;
+
 import com.sun.prism.Image;
 import elements.*;
 import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
-import it.polimi.ingsw.riccardoemelissa.GameProxy;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,6 +35,9 @@ public class ControllerBoard implements CustomObserver
     private Worker activeWorker;
     private MouseEvent event;
 
+    @FXML
+    public TextField nickname;
+
     public ControllerBoard(Socket s) throws IOException
     {
         primary_stage=new Stage();
@@ -43,13 +48,19 @@ public class ControllerBoard implements CustomObserver
 
     @FXML
     public void startGame(MouseEvent mouseEvent) throws IOException {
+        int num_players = from_server.getPlayers().length;
+
+        if(num_players == 1)
         changeScene("mode.fxml");
+
+        else
+            chooseNickname(mouseEvent);
     }
 
     @FXML
-    public void chooseGameMode(MouseEvent mouseEvent) throws IOException
-    {
-        changeScene("mode.fxml");
+    public void chooseNickname(MouseEvent mouseEvent) throws IOException {
+        changeScene("choose_nickname.fxml");
+        out.writeObject(new Command(CommandType.NICKNAME, nickname.getText(), null));
     }
 
     private void changeScene(String path) throws IOException
@@ -68,20 +79,15 @@ public class ControllerBoard implements CustomObserver
     }
 
     @FXML
-    public void modeOK (MouseEvent event) throws IOException
+    public void modeOk (MouseEvent event) throws IOException
     {
         changeScene("choose_nickname.fxml");
     }
 
     @FXML
-    public void nicknameOK (MouseEvent mouseEvent) throws IOException
+    public void nicknameOk (MouseEvent mouseEvent) throws IOException
     {
 
-
-    }
-    @FXML
-    public void chooseNickname(MouseEvent mouseEvent) throws IOException {
-        changeScene("choose_nickname.fxml");
     }
 
     public void clickImageGodPower(MouseEvent mouseEvent)
