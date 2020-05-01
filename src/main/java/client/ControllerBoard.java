@@ -87,7 +87,7 @@ public class ControllerBoard implements CustomObserver
     @FXML
     public void nicknameOk (MouseEvent mouseEvent) throws IOException
     {
-
+        changeScene("loading.fxml");
     }
 
     public void clickImageGodPower(MouseEvent mouseEvent)

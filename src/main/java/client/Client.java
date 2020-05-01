@@ -27,14 +27,11 @@ public class Client extends Application implements Observer {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        root = FXMLLoader.load(getClass().getResource("filefxml/menu.fxml"));
+        root = FXMLLoader.load(getClass().getResource("filefxml/start.fxml"));
         primaryStage.setTitle("Santorini");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
-        //gui iniziale
-
     }
-
 
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket("127.0.0.1", 1337);
