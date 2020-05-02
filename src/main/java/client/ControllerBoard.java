@@ -6,25 +6,30 @@ import com.sun.prism.Image;
 import elements.*;
 import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
+import it.polimi.ingsw.riccardoemelissa.exception.SendException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import javafx.scene.control.TextField;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 
-public class ControllerBoard implements CustomObserver
+public class ControllerBoard
 {
-    private ObjectOutputStream out;
-    private Parent root;//=FXMLLoader.load(getClass().getResource("@../filefxml/menu.fxml"));
+    private Socket socket;
+    private AnchorPane root;//=FXMLLoader.load(getClass().getResource("@../filefxml/menu.fxml"));
     private GameProxy from_server;
     private Stage primary_stage;
     private Scene input_scene;
@@ -34,12 +39,13 @@ public class ControllerBoard implements CustomObserver
 
     @FXML
     public TextField nickname;
+    private Stage primaryStage;
 
-    public ControllerBoard(ObjectOutputStream oos)
+    public ControllerBoard(Socket s)
     {
-        primary_stage=new Stage();
-        //input_scene =new Scene(root);
-        out=oos;
+        /*primary_stage=new Stage();
+        input_scene =new Scene(root);*/
+        socket=s;
     }
 
     @FXML
@@ -56,7 +62,7 @@ public class ControllerBoard implements CustomObserver
     @FXML
     public void chooseNickname(MouseEvent mouseEvent) throws IOException {
         changeScene("choose_nickname.fxml");
-        out.writeObject(new Command(CommandType.NICKNAME, nickname.getText(), null));
+        messageToServer(CommandType.NICKNAME, nickname.getText());
     }
 
     private void changeScene(String path) throws IOException
@@ -65,13 +71,13 @@ public class ControllerBoard implements CustomObserver
     }
 
     @FXML
-    public void twoPlayers (MouseEvent event) throws IOException{
-        out.writeObject(new Command(CommandType.MODE, 2, null));
+    public void twoPlayers (MouseEvent event){
+        messageToServer(CommandType.MODE, 2);
     }
 
     @FXML
-    public void threePlayers (MouseEvent event) throws IOException{
-        out.writeObject(new Command(CommandType.MODE, 3, null));
+    public void threePlayers (MouseEvent event){
+        messageToServer(CommandType.MODE, 3);
     }
 
     @FXML
@@ -167,7 +173,7 @@ public class ControllerBoard implements CustomObserver
         return workers;
     }
 
-    @Override
+
     public void update(Object obj) {
         from_server=(GameProxy) obj;
 
@@ -205,6 +211,7 @@ public class ControllerBoard implements CustomObserver
         Command cmd_toserver=new Command(cmd_type,obj,null);
         while (true) {
             try {
+                ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
                 out.writeObject(cmd_toserver);
                 break;
             }
@@ -216,6 +223,7 @@ public class ControllerBoard implements CustomObserver
         Command cmd_toserver=new Command(cmd_type,obj,new_pos);
         while (true) {
             try {
+                ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
                 out.writeObject(cmd_toserver);
                 break;
             }
@@ -223,14 +231,18 @@ public class ControllerBoard implements CustomObserver
         }
     }
 
-    public void messageToServer(CommandType cmd_type) {//controllo
+    public void messageToServer(CommandType cmd_type) {
         Command cmd_toserver=new Command(cmd_type,from_server.getActivePlayer(),null);
         while (true) {
             try {
+                ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
                 out.writeObject(cmd_toserver);
                 break;
             }
-            catch (IOException io){}
+            catch (IOException io)
+            {
+                new SendException("SendMessage error!(code:"+cmd_type+")");
+            }
         }
     }
 
@@ -270,4 +282,14 @@ public class ControllerBoard implements CustomObserver
         return possiblebuild;
     }
 
+    public void start() {
+        /*try {
+            root = FXMLLoader.load(getClass().getResource("/start.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        primaryStage.setTitle("Santorini");
+        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.show();
+    }
 }

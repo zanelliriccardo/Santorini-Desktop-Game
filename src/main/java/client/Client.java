@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.awt.TextField;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
@@ -30,7 +32,11 @@ public class Client extends Application implements Observer {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        root = FXMLLoader.load(getClass().getResource("/filefxml/start.fxml"));
+
+        System.out.println("Loading board");
+        //root=new Pane();
+        //controller.start();
+         root = FXMLLoader.load(getClass().getResource("start.fxml"));//errore qua
         primaryStage.setTitle("Santorini");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
@@ -38,38 +44,19 @@ public class Client extends Application implements Observer {
 
     public static void main(String[] args) {
         Socket socket = null;
-        ObjectInputStream ois=null;
-        ObjectOutputStream oos=null;
 
         try {
-            socket = new Socket("127.0.0.1", 1337);
+            socket = new Socket(InetAddress.getLocalHost(), 35500);
         } catch (IOException e) {
             System.out.println("socket");
         }
+        System.out.println("Connected to server");
 
-        try {
-             ois=new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-            System.out.println("in");
-        }
+        controller=new ControllerBoard(socket);
 
-        try {
-            oos=new ObjectOutputStream(socket.getOutputStream());
-        } catch (IOException e) {
-            System.out.println("out");
-        }
-
-        controller=new ControllerBoard(oos);
-
-        System.out.println("ok");
-
-        listener = new ListenerServer(ois,controller);
-
-        System.out.println("ok");
-
+        listener = new ListenerServer(socket,controller);
         listener.start();
 
-        System.out.println("ok");
         launch(args);
     }
 

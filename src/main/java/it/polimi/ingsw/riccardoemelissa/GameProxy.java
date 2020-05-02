@@ -5,7 +5,7 @@ import elements.*;
 import java.io.Serializable;
 import java.util.Observable;
 
-public class GameProxy extends CustomObservable implements Serializable {
+public class GameProxy implements Serializable {
     private BoardGame board_copy;
     private Player active_player;
     private Player[] players;

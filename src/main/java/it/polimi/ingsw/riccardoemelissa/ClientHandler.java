@@ -8,6 +8,7 @@ import elements.Worker;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
@@ -15,30 +16,46 @@ import java.util.Observer;
 public class ClientHandler extends CustomObservable implements Runnable, CustomObserver {
     private String nickname;
     private Socket socketConnection;
-    private ObjectOutputStream oos;
     private ObjectInputStream ois;
+    private ObjectOutputStream oos;
     private GameState game=new GameState();
     ExecutorClientCommand cmd_executor=new ExecutorClientCommand();
 
-    public ClientHandler(Socket socket) throws IOException
+    public ClientHandler(Socket socket)
+    {
+       socketConnection=socket;
+    }
+
+    /*public ClientHandler(Socket socket) throws IOException
     {
         ois=new ObjectInputStream(socket.getInputStream());
         oos=new ObjectOutputStream(socket.getOutputStream());
+    }*/
+
+    public ClientHandler(int port) {
+        try
+        {
+            Socket socket=(new ServerSocket(port)).accept();
+            ois=new ObjectInputStream(socket.getInputStream());
+            oos=new ObjectOutputStream(socket.getOutputStream());
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**
      * This method receives command from client
      */
     public void run() {
-        Command cmd = null;
-        cmd.addObserver(cmd_executor);
         if(!socketConnection.isClosed()&&socketConnection.isConnected())
             while (true) {
                 try {
                     //server in attesa di messaggi
-                    cmd = (Command) ois.readObject();
+                    ois=new ObjectInputStream(socketConnection.getInputStream());
+                    Command cmd = (Command) ois.readObject();
 
-                    cmd.custom_notifyAll();
+                    cmd_executor.update(cmd);
 
                     if(game.GetPlayers()==null) {
                         ois.close();
@@ -47,11 +64,12 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
                     }
                 }
                 catch (IOException | ClassNotFoundException e) {
-                    new Command(CommandType.DISCONNECTED,nickname,null).custom_notifyAll();
+                    cmd_executor.update(new Command(CommandType.DISCONNECTED,nickname,null));
                 }
             }
         //errore per chiusura connessione
-        new Command(CommandType.DISCONNECTED,nickname,null).custom_notifyAll();
+        cmd_executor.update(new Command(CommandType.DISCONNECTED,nickname,null));
+
     }
 
     /**
@@ -68,6 +86,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
         while (true)
         {
             try {
+                oos=new ObjectOutputStream(socketConnection.getOutputStream());
                 oos.writeObject(toClient);
                 break;
             } catch (IOException e) {

@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -19,38 +20,33 @@ public class MultiEchoServer {
         this.port = port;
     }
 
-    public void startServer() {
-        ServerSocket serverSocket;
-        ExecutorService executor=null;
+    public void startServer() throws IOException {
+        ServerSocket serverSocket=new ServerSocket(port);
+        ExecutorService executor = null;
 
-        try {
-            serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            System.err.println(e.getMessage()); // porta non disponibile
-            return;
-        }
         game=new GameState();
         System.out.println("Server ready");
 
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
-
-                System.out.println("Server ready");
                 ClientHandler firstClient=new ClientHandler(socket);
+                Thread firstThread=new Thread(firstClient);
                 game.GetBoard().addObserver(firstClient);
-                System.out.println("Server ready");
-                assert executor != null;
-                executor.submit(firstClient);
+                firstThread.start();
+
+                System.out.println("First player connected");
 
                 while (game.GetPlayerNumber()==1);
-                System.out.println("Server ready");
+
                 for(int i=1;i<numplayer;i++)
                     try {
                         socket = serverSocket.accept();
                         ClientHandler otherClient=new ClientHandler(socket);
                         game.GetBoard().addObserver(otherClient);
-                        executor.submit(otherClient);
+                        Thread otherThread=new Thread(firstClient);
+                        otherThread.start();
+                        System.out.println("Another player connected");
                     }
                     catch(IOException e) {
                         break; // entrerei qui se serverSocket venisse chiuso

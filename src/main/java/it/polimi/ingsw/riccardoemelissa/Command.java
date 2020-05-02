@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 
-public class Command extends CustomObservable implements Serializable {
+public class Command implements Serializable {
     private Object Obj;
     private CommandType type;
     private int[] newpos;

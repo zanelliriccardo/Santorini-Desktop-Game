@@ -8,12 +8,11 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 
 public class ListenerServer extends Thread {
-    private ObjectInputStream in;
-    private ControllerBoard controller;
+    private static ControllerBoard controller;
+    private Socket socket;
 
-    public ListenerServer(ObjectInputStream ois,ControllerBoard controller)
-    {
-        in=ois;
+    public ListenerServer(Socket s, ControllerBoard controller) {
+        socket=s;
         this.controller=controller;
     }
 
@@ -23,14 +22,12 @@ public class ListenerServer extends Thread {
         while (true)
         {
             System.out.println("ok");
-            GameProxy fromServer=null;
-            fromServer.addObserver(controller);
+
             try {
-                fromServer=(GameProxy) in.readObject();
-                if(fromServer!=null)
-                {
-                    fromServer.notifyAll();
-                }
+                ObjectInputStream in=new ObjectInputStream(socket.getInputStream());
+                GameProxy fromServer=(GameProxy) in.readObject();
+
+                controller.update(fromServer);
             }
             catch (IOException | ClassNotFoundException e)
             {

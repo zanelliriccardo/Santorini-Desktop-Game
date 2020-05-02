@@ -7,11 +7,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Observable;
 import java.util.Observer;
 
-public class ExecutorClientCommand implements CustomObserver {
+public class ExecutorClientCommand {
 
     private GameState game;
 
-    @Override
+
     public void update(Object arg)
     {
         Command cmd=(Command) arg;
