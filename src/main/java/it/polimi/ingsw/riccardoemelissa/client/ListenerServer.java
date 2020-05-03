@@ -1,7 +1,6 @@
-package client;
+package it.polimi.ingsw.riccardoemelissa.client;
 
 import it.polimi.ingsw.riccardoemelissa.GameProxy;
-import javafx.scene.Parent;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

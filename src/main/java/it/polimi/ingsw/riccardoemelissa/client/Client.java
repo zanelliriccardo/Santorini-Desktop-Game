@@ -1,4 +1,4 @@
-package client;
+package it.polimi.ingsw.riccardoemelissa.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import java.awt.TextField;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
@@ -21,6 +22,8 @@ public class Client extends Application implements Observer {
     private static Parent root;
     private static ControllerBoard controller;
     private static ListenerServer listener;
+    private static Socket socket;
+
     @FXML
     public TextField nickname;
 
@@ -31,12 +34,24 @@ public class Client extends Application implements Observer {
         //root=new Pane();
         //controller.start();
         FXMLLoader loader=new FXMLLoader();
-        System.out.println(getClass().getClassLoader().getResource("client/start.fxml"));
-        URL resource=getClass().getClassLoader().getResource("client/start.fxml");
+        //System.out.println(Client.class.getClassLoader().getResource("it/polimi/ingsw/riccardoemelissa/client/start.fxml"));
+        //InputStream input =Client.class.getClassLoader().getResourceAsStream("it/polimi/ingsw/riccardoemelissa/client/start.fxml");
+        //InputStream input = resource.openStream();
 
-        loader.setLocation(resource);
+        /*String path = Client.class.getPackage().getName().replace(".", "/");
+        System.out.println(path);
+        InputStream input = Client.class.getClassLoader().getResourceAsStream(path + "/start.fxml");
+
+         */
+
+        InputStream inputStream = getClass().getResource("start.fxml").openStream();
+
+        loader.setController(new ControllerBoard(socket));
+
         try {
-            root = loader.load();
+//            root = loader.load(input);
+            root = loader.load(inputStream);
+            //root = FXMLLoader.load(resource);
         }
         catch (LoadException e)
         {
@@ -60,7 +75,6 @@ public class Client extends Application implements Observer {
     }
 
     public static void main(String[] args) {
-        Socket socket = null;
 
         try {
             socket = new Socket(InetAddress.getLocalHost(), 35500);

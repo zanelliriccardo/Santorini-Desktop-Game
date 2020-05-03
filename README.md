@@ -3,7 +3,7 @@
 ## Project Setup
 In order to set up your project, follow these steps
 ### Clone and push the template to your repo
-Using the git command line client for your OS, type the following commands:
+Using the git command line it.polimi.ingsw.riccardoemelissa.client for your OS, type the following commands:
 ```bash
  # clone the repo on your current folder, naming the remote as 'template'
  git clone https://github.com/deib-polimi/prova-finale-template --origin template

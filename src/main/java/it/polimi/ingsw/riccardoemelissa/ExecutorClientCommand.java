@@ -31,7 +31,7 @@ public class ExecutorClientCommand {
                 game.getActivePlayer().GetGodCard().setIn_action((boolean) cmd.GetObj());
                 break;
             case BOARDCHANGE:
-                game.UpdateBoard((BoardGame) cmd.GetObj());//se passiamo la board da client a server in questo momento no prof sconsiglia
+                game.UpdateBoard((BoardGame) cmd.GetObj());//se passiamo la board da it.polimi.ingsw.riccardoemelissa.client a server in questo momento no prof sconsiglia
                 break;
             case DISCONNECTED://da rivedere
                 game.EndGame();

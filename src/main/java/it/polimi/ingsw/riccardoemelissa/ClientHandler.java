@@ -45,7 +45,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
     }
 
     /**
-     * This method receives command from client
+     * This method receives command from it.polimi.ingsw.riccardoemelissa.client
      */
     public void run() {
         if(!socketConnection.isClosed()&&socketConnection.isConnected())

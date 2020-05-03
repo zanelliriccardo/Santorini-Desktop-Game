@@ -76,7 +76,7 @@
 											"top": 566,
 											"width": 258.4130859375,
 											"height": 13,
-											"text": "(from client)"
+											"text": "(from it.polimi.ingsw.riccardoemelissa.client)"
 										},
 										{
 											"_type": "LabelView",
@@ -613,7 +613,7 @@
 											"top": 350,
 											"width": 156.0634765625,
 											"height": 13,
-											"text": "(from client)"
+											"text": "(from it.polimi.ingsw.riccardoemelissa.client)"
 										},
 										{
 											"_type": "LabelView",
@@ -844,7 +844,7 @@
 											"top": 630,
 											"width": 156.0634765625,
 											"height": 13,
-											"text": "(from client)"
+											"text": "(from it.polimi.ingsw.riccardoemelissa.client)"
 										},
 										{
 											"_type": "LabelView",
@@ -16652,7 +16652,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "client",
+					"name": "it.polimi.ingsw.riccardoemelissa.client",
 					"ownedElements": [
 						{
 							"_type": "UMLClass",

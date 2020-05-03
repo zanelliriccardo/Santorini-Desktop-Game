@@ -1,4 +1,4 @@
-package client;
+package it.polimi.ingsw.riccardoemelissa.client;
 
 import it.polimi.ingsw.riccardoemelissa.GameProxy;
 
@@ -9,8 +9,8 @@ import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.exception.SendException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.LoadException;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -19,9 +19,8 @@ import javafx.stage.Stage;
 
 import javafx.scene.control.TextField;
 
-import javax.swing.*;
 import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -50,7 +49,8 @@ public class ControllerBoard
 
     @FXML
     public void startGame(MouseEvent mouseEvent) throws IOException {
-        int num_players = from_server.getPlayers().length;
+        //int num_players = from_server.getPlayers().length;
+        int num_players = 1;
 
         if(num_players == 1)
         changeScene("mode.fxml");
@@ -67,7 +67,22 @@ public class ControllerBoard
 
     private void changeScene(String path) throws IOException
     {
-        root= FXMLLoader.load(getClass().getResource(path));
+        FXMLLoader loader = new FXMLLoader();
+        InputStream inputStream = getClass().getResource(path).openStream();
+
+        loader.setController(this);
+
+        try {
+//            root = loader.load(input);
+            root = loader.load(inputStream);
+            //root = FXMLLoader.load(resource);
+        }
+        catch (LoadException e)
+        {
+            e.printStackTrace();
+        }
+
+        //root= FXMLLoader.load(getClass().getResource(path));
     }
 
     @FXML

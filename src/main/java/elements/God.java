@@ -13,13 +13,15 @@ public abstract class God {
     private GodCardType type;
     private ArrayList<GodCardType> turn=new ArrayList<>();
     private boolean in_action;
+
     /**
-     *This method is used to move the worker:
-     * if the newpos respects the classic conditions of move,
-     * the worker does his move and the method returns true
+     * Move the active worker
+     *
+     * The method accepts the active worker and the position where he would like to move.
+     * "newpos" is a permitted move, so here's the move by changing the active worker's position.
      * @param b
      * @param active_worker : worker chosen to do the move
-     * @param newpos : the new worker's position given by the player belongs to an adjacent box and the move is allow by opponents' god cards
+     * @param newpos
      * @return
      */
     public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)

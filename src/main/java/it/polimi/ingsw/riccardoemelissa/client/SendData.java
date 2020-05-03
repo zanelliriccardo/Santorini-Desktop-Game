@@ -1,4 +1,4 @@
-package client;
+package it.polimi.ingsw.riccardoemelissa.client;
 
 import java.io.PrintWriter;
 import java.util.Scanner;
