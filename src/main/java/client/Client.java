@@ -3,10 +3,9 @@ package client;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.LoadException;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.awt.TextField;
@@ -16,7 +15,6 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.*;
 
 public class Client extends Application implements Observer {
 
@@ -37,12 +35,27 @@ public class Client extends Application implements Observer {
         URL resource=getClass().getClassLoader().getResource("client/start.fxml");
 
         loader.setLocation(resource);
-        root=loader.load();
-
+        try {
+            root = loader.load();
+        }
+        catch (LoadException e)
+        {
+            e.printStackTrace();
+        }
         //root = FXMLLoader.load(getClass().getResource("/start.fxml"));//errore qua
 
+        /*root = new Pane();
+        Scene scene=new Scene(root);
+        Image background_image=new Image("@../images/start_image.jpg");
+        ImageView background=new ImageView((Element) background_image);
+        HBox box=new HBox();
+        box.getChildren().a;
+        background.setSize(600,400);
+        root.getChildrenUnmodifiable().add((Node)background);*/
+
+        primaryStage.setScene(new Scene(root,600,400));
         primaryStage.setTitle("Santorini");
-        primaryStage.setScene(new Scene(root, 300, 275));
+
         primaryStage.show();
     }
 
