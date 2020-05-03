@@ -3,24 +3,20 @@ package client;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.awt.TextField;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Scanner;
+import java.util.*;
 
 public class Client extends Application implements Observer {
 
@@ -36,7 +32,15 @@ public class Client extends Application implements Observer {
         System.out.println("Loading board");
         //root=new Pane();
         //controller.start();
-         root = FXMLLoader.load(getClass().getResource("start.fxml"));//errore qua
+        FXMLLoader loader=new FXMLLoader();
+        System.out.println(getClass().getClassLoader().getResource("client/start.fxml"));
+        URL resource=getClass().getClassLoader().getResource("client/start.fxml");
+
+        loader.setLocation(resource);
+        root=loader.load();
+
+        //root = FXMLLoader.load(getClass().getResource("/start.fxml"));//errore qua
+
         primaryStage.setTitle("Santorini");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();

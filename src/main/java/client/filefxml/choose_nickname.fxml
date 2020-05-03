@@ -11,7 +11,7 @@
    <children>
       <ImageView fitHeight="400.0" fitWidth="600.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/background.jpg" />
+            <Image url="@../../../resources/images/background.jpg" />
          </image>
       </ImageView>
       <TextField disable="true" editable="false" layoutX="192.0" layoutY="100.0" opacity="0.9" prefHeight="41.0" prefWidth="216.0" text="Choose your nickname :">

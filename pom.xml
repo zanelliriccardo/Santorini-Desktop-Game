@@ -48,13 +48,28 @@
 			<version>RELEASE</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>11.0.2</version>
+		</dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-base</artifactId>
+			<version>15-ea+4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>15-ea+4</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
@@ -76,6 +91,14 @@
 					<argLine>-Xmx1024m</argLine>
 				</configuration>
 			</plugin>
+				<plugin>
+					<groupId>org.openjfx</groupId>
+					<artifactId>javafx-maven-plugin</artifactId>
+					<version>0.0.4</version>
+					<configuration>
+						<mainClass>HelloFX</mainClass>
+					</configuration>
+				</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>

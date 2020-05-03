@@ -14,7 +14,7 @@
    <children>
       <ImageView fitHeight="344.0" fitWidth="608.0" layoutX="-6.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/background.jpg" />
+            <Image url="@../../../resources/images/background.jpg" />
          </image>
       </ImageView>
       <HBox disable="true" layoutX="117.0" layoutY="58.0" prefHeight="46.0" prefWidth="366.0">

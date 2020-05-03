@@ -13,7 +13,7 @@
    <children>
       <ImageView fitHeight="540.0" fitWidth="960.0">
          <image>
-            <Image url="@../images/SantoriniBoard%20-%20Copia.png" />
+            <Image url="@../../../resources/images/SantoriniBoard%20-%20Copia.png" />
          </image>
       </ImageView>
       <GridPane hgap="10.0" layoutX="285.0" layoutY="80.0" prefHeight="390.0" prefWidth="390.0" vgap="10.0">
@@ -38,7 +38,7 @@
                <children>
                   <ImageView fx:id="Power" fitHeight="260.0" fitWidth="180.0" onMouseClicked="#setGodPower">
                      <image>
-                        <Image url="@../images/card/01.png" />
+                        <Image url="@../../../resources/images/card/01.png" />
                      </image>
                   </ImageView>
                </children>
@@ -49,7 +49,7 @@
          <children>
             <ImageView fx:id="godPower" accessibleRole="BUTTON" fitHeight="97.0" fitWidth="101.0" onMouseClicked="#setGodPower">
                <image>
-                  <Image url="@../images/heropower_active.png" />
+                  <Image url="@../../../resources/images/heropower_active.png" />
                </image>
             </ImageView>
          </children>
