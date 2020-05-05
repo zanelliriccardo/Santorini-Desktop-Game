@@ -19,7 +19,7 @@
       </ImageView>
       <HBox disable="true" layoutX="117.0" layoutY="58.0" prefHeight="46.0" prefWidth="366.0">
          <children>
-            <TextField alignment="CENTER" disable="true" editable="false" opacity="0.9" prefHeight="48.0" prefWidth="366.0" text="Welcome, you are the first player to connect!">
+            <TextField alignment="CENTER" editable="false" opacity="0.9" prefHeight="48.0" prefWidth="366.0" text="Welcome, you are the first player to connect!">
                <font>
                   <Font name="Franklin Gothic Medium Cond" size="21.0" />
                </font>
@@ -31,7 +31,7 @@
       </HBox>
       <HBox layoutX="124.0" layoutY="122.0" prefHeight="30.0" prefWidth="348.0">
          <children>
-            <TextField alignment="CENTER" disable="true" editable="false" opacity="0.9" prefHeight="33.0" prefWidth="348.0" text="First of all, you need to select the number of players :">
+            <TextField alignment="CENTER" editable="false" opacity="0.9" prefHeight="33.0" prefWidth="348.0" text="First of all, you need to select the number of players :">
                <font>
                   <Font name="Franklin Gothic Medium Cond" size="17.0" />
                </font>
@@ -58,7 +58,7 @@
       </ButtonBar>
       <ButtonBar layoutX="495.0" layoutY="315.0" opacity="0.89" prefHeight="40.0" prefWidth="75.0">
         <buttons>
-          <Button fx:id="ok_mode" mnemonicParsing="false" onMouseClicked="#modeOk" text="OK">
+          <Button mnemonicParsing="false" onMouseClicked="#modeOk" text="OK">
                <font>
                   <Font name="Franklin Gothic Medium Cond" size="18.0" />
                </font>
