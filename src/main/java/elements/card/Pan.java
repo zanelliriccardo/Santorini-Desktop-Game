@@ -10,6 +10,16 @@ public class Pan extends God {
     private boolean opponent_turn=false;
     private GodCardType type=GodCardType.MOVE;
 
+    /**
+     * manage win condition following rules pan
+     *
+     * if different level is 2 or plus active player win the game
+     *
+     * @param b : board
+     * @param active_worker : worker chosen to do the move
+     * @param newpos : position chosen by player
+     * @return
+     */
     @Override
     public CommandType Move (BoardGame b, Worker active_worker, int[] newpos)
     {

@@ -15,6 +15,17 @@ public class Artemis extends God {
     private int[] old_position=null;
     private boolean in_action=false;
 
+    /**
+     * apply artemis rules if power is active
+     *
+     * if is the first move of turn, saves the position and during the next move
+     * of this turn check they is different
+     *
+     * @param b : board
+     * @param active_worker : worker chosen to do the move
+     * @param newpos : position chosen by player
+     * @return
+     */
     @Override
     public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
@@ -37,6 +48,13 @@ public class Artemis extends God {
         }
     }
 
+    /**
+     * get adjacent box where possible moves in, follow artemis rules
+     *
+     * @param b : board
+     * @param worker_pos : actual position of worker
+     * @return
+     */
     @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> possibleBox=super.adjacentBoxNotOccupiedNotDome(b, worker_pos);

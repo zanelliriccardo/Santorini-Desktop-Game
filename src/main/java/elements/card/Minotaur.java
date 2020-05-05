@@ -12,6 +12,16 @@ public class Minotaur extends God {
     private boolean opponent_turn = false;
     private GodCardType type=GodCardType.MOVE;
 
+    /**
+     * do move following apollo rules
+     *
+     * if position is occupied, the method call method for manage worker position
+     *
+     * @param b : board
+     * @param active_worker : worker chosen to do the move
+     * @param newpos : position chosen by player
+     * @return
+     */
     @Override
     public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
@@ -26,6 +36,15 @@ public class Minotaur extends God {
         return CommandType.MOVE;
     }
 
+    /**
+     * get the box where is possible moves in
+     *
+     * get the box where is possible moves in, following minotaur rules
+     *
+     * @param b : board
+     * @param worker_pos : actual position of worker
+     * @return
+     */
     @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> adj_boxes = new ArrayList<>();
@@ -63,6 +82,13 @@ public class Minotaur extends God {
         return adj_boxes;
     }
 
+    /**
+     * manage worker position following minotaur rules
+     *
+     * @param active_worker : worker chosen to move by player
+     * @param newpos : position chosen by player
+     * @param b : board
+     */
     public void SetMinotaurPosition (Worker active_worker, int[] newpos, BoardGame b)
     {
         int[] newpos_opponent = new int[]{(newpos[0] - active_worker.GetX()) + newpos[0], (newpos[1] - active_worker.GetY()) + newpos[1]};

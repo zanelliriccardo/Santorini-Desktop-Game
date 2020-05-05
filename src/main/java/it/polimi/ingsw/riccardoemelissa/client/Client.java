@@ -37,7 +37,7 @@ public class Client extends Application implements Observer {
     private static ControllerBoard controller;
     private static ListenerServer listener;
     private GameProxy from_server;
-    private Socket socket;
+    private static Socket socket;
     @FXML
     public TextField nickname;
 

@@ -18,6 +18,17 @@ public class Athena extends God {
         return false;
     }
 
+    /**
+     * check athena power in opponent turn and set athena power in owner turn
+     *
+     * if the active player is the athena owner set athena power on if player moves on,
+     * if the active player is an opponent of athena return true if athena allow the chosen move
+     *
+     * @param b : board
+     * @param active_worker : worker chosen to do the move
+     * @param newpos : position chosen by player
+     * @return
+     */
     @Override
     public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
@@ -33,6 +44,14 @@ public class Athena extends God {
         return CommandType.BUILD;
     }
 
+    /**
+     * check is a move-on moves
+     *
+     * @param old_pos : actual opponent worker position
+     * @param new_pos : next opponent worker position
+     * @param b : board
+     * @return
+     */
     public CommandType RespectAthenaAction(int[] old_pos, int[] new_pos, BoardGame b) {
         if ((b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)) < 1)
             return CommandType.ERROR;

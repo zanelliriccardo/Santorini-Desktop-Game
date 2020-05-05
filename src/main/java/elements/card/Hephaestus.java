@@ -14,12 +14,30 @@ public class Hephaestus extends God {
 
     private boolean in_action=false;
 
+    /**
+     * double build if power is active
+     *
+     * @param b : board
+     * @param activeWorker : worker chosen to do the build
+     * @param pos -> the build position given by the player belongs to an adjacent box
+     * @return
+     */
     @Override
     public CommandType Build(BoardGame b, Worker activeWorker, int[] pos) {
-        super.Build(b,activeWorker,pos);
+        if(in_action)
+            super.Build(b,activeWorker,pos);
         return super.Build(b,activeWorker,pos);
     }
 
+    /**
+     * get adjacent box where possible build on
+     *
+     * if power is active check the box is max of level 2 to do a double build
+     *
+     * @param b : board
+     * @param worker_pos : actual position of worker
+     * @return
+     */
     @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> adj_boxes = new ArrayList<>();
