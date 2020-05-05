@@ -19,9 +19,9 @@ public abstract class God {
      *
      * The method accepts the active worker and the position where he would like to move.
      * "newpos" is a permitted move, so here's the move by changing the active worker's position.
-     * @param b
+     * @param b : board
      * @param active_worker : worker chosen to do the move
-     * @param newpos
+     * @param newpos : position chosen by player
      * @return
      */
     public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
@@ -49,7 +49,7 @@ public abstract class God {
      * This method is used to build:
      * if the pos respects the classic conditions of build,
      * the worker does his build and the method returns true
-     * @param b
+     * @param b : board
      * @param activeWorker : worker chosen to do the build
      * @param pos -> the build position given by the player belongs to an adjacent box
      * @return
@@ -63,10 +63,20 @@ public abstract class God {
         return CommandType.BUILD;
     }
 
-    public boolean GetOpponentTurn(){return opponent_turn;}
+    public boolean GetOpponentTurn()
+    {
+        return opponent_turn;
+    }
 
     public GodCardType GetType(){return type;}
 
+    /**
+     * get adjacent box where possible moves in
+     *
+     * @param b : board
+     * @param worker_pos : actual position of worker
+     * @return
+     */
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos)
     {
         ArrayList<int[]> adj_boxes = new ArrayList<>();

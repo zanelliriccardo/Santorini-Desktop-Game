@@ -13,6 +13,15 @@ public class Prometheus extends God {
 
     private boolean in_action=false;
 
+    /**
+     * manage turn following prometheus rules
+     *
+     * if power is active before move active player do a build
+     *
+     * @param b : board
+     * @param worker_pos : actual position of worker
+     * @return
+     */
     @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> adj_boxes = new ArrayList<>();

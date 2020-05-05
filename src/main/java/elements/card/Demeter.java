@@ -15,6 +15,18 @@ public class Demeter extends God {
     private int[] old_position=null;
 
     private boolean in_action=false;
+
+    /**
+     * apply demeter rules if power is active
+     *
+     * if is the first build of turn, saves the position and during the next build
+     * of this turn check they is different
+     *
+     * @param b : board
+     * @param active_Worker
+     * @param pos -> the build position given by the player belongs to an adjacent box
+     * @return
+     */
     @Override
     public CommandType Build(BoardGame b, Worker active_Worker, int[] pos)
     {
@@ -35,6 +47,13 @@ public class Demeter extends God {
         }
     }
 
+    /**
+     * get adjacent box where possible moves in following demeter rules
+     *
+     * @param b : board
+     * @param worker_pos : actual position of worker
+     * @return
+     */
     @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> possibleBox=super.adjacentBoxNotOccupiedNotDome(b, worker_pos);

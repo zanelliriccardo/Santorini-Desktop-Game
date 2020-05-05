@@ -15,6 +15,16 @@ public class Apollo extends God {
     private boolean opponent_turn = false;
     private GodCardType type=GodCardType.MOVE;
 
+    /**
+     * do move following apollo rules
+     *
+     * if position is occupied, the method call method for switch worker position
+     *
+     * @param b : board
+     * @param active_worker : worker chosen to do the move
+     * @param newpos : position chosen by player
+     * @return
+     */
     @Override
     public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
@@ -27,6 +37,15 @@ public class Apollo extends God {
         return CommandType.MOVE;
     }
 
+    /**
+     * get the box where is possible moves in
+     *
+     * get the box where is possible moves in, following apollo rules
+     *
+     * @param b : board
+     * @param worker_pos : actual position of worker
+     * @return
+     */
     @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> adj_boxes = new ArrayList<>();
@@ -56,6 +75,13 @@ public class Apollo extends God {
         return adj_boxes;
     }
 
+    /**
+     * switch worker position
+     *
+     * @param active_worker : worker chosen to move by player
+     * @param newpos : position chosen by player
+     * @param b : board
+     */
     public void SetApolloPosition(Worker active_worker, int[] newpos, BoardGame b)
     {
         b.GetOccupant(newpos).SetPosition(active_worker.GetPosition());//da controllare

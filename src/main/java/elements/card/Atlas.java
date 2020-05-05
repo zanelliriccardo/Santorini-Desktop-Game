@@ -11,6 +11,17 @@ public class Atlas extends God {
     private GodCardType type=GodCardType.MOVE;
 
     private boolean in_action=false;
+
+    /**
+     * apply atlas rules if power is active
+     *
+     * if power is active build a dome
+     *
+     * @param b:board
+     * @param activeWorker : worker chosen to do the build
+     * @param pos -> the build position given by the player belongs to an adjacent box
+     * @return
+     */
     @Override
     public CommandType Build(BoardGame b, Worker activeWorker, int[] pos)
     {
