@@ -195,7 +195,8 @@ public class Client extends Application implements Observer {
     @FXML
     public void changeButtonImage (MouseEvent mouseEvent) throws IOException
     {
-        set_power.setImage(new Image("images/heropower_active.png"));
+        URL path=getClass().getResource("images/heropower_active.png");
+        set_power.setImage(new Image(path.getPath()));
     }
 
     @FXML

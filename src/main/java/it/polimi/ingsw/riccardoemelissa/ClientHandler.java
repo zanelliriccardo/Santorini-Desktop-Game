@@ -18,7 +18,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
     private Socket socketConnection;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
-    private GameState game=new GameState();
+    private static GameState game=new GameState();
     ExecutorClientCommand cmd_executor=new ExecutorClientCommand();
 
     public ClientHandler(Socket socket)
@@ -55,7 +55,10 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
                     ois=new ObjectInputStream(socketConnection.getInputStream());
                     Command cmd = (Command) ois.readObject();
 
-                    cmd_executor.update(cmd);
+                    System.out.println(cmd.GetType());
+
+                    new ExecutorClientCommand().update(cmd);
+                    //cmd_executor.update(cmd);
 
                     if(game.GetPlayers()==null) {
                         ois.close();

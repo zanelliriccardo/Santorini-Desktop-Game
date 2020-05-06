@@ -1,5 +1,6 @@
 package it.polimi.ingsw.riccardoemelissa;
 
+
 import elements.*;
 import elements.Box;
 
@@ -121,8 +122,9 @@ public class GameState {
                 boxes[i][j] = new Box(true, 0);
         }
         b = new BoardGame(boxes);
-
+        System.out.println(players.length);
         players = new Player[num_player];
+        System.out.println(players.length);
         workers = new Worker[num_player * 2];
 
         try {

@@ -8,6 +8,7 @@ import org.json.simple.parser.ParseException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -24,8 +25,11 @@ public class JsonReader {
         ArrayList<String> gods = new ArrayList<>();
         String[] gods_chosen = new String[n*2];
 
+        URL path=getClass().getResource("GodList.json");
+
+
         try {
-            obj = (JSONObject) parser.parse((new FileReader("/Users/Utente/Desktop/PROGETTO INGSW/progettoingsw/src/main/java/Resources/GodList.json")));
+            obj = (JSONObject) parser.parse((new FileReader(path.getPath())));
         } catch (FileNotFoundException e) {
             System.out.println(("File Not Found Exception!\n"));
         } catch (IOException i) {

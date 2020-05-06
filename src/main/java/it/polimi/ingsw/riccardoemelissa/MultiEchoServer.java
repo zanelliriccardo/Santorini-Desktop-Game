@@ -37,7 +37,9 @@ public class MultiEchoServer {
 
                 System.out.println("First player connected");
 
-                while (game.GetPlayerNumber()==1);
+                while (game.GetPlayerNumber()==1){continue;};
+
+                System.out.println("choose to play with: "+game.GetPlayerNumber());
 
                 for(int i=1;i<numplayer;i++)
                     try {

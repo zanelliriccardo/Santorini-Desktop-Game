@@ -9,7 +9,7 @@ import java.util.Observer;
 
 public class ExecutorClientCommand {
 
-    private GameState game;
+    private static GameState game=new GameState();
 
 
     public void update(Object arg)
@@ -19,7 +19,9 @@ public class ExecutorClientCommand {
         switch (cmd.GetType())
         {
             case MODE:
+                System.out.println(game.GetPlayerNumber());
                 game.SetNumPlayer((int) cmd.GetObj());
+                System.out.println(game.GetPlayerNumber());
                 break;
             case NICKNAME:
                 game.NewPlayer((String)cmd.GetObj());
