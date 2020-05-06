@@ -15,12 +15,15 @@ import javafx.fxml.LoadException;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.awt.TextField;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -40,6 +43,10 @@ public class Client extends Application implements Observer {
     private static Socket socket;
     @FXML
     public TextField nickname;
+    @FXML
+    public ImageView set_power;
+    @FXML
+    public TextField set_turn;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -101,11 +108,17 @@ public class Client extends Application implements Observer {
         /*int players_connected = from_server.getPlayers().length;
 
          */
+
+        String active_player_name = "nickname";
+
         int players_connected = 1;
 
 
-        if(players_connected == 1)
-            changeScene("mode.fxml");
+        if(players_connected == 1) {
+            //changeScene("mode.fxml");
+
+            showBoard(active_player_name);
+        }
 
 
         else
@@ -170,6 +183,19 @@ public class Client extends Application implements Observer {
     public void nicknameOk (MouseEvent mouseEvent) throws IOException
     {
         changeScene("loading.fxml");
+    }
+
+    @FXML
+    public void showBoard (String active_player_name) throws IOException
+    {
+        changeScene("board.fxml");
+        set_turn.setText("Turn of " + active_player_name);
+    }
+
+    @FXML
+    public void changeButtonImage (MouseEvent mouseEvent) throws IOException
+    {
+        set_power.setImage(new Image("images/heropower_active.png"));
     }
 
     @FXML
