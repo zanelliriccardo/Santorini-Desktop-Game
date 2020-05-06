@@ -22,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -47,6 +48,10 @@ public class Client extends Application implements Observer {
     public ImageView set_power;
     @FXML
     public TextField set_turn;
+    @FXML
+    public ImageView set_godcard;
+    @FXML
+    public GridPane boardgame;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -190,13 +195,22 @@ public class Client extends Application implements Observer {
     {
         changeScene("board.fxml");
         set_turn.setText("Turn of " + active_player_name);
+        URL path=getClass().getResource("images/card/02.png");
+        set_godcard.setImage(new Image(String.valueOf(path)));
     }
 
     @FXML
-    public void changeButtonImage (MouseEvent mouseEvent) throws IOException
+    public void changeButtonImage ()
     {
         URL path=getClass().getResource("images/heropower_active.png");
-        set_power.setImage(new Image(path.getPath()));
+        set_power.setImage(new Image(String.valueOf(path)));
+    }
+
+    @FXML
+    public void setWorkerPosition (MouseEvent mouseEvent) throws IOException
+    {
+        Circle worker = new Circle();
+        boardgame.getChildren().add(worker);
     }
 
     @FXML
