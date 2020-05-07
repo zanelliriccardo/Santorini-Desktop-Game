@@ -1,6 +1,6 @@
 package it.polimi.ingsw.riccardoemelissa;
 
-import elements.card.Apollo;
+
 import org.junit.jupiter.api.Test;
 
 class GameStateTest extends Object {

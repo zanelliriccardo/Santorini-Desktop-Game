@@ -174,14 +174,8 @@ public class Client extends Application implements CustomObserver {
         updateServer();
         changeScene("choose_nickname.fxml");
         System.out.println("Passaggio a inserimento nickname");
-        messageToServer(CommandType.NICKNAME, nickname.getText());
-        updateServer();
 
-        ArrayList<Player> players = from_server.getPlayers();
-        for(int i = 0; i<players.size(); i++)
-            System.out.println(players.get(i).GetNickname());
     }
-
 
     @FXML
     public void twoPlayers (MouseEvent event) throws IOException {
@@ -191,6 +185,8 @@ public class Client extends Application implements CustomObserver {
         //changeScene("loading.fxml");
         updateServer();
         System.out.println("Giocatori collegati = " + from_server.getPlayers().size());
+
+        chooseNickname(event);
     }
 
     @FXML
@@ -210,6 +206,14 @@ public class Client extends Application implements CustomObserver {
     @FXML
     public void nicknameOk (MouseEvent mouseEvent) throws IOException
     {
+        messageToServer(CommandType.NICKNAME,nickname.getText());
+
+        System.out.println("nicknameOK : "+from_server.getPlayers().size());
+        for (Player p :
+                from_server.getPlayers()) {
+            System.out.println(p.GetNickname());
+        }
+
         System.out.println("Premuto ok inserimento nickname");
         changeScene("loading.fxml");
     }

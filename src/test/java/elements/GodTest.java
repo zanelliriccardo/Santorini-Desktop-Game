@@ -1,7 +1,8 @@
 package elements;
 
-import elements.card.Pan;
+
 import it.polimi.ingsw.riccardoemelissa.CommandType;
+import it.polimi.ingsw.riccardoemelissa.elements.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

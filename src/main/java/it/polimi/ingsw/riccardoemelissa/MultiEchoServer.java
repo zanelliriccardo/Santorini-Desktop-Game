@@ -8,12 +8,11 @@ import java.util.Scanner;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.spi.AbstractResourceBundleProvider;
+
 
 public class MultiEchoServer {
     private int port;
-    private static int numplayer=0;
-    private static GameState game;
+
     private ExecutorClientCommand cmd_executor =new ExecutorClientCommand();
 
     public MultiEchoServer(int port)
@@ -37,11 +36,13 @@ public class MultiEchoServer {
 
                 System.out.println("First player connected");
 
-                while (GameState.GetPlayerNumber()==1) {//System.out.println(GameState.GetPlayerNumber());};
+                while (true) {
+                    if (GameState.GetPlayers().size()>0)
+                        break;
                 }
                 System.out.println("choose to play with: "+ GameState.GetPlayerNumber());
 
-                for(int i=1;i<numplayer;i++)
+                for(int i=1;i<GameState.GetNumPlayers();i++)
                     try {
                         socket = serverSocket.accept();
                         ClientHandler otherClient=new ClientHandler(socket);
@@ -57,7 +58,7 @@ public class MultiEchoServer {
                 while (!GameState.GameReady()) { }
 
                 GameState.NextTurn();
-                notifyAll();
+
                 if(GameState.getGameOver()) //inserire controllo su fine partita
                     break;
             } catch (IOException|NullPointerException e) {

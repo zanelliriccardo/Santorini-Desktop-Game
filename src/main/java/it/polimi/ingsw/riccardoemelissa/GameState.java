@@ -14,7 +14,7 @@ public class GameState {
     private static int trace = 0;
     private static BoardGame b;
     private static boolean gameover=false;
-    private static int num_players;
+    private static int num_players=10;
 
     public GameState()
     {
@@ -51,9 +51,8 @@ public class GameState {
 
     public static boolean GameReady()
     {
-        for (int i = 0; i < players.size(); i++)
-            if (players.get(i) == null)
-                return false;
+        if(players.size()<num_players)
+            return false;
         return true;
     }
 
@@ -121,6 +120,7 @@ public class GameState {
         for(int i =0; i<n; i++)
         {
             players.add(new Player("nome")); //cambiare nome
+            System.out.println(players.get(i).GetNickname());
         }
 
         Box[][] boxes = new Box[5][5];
@@ -154,7 +154,14 @@ public class GameState {
             if(players.get(i)==null)
 
          */
-        players.add(new Player(str));
+        //players.add(new Player(str));
+        for (Player p : players) {
+            if(p.GetNickname().compareTo("nome")==0)
+            {
+                p.SetNickname(str);
+                break;
+            }
+        }
     }
 
     public static void SetNewWorker(Worker ActiveWorker)
@@ -303,5 +310,9 @@ public class GameState {
 
         }
         return null;
+    }
+
+    public static int GetNumPlayers() {
+        return num_players;
     }
 }

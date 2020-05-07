@@ -1,6 +1,8 @@
 package elements;
 
-import elements.card.Apollo;
+
+import it.polimi.ingsw.riccardoemelissa.elements.Player;
+import it.polimi.ingsw.riccardoemelissa.elements.card.Apollo;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,5 +1,6 @@
 package elements;
 
+import it.polimi.ingsw.riccardoemelissa.elements.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

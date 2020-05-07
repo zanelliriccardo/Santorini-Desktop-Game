@@ -69,8 +69,10 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
                     if(cmd.GetType()==CommandType.UPDATE)
                         settingClient(new GameProxy(GameState.GetBoard(),GameState.getActivePlayer(),GameState.GetPlayers()));
 
+
                     new ExecutorClientCommand().update(cmd);
                     //cmd_executor.update(cmd);
+                    update(new Object());
 
                     if(GameState.GetPlayers()==null) {
                         ois.close();
@@ -124,7 +126,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
                 System.out.println("Mando al client (ClientHandler -> settingClient) : giocatori = " + toClient.getPlayers().size());
                 oos.flush();
                 break;
-            } catch (IOException e) {
+            } catch (IOException | NullPointerException e) {
                 e.printStackTrace();
             }
         }
