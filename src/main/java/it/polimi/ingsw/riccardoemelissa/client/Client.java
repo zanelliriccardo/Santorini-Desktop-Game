@@ -16,7 +16,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -44,42 +46,62 @@ public class Client extends Application implements CustomObserver {
     public ImageView set_power;
     @FXML
     public TextField set_turn;
+    @FXML
+    public GridPane myboard;
+
+    @FXML
+    private int[] mouseEntered(MouseEvent e) {
+        Node source = e.getPickResult().getIntersectedNode();
+        //Node source = (Node)e.getSource() ;
+        Integer colIndex = GridPane.getColumnIndex(source);
+        Integer rowIndex = GridPane.getRowIndex(source);
+        System.out.printf("Mouse entered cell [%d, %d]%n", colIndex, rowIndex);
+
+        Circle c1 = new Circle(source.getProperties().size()/2.0f, source.getProperties().size()/2.0f, 30.0f, Color.RED);
+
+        myboard.add(c1, colIndex,rowIndex);
+
+        return new int[]{rowIndex, colIndex};
+    }
+
+    @FXML
+    private void initializeBoardgame (GridPane myboard) {
+        for (int x = 0; x < 5; x++) {
+            for (int y = 0; y < 5; y++) {
+                Pane pane = new Pane();
+                myboard.getChildren().add(pane);
+                GridPane.setColumnIndex(pane, x);
+                GridPane.setRowIndex(pane, y);
+            }
+        }
+    }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        primary= primaryStage;
-        System.out.println("Loading board");
-        //root=new Pane();
-        //controller.start();
-        loader=new FXMLLoader();
-        System.out.println(getClass().getResource("start.fxml"));
-        URL resource=getClass().getResource("start.fxml");
-        loader.setController(this);
-        loader.setLocation(resource);
+    primary= primaryStage;
+    System.out.println("Loading board");
 
-        try {
-            root = loader.load();
-        }
-        catch (LoadException e)
-        {
-            e.printStackTrace();
-        }
-        //root = FXMLLoader.load(getClass().getResource("/start.fxml"));//errore qua
+    loader=new FXMLLoader();
+    System.out.println(getClass().getResource("board.fxml"));
+    URL resource=getClass().getResource("board.fxml");
+    loader.setController(this);
+    loader.setLocation(resource);
 
-        /*root = new Pane();
-        Scene scene=new Scene(root);
-        Image background_image=new Image("@../images/start_image.jpg");
-        ImageView background=new ImageView((Element) background_image);
-        HBox box=new HBox();
-        box.getChildren().a;
-        background.setSize(600,400);
-        root.getChildrenUnmodifiable().add((Node)background);*/
+    try {
+        root = loader.load();
+    }
+    catch (LoadException e)
+    {
+        e.printStackTrace();
+    }
 
-        primary.setScene(new Scene(root,600,400));
-        primary.setTitle("Santorini");
+    primary.setScene(new Scene(root,600,400));
+    primary.setTitle("Santorini");
 
-        primary.show();
+    primary.show();
+    initializeBoardgame(myboard);
     }
 
     public static void main(String[] args) {
@@ -276,11 +298,6 @@ public class Client extends Application implements CustomObserver {
         if(from_server.getActivePlayer().GetGodCard().GetType()==GodCardType.BUILD) activeBuildCells();
     }
 
-    public void setNickname(String nickname)
-    {
-        messageToServer(CommandType.NICKNAME,nickname);
-    }
-
     public void messageToServer(CommandType cmd_type,Object obj) {
         Command cmd_toserver=new Command(cmd_type,obj,null);
         while (true) {
@@ -366,10 +383,9 @@ public class Client extends Application implements CustomObserver {
     @FXML
     public void selectedCell(MouseEvent mouseEvent)
     {
-        Node source=(Node)mouseEvent.getSource();
-        int rowIndex=(GridPane.getRowIndex(source))==null ? 0:(GridPane.getRowIndex(source));
-        int colIndex=(GridPane.getColumnIndex(source))==null ? 0:(GridPane.getColumnIndex(source));
-        int[] new_position= new int[]{rowIndex,colIndex};
+        int[] new_position= mouseEntered(mouseEvent);
+
+        System.out.println("La posizione del worker è ( " + new_position[0] + " , "+ new_position[1] + ")" );
 
         if(activeWorker==null){return;}
 
