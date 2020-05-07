@@ -9,11 +9,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class GameState {
-    private static Player[] players=new Player[1];
+    private static ArrayList<Player> players = new ArrayList<Player>();
     private static Worker[] workers;
     private static int trace = 0;
     private static BoardGame b;
     private static boolean gameover=false;
+    private static int num_players;
 
     public GameState()
     {
@@ -31,18 +32,18 @@ public class GameState {
      */
     public static int GetPlayerNumber()
     {
-        return players.length;
+        return players.size();
     }
 
-    public static Player[] GetPlayers()
+    public static ArrayList<Player> GetPlayers()
     {
         return players;
     }
 
     public static int GetIndexPlayer(String nick)
     {
-        for (int i = 0; i < players.length; i++)
-            if (players[i].GetNickname() == nick)
+        for (int i = 0; i < players.size(); i++)
+            if (players.get(i).GetNickname().equals(nick))
                 return i;
 
         return -1;
@@ -50,8 +51,8 @@ public class GameState {
 
     public static boolean GameReady()
     {
-        for (int i = 0; i < players.length; i++)
-            if (players[i] == null)
+        for (int i = 0; i < players.size(); i++)
+            if (players.get(i) == null)
                 return false;
         return true;
     }
@@ -62,23 +63,25 @@ public class GameState {
     }
 
     public static void SetTurnOrder() {
-        ArrayList<Player> array = new ArrayList<Player>(); //creo array
+        //ArrayList<Player> array = new ArrayList<Player>(); //creo array
 
-        for (int i = 0; i < players.length; i++) {
-            array.add(players[i]);
+        /*for (int i = 0; i < players.size(); i++) {
+            array.add(players.get(i));
         }
-        Collections.shuffle(array); //mescola array
-        players = array.toArray(new Player[]{});
+
+         */
+        Collections.shuffle(players); //mescola array
+        //players = array.toArray(new Player[]{});
     }
 
     public static void GodFactory () throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         JsonReader read_god = new JsonReader();
-        String[] gods  = read_god.GodsInGame(players.length);
+        String[] gods  = read_god.GodsInGame(players.size());
 
         for (int i = 0; i< gods.length; i++)
         {
             System.out.println(gods[i]);
-            players[i].SetGodCard((God)Class.forName(gods[i]).getConstructor().newInstance());
+            players.get(i).SetGodCard((God)Class.forName(gods[i]).getConstructor().newInstance());
             //players[i].SetGodCard((God)Class.forName(gods[i]).getConstructor().newInstance());
             //players[i].SetGodCard((God) (getClass().getClassLoader().loadClass(gods[i])).getConstructor().newInstance());
         }
@@ -86,14 +89,16 @@ public class GameState {
 
     public static void NextTurn ()
     {
-       if (trace < players.length)
+       if (trace < players.size())
            trace ++;
        else trace = 0;
     }
 
     public static Player getActivePlayer()
     {
-        return players[trace];
+        if(players.isEmpty())
+            return null;
+        return players.get(trace);
     }
 
     public static BoardGame GetBoard()
@@ -111,16 +116,24 @@ public class GameState {
         gameover=b;
     }
 
-    public static void SetNumPlayer(int num_player) {
+    public static void SetNumPlayer(int n) {
+        num_players = n;
+        for(int i =0; i<n; i++)
+        {
+            players.add(new Player("nome")); //cambiare nome
+        }
+
         Box[][] boxes = new Box[5][5];
         for (int i = 0; i < boxes.length; i++) {
             for (int j = 0; j < boxes.length; j++)
                 boxes[i][j] = new Box(true, 0);
         }
         b = new BoardGame(boxes);
-        players = new Player[num_player];
-        System.out.println(players.length);
-        workers = new Worker[num_player * 2];
+        //players = new Player[num_player];
+        System.out.println("Inizializzazione array giocatori con dim = " + num_players);
+        workers = new Worker[n * 2];
+
+        b.custom_notifyAll();
 
         /*try {//spostare dopo che parte il gioco cioè qunado abbiamo tutti igiocatori
             GodFactory();
@@ -137,9 +150,11 @@ public class GameState {
 
     public static void NewPlayer(String str)
     {
-        for(int i=0;i<players.length;i++)
-            if(players[i]==null)
-                players[i]=new Player(str);
+        /*for(int i=0;i<players.size();i++)
+            if(players.get(i)==null)
+
+         */
+        players.add(new Player(str));
     }
 
     public static void SetNewWorker(Worker ActiveWorker)
@@ -175,6 +190,7 @@ public class GameState {
 
     public static void RemovePlayer()
     {
+        /*
         for (int i = 0; i < 5; i++)
         {
             for (int j = 0; j < 5; j++)
@@ -184,13 +200,15 @@ public class GameState {
             }
         }
 
-        for (int i = 0; i < players.length; i++)
+        for (int i = 0; i < players.size(); i++)
         {
-            if(i==players.length-1)
+            if(i==players.size()-1)
                 players[i]=null;
             if(players[i].GetNickname().compareTo(getActivePlayer().GetNickname())==0)
                 players[i]=players[i+1];
         }
+
+         */
 
 
     }

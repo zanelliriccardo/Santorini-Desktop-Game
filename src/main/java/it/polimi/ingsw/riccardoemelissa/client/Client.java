@@ -102,15 +102,9 @@ public class Client extends Application implements CustomObserver {
 
     @FXML
     public void startGame(MouseEvent mouseEvent) throws IOException {
-        /*int players_connected = from_server.getPlayers().length;
+        //String active_player_name = "nickname";
 
-         */
-
-        String active_player_name = "nickname";
-
-        int players_connected = 1;
-
-        try
+        /*try
         {
             System.out.println("Chiedo update al server");
             messageToServer(CommandType.UPDATE);
@@ -122,15 +116,33 @@ public class Client extends Application implements CustomObserver {
             e.printStackTrace();
         }
 
+         */
 
-        if(from_server.getPlayers().length==1) {
+        updateServer();
+        System.out.println("Premuto start -> n= " + from_server.getPlayers().size());
+
+        if(from_server.getPlayers().size()<1) {
             changeScene("mode.fxml");
             System.out.println("Sono il primo giocatore");
             //showBoard(active_player_name);
         }
         else {
-            System.out.println("Connessione a partita già esisteente");
+            System.out.println("Connessione a partita già esistente");
             changeScene("choose_nickname.fxml");
+        }
+    }
+
+    public void updateServer() throws IOException
+    {
+        try
+        {
+            System.out.println("Chiedo update al server");
+            messageToServer(CommandType.UPDATE);
+            update();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -140,7 +152,7 @@ public class Client extends Application implements CustomObserver {
         loader=null;
         loader=new FXMLLoader();
 
-        System.out.println(getClass().getResource(path));
+        //System.out.println(getClass().getResource(path));
         URL newresource=getClass().getResource(path);
 
         //Scene s = primary.getScene();
@@ -154,39 +166,51 @@ public class Client extends Application implements CustomObserver {
         primary.setScene(s);
 
         primary.show();
+        System.out.println("Cambio scena");
     }
 
     @FXML
     public void chooseNickname(MouseEvent mouseEvent) throws IOException {
+        updateServer();
         changeScene("choose_nickname.fxml");
+        System.out.println("Passaggio a inserimento nickname");
         messageToServer(CommandType.NICKNAME, nickname.getText());
+        updateServer();
+
+        ArrayList<Player> players = from_server.getPlayers();
+        for(int i = 0; i<players.size(); i++)
+            System.out.println(players.get(i).GetNickname());
     }
 
 
     @FXML
     public void twoPlayers (MouseEvent event) throws IOException {
+        //updateServer();
         messageToServer(CommandType.MODE, 2);
         System.out.println("Premuto 2 gioc");
-        changeScene("loading.fxml");
+        //changeScene("loading.fxml");
+        updateServer();
+        System.out.println("Giocatori collegati = " + from_server.getPlayers().size());
     }
 
     @FXML
     public void threePlayers (MouseEvent event) throws IOException {
         messageToServer(CommandType.MODE, 3);
         System.out.println("Premuto 3 gioc");
-        changeScene("loading.fxml");
+        //changeScene("loading.fxml");
     }
 
     @FXML
     public void modeOk (MouseEvent event) throws IOException
     {
         System.out.println("Premuto ok mode giocatori");
-        changeScene("choose_nickname.fxml");
+        chooseNickname(event);
     }
 
     @FXML
     public void nicknameOk (MouseEvent mouseEvent) throws IOException
     {
+        System.out.println("Premuto ok inserimento nickname");
         changeScene("loading.fxml");
     }
 
@@ -259,6 +283,7 @@ public class Client extends Application implements CustomObserver {
             try {
                 ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
                 out.writeObject(cmd_toserver);
+                out.flush();
                 break;
             }
             catch (IOException io){}
@@ -403,7 +428,7 @@ public class Client extends Application implements CustomObserver {
         try {
             ObjectInputStream in=new ObjectInputStream(socket.getInputStream());
             from_server=(GameProxy)in.readObject();
-            System.out.println("ricevuto update dal server");
+            System.out.println("ricevuto update dal server (Client -> update): " + from_server.getPlayers().size());
         }
         catch (IOException | ClassNotFoundException e)
         {

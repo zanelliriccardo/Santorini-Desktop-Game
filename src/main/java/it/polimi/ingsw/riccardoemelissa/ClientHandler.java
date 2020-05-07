@@ -43,7 +43,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
      * This method receives command from it.polimi.ingsw.riccardoemelissa.client
      */
     public void run() {
-        try {
+        /*try {
             oos = new ObjectOutputStream(socketConnection.getOutputStream());
             if(GameState.GetPlayerNumber()==1)
                 oos.writeObject(new GameProxy(GameState.GetBoard(),null,GameState.GetPlayers()));
@@ -55,6 +55,8 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
             e.printStackTrace();
         }
 
+         */
+
         if(!socketConnection.isClosed()&&socketConnection.isConnected())
             while (true) {
                 try {
@@ -62,7 +64,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
                     ois=new ObjectInputStream(socketConnection.getInputStream());
                     Command cmd = (Command) ois.readObject();
 
-                    System.out.println(cmd.GetType());
+                    System.out.println("A Client Handler arriva : " + cmd.GetType());
 
                     if(cmd.GetType()==CommandType.UPDATE)
                         settingClient(new GameProxy(GameState.GetBoard(),GameState.getActivePlayer(),GameState.GetPlayers()));
@@ -103,6 +105,8 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
             try {
                 oos=new ObjectOutputStream(socketConnection.getOutputStream());
                 oos.writeObject(toClient);
+                System.out.println("Giocatori al client = " + toClient.getPlayers().size());
+                oos.flush();
                 break;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -117,6 +121,8 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
             try {
                 oos=new ObjectOutputStream(socketConnection.getOutputStream());
                 oos.writeObject(toClient);
+                System.out.println("Mando al client (ClientHandler -> settingClient) : giocatori = " + toClient.getPlayers().size());
+                oos.flush();
                 break;
             } catch (IOException e) {
                 e.printStackTrace();

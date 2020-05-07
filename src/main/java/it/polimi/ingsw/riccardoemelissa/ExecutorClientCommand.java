@@ -17,7 +17,9 @@ public class ExecutorClientCommand {
                 GameState.SetNumPlayer((int) cmd.GetObj());
                 break;
             case NICKNAME:
+                System.out.println("Ora devo creare giocatore");
                 GameState.NewPlayer((String)cmd.GetObj());
+                System.out.println("Creazione giocatore");
                 break;
             case NEWWORKER:
                 GameState.GetBoard().setOccupant(cmd.GetPos(),(Worker)cmd.GetObj());
