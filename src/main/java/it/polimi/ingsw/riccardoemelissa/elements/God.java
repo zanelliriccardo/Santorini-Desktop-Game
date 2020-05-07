@@ -1,18 +1,23 @@
-package elements;
+package it.polimi.ingsw.riccardoemelissa.elements;
 
 import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
-import it.polimi.ingsw.riccardoemelissa.GameProxy;
 import it.polimi.ingsw.riccardoemelissa.GameState;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class God {
+public abstract class God  implements Serializable {
 
     private boolean opponent_turn;
     private GodCardType type;
-    private ArrayList<GodCardType> turn=new ArrayList<>();
+    private ArrayList<GodCardType> turn = new ArrayList<>();
     private boolean in_action;
+
+    public God()
+    {
+
+    }
 
     /**
      * Move the active worker

@@ -1,6 +1,4 @@
-package elements;
-
-import it.polimi.ingsw.riccardoemelissa.exception.EndGameException;
+package it.polimi.ingsw.riccardoemelissa.elements;
 
 import java.util.ArrayList;
 

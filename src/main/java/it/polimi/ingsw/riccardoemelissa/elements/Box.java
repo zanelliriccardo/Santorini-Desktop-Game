@@ -1,8 +1,8 @@
-package elements;
+package it.polimi.ingsw.riccardoemelissa.elements;
 
-import it.polimi.ingsw.riccardoemelissa.App;
+import java.io.Serializable;
 
-public class Box {
+public class Box implements Serializable {
     private boolean state;
     private int level;
     private Worker occupant;

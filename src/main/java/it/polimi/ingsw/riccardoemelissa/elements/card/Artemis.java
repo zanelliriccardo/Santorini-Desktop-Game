@@ -1,20 +1,25 @@
-package elements.card;
+package it.polimi.ingsw.riccardoemelissa.elements.card;
 
-import elements.BoardGame;
-import elements.God;
-import elements.GodCardType;
-import elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
+import it.polimi.ingsw.riccardoemelissa.elements.God;
+import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
+import it.polimi.ingsw.riccardoemelissa.elements.Worker;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Artemis extends God {
+public class Artemis extends God implements Serializable {
     private boolean opponent_turn = false;
     private GodCardType type=GodCardType.MOVE;
 
     private int[] old_position=null;
     private boolean in_action=false;
 
+    public Artemis()
+    {
+        super();
+    }
     /**
      * apply artemis rules if power is active
      *

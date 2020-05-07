@@ -1,15 +1,21 @@
-package elements.card;
+package it.polimi.ingsw.riccardoemelissa.elements.card;
 
-import elements.BoardGame;
-import elements.God;
-import elements.GodCardType;
-import elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
+import it.polimi.ingsw.riccardoemelissa.elements.God;
+import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
+import it.polimi.ingsw.riccardoemelissa.elements.Worker;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 
-public class Pan extends God {
+import java.io.Serializable;
+
+public class Pan extends God implements Serializable {
     private boolean opponent_turn=false;
     private GodCardType type=GodCardType.MOVE;
 
+    public Pan()
+    {
+        super();
+    }
     /**
      * manage win condition following rules pan
      *

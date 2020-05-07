@@ -1,24 +1,19 @@
 package it.polimi.ingsw.riccardoemelissa;
 
 
-import elements.*;
-import elements.Box;
+import it.polimi.ingsw.riccardoemelissa.elements.*;
+import it.polimi.ingsw.riccardoemelissa.elements.Box;
+import it.polimi.ingsw.riccardoemelissa.elements.card.Minotaur;
 
-import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.*;
-
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class GameState {
     private static Player[] players=new Player[1];
     private static Worker[] workers;
-    private static int trace = -1;
+    private static int trace = 0;
     private static BoardGame b;
-    private boolean gameover=false;
+    private static boolean gameover=false;
 
     public GameState()
     {
@@ -34,17 +29,17 @@ public class GameState {
      *
      * @return
      */
-    public int GetPlayerNumber()
+    public static int GetPlayerNumber()
     {
         return players.length;
     }
 
-    public Player[] GetPlayers()
+    public static Player[] GetPlayers()
     {
         return players;
     }
 
-    public int GetIndexPlayer(String nick)
+    public static int GetIndexPlayer(String nick)
     {
         for (int i = 0; i < players.length; i++)
             if (players[i].GetNickname() == nick)
@@ -53,7 +48,7 @@ public class GameState {
         return -1;
     }
 
-    public boolean GameReady()
+    public static boolean GameReady()
     {
         for (int i = 0; i < players.length; i++)
             if (players[i] == null)
@@ -61,12 +56,12 @@ public class GameState {
         return true;
     }
 
-    public Worker GetWorkerToMove(String nick, int n)
+    public static Worker GetWorkerToMove(String nick, int n)
     {
         return workers[GetIndexPlayer(nick) + n];
     }
 
-    public void SetTurnOrder() {
+    public static void SetTurnOrder() {
         ArrayList<Player> array = new ArrayList<Player>(); //creo array
 
         for (int i = 0; i < players.length; i++) {
@@ -76,72 +71,78 @@ public class GameState {
         players = array.toArray(new Player[]{});
     }
 
-    public void GodFactory () throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    public static void GodFactory () throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         JsonReader read_god = new JsonReader();
         String[] gods  = read_god.GodsInGame(players.length);
 
         for (int i = 0; i< gods.length; i++)
         {
-            players[i].SetGodCard((God)Class.forName(gods[i]).getDeclaredConstructor().newInstance());
+            System.out.println(gods[i]);
+            players[i].SetGodCard((God)Class.forName(gods[i]).getConstructor().newInstance());
+            //players[i].SetGodCard((God)Class.forName(gods[i]).getConstructor().newInstance());
+            //players[i].SetGodCard((God) (getClass().getClassLoader().loadClass(gods[i])).getConstructor().newInstance());
         }
     }
 
-    public void NextTurn ()
+    public static void NextTurn ()
     {
        if (trace < players.length)
            trace ++;
        else trace = 0;
     }
 
-    public Player getActivePlayer()
+    public static Player getActivePlayer()
     {
-        while(players[trace]==null)
-            NextTurn();
         return players[trace];
     }
 
-    public BoardGame GetBoard()
+    public static BoardGame GetBoard()
     {
         return b;
     }
 
-    public void EndGame()
+    public static void EndGame()
     {
         b.setGameOver(true);
         players=null;
     }
 
-    private void setGameOver(boolean b) {
+    private static void setGameOver(boolean b) {
         gameover=b;
     }
 
-    public void SetNumPlayer(int num_player) {
+    public static void SetNumPlayer(int num_player) {
         Box[][] boxes = new Box[5][5];
         for (int i = 0; i < boxes.length; i++) {
             for (int j = 0; j < boxes.length; j++)
                 boxes[i][j] = new Box(true, 0);
         }
         b = new BoardGame(boxes);
-        System.out.println(players.length);
         players = new Player[num_player];
         System.out.println(players.length);
         workers = new Worker[num_player * 2];
 
-        try {
+        /*try {//spostare dopo che parte il gioco cioè qunado abbiamo tutti igiocatori
             GodFactory();
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
-        }
+        }*/
+
+        /*System.out.println(players.length);
+        for (int i = 0; i < players.length; i++) {
+            God g=new Minotaur();
+            players[i].SetGodCard(g);
+        }*/
     }
 
-    public void NewPlayer(String str)
+    public static void NewPlayer(String str)
     {
         for(int i=0;i<players.length;i++)
             if(players[i]==null)
                 players[i]=new Player(str);
     }
 
-    public void SetNewWorker(Worker ActiveWorker)
+    public static void SetNewWorker(Worker ActiveWorker)
     {
         int index=GetIndexPlayer((ActiveWorker.GetProprietary().GetNickname()));
         if(workers[index*2]==null)
@@ -151,7 +152,7 @@ public class GameState {
 
     }
 
-    public boolean CheckMove(Worker getActiveWorker, int[] getPos)
+    public static boolean CheckMove(Worker getActiveWorker, int[] getPos)
     {
         for (Player opponent : players)
         {
@@ -164,15 +165,15 @@ public class GameState {
         return true;
     }
 
-    public boolean getGameOver()
+    public static boolean getGameOver()
     {
         return gameover;
     }
 
-    public void undoTurn() {
+    public static void undoTurn() {
     }
 
-    public void RemovePlayer()
+    public static void RemovePlayer()
     {
         for (int i = 0; i < 5; i++)
         {
@@ -194,26 +195,26 @@ public class GameState {
 
     }
 
-    public void UpdateBoard(BoardGame board)
+    public static void UpdateBoard(BoardGame board)
     {
         b=board;
     }
 
-    public boolean IsPossibleMove(Worker activeWorker, int[] pos)
+    public static boolean IsPossibleMove(Worker activeWorker, int[] pos)
     {
         ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
         possibleCells_activeWorker= checkMoves(b,activeWorker);
         return possibleCells_activeWorker.contains(pos);
     }
 
-    public boolean IsPossibleBuild(Worker activeWorker, int[] pos)
+    public static boolean IsPossibleBuild(Worker activeWorker, int[] pos)
     {
         ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
         possibleCells_activeWorker= checkBuilds(b,activeWorker);
         return possibleCells_activeWorker.contains(pos);
     }
 
-    public ArrayList<int[]> checkMoves(BoardGame board, Worker worker_toMove)
+    public static ArrayList<int[]> checkMoves(BoardGame board, Worker worker_toMove)
     {
         ArrayList<int[]> possiblemoves= worker_toMove.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board, worker_toMove.GetPosition());
 
@@ -231,7 +232,7 @@ public class GameState {
         return possiblemoves;
     }
 
-    public ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
+    public static ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
     {
         ArrayList<int[]> possiblebuild=board.AdjacentBox(builder.GetPosition());
 
@@ -249,7 +250,7 @@ public class GameState {
         return possiblebuild;
     }
 
-    public ArrayList<int[]> possibleMoves()
+    public static ArrayList<int[]> possibleMoves()
     {
         ArrayList<Worker> workers=getWorkers();
         ArrayList<int[]> possiblemoves = null;
@@ -261,7 +262,7 @@ public class GameState {
         return possiblemoves;
     }
 
-    public ArrayList<Worker> getWorkers()
+    public static ArrayList<Worker> getWorkers()
     {
         ArrayList<Worker> workers=new ArrayList<Worker>();
 
@@ -276,7 +277,7 @@ public class GameState {
         return workers;
     }
 
-    public Player getPlayer(String nickname)
+    public static Player getPlayer(String nickname)
     {
         for (Player p : players)
         {

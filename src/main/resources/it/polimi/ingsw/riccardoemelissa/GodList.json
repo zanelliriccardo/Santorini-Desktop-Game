@@ -1,39 +1,39 @@
 {
   "GodList": [
     {
-      "name": "elements.card.Apollo",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Apollo",
       "path" : "@../images/Apollo.png"
     },
     {
-      "name": "elements.card.Artemis",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Artemis",
       "path" : "@../images/Artemis.png"
     },
     {
-      "name": "elements.card.Athena",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Athena",
       "path" : "@../images/Athena.png"
     },
     {
-      "name": "elements.card.Atlas",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Atlas",
       "path" : "@../images/Atlas.png"
     },
     {
-      "name": "elements.card.Demeter",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Demeter",
       "path" : "@../images/Demeter.png"
     },
     {
-      "name": "elements.card.Hephaestus",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Hephaestus",
       "path" : "@../images/Hephaestus.png"
     },
     {
-      "name": "elements.card.Minotaur",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Minotaur",
       "path" : "@../images/Minotaur.png"
     },
     {
-      "name": "elements.card.Pan",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Pan",
       "path" : "@../images/Pan.png"
     },
     {
-      "name": "elements.card.Prometheus",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Prometheus",
       "path" : "@../images/Prometheus.png"
     }
   ]

@@ -1,16 +1,15 @@
 package it.polimi.ingsw.riccardoemelissa;
 
-import elements.*;
+import it.polimi.ingsw.riccardoemelissa.elements.*;
 
 import java.io.Serializable;
-import java.util.Observable;
 
 public class GameProxy implements Serializable {
     private BoardGame board_copy;
     private Player active_player;
     private Player[] players;
 
-    public GameProxy(BoardGame getBoard, Player getActivePlayer,Player[] players) {
+    public GameProxy(BoardGame getBoard, Player getActivePlayer, Player[] players) {
         board_copy=getBoard;
         active_player=getActivePlayer;
         this.players=players;
@@ -26,5 +25,11 @@ public class GameProxy implements Serializable {
 
     public Player[] getPlayers() {
         return players;
+    }
+
+    public void setGame(GameProxy fromServer) {
+        this.board_copy=fromServer.getBoard();
+        this.active_player=fromServer.getActivePlayer();
+        this.players=fromServer.getPlayers();
     }
 }

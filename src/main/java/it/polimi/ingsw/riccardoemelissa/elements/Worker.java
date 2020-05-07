@@ -1,6 +1,8 @@
-package elements;
+package it.polimi.ingsw.riccardoemelissa.elements;
 
-public class Worker
+import java.io.Serializable;
+
+public class Worker  implements Serializable
 {
     private int[] position;
     private Player proprietary;

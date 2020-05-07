@@ -3,7 +3,7 @@ package it.polimi.ingsw.riccardoemelissa.client;
 import it.polimi.ingsw.riccardoemelissa.GameProxy;
 
 import com.sun.prism.Image;
-import elements.*;
+import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.exception.SendException;

@@ -1,8 +1,8 @@
-package elements;
+package it.polimi.ingsw.riccardoemelissa.elements;
 
-import java.net.ServerSocket;
+import java.io.Serializable;
 
-public class Player {
+public class Player  implements Serializable {
     private String nickname;
     //private String worker_color;
     private God god_card;

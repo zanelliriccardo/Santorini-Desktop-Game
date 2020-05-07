@@ -1,24 +1,19 @@
 package it.polimi.ingsw.riccardoemelissa;
 
-import elements.CustomObservable;
-import elements.CustomObserver;
-import elements.Player;
-import elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.elements.CustomObservable;
+import it.polimi.ingsw.riccardoemelissa.elements.CustomObserver;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Observable;
-import java.util.Observer;
 
 public class ClientHandler extends CustomObservable implements Runnable, CustomObserver {
     private String nickname;
     private Socket socketConnection;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
-    private static GameState game=new GameState();
     ExecutorClientCommand cmd_executor=new ExecutorClientCommand();
 
     public ClientHandler(Socket socket)
@@ -48,6 +43,18 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
      * This method receives command from it.polimi.ingsw.riccardoemelissa.client
      */
     public void run() {
+        try {
+            oos = new ObjectOutputStream(socketConnection.getOutputStream());
+            if(GameState.GetPlayerNumber()==1)
+                oos.writeObject(new GameProxy(GameState.GetBoard(),null,GameState.GetPlayers()));
+            else {
+                oos.writeObject(new GameProxy(GameState.GetBoard(), GameState.getActivePlayer(), GameState.GetPlayers()));
+                System.out.println("invio board al giocatore");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         if(!socketConnection.isClosed()&&socketConnection.isConnected())
             while (true) {
                 try {
@@ -57,10 +64,13 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
 
                     System.out.println(cmd.GetType());
 
+                    if(cmd.GetType()==CommandType.UPDATE)
+                        settingClient(new GameProxy(GameState.GetBoard(),GameState.getActivePlayer(),GameState.GetPlayers()));
+
                     new ExecutorClientCommand().update(cmd);
                     //cmd_executor.update(cmd);
 
-                    if(game.GetPlayers()==null) {
+                    if(GameState.GetPlayers()==null) {
                         ois.close();
                         oos.close();
                         socketConnection.close();
@@ -82,10 +92,26 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
      * @param arg
      */
     @Override
-    public void update(Object arg)//usare game come riferimneto cosi tolgo game da variabile in questa classe, da cambiare quindi nache il controllo dsopra che utiliazza game
+    public void update(Object arg)
     {
-        final GameProxy toClient=new GameProxy(game.GetBoard(),game.getActivePlayer(),game.GetPlayers());
+        GameProxy toClient;
 
+        toClient = new GameProxy(GameState.GetBoard(), GameState.getActivePlayer(), GameState.GetPlayers());
+
+        while (true)
+        {
+            try {
+                oos=new ObjectOutputStream(socketConnection.getOutputStream());
+                oos.writeObject(toClient);
+                break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void settingClient(GameProxy toClient)
+    {
         while (true)
         {
             try {

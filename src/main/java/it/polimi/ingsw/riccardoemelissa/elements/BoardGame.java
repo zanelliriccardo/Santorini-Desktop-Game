@@ -1,4 +1,4 @@
-package elements;
+package it.polimi.ingsw.riccardoemelissa.elements;
 
 import java.io.Serializable;
 import java.util.ArrayList;

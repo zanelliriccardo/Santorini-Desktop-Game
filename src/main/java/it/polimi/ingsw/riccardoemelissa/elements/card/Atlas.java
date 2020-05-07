@@ -1,17 +1,23 @@
-package elements.card;
+package it.polimi.ingsw.riccardoemelissa.elements.card;
 
-import elements.BoardGame;
-import elements.God;
-import elements.GodCardType;
-import elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
+import it.polimi.ingsw.riccardoemelissa.elements.God;
+import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
+import it.polimi.ingsw.riccardoemelissa.elements.Worker;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 
-public class Atlas extends God {
+import java.io.Serializable;
+
+public class Atlas extends God implements Serializable {
     private boolean opponent_turn = false;
     private GodCardType type=GodCardType.MOVE;
 
     private boolean in_action=false;
 
+    public Atlas()
+    {
+        super();
+    }
     /**
      * apply atlas rules if power is active
      *

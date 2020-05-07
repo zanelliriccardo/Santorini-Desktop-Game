@@ -1,12 +1,7 @@
 package it.polimi.ingsw.riccardoemelissa;
 
 
-import elements.CustomObservable;
-import elements.Worker;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Observable;
 
 public class Command implements Serializable {
     private Object Obj;

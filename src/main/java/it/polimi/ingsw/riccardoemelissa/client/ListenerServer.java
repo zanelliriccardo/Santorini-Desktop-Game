@@ -7,26 +7,25 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 
 public class ListenerServer extends Thread {
-    private static ControllerBoard controller;
+    private GameProxy game;
     private Socket socket;
 
-    public ListenerServer(Socket s, ControllerBoard controller) {
+    public ListenerServer(Socket s, GameProxy client) {
         socket=s;
-        this.controller=controller;
+        this.game=client;
     }
 
     public void run()
     {
-
+/*
         while (true)
         {
-            System.out.println("ok");
-
             try {
                 ObjectInputStream in=new ObjectInputStream(socket.getInputStream());
-                GameProxy fromServer=(GameProxy) in.readObject();
-
-                controller.update(fromServer);
+                synchronized (game) {
+                    game = (GameProxy) in.readObject();
+                }
+                System.out.println("ricevuto update dal server(classe listener)");
             }
             catch (IOException | ClassNotFoundException e)
             {
@@ -34,6 +33,11 @@ public class ListenerServer extends Thread {
             }
 
         }
+
+ */
     }
 
+    public GameProxy getGameProxy() {
+        return game;
+    }
 }

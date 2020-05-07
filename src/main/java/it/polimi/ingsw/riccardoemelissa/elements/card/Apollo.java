@@ -1,21 +1,30 @@
-package elements.card;
+package it.polimi.ingsw.riccardoemelissa.elements.card;
 
-import elements.BoardGame;
-import elements.God;
-import elements.GodCardType;
-import elements.Worker;
+
+import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
+import it.polimi.ingsw.riccardoemelissa.elements.God;
+import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
+import it.polimi.ingsw.riccardoemelissa.elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
+import it.polimi.ingsw.riccardoemelissa.GameState;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Minotaur extends God {
+public class Apollo extends God implements Serializable {
     private boolean opponent_turn = false;
     private GodCardType type=GodCardType.MOVE;
+
+    public Apollo()
+    {
+        super();
+    }
 
     /**
      * do move following apollo rules
      *
-     * if position is occupied, the method call method for manage worker position
+     * if position is occupied, the method call method for switch worker position
      *
      * @param b : board
      * @param active_worker : worker chosen to do the move
@@ -26,20 +35,18 @@ public class Minotaur extends God {
     public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
         if (!b.GetStateBox(newpos))
-        {
-            SetMinotaurPosition(active_worker, newpos, b);
-            type=GodCardType.BUILD;
-        }
+            SetApolloPosition(active_worker, newpos, b);
         else
-            super.Move(b,active_worker,newpos);
+            super.SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
 
+        this.type=GodCardType.BUILD;
         return CommandType.MOVE;
     }
 
     /**
      * get the box where is possible moves in
      *
-     * get the box where is possible moves in, following minotaur rules
+     * get the box where is possible moves in, following apollo rules
      *
      * @param b : board
      * @param worker_pos : actual position of worker
@@ -65,14 +72,6 @@ public class Minotaur extends God {
                 pos[0] = x;
                 pos[1] = y;
 
-                int[] newpos_opponent = new int[]{(x - worker_pos[0]) + x, (y - worker_pos[1]) + y};
-
-                if(newpos_opponent[0]>4||newpos_opponent[1]>4)
-                    continue;
-
-                if(!b.GetStateBox(newpos_opponent))
-                    continue;
-
                 if(b.GetLevelBox(pos)==4)
                     continue;
 
@@ -83,21 +82,25 @@ public class Minotaur extends God {
     }
 
     /**
-     * manage worker position following minotaur rules
+     * switch worker position
      *
      * @param active_worker : worker chosen to move by player
      * @param newpos : position chosen by player
      * @param b : board
      */
-    public void SetMinotaurPosition (Worker active_worker, int[] newpos, BoardGame b)
+    public void SetApolloPosition(Worker active_worker, int[] newpos, BoardGame b)
     {
-        int[] newpos_opponent = new int[]{(newpos[0] - active_worker.GetX()) + newpos[0], (newpos[1] - active_worker.GetY()) + newpos[1]};
+        b.GetOccupant(newpos).SetPosition(active_worker.GetPosition());//da controllare
+        b.setOccupant(active_worker.GetPosition(),b.GetOccupant(newpos));
 
-        b.GetOccupant(newpos).SetPosition(newpos_opponent);
-        b.setOccupant(newpos_opponent,b.GetOccupant(newpos));
-        b.setOccupant(newpos,active_worker);
-        b.removeWorker(active_worker.GetPosition());
         active_worker.SetPosition(newpos);
+        b.setOccupant(newpos,active_worker);
     }
 
+    @Override
+    public void doPower(GameState game, Command cmd)
+    {
+        SetApolloPosition((Worker) cmd.GetObj(),cmd.GetPos(),game.GetBoard());
+    }
 }
+
