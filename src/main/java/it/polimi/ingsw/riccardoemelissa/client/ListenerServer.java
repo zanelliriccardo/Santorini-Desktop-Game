@@ -17,7 +17,7 @@ public class ListenerServer extends Thread {
 
     public void run()
     {
-/*
+
         while (true)
         {
             try {
@@ -34,7 +34,7 @@ public class ListenerServer extends Thread {
 
         }
 
- */
+
     }
 
     public GameProxy getGameProxy() {

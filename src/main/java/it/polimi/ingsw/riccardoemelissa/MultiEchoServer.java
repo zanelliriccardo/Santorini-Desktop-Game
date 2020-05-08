@@ -1,9 +1,13 @@
 package it.polimi.ingsw.riccardoemelissa;
 
+import jdk.internal.vm.compiler.collections.EconomicMap;
+
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -22,7 +26,6 @@ public class MultiEchoServer {
 
     public void startServer() throws IOException {
         ServerSocket serverSocket=new ServerSocket(port);
-        ExecutorService executor = null;
 
         System.out.println("Server ready");
 
@@ -30,25 +33,27 @@ public class MultiEchoServer {
             try {
                 Socket socket = serverSocket.accept();
                 ClientHandler firstClient=new ClientHandler(socket);
-                Thread firstThread=new Thread(firstClient);
                 GameState.GetBoard().addObserver(firstClient);
+                Thread firstThread=new Thread(firstClient);
                 firstThread.start();
-
                 System.out.println("First player connected");
 
-                while (true) {
-                    if (GameState.GetPlayers().size()>0)
-                        break;
+                while (GameState.GetNumPlayers()==10) {
+                     System.out.println(GameState.GetNumPlayers());
                 }
                 System.out.println("choose to play with: "+ GameState.GetPlayerNumber());
 
-                for(int i=1;i<GameState.GetNumPlayers();i++)
+                ArrayList<Socket> sockets=new ArrayList<Socket>();
+                ArrayList<ClientHandler> clients=new ArrayList<ClientHandler>();
+                ArrayList<Thread> threads=new ArrayList<Thread>();
+
+                for(int i=0;i<GameState.GetNumPlayers()-1;i++)
                     try {
-                        socket = serverSocket.accept();
-                        ClientHandler otherClient=new ClientHandler(socket);
-                        GameState.GetBoard().addObserver(otherClient);
-                        Thread otherThread=new Thread(firstClient);
-                        otherThread.start();
+                        sockets.add(serverSocket.accept());
+                        clients.add(new ClientHandler(sockets.get(i)));
+                        GameState.GetBoard().addObserver(clients.get(i));
+                        threads.add(new Thread(clients.get(i)));
+                        threads.get(i).start();
                         System.out.println("Another player connected");
                     }
                     catch(IOException e) {
@@ -57,7 +62,7 @@ public class MultiEchoServer {
 
                 while (!GameState.GameReady()) { }
 
-                GameState.NextTurn();
+                //GameState.NextTurn();
 
                 if(GameState.getGameOver()) //inserire controllo su fine partita
                     break;
@@ -65,8 +70,6 @@ public class MultiEchoServer {
                 break; // entrerei qui se serverSocket venisse chiuso
             }
         }
-
-        executor.shutdown();
 
         try {
             serverSocket.close();

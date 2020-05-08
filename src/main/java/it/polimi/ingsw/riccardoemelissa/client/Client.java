@@ -84,8 +84,8 @@ public class Client extends Application implements CustomObserver {
     System.out.println("Loading board");
 
     loader=new FXMLLoader();
-    System.out.println(getClass().getResource("board.fxml"));
-    URL resource=getClass().getResource("board.fxml");
+    System.out.println(getClass().getResource("start.fxml"));
+    URL resource=getClass().getResource("start.fxml");
     loader.setController(this);
     loader.setLocation(resource);
 
@@ -101,7 +101,7 @@ public class Client extends Application implements CustomObserver {
     primary.setTitle("Santorini");
 
     primary.show();
-    initializeBoardgame(myboard);
+    //initializeBoardgame(myboard);
     }
 
     public static void main(String[] args) {
@@ -115,9 +115,8 @@ public class Client extends Application implements CustomObserver {
         System.out.println("Connected to server");
 
         controller=new ControllerBoard(socket);
-        //listener = new ListenerServer(socket,from_server);
-
-        //listener.start();
+        listener = new ListenerServer(socket,from_server);
+        listener.start();
 
         launch(args);
     }
@@ -140,8 +139,15 @@ public class Client extends Application implements CustomObserver {
 
          */
 
-        updateServer();
-        System.out.println("Premuto start -> n= " + from_server.getPlayers().size());
+        while(true)
+        {
+            callUpdate_fromServer();
+            synchronized (from_server)
+            {       if(from_server==null)
+                    continue;
+            System.out.println("Premuto start -> n= " + from_server.getPlayers().size());}
+            break;
+        }
 
         if(from_server.getPlayers().size()<1) {
             changeScene("mode.fxml");
@@ -154,13 +160,13 @@ public class Client extends Application implements CustomObserver {
         }
     }
 
-    public void updateServer() throws IOException
+    public void callUpdate_fromServer() throws IOException
     {
         try
         {
             System.out.println("Chiedo update al server");
             messageToServer(CommandType.UPDATE);
-            update();
+            //update();
         }
         catch (Exception e)
         {
@@ -193,7 +199,9 @@ public class Client extends Application implements CustomObserver {
 
     @FXML
     public void chooseNickname(MouseEvent mouseEvent) throws IOException {
-        updateServer();
+        while (from_server.getPlayers().size()==0)
+            callUpdate_fromServer();
+
         changeScene("choose_nickname.fxml");
         System.out.println("Passaggio a inserimento nickname");
 
@@ -201,11 +209,10 @@ public class Client extends Application implements CustomObserver {
 
     @FXML
     public void twoPlayers (MouseEvent event) throws IOException {
-        //updateServer();
         messageToServer(CommandType.MODE, 2);
         System.out.println("Premuto 2 gioc");
-        //changeScene("loading.fxml");
-        updateServer();
+
+
         System.out.println("Giocatori collegati = " + from_server.getPlayers().size());
 
         chooseNickname(event);
@@ -215,7 +222,10 @@ public class Client extends Application implements CustomObserver {
     public void threePlayers (MouseEvent event) throws IOException {
         messageToServer(CommandType.MODE, 3);
         System.out.println("Premuto 3 gioc");
-        //changeScene("loading.fxml");
+
+        System.out.println("Giocatori collegati = " + from_server.getPlayers().size());
+
+        chooseNickname(event);
     }
 
     @FXML
@@ -236,8 +246,21 @@ public class Client extends Application implements CustomObserver {
             System.out.println(p.GetNickname());
         }
 
-        System.out.println("Premuto ok inserimento nickname");
         changeScene("loading.fxml");
+        System.out.println("Premuto ok inserimento nickname");
+
+        boolean waitPlayer=true;
+
+        while (waitPlayer)
+        {
+            callUpdate_fromServer();
+
+            for (Player p : from_server.getPlayers())
+                if (p.GetNickname().compareTo("nome") == 0)
+                    waitPlayer=true;
+                else
+                    waitPlayer=false;
+        }
     }
 
     @FXML

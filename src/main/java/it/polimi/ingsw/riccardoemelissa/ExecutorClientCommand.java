@@ -7,7 +7,7 @@ public class ExecutorClientCommand {
     private static GameState game=new GameState();
 
 
-    public void update(Object arg)
+    public synchronized void update(Object arg)
     {
         Command cmd=(Command) arg;
 
@@ -20,14 +20,11 @@ public class ExecutorClientCommand {
                 System.out.println("Ora devo creare giocatore");
                 GameState.NewPlayer((String)cmd.GetObj());
                 System.out.println("Creazione giocatore");
-                System.out.println(GameState.GetPlayers().get(0).GetNickname());
-                /*for (Player p :
-                        GameState.GetPlayers()) {
-                    System.out.println(p.GetNickname());
-                }
 
-                 */
-                //GameState.GetBoard().custom_notifyAll();non funzxona
+                for (Player p : GameState.GetPlayers())
+                    System.out.println(p.GetNickname());
+
+
                 break;
             case NEWWORKER:
                 GameState.GetBoard().setOccupant(cmd.GetPos(),(Worker)cmd.GetObj());

@@ -117,10 +117,10 @@ public class GameState {
 
     public static void SetNumPlayer(int n) {
         num_players = n;
+
         for(int i =0; i<n; i++)
         {
             players.add(new Player("nome")); //cambiare nome
-            System.out.println(players.get(i).GetNickname());
         }
 
         Box[][] boxes = new Box[5][5];
@@ -129,7 +129,7 @@ public class GameState {
                 boxes[i][j] = new Box(true, 0);
         }
         b = new BoardGame(boxes);
-        //players = new Player[num_player];
+
         System.out.println("Inizializzazione array giocatori con dim = " + num_players);
         workers = new Worker[n * 2];
 
@@ -170,8 +170,6 @@ public class GameState {
         if(workers[index*2]==null)
             workers[index*2]=ActiveWorker;
         workers[index*2+1]=ActiveWorker;
-
-
     }
 
     public static boolean CheckMove(Worker getActiveWorker, int[] getPos)
