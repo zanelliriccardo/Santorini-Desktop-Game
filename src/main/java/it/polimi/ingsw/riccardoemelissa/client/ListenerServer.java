@@ -8,6 +8,7 @@ import it.polimi.ingsw.riccardoemelissa.elements.Worker;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -84,21 +85,9 @@ public class ListenerServer extends Thread {
                 if (!client_javafx.from_server.getBoard().GetStateBox(i, j)) {
                     System.out.println(client_javafx.from_server.getBoard().GetStateBox(i, j));
 
-                    /*Node box = null;
-                    ObservableList<Node> boxes = client_javafx.myboard.getChildren();
+                    System.out.println("Altezza box = " + client_javafx.myboard.getHeight()/10);
 
-                    for(Node node : boxes)
-                    {
-                        if(client_javafx.myboard.getRowIndex(node) == i && client_javafx.myboard.getColumnIndex(node) == j)
-                        {
-                            box = node;
-                            break;
-                        }
-                    }
-
-                    Pane pane = (Pane) box;
-
-                    Circle worker = new Circle(pane.getHeight()/2, pane.getWidth()/2, pane.getHeight()/3);
+                    Circle worker = new Circle(client_javafx.myboard.getHeight()/10, client_javafx.myboard.getWidth()/10, client_javafx.myboard.getHeight()/15);
                     switch ("magenta")
                     {
                         case "magenta":
@@ -112,35 +101,6 @@ public class ListenerServer extends Thread {
                             break;
                     }
                     client_javafx.myboard.add(worker, j,i);
-
-                     */
-
-                    //Pane box = (Pane) client_javafx.myboard.getChildren();
-
-                    Circle workerImage = new Circle(40.0f, 40.0f, 40.0f);
-                    workerImage.setFill(Color.MAGENTA);
-                    /*String color="magenta";
-
-                    switch (color)
-                    {
-                        case "magenta":
-                            workerImage.setFill(Color.MAGENTA);
-                            break;
-
-                        case "aquamarine":
-                            workerImage.setFill(Color.AQUAMARINE);
-                            break;
-
-                        case "gold":
-                            workerImage.setFill(Color.GOLD);
-                            break;
-                    }
-
-                     */
-
-                    client_javafx.myboard.add(workerImage,j,i);
-
-
                 }
             }
         }
