@@ -29,7 +29,14 @@ public class ExecutorClientCommand {
                 GameState.GameReady();
                 break;*/
             case NEWWORKER:
+                /*if(!GameState.GetBoard().GetStateBox(cmd.GetPos())) {
+                    update(new Command(CommandType.LOSE, null, null));//dafare
+                    return;
+                }
+
+                 */
                 GameState.GetBoard().setOccupant(cmd.GetPos(),(Worker)cmd.GetObj());
+                GameState.GetBoard().custom_notifyAll();
                 break;
             case SETPOWER:
                 GameState.getActivePlayer().GetGodCard().setIn_action((boolean) cmd.GetObj());

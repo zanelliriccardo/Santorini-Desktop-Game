@@ -48,7 +48,7 @@ public class Client extends Application implements CustomObserver {
     @FXML
     public TextField set_turn;
     @FXML
-    public GridPane myboard;
+    public GridPane myboard=new GridPane();
 
     @FXML
     public int[] mouseEntered(MouseEvent e) {
@@ -87,7 +87,7 @@ public class Client extends Application implements CustomObserver {
     }
 
     @FXML
-    public void initializeBoardgame (GridPane myboard) {
+    public void initializeBoardgame () {
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
                 Pane pane = new Pane();
@@ -134,7 +134,7 @@ public class Client extends Application implements CustomObserver {
         socket = null;
 
         try {
-            socket = new Socket(InetAddress.getLocalHost(), 30500);
+            socket = new Socket(InetAddress.getLocalHost(), 32500);
         } catch (IOException e) {
             System.out.println("socket");
         }
@@ -431,7 +431,7 @@ public class Client extends Application implements CustomObserver {
     }
 
     @FXML
-    public void checkServerBoard (BoardGame serverBoard)
+    public void checkServerBoard ()
     {
         Worker worker;
 
@@ -439,9 +439,10 @@ public class Client extends Application implements CustomObserver {
         {
             for (int j=0; j< 5; j++)
             {
-                if(!serverBoard.GetStateBox(i,j)) {
-                    worker = serverBoard.GetOccupant(i, j);
-                    setWorkerPosition(worker.GetPosition(), worker.getColor());
+                if(!from_server.getBoard().GetStateBox(i,j)) {
+                    System.out.println(from_server.getBoard().GetStateBox(i,j));
+                    worker = from_server.getBoard().GetOccupant(i, j);
+                    setWorkerPosition(worker.GetPosition(), "magenta");
                 }
             }
         }
@@ -455,11 +456,6 @@ public class Client extends Application implements CustomObserver {
 
         if(getWorkers().size()<2)
         {
-            if(!from_server.getBoard().GetStateBox(new_position))
-            {
-                System.out.println("not possible");
-                return;
-            }
             System.out.println("possible");
             messageToServer(CommandType.NEWWORKER, new Worker(from_server.getActivePlayer(), new_position));
         }
@@ -510,8 +506,9 @@ public class Client extends Application implements CustomObserver {
         {
             for (int j = 0; j < 5; j++)
             {
-                if(from_server.getBoard().GetOccupant(i,j).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)
-                    workers.add(from_server.getBoard().GetOccupant(i,j));
+                if(!from_server.getBoard().GetStateBox(i,j))
+                    if(from_server.getBoard().GetOccupant(i,j).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)
+                        workers.add(from_server.getBoard().GetOccupant(i,j));
             }
         }
         return workers;

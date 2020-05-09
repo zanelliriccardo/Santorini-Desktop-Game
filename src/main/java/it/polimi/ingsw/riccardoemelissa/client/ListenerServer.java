@@ -1,5 +1,6 @@
 package it.polimi.ingsw.riccardoemelissa.client;
 
+import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.GameProxy;
 import it.polimi.ingsw.riccardoemelissa.GameState;
 import it.polimi.ingsw.riccardoemelissa.elements.Player;
@@ -10,6 +11,7 @@ import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.StreamCorruptedException;
 import java.net.Socket;
 
 public class ListenerServer extends Thread {
@@ -33,7 +35,7 @@ public class ListenerServer extends Thread {
             }
             catch (IOException | ClassNotFoundException e)
             {
-                e.printStackTrace();
+                client_javafx.messageToServer(CommandType.UPDATE);
             }
         }
     }
@@ -48,13 +50,16 @@ public class ListenerServer extends Thread {
                 return;
             }
         }
+        System.out.println(client_javafx.myboard.getChildren().isEmpty());
 
-        if(client_javafx.from_server.getBoard()==null)
-            client_javafx.initializeBoardgame(client_javafx.myboard);
+        if(client_javafx.myboard.getChildren().isEmpty())
+            client_javafx.initializeBoardgame();
 
         Platform.runLater(()-> {
             try {
                 client_javafx.changeScene("board.fxml");
+                //client_javafx.initializeBoardgame();
+                client_javafx.checkServerBoard();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -79,7 +84,7 @@ public class ListenerServer extends Thread {
 
     @FXML
     private void initializeBoardgame (GridPane myboard) {
-        client_javafx.initializeBoardgame(client_javafx.myboard);
+        client_javafx.initializeBoardgame();
     }
 
 

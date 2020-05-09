@@ -4,7 +4,7 @@ import it.polimi.ingsw.riccardoemelissa.reader.JsonReader;
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.elements.Box;
 import it.polimi.ingsw.riccardoemelissa.elements.card.Minotaur;
-import javafx.scene.layout.HBox;
+
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
@@ -71,6 +71,7 @@ public class GameState {
 
     public static void GodFactory () throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, FileNotFoundException, URISyntaxException {
         JsonReader read_god = new JsonReader();
+        players.add(new Player("gio"));
         String[] gods  = read_god.GodsInGame(players.size());
 
         for (int i = 0; i< gods.length; i++)
@@ -79,6 +80,7 @@ public class GameState {
             players.get(i).SetGodCard((God)Class.forName(gods[i]).getConstructor().newInstance());
             //players[i].SetGodCard((God)Class.forName(gods[i]).getConstructor().newInstance());
             //players[i].SetGodCard((God) (getClass().getClassLoader().loadClass(gods[i])).getConstructor().newInstance());
+            System.out.println(players.get(i).GetGodCard().getClass());
         }
     }
 
