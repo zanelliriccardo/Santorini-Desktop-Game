@@ -26,7 +26,7 @@ class GodTest extends Object {
                 boxes[i][j] = new Box(true, 0);
         }
 
-        BoardGame boardGame = new BoardGame(boxes);
+        BoardGame boardGame = new BoardGame();
 
         String player_name = "name";
         Player player = new Player(player_name);

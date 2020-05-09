@@ -1,12 +1,14 @@
 package it.polimi.ingsw.riccardoemelissa;
 
-
+import it.polimi.ingsw.riccardoemelissa.reader.JsonReader;
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.elements.Box;
 import it.polimi.ingsw.riccardoemelissa.elements.card.Minotaur;
 import javafx.scene.layout.HBox;
 
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 import java.util.*;
 
 public class GameState {
@@ -67,7 +69,7 @@ public class GameState {
         //players = array.toArray(new Player[]{});
     }
 
-    public static void GodFactory () throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    public static void GodFactory () throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, FileNotFoundException, URISyntaxException {
         JsonReader read_god = new JsonReader();
         String[] gods  = read_god.GodsInGame(players.size());
 

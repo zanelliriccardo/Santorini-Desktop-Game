@@ -16,7 +16,7 @@ class BoardGameTest extends Object {
                 boxes[i][j] = new Box(true, 0);
         }
 
-        BoardGame boardGame = new BoardGame(boxes);
+        BoardGame boardGame = new BoardGame();
         int[] worker_pos = new int[]{2,3};
         int[] pos = new int[]{3,3};
         Player player = new Player("name");
@@ -39,7 +39,7 @@ class BoardGameTest extends Object {
                 boxes[i][j] = new Box(true, 0);
         }
 
-        BoardGame boardGame = new BoardGame(boxes);
+        BoardGame boardGame = new BoardGame();
         int[] pos = new int[] {1,4};
 
         boardGame.DoBuild(pos);
@@ -63,7 +63,7 @@ class BoardGameTest extends Object {
                 boxes[i][j] = new Box(true, 0);
         }
 
-        BoardGame boardGame = new BoardGame(boxes);
+        BoardGame boardGame = new BoardGame();
 
         Player player = new Player("name");
         int[] oldpos = new int[]{2,3};
@@ -123,7 +123,7 @@ class BoardGameTest extends Object {
                 boxes[i][j] = new Box(true, 0);
         }
 
-        BoardGame boardGame = new BoardGame(boxes);
+        BoardGame boardGame = new BoardGame();
 
 
         boardGame.setOccupant(pos, worker);
@@ -141,7 +141,7 @@ class BoardGameTest extends Object {
                 boxes[i][j] = new Box(true, 0);
         }
 
-        BoardGame boardGame = new BoardGame(boxes);
+        BoardGame boardGame = new BoardGame();
         int[] worker_pos = new int[]{1, 2};
         int[] pos1 = new int[]{1, 1};
         int[] pos2 = new int[]{4, 0};

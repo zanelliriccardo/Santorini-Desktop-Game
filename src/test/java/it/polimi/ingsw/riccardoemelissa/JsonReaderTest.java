@@ -1,13 +1,17 @@
 package it.polimi.ingsw.riccardoemelissa;
 
+import it.polimi.ingsw.riccardoemelissa.reader.JsonReader;
 import org.junit.jupiter.api.Test;
+
+import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class JsonReaderTest extends Object {
 
     @Test
-    void godsInGame() {
+    void godsInGame() throws FileNotFoundException, URISyntaxException {
         JsonReader jsonReader = new JsonReader();
         int num_players = 2;
         String[] gods = new String[num_players];

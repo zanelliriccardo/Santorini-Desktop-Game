@@ -1,0 +1,40 @@
+{
+  "GodList": [
+    {
+      "name": "elements.card.Apollo",
+      "path" : "Apollo.png"
+    },
+    {
+      "name": "elements.card.Artemis",
+      "path" : "Artemis.png"
+    },
+    {
+      "name": "elements.card.Athena",
+      "path" : "Athena.png"
+    },
+    {
+      "name": "elements.card.Atlas",
+      "path" : "Atlas.png"
+    },
+    {
+      "name": "elements.card.Demeter",
+      "path" : "Demeter.png"
+    },
+    {
+      "name": "elements.card.Hephaestus",
+      "path" : "Hephaestus.png"
+    },
+    {
+      "name": "elements.card.Minotaur",
+      "path" : "Minotaur.png"
+    },
+    {
+      "name": "elements.card.Pan",
+      "path" : "Pan.png"
+    },
+    {
+      "name": "elements.card.Prometheus",
+      "path" : "Prometheus.png"
+    }
+  ]
+}
