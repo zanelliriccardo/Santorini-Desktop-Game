@@ -9,12 +9,16 @@ public class BoardGame extends CustomObservable implements Serializable {
     private Player active_player;
     private boolean gameover=false;
 
-    /*public BoardGame(Box[][] boxes){
-        this.Board = boxes;
-        custom_notifyAll();
+    public BoardGame(){
+        Box[][] boxes = new Box[5][5];
+        for (int i = 0; i < boxes.length; i++) {
+            for (int j = 0; j < boxes.length; j++)
+                boxes[i][j] = new Box(true, 0);
+        }
+        Board=boxes;
     }
 
-     */
+
 
     /**
      * Get the state of a box
@@ -187,7 +191,6 @@ public class BoardGame extends CustomObservable implements Serializable {
     public void setOccupant(int[] pos, Worker worker)
     {
         Board[pos[0]][pos[1]].SetOccupant(worker);
-        custom_notifyAll();
     }
 
     /**

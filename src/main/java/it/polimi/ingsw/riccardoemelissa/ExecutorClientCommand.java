@@ -35,7 +35,10 @@ public class ExecutorClientCommand {
                 }
 
                  */
+
+                System.out.println("posizione :"+cmd.GetPos()[0]+","+cmd.GetPos()[1]+ " del worker: "+((Worker)cmd.GetObj()).GetProprietary().GetNickname());
                 GameState.GetBoard().setOccupant(cmd.GetPos(),(Worker)cmd.GetObj());
+                System.out.println("poszione occupata da "+GameState.GetBoard().GetOccupant(cmd.GetPos()).GetProprietary().GetNickname());
                 GameState.GetBoard().custom_notifyAll();
                 break;
             case SETPOWER:

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.riccardoemelissa.reader;
 
+import it.polimi.ingsw.riccardoemelissa.GameState;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -9,6 +10,7 @@ import org.json.simple.parser.ParseException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.*;
 
@@ -72,10 +74,14 @@ public class JsonReader {
         return gods_chosen;
     }
 
-    /*public static void main( String[] args ) throws IOException, ParseException, URISyntaxException {
+    /*public static void main( String[] args ) throws IOException, ParseException, URISyntaxException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         JsonReader jsonReader = new JsonReader();
-        jsonReader.GodsInGame(3);
+        //jsonReader.GodsInGame(3);
+
+        GameState.GodFactory();
     }
 
      */
+
+
 }

@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.LoadException;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -48,12 +49,11 @@ public class Client extends Application implements CustomObserver {
     @FXML
     public TextField set_turn;
     @FXML
-    public GridPane myboard=new GridPane();
+    public GridPane myboard;
 
     @FXML
     public int[] mouseEntered(MouseEvent e) {
         Node source = e.getPickResult().getIntersectedNode();
-        //Node source = (Node)e.getSource() ;
         Integer colIndex = GridPane.getColumnIndex(source);
         Integer rowIndex = GridPane.getRowIndex(source);
         System.out.printf("Mouse entered cell [%d, %d]%n", colIndex, rowIndex);
@@ -87,7 +87,7 @@ public class Client extends Application implements CustomObserver {
     }
 
     @FXML
-    public void initializeBoardgame () {
+    public void initializeBoardgame (GridPane myboard) {
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
                 Pane pane = new Pane();
@@ -95,6 +95,17 @@ public class Client extends Application implements CustomObserver {
                 GridPane.setColumnIndex(pane, x);
                 GridPane.setRowIndex(pane, y);
             }
+        }
+    }
+
+    public void loadingBoard(GridPane myboard)
+    {
+        myboard=new GridPane();
+        initializeBoardgame(myboard);
+        try {
+            changeScene("board.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -127,7 +138,8 @@ public class Client extends Application implements CustomObserver {
     //controller.start();
     listener = new ListenerServer(socket,this);
     listener.start();
-    //initializeBoardgame(myboard);
+
+    //initializeBoardgame();
     }
 
     public static void main(String[] args) {
@@ -365,6 +377,7 @@ public class Client extends Application implements CustomObserver {
         Command cmd_toserver=new Command(cmd_type,obj,new_pos);
         while (true) {
             try {
+                System.out.println("message to server: "+new_pos[0]+","+new_pos[1]);
                 ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
                 out.writeObject(cmd_toserver);
                 break;
@@ -452,12 +465,13 @@ public class Client extends Application implements CustomObserver {
     public void selectedCell(MouseEvent mouseEvent)
     {
         int[] new_position= mouseEntered(mouseEvent);
+
         System.out.println("La posizione cliccata è ( " + new_position[0] + " , "+ new_position[1] + ")" );
 
         if(getWorkers().size()<2)
         {
             System.out.println("possible");
-            messageToServer(CommandType.NEWWORKER, new Worker(from_server.getActivePlayer(), new_position));
+            messageToServer(CommandType.NEWWORKER, new Worker(from_server.getActivePlayer(),null), new_position);
         }
 
         if(activeWorker==null){return;}

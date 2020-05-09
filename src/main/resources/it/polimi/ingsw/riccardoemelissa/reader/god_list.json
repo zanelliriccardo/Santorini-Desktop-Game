@@ -1,39 +1,39 @@
 {
   "GodList": [
     {
-      "name": "elements.card.Apollo",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Apollo",
       "path" : "Apollo.png"
     },
     {
-      "name": "elements.card.Artemis",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Artemis",
       "path" : "Artemis.png"
     },
     {
-      "name": "elements.card.Athena",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Athena",
       "path" : "Athena.png"
     },
     {
-      "name": "elements.card.Atlas",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Atlas",
       "path" : "Atlas.png"
     },
     {
-      "name": "elements.card.Demeter",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Demeter",
       "path" : "Demeter.png"
     },
     {
-      "name": "elements.card.Hephaestus",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Hephaestus",
       "path" : "Hephaestus.png"
     },
     {
-      "name": "elements.card.Minotaur",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Minotaur",
       "path" : "Minotaur.png"
     },
     {
-      "name": "elements.card.Pan",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Pan",
       "path" : "Pan.png"
     },
     {
-      "name": "elements.card.Prometheus",
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Prometheus",
       "path" : "Prometheus.png"
     }
   ]
