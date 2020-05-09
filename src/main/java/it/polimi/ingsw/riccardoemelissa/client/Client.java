@@ -58,11 +58,32 @@ public class Client extends Application implements CustomObserver {
         Integer rowIndex = GridPane.getRowIndex(source);
         System.out.printf("Mouse entered cell [%d, %d]%n", colIndex, rowIndex);
 
-        Circle c1 = new Circle(source.getProperties().size()/2.0f, source.getProperties().size()/2.0f, 30.0f, Color.RED);
-
-        myboard.add(c1, colIndex,rowIndex);
-
         return new int[]{rowIndex, colIndex};
+    }
+
+    @FXML
+    public void setWorkerPosition (int[] pos, String worker_color)
+    {
+        Pane box = (Pane) myboard.getChildren();
+
+        Circle worker = new Circle(box.getHeight()/2, box.getWidth()/2, box.getHeight()/3);
+
+        switch (worker_color)
+        {
+            case "magenta":
+                worker.setFill(Color.MAGENTA);
+                break;
+
+            case "aquamarine":
+                worker.setFill(Color.AQUAMARINE);
+                break;
+
+            case "gold":
+                worker.setFill(Color.GOLD);
+                break;
+        }
+
+        myboard.add(worker, pos[1],pos[0]);
     }
 
     @FXML
@@ -410,10 +431,26 @@ public class Client extends Application implements CustomObserver {
     }
 
     @FXML
+    public void checkServerBoard (BoardGame serverBoard)
+    {
+        Worker worker;
+
+        for(int i = 0; i< 5; i++)
+        {
+            for (int j=0; j< 5; j++)
+            {
+                if(!serverBoard.GetStateBox(i,j)) {
+                    worker = serverBoard.GetOccupant(i, j);
+                    setWorkerPosition(worker.GetPosition(), worker.getColor());
+                }
+            }
+        }
+    }
+
+    @FXML
     public void selectedCell(MouseEvent mouseEvent)
     {
         int[] new_position= mouseEntered(mouseEvent);
-
         System.out.println("La posizione cliccata è ( " + new_position[0] + " , "+ new_position[1] + ")" );
 
         if(getWorkers().size()<2)

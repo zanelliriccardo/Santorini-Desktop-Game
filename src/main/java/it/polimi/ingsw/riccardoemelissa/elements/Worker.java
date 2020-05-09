@@ -46,4 +46,9 @@ public class Worker  implements Serializable
     {
         color=s;
     }
+
+    public String getColor()
+    {
+        return color;
+    }
 }
