@@ -1,5 +1,7 @@
 package it.polimi.ingsw.riccardoemelissa.elements;
 
+import it.polimi.ingsw.riccardoemelissa.ClientHandler;
+
 import java.util.ArrayList;
 
 public class CustomObservable
@@ -14,6 +16,7 @@ public class CustomObservable
     public void custom_notifyAll(){
         for (CustomObserver obs :
                 observers) {
+            System.out.println("notifica a :"+obs.toString());
             obs.update(this);
         }
     }

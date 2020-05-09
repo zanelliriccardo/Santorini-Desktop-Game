@@ -31,15 +31,16 @@ import java.util.ArrayList;
 
 public class Client extends Application implements CustomObserver {
 
-    private static GameProxy from_server=new GameProxy(null,null,null);
-    private Stage primary;
-    private FXMLLoader loader;
-    private Parent root;
-    private static ControllerBoard controller;
-    private static ListenerServer listener;
-    private static Socket socket;
-    private ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
-    private Worker activeWorker;
+    GameProxy from_server=new GameProxy(null,null,null);
+    Stage primary;
+    FXMLLoader loader;
+    Parent root;
+    static ControllerBoard controller;
+    static ListenerServer listener;
+    static Socket socket;
+    ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
+    Worker activeWorker;
+
     @FXML
     public TextField nickname;
     @FXML
@@ -50,7 +51,7 @@ public class Client extends Application implements CustomObserver {
     public GridPane myboard;
 
     @FXML
-    private int[] mouseEntered(MouseEvent e) {
+    public int[] mouseEntered(MouseEvent e) {
         Node source = e.getPickResult().getIntersectedNode();
         //Node source = (Node)e.getSource() ;
         Integer colIndex = GridPane.getColumnIndex(source);
@@ -65,7 +66,7 @@ public class Client extends Application implements CustomObserver {
     }
 
     @FXML
-    private void initializeBoardgame (GridPane myboard) {
+    public void initializeBoardgame (GridPane myboard) {
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
                 Pane pane = new Pane();
@@ -101,6 +102,10 @@ public class Client extends Application implements CustomObserver {
     primary.setTitle("Santorini");
 
     primary.show();
+    //controller=new ControllerBoard(socket,this);
+    //controller.start();
+    listener = new ListenerServer(socket,this);
+    listener.start();
     //initializeBoardgame(myboard);
     }
 
@@ -108,16 +113,11 @@ public class Client extends Application implements CustomObserver {
         socket = null;
 
         try {
-            socket = new Socket(InetAddress.getLocalHost(), 35500);
+            socket = new Socket(InetAddress.getLocalHost(), 30500);
         } catch (IOException e) {
             System.out.println("socket");
         }
         System.out.println("Connected to server");
-
-        controller=new ControllerBoard(socket);
-        listener = new ListenerServer(socket,from_server);
-        listener.start();
-
         launch(args);
     }
 
@@ -138,14 +138,12 @@ public class Client extends Application implements CustomObserver {
         }
 
          */
+        //messageToServer(CommandType.UPDATE);
 
         while(true)
         {
-            callUpdate_fromServer();
-            synchronized (from_server)
-            {       if(from_server==null)
-                    continue;
-            System.out.println("Premuto start -> n= " + from_server.getPlayers().size());}
+            if (from_server.getPlayers() == null)
+                continue;
             break;
         }
 
@@ -199,9 +197,11 @@ public class Client extends Application implements CustomObserver {
 
     @FXML
     public void chooseNickname(MouseEvent mouseEvent) throws IOException {
-        while (from_server.getPlayers().size()==0)
+        /*while (from_server.getPlayers().size()==0)
             callUpdate_fromServer();
 
+
+         */
         changeScene("choose_nickname.fxml");
         System.out.println("Passaggio a inserimento nickname");
 
@@ -211,10 +211,6 @@ public class Client extends Application implements CustomObserver {
     public void twoPlayers (MouseEvent event) throws IOException {
         messageToServer(CommandType.MODE, 2);
         System.out.println("Premuto 2 gioc");
-
-
-        System.out.println("Giocatori collegati = " + from_server.getPlayers().size());
-
         chooseNickname(event);
     }
 
@@ -239,28 +235,37 @@ public class Client extends Application implements CustomObserver {
     public void nicknameOk (MouseEvent mouseEvent) throws IOException
     {
         messageToServer(CommandType.NICKNAME,nickname.getText());
-
-        System.out.println("nicknameOK : "+from_server.getPlayers().size());
-        for (Player p :
-                from_server.getPlayers()) {
-            System.out.println(p.GetNickname());
-        }
-
         changeScene("loading.fxml");
+
         System.out.println("Premuto ok inserimento nickname");
+        //messageToServer(CommandType.STARTGAME);
 
-        boolean waitPlayer=true;
+        boolean gamenotready=true;
 
-        while (waitPlayer)
+        /*while (gamenotready)
         {
-            callUpdate_fromServer();
-
-            for (Player p : from_server.getPlayers())
-                if (p.GetNickname().compareTo("nome") == 0)
-                    waitPlayer=true;
-                else
-                    waitPlayer=false;
+            //callUpdate_fromServer();
+            //sleep(500);
+            synchronized (from_server) {
+                for (Player p : from_server.getPlayers()) {
+                    if (p.GetNickname().compareTo("nome") != 0)
+                        gamenotready = false;
+                    else
+                        gamenotready = true;
+                }
+            }
         }
+        */
+
+
+
+    }
+
+    private static void sleep(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {}
+
     }
 
     @FXML
@@ -332,6 +337,7 @@ public class Client extends Application implements CustomObserver {
             }
             catch (IOException io){}
         }
+        //update();
     }
 
     public void messageToServer(CommandType cmd_type,Object obj,int[] new_pos) {
@@ -408,12 +414,20 @@ public class Client extends Application implements CustomObserver {
     {
         int[] new_position= mouseEntered(mouseEvent);
 
-        System.out.println("La posizione del worker è ( " + new_position[0] + " , "+ new_position[1] + ")" );
-
-        if(activeWorker==null){return;}
+        System.out.println("La posizione cliccata è ( " + new_position[0] + " , "+ new_position[1] + ")" );
 
         if(getWorkers().size()<2)
-            messageToServer(CommandType.NEWWORKER,new Worker(from_server.getActivePlayer(),new_position));
+        {
+            if(!from_server.getBoard().GetStateBox(new_position))
+            {
+                System.out.println("not possible");
+                return;
+            }
+            System.out.println("possible");
+            messageToServer(CommandType.NEWWORKER, new Worker(from_server.getActivePlayer(), new_position));
+        }
+
+        if(activeWorker==null){return;}
 
         if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)
         {
@@ -470,6 +484,7 @@ public class Client extends Application implements CustomObserver {
     {
         try {
             ObjectInputStream in=new ObjectInputStream(socket.getInputStream());
+            System.out.println("in attesa di messaggio dal server");
             from_server=(GameProxy)in.readObject();
             System.out.println("ricevuto update dal server (Client -> update): " + from_server.getPlayers().size());
         }

@@ -54,16 +54,13 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
         }
 
          */
-
+        update(new Object());
         if(!socketConnection.isClosed()&&socketConnection.isConnected())
             while (true) {
                 try {
                     //server in attesa di messaggi
                     ois=new ObjectInputStream(socketConnection.getInputStream());
                     Command cmd = (Command) ois.readObject();
-
-                    System.out.println("A Client Handler arriva : " + cmd.GetType());
-
 
                     if(cmd.GetType()==CommandType.UPDATE)
                         update(new Object());
@@ -107,7 +104,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
             try {
                 oos=new ObjectOutputStream(socketConnection.getOutputStream());
                 oos.writeObject(toClient);
-                System.out.println("Giocatori al client = " + toClient.getPlayers().size());
+                //System.out.println("Giocatori al client = " + toClient.getPlayers().size());
                 oos.flush();
                 break;
             } catch (IOException e) {

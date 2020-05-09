@@ -1,6 +1,6 @@
 package it.polimi.ingsw.riccardoemelissa;
 
-import jdk.internal.vm.compiler.collections.EconomicMap;
+
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -38,10 +38,14 @@ public class MultiEchoServer {
                 firstThread.start();
                 System.out.println("First player connected");
 
+                serverSocket.close();
+
                 while (GameState.GetNumPlayers()==10) {
                      System.out.println(GameState.GetNumPlayers());
                 }
-                System.out.println("choose to play with: "+ GameState.GetPlayerNumber());
+                System.out.println("choose to play with: "+ GameState.GetNumPlayers());
+
+                serverSocket=new ServerSocket(port,GameState.GetNumPlayers());
 
                 ArrayList<Socket> sockets=new ArrayList<Socket>();
                 ArrayList<ClientHandler> clients=new ArrayList<ClientHandler>();
@@ -54,13 +58,21 @@ public class MultiEchoServer {
                         GameState.GetBoard().addObserver(clients.get(i));
                         threads.add(new Thread(clients.get(i)));
                         threads.get(i).start();
-                        System.out.println("Another player connected");
+                        System.out.println("Another player connected(num:"+(i+1));
                     }
                     catch(IOException e) {
                         break; // entrerei qui se serverSocket venisse chiuso
                     }
 
-                while (!GameState.GameReady()) { }
+                while (!GameState.GameReady())
+                {
+
+                }
+                serverSocket.close();
+                System.out.println("gioco pronto");
+                GameState.GetBoard().custom_notifyAll();
+                //firstClient.update(new Object());
+                //clients.forEach(clientHandler -> clientHandler.update(new Object()));
 
                 //GameState.NextTurn();
 

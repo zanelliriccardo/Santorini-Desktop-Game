@@ -15,17 +15,25 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import javafx.scene.control.TextField;
 
+import java.awt.*;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.URL;
 import java.util.ArrayList;
 
-public class ControllerBoard
+public class ControllerBoard extends Thread
 {
     private Socket socket;
     private AnchorPane root;//=FXMLLoader.load(getClass().getResource("@../filefxml/menu.fxml"));
@@ -34,82 +42,262 @@ public class ControllerBoard
     private Scene input_scene;
     private ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
     private Worker activeWorker;
-    private MouseEvent event;
+    private Client client_javafx;
 
     @FXML
     public TextField nickname;
     private Stage primaryStage;
 
-    public ControllerBoard(Socket s)
+    public ControllerBoard(Socket s,Client client)
     {
         /*primary_stage=new Stage();
         input_scene =new Scene(root);*/
         socket=s;
+        client_javafx=client;
     }
 
     @FXML
     public void startGame(MouseEvent mouseEvent) throws IOException {
-        //int num_players = from_server.getPlayers().length;
-        int num_players = 1;
+        //String active_player_name = "nickname";
 
-        if(num_players == 1)
-        changeScene("mode.fxml");
-
-        else
-            chooseNickname(mouseEvent);
-    }
-
-    @FXML
-    public void chooseNickname(MouseEvent mouseEvent) throws IOException {
-        changeScene("choose_nickname.fxml");
-        messageToServer(CommandType.NICKNAME, nickname.getText());
-    }
-
-    private void changeScene(String path) throws IOException
-    {
-        FXMLLoader loader = new FXMLLoader();
-        InputStream inputStream = getClass().getResource(path).openStream();
-
-        loader.setController(this);
-
-        try {
-//            root = loader.load(input);
-            root = loader.load(inputStream);
-            //root = FXMLLoader.load(resource);
+        /*try
+        {
+            System.out.println("Chiedo update al server");
+            messageToServer(CommandType.UPDATE);
+            update();
+            System.out.println("ricevuto update dal server");
         }
-        catch (LoadException e)
+        catch (Exception e)
         {
             e.printStackTrace();
         }
 
-        //root= FXMLLoader.load(getClass().getResource(path));
+         */
+        callUpdate_fromServer();
+        while(true)
+        {
+            //callUpdate_fromServer();
+            //synchronized (from_server)
+            //{
+            synchronized (from_server) {
+                if (from_server.getPlayers() == null)
+                    continue;
+                System.out.println("Premuto start -> n= " + from_server.getPlayers().size());
+            }
+            //}
+            break;
+        }
+
+        if(from_server.getPlayers().size()<1) {
+            changeScene("mode.fxml");
+            System.out.println("Sono il primo giocatore");
+            //showBoard(active_player_name);
+        }
+        else {
+            System.out.println("Connessione a partita già esistente");
+            changeScene("choose_nickname.fxml");
+        }
+    }
+
+    public void callUpdate_fromServer() throws IOException
+    {
+        try
+        {
+            System.out.println("Chiedo upffdate al server");
+            messageToServer(CommandType.UPDATE);
+            //update();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void changeScene(String path) throws IOException
+    {
+        /*root=null;
+        loader=null;
+        loader=new FXMLLoader();
+
+        //System.out.println(getClass().getResource(path));
+        URL newresource=getClass().getResource(path);
+
+        //Scene s = primary.getScene();
+        //loader.setController(this);
+        loader.setLocation(newresource);
+        loader.setController(this);
+        root = loader.load();
+
+        Scene s=new Scene(root);
+        //s.setRoot(root);
+        primary.setScene(s);
+
+        primary.show();
+        System.out.println("Cambio scena");
+
+         */
     }
 
     @FXML
-    public void twoPlayers (MouseEvent event){
+    public void chooseNickname(MouseEvent mouseEvent) throws IOException {
+        while (from_server.getPlayers().size()==0)
+            callUpdate_fromServer();
+
+        changeScene("choose_nickname.fxml");
+        System.out.println("Passaggio a inserimento nickname");
+
+    }
+
+    @FXML
+    public void twoPlayers (MouseEvent event) throws IOException {
         messageToServer(CommandType.MODE, 2);
+        System.out.println("Premuto 2 gioc");
+
+
+        System.out.println("Giocatori collegati = " + from_server.getPlayers().size());
+
+        chooseNickname(event);
     }
 
     @FXML
-    public void threePlayers (MouseEvent event){
+    public void threePlayers (MouseEvent event) throws IOException {
         messageToServer(CommandType.MODE, 3);
+        System.out.println("Premuto 3 gioc");
+
+        System.out.println("Giocatori collegati = " + from_server.getPlayers().size());
+
+        chooseNickname(event);
     }
 
     @FXML
     public void modeOk (MouseEvent event) throws IOException
     {
-        changeScene("choose_nickname.fxml");
+        System.out.println("Premuto ok mode giocatori");
+        chooseNickname(event);
     }
 
     @FXML
     public void nicknameOk (MouseEvent mouseEvent) throws IOException
     {
+        messageToServer(CommandType.NICKNAME,nickname.getText());
+
+        /*System.out.println("nicknameOK : "+from_server.getPlayers().size());
+        for (Player p :
+                from_server.getPlayers()) {
+            System.out.println(p.GetNickname());
+        }
+
+         */
+
         changeScene("loading.fxml");
+
+        System.out.println("Premuto ok inserimento nickname");
+        //messageToServer(CommandType.STARTGAME);
+
+        boolean gamenotready=true;
+
+        while (gamenotready)
+        {
+            //callUpdate_fromServer();
+            //sleep(500);
+            synchronized (from_server) {
+                for (Player p : from_server.getPlayers()) {
+                    if (p.GetNickname().compareTo("nome") != 0)
+                        gamenotready = false;
+                    else
+                        gamenotready = true;
+                }
+            }
+        }
+
+
+        changeScene("board.fxml");
+        //initializeBoardgame(myboard);
     }
 
-    public void clickImageGodPower(MouseEvent mouseEvent)
+    private static void sleep(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {}
+
+    }
+
+    @FXML
+    private int[] mouseEntered(MouseEvent e) {
+        Node source = e.getPickResult().getIntersectedNode();
+        //Node source = (Node)e.getSource() ;
+        Integer colIndex = GridPane.getColumnIndex(source);
+        Integer rowIndex = GridPane.getRowIndex(source);
+        System.out.printf("Mouse entered cell [%d, %d]%n", colIndex, rowIndex);
+
+        Circle c1 = new Circle(source.getProperties().size()/2.0f, source.getProperties().size()/2.0f, 30.0f, Color.rgb(55,55,55));
+
+        client_javafx.myboard.add(c1, colIndex,rowIndex);
+
+        return new int[]{rowIndex, colIndex};
+    }
+
+    @FXML
+    private void initializeBoardgame (GridPane myboard) {
+        for (int x = 0; x < 5; x++) {
+            for (int y = 0; y < 5; y++) {
+                Pane pane = new Pane();
+                myboard.getChildren().add(pane);
+                GridPane.setColumnIndex(pane, x);
+                GridPane.setRowIndex(pane, y);
+            }
+        }
+    }
+
+    @FXML
+    public void showBoard (String active_player_name) throws IOException
     {
-        Image image=(Image)mouseEvent.getSource();
+        changeScene("board.fxml");
+        client_javafx.set_turn.setText("Turn of " + active_player_name);
+    }
+
+    @FXML
+    public void changeButtonImage (MouseEvent mouseEvent) throws IOException
+    {
+        if( client_javafx.set_power.getImage().getUrl().compareTo(String.valueOf(getClass().getResource("images/heropower_active.png")))==0)
+        {
+            System.out.println("cambia in disattivo");
+            //client_javafx.set_power.setImage(new Image(String.valueOf((getClass().getResource("images/heropower_inactive.png")))));
+        }
+        else if( client_javafx.set_power.getImage().getUrl().compareTo(String.valueOf(getClass().getResource("images/heropower_inactive.png")))==0)
+        {
+            System.out.println("cambia in attivo");
+            //client_javafx.set_power.setImage(new Image(String.valueOf(getClass().getResource("images/heropower_active.png"))));
+        }
+
+    }
+
+
+    public void update(Object obj)
+    {
+        from_server=(GameProxy) obj;
+
+        ArrayList<Worker> workers=getWorkers();
+
+        for (Worker w : workers)
+        {
+            possibleCells_activeWorker.addAll(checkMoves(from_server.getBoard(),w));
+        }
+
+        if(possibleCells_activeWorker.isEmpty())
+        {
+            messageToServer(CommandType.LOSE);
+            //schermata sconfitta
+            return;
+        }
+        possibleCells_activeWorker.clear();
+
+        //fare guiii
+
+        if(from_server.getActivePlayer().GetGodCard().GetType()==GodCardType.ENDTURN)
+        {
+            //abilita click fine turno bottone di endturn() e disabilita il resto
+        }
     }
 
     public void activedPower(boolean bool)
@@ -119,23 +307,108 @@ public class ControllerBoard
         if(from_server.getActivePlayer().GetGodCard().GetType()==GodCardType.BUILD) activeBuildCells();
     }
 
-    public void setNickname(String nickname)
+    public void messageToServer(CommandType cmd_type,Object obj) {
+        Command cmd_toserver=new Command(cmd_type,obj,null);
+        while (true) {
+            try {
+                ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
+                out.writeObject(cmd_toserver);
+                out.flush();
+                break;
+            }
+            catch (IOException io){}
+        }
+        //update();
+    }
+
+    public void messageToServer(CommandType cmd_type,Object obj,int[] new_pos) {
+        Command cmd_toserver=new Command(cmd_type,obj,new_pos);
+        while (true) {
+            try {
+                ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
+                out.writeObject(cmd_toserver);
+                break;
+            }
+            catch (IOException io){}
+        }
+    }
+
+    public void messageToServer(CommandType cmd_type) {
+        Command cmd_toserver=new Command(cmd_type,from_server.getActivePlayer(),null);
+        while (true) {
+            try {
+                ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
+                out.writeObject(cmd_toserver);
+                break;
+            }
+            catch (IOException io)
+            {
+                new SendException("SendMessage error!(code:"+cmd_type+")");
+            }
+        }
+    }
+
+    public ArrayList<int[]> checkMoves(BoardGame board, Worker worker_toMove)
     {
-        messageToServer(CommandType.NICKNAME,nickname);
+        ArrayList<int[]> possiblemoves= worker_toMove.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board, worker_toMove.GetPosition());
+
+        possiblemoves.removeIf(pos -> board.GetLevelBox(pos) - board.GetLevelBox(worker_toMove.GetPosition()) > 1);
+
+        for (int[] pos: possiblemoves)
+        {
+            for (Player opponent : from_server.getPlayers())
+            {
+                if((opponent.GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                    if(opponent.GetGodCard().Move(board, worker_toMove,pos)==CommandType.ERROR);//check move is possible for opponent card
+                possiblemoves.remove(pos);
+            }
+        }
+        return possiblemoves;
+    }
+
+    public ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
+    {
+        ArrayList<int[]> possiblebuild=board.AdjacentBox(builder.GetPosition());
+
+        possiblebuild.removeIf(pos -> board.GetLevelBox(pos) == 4);
+
+        for (int[] pos: possiblebuild)
+        {
+            for (Player opponent : from_server.getPlayers())
+            {
+                if((opponent.GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                    if(opponent.GetGodCard().Build(board,builder,pos)==CommandType.ERROR);//check build is possible for opponent card
+                possiblebuild.remove(pos);
+            }
+        }
+        return possiblebuild;
+    }
+
+    public void endTurn()
+    {
+        from_server.getActivePlayer().GetGodCard().resetCard(GodCardType.MOVE);
+        messageToServer(CommandType.CHANGE_TURN);
     }
 
     @FXML
     public void selectedCell(MouseEvent mouseEvent)
     {
-        Node source=(Node)mouseEvent.getSource();
-        int rowIndex=(GridPane.getRowIndex(source))==null ? 0:(GridPane.getRowIndex(source));
-        int colIndex=(GridPane.getColumnIndex(source))==null ? 0:(GridPane.getColumnIndex(source));
-        int[] new_position= new int[]{rowIndex,colIndex};
+        int[] new_position= mouseEntered(mouseEvent);
 
-        if(activeWorker==null){return;}
+        System.out.println("La posizione cliccata è ( " + new_position[0] + " , "+ new_position[1] + ")" );
 
         if(getWorkers().size()<2)
-            messageToServer(CommandType.NEWWORKER,new Worker(from_server.getActivePlayer(),new_position));
+        {
+            if(!from_server.getBoard().GetStateBox(new_position))
+            {
+                System.out.println("not possible");
+                return;
+            }
+            System.out.println("possible");
+            messageToServer(CommandType.NEWWORKER, new Worker(from_server.getActivePlayer(), new_position));
+        }
+
+        if(activeWorker==null){return;}
 
         if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)
         {
@@ -188,123 +461,18 @@ public class ControllerBoard
         return workers;
     }
 
-
-    public void update(Object obj) {
-        from_server=(GameProxy) obj;
-
-        ArrayList<Worker> workers=getWorkers();
-
-        for (Worker w : workers)
-        {
-            possibleCells_activeWorker.addAll(checkMoves(from_server.getBoard(),w));
-        }
-
-        if(possibleCells_activeWorker.isEmpty())
-        {
-            messageToServer(CommandType.LOSE);
-            //schermata sconfitta
-            return;
-        }
-        possibleCells_activeWorker.clear();
-
-        //fare guiii
-
-        if(from_server.getActivePlayer().GetGodCard().GetType()==GodCardType.ENDTURN)
-        {
-            //abilita click fine turno bottone di endturn() e disabilita il resto
-        }
-
-    }
-
-    public void endTurn()
+    public void update()
     {
-        from_server.getActivePlayer().GetGodCard().resetCard(GodCardType.MOVE);
-        messageToServer(CommandType.CHANGE_TURN);
-    }
-
-    public void messageToServer(CommandType cmd_type,Object obj) {
-        Command cmd_toserver=new Command(cmd_type,obj,null);
-        while (true) {
-            try {
-                ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
-                out.writeObject(cmd_toserver);
-                break;
-            }
-            catch (IOException io){}
+        try {
+            ObjectInputStream in=new ObjectInputStream(socket.getInputStream());
+            System.out.println("in attesa di messaggio dal server");
+            from_server=(GameProxy)in.readObject();
+            System.out.println("ricevuto update dal server (Client -> update): " + from_server.getPlayers().size());
         }
-    }
-
-    public void messageToServer(CommandType cmd_type,Object obj,int[] new_pos) {
-        Command cmd_toserver=new Command(cmd_type,obj,new_pos);
-        while (true) {
-            try {
-                ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
-                out.writeObject(cmd_toserver);
-                break;
-            }
-            catch (IOException io){}
-        }
-    }
-
-    public void messageToServer(CommandType cmd_type) {
-        Command cmd_toserver=new Command(cmd_type,from_server.getActivePlayer(),null);
-        while (true) {
-            try {
-                ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
-                out.writeObject(cmd_toserver);
-                break;
-            }
-            catch (IOException io)
-            {
-                new SendException("SendMessage error!(code:"+cmd_type+")");
-            }
-        }
-    }
-
-    public ArrayList<int[]> checkMoves(BoardGame board, Worker worker_toMove)
-    {
-        ArrayList<int[]> possiblemoves= worker_toMove.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board, worker_toMove.GetPosition());
-
-        possiblemoves.removeIf(pos -> board.GetLevelBox(pos) - board.GetLevelBox(worker_toMove.GetPosition()) > 1);
-
-        for (int[] pos: possiblemoves)
+        catch (IOException | ClassNotFoundException e)
         {
-            for (Player opponent : from_server.getPlayers())
-            {
-                if((opponent.GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Move(board, worker_toMove,pos)==CommandType.ERROR);//check move is possible for opponent card
-                        possiblemoves.remove(pos);
-            }
-        }
-        return possiblemoves;
-    }
-
-    public ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
-    {
-        ArrayList<int[]> possiblebuild=board.AdjacentBox(builder.GetPosition());
-
-        possiblebuild.removeIf(pos -> board.GetLevelBox(pos) == 4);
-
-        for (int[] pos: possiblebuild)
-        {
-            for (Player opponent : from_server.getPlayers())
-            {
-                if((opponent.GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Build(board,builder,pos)==CommandType.ERROR);//check build is possible for opponent card
-                        possiblebuild.remove(pos);
-            }
-        }
-        return possiblebuild;
-    }
-
-    public void start() {
-        /*try {
-            root = FXMLLoader.load(getClass().getResource("/start.fxml"));
-        } catch (IOException e) {
             e.printStackTrace();
-        }*/
-        primaryStage.setTitle("Santorini");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
+        }
+
     }
 }

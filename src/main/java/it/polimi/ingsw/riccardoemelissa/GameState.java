@@ -4,6 +4,7 @@ package it.polimi.ingsw.riccardoemelissa;
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.elements.Box;
 import it.polimi.ingsw.riccardoemelissa.elements.card.Minotaur;
+import javafx.scene.layout.HBox;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -12,20 +13,10 @@ public class GameState {
     private static ArrayList<Player> players = new ArrayList<Player>();
     private static Worker[] workers;
     private static int trace = 0;
-    private static BoardGame b;
+    private static BoardGame b=new BoardGame();
     private static boolean gameover=false;
     private static int num_players=10;
 
-    public GameState()
-    {
-        Box[][] boxes=new Box[5][5];
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                boxes[i][j]=new Box();
-            }
-        }
-        b=new BoardGame(boxes);
-    }
     /**
      *
      * @return
@@ -51,8 +42,11 @@ public class GameState {
 
     public static boolean GameReady()
     {
-        if(players.size()<num_players)
-            return false;
+        for (Player p : players)
+        {
+            if (p.GetNickname().compareTo("nome") == 0)
+                return false;
+        }
         return true;
     }
 
@@ -123,17 +117,18 @@ public class GameState {
             players.add(new Player("nome")); //cambiare nome
         }
 
+
         Box[][] boxes = new Box[5][5];
         for (int i = 0; i < boxes.length; i++) {
             for (int j = 0; j < boxes.length; j++)
                 boxes[i][j] = new Box(true, 0);
         }
-        b = new BoardGame(boxes);
 
+        b.setBoxes(boxes);
         System.out.println("Inizializzazione array giocatori con dim = " + num_players);
         workers = new Worker[n * 2];
 
-        b.custom_notifyAll();
+
 
         /*try {//spostare dopo che parte il gioco cioè qunado abbiamo tutti igiocatori
             GodFactory();
@@ -313,4 +308,6 @@ public class GameState {
     public static int GetNumPlayers() {
         return num_players;
     }
+
+    
 }

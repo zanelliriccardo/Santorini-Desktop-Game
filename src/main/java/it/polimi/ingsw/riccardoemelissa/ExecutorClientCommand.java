@@ -15,17 +15,19 @@ public class ExecutorClientCommand {
         {
             case MODE:
                 GameState.SetNumPlayer((int) cmd.GetObj());
+                GameState.GetBoard().custom_notifyAll();
                 break;
             case NICKNAME:
-                System.out.println("Ora devo creare giocatore");
+                //System.out.println("Ora devo creare giocatore");
                 GameState.NewPlayer((String)cmd.GetObj());
-                System.out.println("Creazione giocatore");
-
+                //System.out.println("Creazione giocatore");
                 for (Player p : GameState.GetPlayers())
                     System.out.println(p.GetNickname());
-
-
+                GameState.GetBoard().custom_notifyAll();
                 break;
+            /*case STARTGAME:
+                GameState.GameReady();
+                break;*/
             case NEWWORKER:
                 GameState.GetBoard().setOccupant(cmd.GetPos(),(Worker)cmd.GetObj());
                 break;
@@ -66,6 +68,6 @@ public class ExecutorClientCommand {
                 break;
         }
 
-        GameState.GetBoard().custom_notifyAll();
+        //GameState.GetBoard().custom_notifyAll();
     }
 }
