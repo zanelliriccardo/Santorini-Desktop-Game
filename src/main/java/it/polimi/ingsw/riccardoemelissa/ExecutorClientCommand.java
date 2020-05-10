@@ -40,6 +40,7 @@ public class ExecutorClientCommand {
                 GameState.GetBoard().setOccupant(cmd.GetPos(),(Worker)cmd.GetObj());
 
                 ArrayList<Worker> workers=new ArrayList<Worker>();
+
                 for (int i = 0; i < 5; i++)
                 {
                     for (int j = 0; j < 5; j++)
@@ -49,8 +50,10 @@ public class ExecutorClientCommand {
                                 workers.add(GameState.GetBoard().GetOccupant(i,j));
                     }
                 }
+
                 if(workers.size()==2)
                     GameState.NextTurn();
+
                 GameState.GetBoard().custom_notifyAll();
 
                 break;
