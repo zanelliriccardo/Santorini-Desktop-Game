@@ -27,12 +27,12 @@
       <HBox disable="true" layoutX="117.0" layoutY="58.0" prefHeight="46.0" prefWidth="366.0" />
       <HBox layoutX="124.0" layoutY="122.0" prefHeight="30.0" prefWidth="348.0" />
       <ButtonBar layoutX="495.0" layoutY="315.0" opacity="0.89" prefHeight="40.0" prefWidth="75.0" />
-      <TextField alignment="CENTER" editable="false" layoutX="42.0" layoutY="174.0" opacity="0.95" prefHeight="48.0" prefWidth="538.0" style="-fx-background-color: #D3D3D3; -fx-font-family: Franklin Gothic Medium Cond; -fx-font-size: 22;" text="First of all, you need to select the number of players:">
+      <TextField alignment="CENTER" disable="true" editable="false" layoutX="42.0" layoutY="174.0" opacity="0.95" prefHeight="48.0" prefWidth="538.0" style="-fx-background-color: #D3D3D3; -fx-font-family: Franklin Gothic Medium Cond; -fx-font-size: 22;" text="First of all, you need to select the number of players:">
          <font>
             <Font name="Franklin Gothic Medium Cond" size="17.0" />
          </font>
       </TextField>
-      <TextField alignment="CENTER" editable="false" layoutX="88.0" layoutY="94.0" opacity="0.95" prefHeight="40.0" prefWidth="465.0" style="-fx-background-color: #D3D3D3; -fx-font-size: 22; -fx-font-family: Franklin Gothic Medium Cond;" text="Welcome, you are the first player to connect!">
+      <TextField alignment="CENTER" disable="true" editable="false" layoutX="88.0" layoutY="94.0" opacity="0.95" prefHeight="40.0" prefWidth="465.0" style="-fx-background-color: #D3D3D3; -fx-font-size: 22; -fx-font-family: Franklin Gothic Medium Cond;" text="Welcome, you are the first player to connect!">
          <font>
             <Font name="Franklin Gothic Medium Cond" size="21.0" />
          </font>
@@ -44,11 +44,17 @@
          <font>
             <Font name="Franklin Gothic Medium Cond" size="22.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
       </Button>
       <Button fx:id="three_players" layoutX="369.0" layoutY="258.0" mnemonicParsing="false" onMouseClicked="#threePlayers" opacity="0.95" prefHeight="67.0" prefWidth="85.0" style="-fx-background-radius: 40; -fx-background-color: #D3D3D3; -fx-font-size: 36; -fx-font-family: Franklin Gothic Medium Cond;" text="3">
          <font>
             <Font name="Franklin Gothic Medium Cond" size="22.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
       </Button>
    </children>
 </AnchorPane>

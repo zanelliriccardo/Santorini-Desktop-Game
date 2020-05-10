@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -29,6 +30,9 @@
          <font>
             <Font name="Franklin Gothic Medium Cond" size="17.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
       </Button>
       <Text fill="#eeeded" layoutX="93.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Franklin Gothic Medium Cond; -fx-font-size: 40; -fx-text-alignment: CENTER;" text="BUILD LIKA A MORTAL," textAlignment="CENTER" wrappingWidth="454.13671875">
          <font>
