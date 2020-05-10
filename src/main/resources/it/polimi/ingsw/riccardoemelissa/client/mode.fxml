@@ -9,61 +9,52 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" style="-fx-background-color: #4169E1;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fitHeight="344.0" fitWidth="608.0" layoutX="-6.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+      <Text fill="#eeeded" layoutX="104.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Franklin Gothic Medium Cond; -fx-font-size: 40; -fx-text-alignment: CENTER;" text="BUILD LIKA A MORTAL," textAlignment="CENTER" wrappingWidth="454.13671875">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="104.0" layoutY="464.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Franklin Gothic Medium Cond; -fx-text-alignment: CENTER; -fx-font-size: 40;" text="WIN LIKE A GOD!" textAlignment="CENTER" wrappingWidth="413.13671875" />
+      <ImageView fitHeight="360.0" fitWidth="682.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/background.jpg" />
          </image>
       </ImageView>
-      <HBox disable="true" layoutX="117.0" layoutY="58.0" prefHeight="46.0" prefWidth="366.0">
-         <children>
-            <TextField alignment="CENTER" editable="false" opacity="0.9" prefHeight="48.0" prefWidth="366.0" text="Welcome, you are the first player to connect!">
-               <font>
-                  <Font name="Franklin Gothic Medium Cond" size="21.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor>
-            </TextField>
-         </children>
-      </HBox>
-      <HBox layoutX="124.0" layoutY="122.0" prefHeight="30.0" prefWidth="348.0">
-         <children>
-            <TextField alignment="CENTER" editable="false" opacity="0.9" prefHeight="33.0" prefWidth="348.0" text="First of all, you need to select the number of players :">
-               <font>
-                  <Font name="Franklin Gothic Medium Cond" size="17.0" />
-               </font>
-            </TextField>
-         </children>
-      </HBox>
-      <ButtonBar layoutX="174.0" layoutY="200.0" opacity="0.9" prefHeight="46.0" prefWidth="63.0">
-         <buttons>
-            <Button fx:id="two_players" mnemonicParsing="false" onMouseClicked="#twoPlayers" opacity="0.9" text="2">
-               <font>
-                  <Font name="Franklin Gothic Medium Cond" size="22.0" />
-               </font>
-            </Button>
-         </buttons>
-      </ButtonBar>
-      <ButtonBar layoutX="331.0" layoutY="200.0" prefHeight="46.0" prefWidth="59.0">
-         <buttons>
-            <Button fx:id="three_players" mnemonicParsing="false" onMouseClicked="#threePlayers" opacity="0.9" text="3">
-               <font>
-                  <Font name="Franklin Gothic Medium Cond" size="22.0" />
-               </font>
-            </Button>
-         </buttons>
-      </ButtonBar>
-      <ButtonBar layoutX="495.0" layoutY="315.0" opacity="0.89" prefHeight="40.0" prefWidth="75.0">
-        <buttons>
-          <Button mnemonicParsing="false" onMouseClicked="#modeOk" text="OK">
-               <font>
-                  <Font name="Franklin Gothic Medium Cond" size="18.0" />
-               </font>
-            </Button>
-        </buttons>
-      </ButtonBar>
+      <HBox disable="true" layoutX="117.0" layoutY="58.0" prefHeight="46.0" prefWidth="366.0" />
+      <HBox layoutX="124.0" layoutY="122.0" prefHeight="30.0" prefWidth="348.0" />
+      <ButtonBar layoutX="495.0" layoutY="315.0" opacity="0.89" prefHeight="40.0" prefWidth="75.0" />
+      <TextField alignment="CENTER" disable="true" editable="false" layoutX="42.0" layoutY="174.0" opacity="0.95" prefHeight="48.0" prefWidth="538.0" style="-fx-background-color: #D3D3D3; -fx-font-family: Franklin Gothic Medium Cond; -fx-font-size: 22;" text="First of all, you need to select the number of players:">
+         <font>
+            <Font name="Franklin Gothic Medium Cond" size="17.0" />
+         </font>
+      </TextField>
+      <TextField alignment="CENTER" disable="true" editable="false" layoutX="88.0" layoutY="94.0" opacity="0.95" prefHeight="40.0" prefWidth="465.0" style="-fx-background-color: #D3D3D3; -fx-font-size: 22; -fx-font-family: Franklin Gothic Medium Cond;" text="Welcome, you are the first player to connect!">
+         <font>
+            <Font name="Franklin Gothic Medium Cond" size="21.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </TextField>
+      <Button fx:id="two_players" layoutX="187.0" layoutY="258.0" mnemonicParsing="false" onMouseClicked="#twoPlayers" opacity="0.95" prefHeight="67.0" prefWidth="85.0" style="-fx-background-radius: 40; -fx-background-color: #D3D3D3; -fx-font-size: 36; -fx-font-family: Franklin Gothic Medium Cond;" text="2">
+         <font>
+            <Font name="Franklin Gothic Medium Cond" size="22.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="three_players" layoutX="369.0" layoutY="258.0" mnemonicParsing="false" onMouseClicked="#threePlayers" opacity="0.95" prefHeight="67.0" prefWidth="85.0" style="-fx-background-radius: 40; -fx-background-color: #D3D3D3; -fx-font-size: 36; -fx-font-family: Franklin Gothic Medium Cond;" text="3">
+         <font>
+            <Font name="Franklin Gothic Medium Cond" size="22.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </Button>
    </children>
 </AnchorPane>
