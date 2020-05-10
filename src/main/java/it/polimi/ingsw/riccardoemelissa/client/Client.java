@@ -130,7 +130,7 @@ public class Client extends Application implements CustomObserver {
         e.printStackTrace();
     }
 
-    primary.setScene(new Scene(root,600,400));
+    primary.setScene(new Scene(root,640,480));
     primary.setTitle("Santorini");
 
     primary.show();
