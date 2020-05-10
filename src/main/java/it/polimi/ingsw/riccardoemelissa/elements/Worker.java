@@ -1,12 +1,12 @@
 package it.polimi.ingsw.riccardoemelissa.elements;
 
+import java.awt.*;
 import java.io.Serializable;
 
 public class Worker  implements Serializable
 {
     private int[] position;
     private Player proprietary;
-    private String color;
 
     public Worker(Player proprietary,int[] pos)
     {
@@ -40,15 +40,5 @@ public class Worker  implements Serializable
 
     public int[] GetPosition() {
         return position;
-    }
-
-    public void SetColor(String s)
-    {
-        color=s;
-    }
-
-    public String getColor()
-    {
-        return color;
     }
 }

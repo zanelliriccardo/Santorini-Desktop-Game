@@ -2,6 +2,8 @@ package it.polimi.ingsw.riccardoemelissa;
 
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 
+import java.util.ArrayList;
+
 public class ExecutorClientCommand {
 
     private static GameState game=new GameState();
@@ -33,13 +35,24 @@ public class ExecutorClientCommand {
                     update(new Command(CommandType.LOSE, null, null));//dafare
                     return;
                 }
-
                  */
 
-                System.out.println("posizione :"+cmd.GetPos()[0]+","+cmd.GetPos()[1]+ " del worker: "+((Worker)cmd.GetObj()).GetProprietary().GetNickname());
                 GameState.GetBoard().setOccupant(cmd.GetPos(),(Worker)cmd.GetObj());
-                System.out.println("poszione occupata da "+GameState.GetBoard().GetOccupant(cmd.GetPos()).GetProprietary().GetNickname());
+
+                ArrayList<Worker> workers=new ArrayList<Worker>();
+                for (int i = 0; i < 5; i++)
+                {
+                    for (int j = 0; j < 5; j++)
+                    {
+                        if(!GameState.GetBoard().GetStateBox(i,j))
+                            if(GameState.GetBoard().GetOccupant(i,j).GetProprietary().GetNickname().compareTo(GameState.getActivePlayer().GetNickname())==0)
+                                workers.add(GameState.GetBoard().GetOccupant(i,j));
+                    }
+                }
+                if(workers.size()==2)
+                    GameState.NextTurn();
                 GameState.GetBoard().custom_notifyAll();
+
                 break;
             case SETPOWER:
                 GameState.getActivePlayer().GetGodCard().setIn_action((boolean) cmd.GetObj());
@@ -72,6 +85,9 @@ public class ExecutorClientCommand {
                 break;
             case LOSE:
                 GameState.RemovePlayer();
+                break;
+            case NEXTTURN:
+                GameState.NextTurn();
                 break;
             case RESET:
                 GameState.undoTurn();

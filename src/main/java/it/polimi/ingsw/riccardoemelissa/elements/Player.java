@@ -1,10 +1,12 @@
 package it.polimi.ingsw.riccardoemelissa.elements;
 
+import it.polimi.ingsw.riccardoemelissa.elements.card.Pan;
+import javafx.scene.paint.Paint;
+
 import java.io.Serializable;
 
 public class Player  implements Serializable {
     private String nickname;
-    //private String worker_color;
     private God god_card;
     private String color;
 

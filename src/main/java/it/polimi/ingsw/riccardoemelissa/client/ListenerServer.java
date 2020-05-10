@@ -75,36 +75,44 @@ public class ListenerServer extends Thread {
             }
         });
 
-
         Platform.runLater(()->
         {
-            //Worker worker;
+            for(int i = 0; i< 5; i++) {
+                for (int j = 0; j < 5; j++) {
+                    if (!client_javafx.from_server.getBoard().GetStateBox(i, j)) {
+                        System.out.println(client_javafx.from_server.getBoard().GetStateBox(i, j));
 
-        for(int i = 0; i< 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                if (!client_javafx.from_server.getBoard().GetStateBox(i, j)) {
-                    System.out.println(client_javafx.from_server.getBoard().GetStateBox(i, j));
 
-                    System.out.println("Altezza box = " + client_javafx.myboard.getHeight()/10);
+                        /*if (!client_javafx.from_server.getBoard().GetStateBox(i, j)) {
+                            System.out.println(client_javafx.from_server.getBoard().GetStateBox(i, j));
 
-                    Circle worker = new Circle(client_javafx.myboard.getHeight()/10, client_javafx.myboard.getWidth()/10, client_javafx.myboard.getHeight()/15);
-                    switch ("magenta")
-                    {
-                        case "magenta":
-                            worker.setFill(Color.MAGENTA);
-                            break;
-                        case "aquamarine":
-                            worker.setFill(Color.AQUAMARINE);
-                            break;
-                        case "gold":
-                            worker.setFill(Color.GOLD);
-                            break;
+                            Circle worker = new Circle(client_javafx.myboard.getHeight()/10, client_javafx.myboard.getWidth()/10, client_javafx.myboard.getHeight()/15,client_javafx.from_server.getBoard().GetOccupant(i,j).GetProprietary().GetColor());
+                            //worker.setFill(client_javafx.from_server.getBoard().GetOccupant(i,j).GetProprietary().GetColor());
+                            client_javafx.myboard.add(worker, j,i);
+                        }
+                         */
+
+                        Circle worker = new Circle(client_javafx.myboard.getHeight()/10, client_javafx.myboard.getWidth()/10, client_javafx.myboard.getHeight()/15);
+
+                        switch (client_javafx.from_server.getBoard().GetOccupant(i,j).GetProprietary().GetColor())
+                        {
+                            case "MAGENTA":
+                                worker.setFill(Color.MAGENTA);
+                                break;
+                            case "AQUAMARINE":
+                                worker.setFill(Color.AQUAMARINE);
+                                break;
+                            case "GOLD":
+                                worker.setFill(Color.GOLD);
+                                break;
+                        }
+                        client_javafx.myboard.add(worker, j,i);
                     }
-                    client_javafx.myboard.add(worker, j,i);
                 }
             }
+
         }
-        });
+        );
 
 
         //agg scorrere bord per settare worker gia presenti+ livello blocco
