@@ -17,7 +17,8 @@ public class Hephaestus extends God implements Serializable {
 
     public Hephaestus()
     {
-        super();
+        opponent_turn=false;
+        type=GodCardType.MOVE;
     }
     /**
      * double build if power is active

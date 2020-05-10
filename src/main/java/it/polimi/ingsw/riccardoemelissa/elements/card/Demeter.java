@@ -18,7 +18,8 @@ public class Demeter extends God implements Serializable {
 
     public Demeter()
     {
-        super();
+        opponent_turn=false;
+        type=GodCardType.MOVE;
     }
 
 

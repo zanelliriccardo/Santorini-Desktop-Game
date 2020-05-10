@@ -16,7 +16,8 @@ public class Atlas extends God implements Serializable {
 
     public Atlas()
     {
-        super();
+        opponent_turn=false;
+        type=GodCardType.MOVE;
     }
     /**
      * apply atlas rules if power is active

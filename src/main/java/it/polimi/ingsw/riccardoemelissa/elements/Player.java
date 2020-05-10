@@ -9,6 +9,7 @@ public class Player  implements Serializable {
     private String nickname;
     private God god_card;
     private String color;
+    private String godImagePath;
 
     public Player (String str)
     {
@@ -42,5 +43,9 @@ public class Player  implements Serializable {
     public void SetNickname(String getObj)
     {
         nickname=getObj;
+    }
+
+    public void setgodImagePath(String path) {
+        godImagePath=path;
     }
 }

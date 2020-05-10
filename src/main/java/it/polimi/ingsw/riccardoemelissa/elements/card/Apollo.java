@@ -18,7 +18,8 @@ public class Apollo extends God implements Serializable {
 
     public Apollo()
     {
-        super();
+        opponent_turn=false;
+        type=GodCardType.MOVE;
     }
 
     /**

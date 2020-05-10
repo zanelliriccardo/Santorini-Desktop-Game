@@ -7,7 +7,7 @@ import it.polimi.ingsw.riccardoemelissa.GameState;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class God  implements Serializable {
+public abstract class God implements Serializable {
 
     private boolean opponent_turn;
     private GodCardType type;

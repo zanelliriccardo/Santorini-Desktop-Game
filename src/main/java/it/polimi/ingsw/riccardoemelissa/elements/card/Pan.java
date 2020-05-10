@@ -14,7 +14,8 @@ public class Pan extends God implements Serializable {
 
     public Pan()
     {
-        super();
+        opponent_turn=false;
+        type=GodCardType.MOVE;
     }
     /**
      * manage win condition following rules pan

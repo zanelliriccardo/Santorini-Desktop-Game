@@ -314,13 +314,15 @@ public class Client extends Application implements CustomObserver {
     {
         if(set_power.getImage().getUrl().compareTo(String.valueOf(getClass().getResource("images/heropower_active.png")))==0)
         {
-            System.out.println("cambia in disattivo");
+            System.out.println("cambia potere in disattivo");
             set_power.setImage(new Image(String.valueOf((getClass().getResource("images/heropower_inactive.png")))));
+            activedPower(false);
         }
         else if(set_power.getImage().getUrl().compareTo(String.valueOf(getClass().getResource("images/heropower_inactive.png")))==0)
         {
-            System.out.println("cambia in attivo");
+            System.out.println("cambia potere in attivo");
             set_power.setImage(new Image(String.valueOf(getClass().getResource("images/heropower_active.png"))));
+            activedPower(true);
         }
 
     }
@@ -471,12 +473,11 @@ public class Client extends Application implements CustomObserver {
 
         if(nickname.getText().compareTo(from_server.getActivePlayer().GetNickname())==0&&getWorkers().size()<2)
         {
+            if(!from_server.getBoard().GetStateBox(new_position))
+                return;
             messageToServer(CommandType.NEWWORKER, new Worker(from_server.getActivePlayer(),null), new_position);
         }
-
-        if(activeWorker==null){return;}
-
-        if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)
+        else if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)
         {
             activeWorker = from_server.getBoard().GetOccupant(new_position);
             if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.MOVE)
@@ -484,6 +485,10 @@ public class Client extends Application implements CustomObserver {
             else if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.BUILD)
                 activeBuildCells();
         }
+
+        if(activeWorker==null)
+        return;
+
         else if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.MOVE&&possibleCells_activeWorker.contains(new_position))
         {
             //CommandType cmd_type = from_server.getActivePlayer().GetGodCard().Move(from_server.getBoard(), activeWorker, new_position);
@@ -503,14 +508,20 @@ public class Client extends Application implements CustomObserver {
     private void activeMoveCells()
     {
         possibleCells_activeWorker= checkMoves(from_server.getBoard(),activeWorker);
-        //metttere celle blu
 
+        for (int[] pos :
+                possibleCells_activeWorker) {
+            //colora di blu
+        }
     }
 
     private void activeBuildCells()
     {
         possibleCells_activeWorker= checkBuilds(from_server.getBoard(),activeWorker);
-        //metttere celle blu
+        for (int[] pos :
+                possibleCells_activeWorker) {
+            //colora di blu
+        }
     }
 
     public ArrayList<Worker> getWorkers()

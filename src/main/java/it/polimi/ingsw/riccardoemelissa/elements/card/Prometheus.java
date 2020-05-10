@@ -15,7 +15,8 @@ public class Prometheus extends God implements Serializable {
 
     public Prometheus()
     {
-        super();
+        opponent_turn=false;
+        type=GodCardType.MOVE;
     }
     /**
      * manage turn following prometheus rules

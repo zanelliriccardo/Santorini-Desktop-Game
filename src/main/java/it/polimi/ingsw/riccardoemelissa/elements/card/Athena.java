@@ -15,7 +15,8 @@ public class Athena extends God implements Serializable {
 
     public Athena()
     {
-        super();
+        opponent_turn=true;
+        type=GodCardType.MOVE;
     }
 
 

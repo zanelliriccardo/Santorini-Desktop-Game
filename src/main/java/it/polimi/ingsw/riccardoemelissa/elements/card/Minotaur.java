@@ -15,7 +15,8 @@ public class Minotaur extends God implements Serializable {
 
     public Minotaur()
     {
-        super();
+        opponent_turn=false;
+        type=GodCardType.MOVE;
     }
     /**
      * do move following apollo rules

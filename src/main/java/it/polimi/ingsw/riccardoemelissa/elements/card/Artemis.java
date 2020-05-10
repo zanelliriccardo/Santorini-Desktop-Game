@@ -18,7 +18,8 @@ public class Artemis extends God implements Serializable {
 
     public Artemis()
     {
-        super();
+        opponent_turn=false;
+        type=GodCardType.MOVE;
     }
     /**
      * apply artemis rules if power is active

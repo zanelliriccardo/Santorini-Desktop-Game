@@ -21,6 +21,8 @@ public class GameState {
     private static BoardGame b=new BoardGame();
     private static boolean gameover=false;
     private static int num_players=10;
+    private static ArrayList<String> gods=new ArrayList<String>();
+    private static ArrayList<String> godsImagePath=new ArrayList<>();
     private static final ArrayList<String> colors= new ArrayList<String>(){
         {
             add("AQUAMARINE");
@@ -79,22 +81,18 @@ public class GameState {
         //players = array.toArray(new Player[]{});
     }
 
-    public static void GodFactory (ArrayList<Player> player) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, FileNotFoundException, URISyntaxException {
+    public static void GodFactory () throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, FileNotFoundException, URISyntaxException {
         JsonReader read_god = new JsonReader();
         int count = 0;
         //players.add(new Player("gio"));
         //String[] gods  = read_god.GodsInGame(players.size());
-        String[] gods  = read_god.GodsInGame(player.size());
-        for (int i = 0; i< player.size()*2; i++)
+        String[] gods_json  = read_god.GodsInGame(players.size());
+
+        for (int i = 0; i < players.size(); i=i+2)
         {
-            System.out.println(gods[i]);
-            if(i%2==0) {
-                player.get(count).SetGodCard((God) Class.forName(gods[i]).getConstructor().newInstance());
-                //players[i].SetGodCard((God)Class.forName(gods[i]).getConstructor().newInstance());
-                //players[i].SetGodCard((God) (getClass().getClassLoader().loadClass(gods[i])).getConstructor().newInstance());
-                System.out.println("The class name is : " + player.get(count).GetGodCard().getClass().getName());
-                count++;
-            }
+            players.get(i).SetGodCard((God) Class.forName(gods_json[i]).getConstructor().newInstance());
+            System.out.println(players.get(i).GetGodCard().getClass());
+            players.get(i).setgodImagePath(gods_json[i+1]);
         }
     }
 
@@ -137,6 +135,11 @@ public class GameState {
             players.get(i).SetColor(colors.get(i));
         }
 
+        try {
+            GodFactory();
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException | FileNotFoundException | URISyntaxException e) {
+            e.printStackTrace();
+        }
 
         Box[][] boxes = new Box[5][5];
         for (int i = 0; i < boxes.length; i++) {

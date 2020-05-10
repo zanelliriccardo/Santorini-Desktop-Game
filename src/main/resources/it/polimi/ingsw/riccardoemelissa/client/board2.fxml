@@ -43,7 +43,7 @@
          <children>
             <ImageView fx:id="set_godcard" fitHeight="239.0" fitWidth="138.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/card/01.png" />
+                  <Image url="@images/card/Apollo.png" />
                </image>
             </ImageView>
          </children>
