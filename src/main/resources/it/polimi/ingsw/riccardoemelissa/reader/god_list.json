@@ -2,39 +2,48 @@
   "GodList": [
     {
       "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Apollo",
-      "path" : "Apollo.png"
+      "path" : "Apollo.png",
+      "opponent_turn" : "false"
     },
     {
       "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Artemis",
-      "path" : "Artemis.png"
+      "path" : "Artemis.png",
+      "opponent_turn" : "false"
     },
     {
       "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Athena",
-      "path" : "Athena.png"
+      "path" : "Athena.png",
+      "opponent_turn" : "true"
     },
     {
       "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Atlas",
-      "path" : "Atlas.png"
+      "path" : "Atlas.png",
+      "opponent_turn" : "false"
     },
     {
       "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Demeter",
-      "path" : "Demeter.png"
+      "path" : "Demeter.png",
+      "opponent_turn" : "false"
     },
     {
       "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Hephaestus",
-      "path" : "Hephaestus.png"
+      "path" : "Hephaestus.png",
+      "opponent_turn" : "false"
     },
     {
       "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Minotaur",
-      "path" : "Minotaur.png"
+      "path" : "Minotaur.png",
+      "opponent_turn" : "false"
     },
     {
       "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Pan",
-      "path" : "Pan.png"
+      "path" : "Pan.png",
+      "opponent_turn" : "false"
     },
     {
       "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Prometheus",
-      "path" : "Prometheus.png"
+      "path" : "Prometheus.png",
+      "opponent_turn" : "false"
     }
   ]
 }

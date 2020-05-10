@@ -16,7 +16,7 @@
             <Image url="@images/background.jpg" />
          </image>
       </ImageView>
-      <TextField disable="true" editable="false" layoutX="191.0" layoutY="123.0" opacity="0.95" prefHeight="53.0" prefWidth="258.0" style="-fx-background-color: #D3D3D3; -fx-font-family: Franklin Gothic Medium Cond; -fx-background-size: 32;" text="Choose your nickname :">
+      <TextField disable="true" editable="false" layoutX="191.0" layoutY="123.0" opacity="0.95" prefHeight="53.0" prefWidth="258.0" style="-fx-background-color: #D3D3D3; -fx-font-family: Franklin Gothic Medium Cond; -fx-background-size: 32;" text="Choose your nickname:">
          <font>
             <Font name="Franklin Gothic Medium Cond" size="22.0" />
          </font>

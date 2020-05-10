@@ -10,10 +10,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -58,13 +62,18 @@ public class ListenerServer extends Thread {
             }
         }
 
-        if(client_javafx.loader.getLocation()!=getClass().getResource("board.fxml"))
+        if(client_javafx.loader.getLocation()!=getClass().getResource("board2.fxml"))
         Platform.runLater(()-> {
             try {
-                client_javafx.changeScene("board.fxml");
+                client_javafx.changeScene("board2.fxml");
+                client_javafx.set_turn.setText("Turn of " + client_javafx.from_server.getActivePlayer().GetNickname());
+                client_javafx.set_turn.setFont(Font.font(" Franklin Gothic Medium Cond", FontWeight.BOLD, 18));
+                client_javafx.setServerMessage.setText("Hi " + client_javafx.from_server.getActivePlayer().GetNickname()+ "!" +"\nThe first thing you have to do \nis choose the initial position of your workers. \nPlace them in two free boxes.");
+                client_javafx.setServerMessage.setFont(Font.font(" Franklin Gothic Medium Cond", 15));
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             for (int x = 0; x < 5; x++) {
                 for (int y = 0; y < 5; y++) {
                     Pane pane = new Pane();

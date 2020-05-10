@@ -14,7 +14,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -51,6 +53,10 @@ public class Client extends Application implements CustomObserver {
     public TextField set_turn;
     @FXML
     public GridPane myboard;
+    @FXML
+    public ToggleButton button_setpower;
+    @FXML
+    public TextArea setServerMessage;
 
     @FXML
     public int[] mouseEntered(MouseEvent e) {
@@ -104,7 +110,7 @@ public class Client extends Application implements CustomObserver {
         myboard=new GridPane();
         initializeBoardgame(myboard);
         try {
-            changeScene("board.fxml");
+            changeScene("board2.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -305,20 +311,23 @@ public class Client extends Application implements CustomObserver {
     @FXML
     public void showBoard (String active_player_name) throws IOException
     {
-        changeScene("board.fxml");
+        changeScene("board2.fxml");
         set_turn.setText("Turn of " + active_player_name);
     }
 
     @FXML
     public void changeButtonImage (MouseEvent mouseEvent) throws IOException
     {
-        if(set_power.getImage().getUrl().compareTo(String.valueOf(getClass().getResource("images/heropower_active.png")))==0)
+        if (!button_setpower.isSelected())
+        //if(set_power.getImage().getUrl().compareTo(String.valueOf(getClass().getResource("images/heropower_active.png")))==0)
         {
             System.out.println("cambia potere in disattivo");
             set_power.setImage(new Image(String.valueOf((getClass().getResource("images/heropower_inactive.png")))));
             activedPower(false);
         }
-        else if(set_power.getImage().getUrl().compareTo(String.valueOf(getClass().getResource("images/heropower_inactive.png")))==0)
+
+        if(button_setpower.isSelected())
+        //else if(set_power.getImage().getUrl().compareTo(String.valueOf(getClass().getResource("images/heropower_inactive.png")))==0)
         {
             System.out.println("cambia potere in attivo");
             set_power.setImage(new Image(String.valueOf(getClass().getResource("images/heropower_active.png"))));
