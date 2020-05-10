@@ -1,11 +1,14 @@
 package it.polimi.ingsw.riccardoemelissa;
 
+import com.sun.prism.paint.Paint;
 import it.polimi.ingsw.riccardoemelissa.reader.JsonReader;
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.elements.Box;
 import it.polimi.ingsw.riccardoemelissa.elements.card.Minotaur;
+import javafx.scene.paint.Color;
 
 
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
@@ -18,6 +21,13 @@ public class GameState {
     private static BoardGame b=new BoardGame();
     private static boolean gameover=false;
     private static int num_players=10;
+    private static final ArrayList<String> colors= new ArrayList<String>(){
+        {
+            add("AQUAMARINE");
+            add("MAGENTA");
+            add("GOLD");
+        }
+    };
 
     /**
      *
@@ -69,26 +79,31 @@ public class GameState {
         //players = array.toArray(new Player[]{});
     }
 
-    public static void GodFactory () throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, FileNotFoundException, URISyntaxException {
+    public static void GodFactory (ArrayList<Player> player) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, FileNotFoundException, URISyntaxException {
         JsonReader read_god = new JsonReader();
-        players.add(new Player("gio"));
-        String[] gods  = read_god.GodsInGame(players.size());
-
-        for (int i = 0; i< gods.length; i++)
+        int count = 0;
+        //players.add(new Player("gio"));
+        //String[] gods  = read_god.GodsInGame(players.size());
+        String[] gods  = read_god.GodsInGame(player.size());
+        for (int i = 0; i< player.size()*2; i++)
         {
             System.out.println(gods[i]);
-            players.get(i).SetGodCard((God)Class.forName(gods[i]).getConstructor().newInstance());
-            //players[i].SetGodCard((God)Class.forName(gods[i]).getConstructor().newInstance());
-            //players[i].SetGodCard((God) (getClass().getClassLoader().loadClass(gods[i])).getConstructor().newInstance());
-            System.out.println(players.get(i).GetGodCard().getClass());
+            if(i%2==0) {
+                player.get(count).SetGodCard((God) Class.forName(gods[i]).getConstructor().newInstance());
+                //players[i].SetGodCard((God)Class.forName(gods[i]).getConstructor().newInstance());
+                //players[i].SetGodCard((God) (getClass().getClassLoader().loadClass(gods[i])).getConstructor().newInstance());
+                System.out.println("The class name is : " + player.get(count).GetGodCard().getClass().getName());
+                count++;
+            }
         }
     }
 
     public static void NextTurn ()
     {
-       if (trace < players.size())
+       if (trace < players.size()-1)
            trace ++;
-       else trace = 0;
+       else
+           trace = 0;
     }
 
     public static Player getActivePlayer()
@@ -118,7 +133,8 @@ public class GameState {
 
         for(int i =0; i<n; i++)
         {
-            players.add(new Player("nome")); //cambiare nome
+            players.add(new Player("nome"));//cambiare nome
+            players.get(i).SetColor(colors.get(i));
         }
 
 
