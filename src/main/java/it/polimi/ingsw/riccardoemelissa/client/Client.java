@@ -1,5 +1,6 @@
 package it.polimi.ingsw.riccardoemelissa.client;
 
+import it.polimi.ingsw.riccardoemelissa.GameState;
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
@@ -40,7 +41,7 @@ public class Client extends Application implements CustomObserver {
     static ListenerServer listener;
     static Socket socket;
     ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
-    Worker activeWorker;
+    Worker activeWorker=null;
 
     @FXML
     public TextField nickname;
@@ -130,7 +131,7 @@ public class Client extends Application implements CustomObserver {
         e.printStackTrace();
     }
 
-    primary.setScene(new Scene(root,640,480));
+    primary.setScene(new Scene(root,600,400));
     primary.setTitle("Santorini");
 
     primary.show();
@@ -146,7 +147,7 @@ public class Client extends Application implements CustomObserver {
         socket = null;
 
         try {
-            socket = new Socket(InetAddress.getLocalHost(), 32500);
+            socket = new Socket(InetAddress.getLocalHost(), 33500);
         } catch (IOException e) {
             System.out.println("socket");
         }
@@ -468,9 +469,8 @@ public class Client extends Application implements CustomObserver {
 
         System.out.println("La posizione cliccata è ( " + new_position[0] + " , "+ new_position[1] + ")" );
 
-        if(getWorkers().size()<2)
+        if(nickname.getText().compareTo(from_server.getActivePlayer().GetNickname())==0&&getWorkers().size()<2)
         {
-            System.out.println("possible");
             messageToServer(CommandType.NEWWORKER, new Worker(from_server.getActivePlayer(),null), new_position);
         }
 
