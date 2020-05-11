@@ -2,14 +2,11 @@ package it.polimi.ingsw.riccardoemelissa.client;
 
 import it.polimi.ingsw.riccardoemelissa.GameProxy;
 
-import com.sun.prism.Image;
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.exception.SendException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.LoadException;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
@@ -17,20 +14,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import javafx.scene.control.TextField;
 
-import java.awt.*;
-
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class ControllerBoard extends Thread
@@ -294,7 +286,7 @@ public class ControllerBoard extends Thread
 
         //fare guiii
 
-        if(from_server.getActivePlayer().GetGodCard().GetType()==GodCardType.ENDTURN)
+        if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.ENDTURN)
         {
             //abilita click fine turno bottone di endturn() e disabilita il resto
         }
@@ -303,8 +295,8 @@ public class ControllerBoard extends Thread
     public void activedPower(boolean bool)
     {
         messageToServer(CommandType.SETPOWER,bool);
-        if(from_server.getActivePlayer().GetGodCard().GetType()==GodCardType.MOVE) activeMoveCells();
-        if(from_server.getActivePlayer().GetGodCard().GetType()==GodCardType.BUILD) activeBuildCells();
+        if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE) activeMoveCells();
+        if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD) activeBuildCells();
     }
 
     public void messageToServer(CommandType cmd_type,Object obj) {
@@ -413,19 +405,19 @@ public class ControllerBoard extends Thread
         if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)
         {
             activeWorker = from_server.getBoard().GetOccupant(new_position);
-            if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.MOVE)
+            if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE)
                 activeMoveCells();
-            else if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.BUILD)
+            else if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD)
                 activeBuildCells();
         }
-        else if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.MOVE&&possibleCells_activeWorker.contains(new_position))
+        else if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE&&possibleCells_activeWorker.contains(new_position))
         {
             //CommandType cmd_type = from_server.getActivePlayer().GetGodCard().Move(from_server.getBoard(), activeWorker, new_position);
             //messageToServer(cmd_type,activeWorker,new_position);
 
             messageToServer(CommandType.MOVE,activeWorker,new_position);
         }
-        else if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.BUILD&&possibleCells_activeWorker.contains(new_position))
+        else if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD&&possibleCells_activeWorker.contains(new_position))
         {
             //CommandType cmd_type = from_server.getActivePlayer().GetGodCard().Build(from_server.getBoard(), activeWorker, new_position);
             //messageToServer(cmd_type,activeWorker,new_position);

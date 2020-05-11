@@ -3,21 +3,14 @@ package it.polimi.ingsw.riccardoemelissa.elements.card;
 import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
 import it.polimi.ingsw.riccardoemelissa.elements.God;
 import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
+import it.polimi.ingsw.riccardoemelissa.elements.PowerType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Prometheus extends God implements Serializable {
-    private boolean opponent_turn = false;
-    private GodCardType type=GodCardType.MOVE;
+    private PowerType type=PowerType.DISABLE;
 
-    private boolean in_action=false;
-
-    public Prometheus()
-    {
-        opponent_turn=false;
-        type=GodCardType.MOVE;
-    }
     /**
      * manage turn following prometheus rules
      *
@@ -47,7 +40,7 @@ public class Prometheus extends God implements Serializable {
                 pos[0] = x;
                 pos[1] = y;
 
-                if(b.GetLevelBox(pos)>b.GetLevelBox(worker_pos)&&in_action&&type==GodCardType.MOVE)
+                if(b.GetLevelBox(pos)>b.GetLevelBox(worker_pos)&&type.IsActive()&&super.getCardType()==GodCardType.MOVE)
                     continue;
 
                 adj_boxes.add(pos);
@@ -57,8 +50,13 @@ public class Prometheus extends God implements Serializable {
     }
 
     @Override
-    public void setIn_action(boolean in_action) {
-        this.in_action = in_action;
-        this.type=GodCardType.BUILD;
+    public void setIn_action(PowerType powerSet) {
+        if(powerSet.IsActive())
+        {
+            type=PowerType.ACTIVE;
+            super.setCardType(GodCardType.BUILD);
+            return;
+        }
+        type=PowerType.DISABLE;
     }
 }

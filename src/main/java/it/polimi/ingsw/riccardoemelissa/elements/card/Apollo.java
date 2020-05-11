@@ -1,10 +1,7 @@
 package it.polimi.ingsw.riccardoemelissa.elements.card;
 
 
-import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
-import it.polimi.ingsw.riccardoemelissa.elements.God;
-import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
-import it.polimi.ingsw.riccardoemelissa.elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.GameState;
@@ -13,14 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Apollo extends God implements Serializable {
-    private boolean opponent_turn = false;
-    private GodCardType type=GodCardType.MOVE;
-
-    public Apollo()
-    {
-        opponent_turn=false;
-        type=GodCardType.MOVE;
-    }
+    private PowerType type=PowerType.PASSIVE;
 
     /**
      * do move following apollo rules
@@ -40,7 +30,7 @@ public class Apollo extends God implements Serializable {
         else
             super.SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
 
-        this.type=GodCardType.BUILD;
+        super.setCardType(GodCardType.BUILD);
         return CommandType.MOVE;
     }
 
@@ -102,6 +92,12 @@ public class Apollo extends God implements Serializable {
     public void doPower(GameState game, Command cmd)
     {
         SetApolloPosition((Worker) cmd.GetObj(),cmd.GetPos(),game.GetBoard());
+    }
+
+    @Override
+    public void setIn_action(PowerType powerSet) {
+        if(!type.IsPassive())
+            type=powerSet;
     }
 }
 

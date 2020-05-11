@@ -1,27 +1,15 @@
 package it.polimi.ingsw.riccardoemelissa.elements.card;
 
-import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
-import it.polimi.ingsw.riccardoemelissa.elements.God;
-import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
-import it.polimi.ingsw.riccardoemelissa.elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Demeter extends God implements Serializable {
-    private boolean opponent_turn = false;
-    private GodCardType type=GodCardType.MOVE;
+    private PowerType type=PowerType.DISABLE;
+
     private int[] old_position=null;
-
-    private boolean in_action=false;
-
-    public Demeter()
-    {
-        opponent_turn=false;
-        type=GodCardType.MOVE;
-    }
-
 
     /**
      * apply demeter rules if power is active
@@ -42,8 +30,10 @@ public class Demeter extends God implements Serializable {
             old_position = pos;
             super.Build(b,active_Worker,pos);
 
-            if(in_action) this.type=GodCardType.BUILD;
-            else this.type=GodCardType.ENDTURN;
+            if(type.IsActive())
+                super.setCardType(GodCardType.BUILD);
+            else
+                super.setCardType(GodCardType.ENDTURN);
 
             return CommandType.BUILD;
         }
@@ -64,9 +54,15 @@ public class Demeter extends God implements Serializable {
     @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> possibleBox=super.adjacentBoxNotOccupiedNotDome(b, worker_pos);
-        if(in_action&&old_position!=null&&type==GodCardType.BUILD)
+        if(type.IsActive()&&old_position!=null&&super.getCardType()==GodCardType.BUILD)
             possibleBox.remove(old_position);
 
         return possibleBox;
+    }
+
+    @Override
+    public void setIn_action(PowerType powerSet) {
+        if(!type.IsPassive())
+            type=powerSet;
     }
 }

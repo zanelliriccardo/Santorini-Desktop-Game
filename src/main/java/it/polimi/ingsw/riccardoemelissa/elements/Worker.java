@@ -3,14 +3,13 @@ package it.polimi.ingsw.riccardoemelissa.elements;
 import java.awt.*;
 import java.io.Serializable;
 
-public class Worker  implements Serializable
+public class Worker implements Serializable
 {
-    private int[] position;
+    private int[] position=new int[]{-1,-1};
     private Player proprietary;
 
     public Worker(Player proprietary,int[] pos)
     {
-        position = pos;
         this.proprietary=proprietary;
     }
 
@@ -36,6 +35,7 @@ public class Worker  implements Serializable
     {
         position[0] = pos[0];
         position[1] = pos[1];
+        //position=pos;
     }
 
     public int[] GetPosition() {

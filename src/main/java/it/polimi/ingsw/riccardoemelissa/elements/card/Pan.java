@@ -1,22 +1,13 @@
 package it.polimi.ingsw.riccardoemelissa.elements.card;
 
-import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
-import it.polimi.ingsw.riccardoemelissa.elements.God;
-import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
-import it.polimi.ingsw.riccardoemelissa.elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 
 import java.io.Serializable;
 
 public class Pan extends God implements Serializable {
-    private boolean opponent_turn=false;
-    private GodCardType type=GodCardType.MOVE;
+    private PowerType type=PowerType.PASSIVE;
 
-    public Pan()
-    {
-        opponent_turn=false;
-        type=GodCardType.MOVE;
-    }
     /**
      * manage win condition following rules pan
      *
@@ -34,8 +25,14 @@ public class Pan extends God implements Serializable {
         super.Move(b, active_worker, newpos);
 
         if (b.GetLevelBox(old_position) - b.GetLevelBox(newpos) > 1)
-            type=GodCardType.WIN;//settare anche position
+            super.setCardType(GodCardType.WIN); //settare anche position??? provare a mandare fake comando a executor con win da server
 
        return CommandType.BUILD;
+    }
+
+    @Override
+    public void setIn_action(PowerType powerSet) {
+        if(!type.IsPassive())
+            type=powerSet;
     }
 }

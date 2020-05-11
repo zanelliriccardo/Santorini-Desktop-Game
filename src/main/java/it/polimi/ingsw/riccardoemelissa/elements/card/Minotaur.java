@@ -1,23 +1,14 @@
 package it.polimi.ingsw.riccardoemelissa.elements.card;
 
-import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
-import it.polimi.ingsw.riccardoemelissa.elements.God;
-import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
-import it.polimi.ingsw.riccardoemelissa.elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Minotaur extends God implements Serializable {
-    private boolean opponent_turn = false;
-    private GodCardType type=GodCardType.MOVE;
+    private PowerType type=PowerType.PASSIVE;
 
-    public Minotaur()
-    {
-        opponent_turn=false;
-        type=GodCardType.MOVE;
-    }
     /**
      * do move following apollo rules
      *
@@ -34,7 +25,7 @@ public class Minotaur extends God implements Serializable {
         if (!b.GetStateBox(newpos))
         {
             SetMinotaurPosition(active_worker, newpos, b);
-            type=GodCardType.BUILD;
+            super.setCardType(GodCardType.BUILD);
         }
         else
             super.Move(b,active_worker,newpos);
@@ -106,4 +97,9 @@ public class Minotaur extends God implements Serializable {
         active_worker.SetPosition(newpos);
     }
 
+    @Override
+    public void setIn_action(PowerType powerSet) {
+        if(!type.IsPassive())
+            type=powerSet;
+    }
 }

@@ -1,24 +1,14 @@
 package it.polimi.ingsw.riccardoemelissa.elements.card;
 
-import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
-import it.polimi.ingsw.riccardoemelissa.elements.God;
-import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
-import it.polimi.ingsw.riccardoemelissa.elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 
 import java.io.Serializable;
 
 public class Athena extends God implements Serializable {
-    private boolean opponent_turn=true;
-    private GodCardType type=GodCardType.MOVE;
+    private PowerType type=PowerType.PASSIVE;
+
     private boolean in_action=false;
-
-    public Athena()
-    {
-        opponent_turn=true;
-        type=GodCardType.MOVE;
-    }
-
 
     public boolean SetInAction(int[] old_pos, int[] new_pos, BoardGame b) {
         if ((b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)) == 1)
@@ -67,7 +57,8 @@ public class Athena extends God implements Serializable {
     }
 
     @Override
-    public void resetCard(GodCardType move) {
-        type=move;
+    public void setIn_action(PowerType powerSet) {
+        if(!type.IsPassive())
+            type=powerSet;
     }
 }

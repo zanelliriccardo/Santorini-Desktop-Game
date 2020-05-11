@@ -8,17 +8,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public abstract class God implements Serializable {
-
-    private boolean opponent_turn;
     private GodCardType type;
-    private ArrayList<GodCardType> turn = new ArrayList<>();
-    private boolean in_action;
+    private boolean opponent_turn;
 
     public God()
     {
-
+        type=GodCardType.MOVE;
     }
-
     /**
      * Move the active worker
      *
@@ -73,7 +69,7 @@ public abstract class God implements Serializable {
         return opponent_turn;
     }
 
-    public GodCardType GetType(){return type;}
+    public GodCardType getCardType(){return type;}
 
     /**
      * get adjacent box where possible moves in
@@ -113,11 +109,7 @@ public abstract class God implements Serializable {
         return adj_boxes;
     }
 
-    public GodCardType getType(){return type;}
-
-    public void setIn_action(boolean in_action){
-        this.in_action=in_action;
-    }
+    public abstract void setIn_action(PowerType powerSet);
 
     public void doPower(GameState game, Command cmd)
     {
@@ -126,6 +118,30 @@ public abstract class God implements Serializable {
 
     public void resetCard(GodCardType move) {
         type=move;
-        in_action=false;
+        //in_action=false;
+    }
+
+    public void setOpponentTrue(String s) {
+        if(s=="true")
+            opponent_turn=true;
+        else
+            opponent_turn=false;
+    }
+
+    protected void setCardType(GodCardType type) {
+        switch (type) {
+            case MOVE:
+                this.type=GodCardType.MOVE;
+                break;
+            case BUILD:
+                this.type=GodCardType.BUILD;
+                break;
+            case WIN:
+                this.type=GodCardType.WIN;
+                break;
+            case ENDTURN:
+                this.type=GodCardType.ENDTURN;
+                break;
+        }
     }
 }

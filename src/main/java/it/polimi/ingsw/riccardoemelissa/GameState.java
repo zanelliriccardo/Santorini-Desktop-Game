@@ -93,6 +93,7 @@ public class GameState {
             players.get(i).SetGodCard((God) Class.forName(gods_json[i]).getConstructor().newInstance());
             System.out.println(players.get(i).GetGodCard().getClass());
             players.get(i).setgodImagePath(gods_json[i+1]);
+            players.get(i).GetGodCard().setOpponentTrue(gods_json[i+2]);
         }
     }
 

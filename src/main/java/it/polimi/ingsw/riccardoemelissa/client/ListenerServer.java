@@ -90,17 +90,6 @@ public class ListenerServer extends Thread {
                 for (int j = 0; j < 5; j++) {
                     if (!client_javafx.from_server.getBoard().GetStateBox(i, j)) {
                         System.out.println(client_javafx.from_server.getBoard().GetStateBox(i, j));
-
-
-                        /*if (!client_javafx.from_server.getBoard().GetStateBox(i, j)) {
-                            System.out.println(client_javafx.from_server.getBoard().GetStateBox(i, j));
-
-                            Circle worker = new Circle(client_javafx.myboard.getHeight()/10, client_javafx.myboard.getWidth()/10, client_javafx.myboard.getHeight()/15,client_javafx.from_server.getBoard().GetOccupant(i,j).GetProprietary().GetColor());
-                            //worker.setFill(client_javafx.from_server.getBoard().GetOccupant(i,j).GetProprietary().GetColor());
-                            client_javafx.myboard.add(worker, j,i);
-                        }
-                         */
-
                         Circle worker = new Circle(client_javafx.myboard.getHeight()/10, client_javafx.myboard.getWidth()/10, client_javafx.myboard.getHeight()/15);
 
                         switch (client_javafx.from_server.getBoard().GetOccupant(i,j).GetProprietary().GetColor())

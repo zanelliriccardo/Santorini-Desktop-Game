@@ -1,26 +1,16 @@
 package it.polimi.ingsw.riccardoemelissa.elements.card;
 
-import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
-import it.polimi.ingsw.riccardoemelissa.elements.God;
-import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
-import it.polimi.ingsw.riccardoemelissa.elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Artemis extends God implements Serializable {
-    private boolean opponent_turn = false;
-    private GodCardType type=GodCardType.MOVE;
+    private PowerType type=PowerType.DISABLE;
 
     private int[] old_position=null;
-    private boolean in_action=false;
 
-    public Artemis()
-    {
-        opponent_turn=false;
-        type=GodCardType.MOVE;
-    }
     /**
      * apply artemis rules if power is active
      *
@@ -40,10 +30,10 @@ public class Artemis extends God implements Serializable {
             old_position = active_worker.GetPosition();
             super.Move(b,active_worker,newpos);
 
-            if(in_action) this.type=GodCardType.MOVE;
-            else this.type=GodCardType.BUILD;
-
-
+            if(type.IsActive())
+                super.setCardType(GodCardType.MOVE);
+            else
+                super.setCardType(GodCardType.BUILD);
 
             return CommandType.MOVE;
         }
@@ -64,9 +54,15 @@ public class Artemis extends God implements Serializable {
     @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> possibleBox=super.adjacentBoxNotOccupiedNotDome(b, worker_pos);
-        if(in_action&&old_position!=null&&type==GodCardType.MOVE)
+        if(type.IsActive()&&old_position!=null&&super.getCardType()==GodCardType.MOVE)
             possibleBox.remove(old_position);
 
         return possibleBox;
+    }
+
+    @Override
+    public void setIn_action(PowerType powerSet) {
+        if(!type.IsPassive())
+            type=powerSet;
     }
 }

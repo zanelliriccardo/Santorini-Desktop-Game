@@ -27,17 +27,10 @@ public class ExecutorClientCommand {
                     System.out.println(p.GetNickname());
                 GameState.GetBoard().custom_notifyAll();
                 break;
-            /*case STARTGAME:
-                GameState.GameReady();
-                break;*/
             case NEWWORKER:
-                /*if(!GameState.GetBoard().GetStateBox(cmd.GetPos())) {
-                    update(new Command(CommandType.LOSE, null, null));//dafare
-                    return;
-                }
-                 */
-
+                ((Worker)cmd.GetObj()).SetPosition(cmd.GetPos());
                 GameState.GetBoard().setOccupant(cmd.GetPos(),(Worker)cmd.GetObj());
+
 
                 ArrayList<Worker> workers=new ArrayList<Worker>();
 
@@ -51,17 +44,14 @@ public class ExecutorClientCommand {
                     }
                 }
 
-                if(workers.size()==2)
+                if(workers.size()==2)//sipuofarein modo piu intelligg
                     GameState.NextTurn();
 
                 GameState.GetBoard().custom_notifyAll();
 
                 break;
             case SETPOWER:
-                GameState.getActivePlayer().GetGodCard().setIn_action((boolean) cmd.GetObj());
-                break;
-            case BOARDCHANGE:
-                GameState.UpdateBoard((BoardGame) cmd.GetObj());//se passiamo la board da it.polimi.ingsw.riccardoemelissa.client a server in questo momento no prof sconsiglia
+                GameState.getActivePlayer().GetGodCard().setIn_action((PowerType) cmd.GetObj());
                 break;
             case DISCONNECTED://da rivedere
                 GameState.EndGame();
@@ -73,7 +63,7 @@ public class ExecutorClientCommand {
                     return;
                 }
                 ((Worker)cmd.GetObj()).GetProprietary().GetGodCard().Move(GameState.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
-                if(((Worker)cmd.GetObj()).GetProprietary().GetGodCard().GetType()== GodCardType.WIN)
+                if(((Worker)cmd.GetObj()).GetProprietary().GetGodCard().getCardType()== GodCardType.WIN)
                     this.update(new Command(CommandType.WIN, GameState.getActivePlayer(),null));
                 break;
             case BUILD:

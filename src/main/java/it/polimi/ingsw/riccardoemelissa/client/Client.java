@@ -1,6 +1,5 @@
 package it.polimi.ingsw.riccardoemelissa.client;
 
-import it.polimi.ingsw.riccardoemelissa.GameState;
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
@@ -10,7 +9,6 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.LoadException;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -163,23 +161,6 @@ public class Client extends Application implements CustomObserver {
 
     @FXML
     public void startGame(MouseEvent mouseEvent) throws IOException {
-        //String active_player_name = "nickname";
-
-        /*try
-        {
-            System.out.println("Chiedo update al server");
-            messageToServer(CommandType.UPDATE);
-            update();
-            System.out.println("ricevuto update dal server");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-         */
-        //messageToServer(CommandType.UPDATE);
-
         while(true)
         {
             if (from_server.getPlayers() == null)
@@ -278,27 +259,6 @@ public class Client extends Application implements CustomObserver {
         changeScene("loading.fxml");
 
         System.out.println("Premuto ok inserimento nickname");
-        //messageToServer(CommandType.STARTGAME);
-
-        boolean gamenotready=true;
-
-        /*while (gamenotready)
-        {
-            //callUpdate_fromServer();
-            //sleep(500);
-            synchronized (from_server) {
-                for (Player p : from_server.getPlayers()) {
-                    if (p.GetNickname().compareTo("nome") != 0)
-                        gamenotready = false;
-                    else
-                        gamenotready = true;
-                }
-            }
-        }
-        */
-
-
-
     }
 
     private static void sleep(int time) {
@@ -323,7 +283,7 @@ public class Client extends Application implements CustomObserver {
         {
             System.out.println("cambia potere in disattivo");
             set_power.setImage(new Image(String.valueOf((getClass().getResource("images/heropower_inactive.png")))));
-            activedPower(false);
+            activedPower(PowerType.DISABLE);
         }
 
         if(button_setpower.isSelected())
@@ -331,7 +291,7 @@ public class Client extends Application implements CustomObserver {
         {
             System.out.println("cambia potere in attivo");
             set_power.setImage(new Image(String.valueOf(getClass().getResource("images/heropower_active.png"))));
-            activedPower(true);
+            activedPower(PowerType.ACTIVE);
         }
 
     }
@@ -358,17 +318,17 @@ public class Client extends Application implements CustomObserver {
 
         //fare guiii
 
-        if(from_server.getActivePlayer().GetGodCard().GetType()==GodCardType.ENDTURN)
+        if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.ENDTURN)
         {
             //abilita click fine turno bottone di endturn() e disabilita il resto
         }
     }
 
-    public void activedPower(boolean bool)
+    public void activedPower(PowerType powerType)
     {
-        messageToServer(CommandType.SETPOWER,bool);
-        if(from_server.getActivePlayer().GetGodCard().GetType()==GodCardType.MOVE) activeMoveCells();
-        if(from_server.getActivePlayer().GetGodCard().GetType()==GodCardType.BUILD) activeBuildCells();
+        messageToServer(CommandType.SETPOWER,powerType);
+        if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE) activeMoveCells();
+        if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD) activeBuildCells();
     }
 
     public void messageToServer(CommandType cmd_type,Object obj) {
@@ -489,23 +449,23 @@ public class Client extends Application implements CustomObserver {
         else if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)
         {
             activeWorker = from_server.getBoard().GetOccupant(new_position);
-            if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.MOVE)
+            if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE)
                 activeMoveCells();
-            else if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.BUILD)
+            else if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD)
                 activeBuildCells();
         }
 
         if(activeWorker==null)
         return;
 
-        else if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.MOVE&&possibleCells_activeWorker.contains(new_position))
+        else if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE&&possibleCells_activeWorker.contains(new_position))
         {
             //CommandType cmd_type = from_server.getActivePlayer().GetGodCard().Move(from_server.getBoard(), activeWorker, new_position);
             //messageToServer(cmd_type,activeWorker,new_position);
 
             messageToServer(CommandType.MOVE,activeWorker,new_position);
         }
-        else if(from_server.getActivePlayer().GetGodCard().getType()==GodCardType.BUILD&&possibleCells_activeWorker.contains(new_position))
+        else if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD&&possibleCells_activeWorker.contains(new_position))
         {
             //CommandType cmd_type = from_server.getActivePlayer().GetGodCard().Build(from_server.getBoard(), activeWorker, new_position);
             //messageToServer(cmd_type,activeWorker,new_position);
