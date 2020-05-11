@@ -427,8 +427,8 @@ public class Client extends Application implements CustomObserver {
             for (Player opponent : from_server.getPlayers())
             {
                 if((opponent.GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Build(board,builder,pos)==CommandType.ERROR);//check build is possible for opponent card
-                possiblebuild.remove(pos);
+                    if(opponent.GetGodCard().Build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
+                        possiblebuild.remove(pos);
             }
         }
         return possiblebuild;
@@ -469,7 +469,7 @@ public class Client extends Application implements CustomObserver {
         {
             if(!from_server.getBoard().GetStateBox(new_position))
                 return;
-            messageToServer(CommandType.NEWWORKER, new Worker(from_server.getActivePlayer(),null), new_position);
+            messageToServer(CommandType.NEWWORKER, new Worker(), new_position);
         }
         else if(!from_server.getBoard().GetStateBox(new_position))
         {
@@ -485,14 +485,14 @@ public class Client extends Application implements CustomObserver {
         if(activeWorker==null)
         return;
 
-        else if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE&&contains(new_position))
+        else if(activeWorker.GetProprietary().GetGodCard().getCardType()==GodCardType.MOVE&&contains(new_position))
         {
             //CommandType cmd_type = from_server.getActivePlayer().GetGodCard().Move(from_server.getBoard(), activeWorker, new_position);
             //messageToServer(cmd_type,activeWorker,new_position);
 
             messageToServer(CommandType.MOVE,activeWorker,new_position);
         }
-        else if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD&&contains(new_position))
+        else if(activeWorker.GetProprietary().GetGodCard().getCardType()==GodCardType.BUILD&&contains(new_position))
         {
             //CommandType cmd_type = from_server.getActivePlayer().GetGodCard().Build(from_server.getBoard(), activeWorker, new_position);
             //messageToServer(cmd_type,activeWorker,new_position);
@@ -521,7 +521,8 @@ public class Client extends Application implements CustomObserver {
                 Integer c = myboard.getColumnIndex(child);
                 if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
                 {
-                    pane.setStyle(null);
+                    pane.setStyle("-fx-background-color: transparent");
+                    //pane.setStyle("-fx-background-color: transparent");
                 }
             }
         }

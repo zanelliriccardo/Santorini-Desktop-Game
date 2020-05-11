@@ -397,7 +397,7 @@ public class ControllerBoard extends Thread
                 return;
             }
             System.out.println("possible");
-            messageToServer(CommandType.NEWWORKER, new Worker(from_server.getActivePlayer(), new_position));
+            messageToServer(CommandType.NEWWORKER, new Worker());
         }
 
         if(activeWorker==null){return;}

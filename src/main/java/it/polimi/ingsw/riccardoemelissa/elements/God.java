@@ -27,8 +27,8 @@ public abstract class God implements Serializable {
      */
     public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
-        SetPosition(b.GetOccupant(active_worker.GetPosition()), active_worker.GetPosition(), newpos, b);
-        this.type=GodCardType.BUILD;
+        SetPosition(GameState.GetBoard().GetOccupant(active_worker.GetPosition()), active_worker.GetPosition(), newpos, b);
+        type=GodCardType.BUILD;
         return CommandType.MOVE;
     }
 
@@ -42,8 +42,8 @@ public abstract class God implements Serializable {
     public void SetPosition (Worker active_worker, int[] oldpos, int[] newpos, BoardGame b)
     {
         active_worker.SetPosition(newpos);
-        b.GetBoard()[newpos[0]][newpos[1]].ChangeState(active_worker);
-        b.GetBoard()[oldpos[0]][oldpos[1]].removeOccupant();
+        GameState.GetBoard().GetBoard()[newpos[0]][newpos[1]].ChangeState(active_worker);
+        GameState.GetBoard().GetBoard()[oldpos[0]][oldpos[1]].removeOccupant();
     }
 
     /**
@@ -59,7 +59,7 @@ public abstract class God implements Serializable {
     {
         int[] workerpos = activeWorker.GetPosition();
 
-        b.DoBuild(pos);
+        GameState.GetBoard().DoBuild(pos);
         this.type=GodCardType.ENDTURN;
         return CommandType.BUILD;
     }

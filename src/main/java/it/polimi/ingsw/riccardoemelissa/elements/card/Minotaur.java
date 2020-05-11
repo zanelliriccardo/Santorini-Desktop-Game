@@ -61,7 +61,7 @@ public class Minotaur extends God implements Serializable {
 
                 int[] newpos_opponent = new int[]{(x - worker_pos[0]) + x, (y - worker_pos[1]) + y};
 
-                if(newpos_opponent[0]>4||newpos_opponent[1]>4)
+                if(newpos_opponent[0]>4||newpos_opponent[1]>4||newpos_opponent[0]<0||newpos_opponent[1]<0)
                     continue;
 
                 if(!b.GetStateBox(newpos_opponent))

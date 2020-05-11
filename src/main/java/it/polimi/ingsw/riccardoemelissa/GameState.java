@@ -244,14 +244,26 @@ public class GameState {
     {
         ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
         possibleCells_activeWorker= checkMoves(b,activeWorker);
-        return possibleCells_activeWorker.contains(pos);
+
+        for ( int[] i : possibleCells_activeWorker)
+        {
+            if(Arrays.equals(i, pos))
+                return true;
+        }
+        return false;
     }
 
     public static boolean IsPossibleBuild(Worker activeWorker, int[] pos)
     {
         ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
         possibleCells_activeWorker= checkBuilds(b,activeWorker);
-        return possibleCells_activeWorker.contains(pos);
+
+        for ( int[] i : possibleCells_activeWorker)
+        {
+            if(Arrays.equals(i, pos))
+                return true;
+        }
+        return false;
     }
 
     public static ArrayList<int[]> checkMoves(BoardGame board, Worker worker_toMove)
@@ -265,8 +277,8 @@ public class GameState {
             for (Player opponent : players)
             {
                 if((opponent.GetNickname().compareTo(getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Move(board, worker_toMove,pos)==CommandType.ERROR);//check move is possible for opponent card
-                possiblemoves.remove(pos);
+                    if(opponent.GetGodCard().Move(board, worker_toMove,pos)==CommandType.ERROR)//check move is possible for opponent card
+                        possiblemoves.remove(pos);
             }
         }
         return possiblemoves;
@@ -283,8 +295,8 @@ public class GameState {
             for (Player opponent : players)
             {
                 if((opponent.GetNickname().compareTo(getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Build(board,builder,pos)==CommandType.ERROR);//check build is possible for opponent card
-                possiblebuild.remove(pos);
+                    if(opponent.GetGodCard().Build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
+                        possiblebuild.remove(pos);
             }
         }
         return possiblebuild;
@@ -321,8 +333,8 @@ public class GameState {
     {
         for (Player p : players)
         {
-            if (p.GetNickname().compareTo(nickname) == 0) return p;
-
+            if (p.GetNickname().compareTo(nickname) == 0)
+                return p;
         }
         return null;
     }

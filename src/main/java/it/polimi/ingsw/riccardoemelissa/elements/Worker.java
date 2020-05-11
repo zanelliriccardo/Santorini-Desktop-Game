@@ -1,17 +1,11 @@
 package it.polimi.ingsw.riccardoemelissa.elements;
 
-import java.awt.*;
 import java.io.Serializable;
 
 public class Worker implements Serializable
 {
     private int[] position=new int[]{-1,-1};
     private Player proprietary;
-
-    public Worker(Player proprietary,int[] pos)
-    {
-        this.proprietary=proprietary;
-    }
 
     public int GetX() {
         return position[0];
@@ -40,5 +34,9 @@ public class Worker implements Serializable
 
     public int[] GetPosition() {
         return position;
+    }
+
+    public void setProprietary(Player activePlayer) {
+        proprietary=activePlayer;
     }
 }

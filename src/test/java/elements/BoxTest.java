@@ -12,7 +12,7 @@ class BoxTest extends Object {
         Box b1 = new Box(true, 2);
         Box b2 = new Box(false, 1);
         Player player = new Player("name");
-        Worker worker = new Worker(player, new int[]{1,1});
+        Worker worker = new Worker();
 
         b2.ChangeState();
 
@@ -42,7 +42,7 @@ class BoxTest extends Object {
     void getOccupant() {
         Box box = new Box(true, 1);
         Player player = new Player("name");
-        Worker worker = new Worker(player, new int[]{1,1});
+        Worker worker = new Worker();
 
         assertEquals(null, box.GetOccupant());
 

@@ -20,7 +20,7 @@ class BoardGameTest extends Object {
         int[] worker_pos = new int[]{2,3};
         int[] pos = new int[]{3,3};
         Player player = new Player("name");
-        Worker worker = new Worker(player, worker_pos);
+        Worker worker = new Worker();
 
         assertTrue(boardGame.GetStateBox(pos));
 
@@ -67,7 +67,7 @@ class BoardGameTest extends Object {
 
         Player player = new Player("name");
         int[] oldpos = new int[]{2,3};
-        Worker worker = new Worker(player, oldpos);
+        Worker worker = new Worker();
 
         boardGame.DoBuild(oldpos);
 
@@ -114,7 +114,7 @@ class BoardGameTest extends Object {
     void getOccupant() {
         Player player = new Player("name");
         int [] pos = new int[]{1,2};
-        Worker worker = new Worker(player, pos);
+        Worker worker = new Worker();
 
         Box[][] boxes = new Box[5][5];
 

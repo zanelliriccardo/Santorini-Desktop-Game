@@ -11,7 +11,7 @@ class WorkerTest extends Object {
     void getX() {
         String str = "name";
         Player player = new Player(str);
-        Worker worker = new Worker(player, new int[]{1,2});
+        Worker worker = new Worker();
 
         assertEquals(1, worker.GetX());
     }
@@ -20,7 +20,7 @@ class WorkerTest extends Object {
     void getY() {
         String str = "name";
         Player player = new Player(str);
-        Worker worker = new Worker(player, new int[]{1,2});
+        Worker worker = new Worker();
 
         assertEquals(2, worker.GetY());
     }
@@ -29,7 +29,7 @@ class WorkerTest extends Object {
     void getProprietary() {
         String str = "name";
         Player player = new Player(str);
-        Worker worker = new Worker(player, new int[]{1,2});
+        Worker worker = new Worker();
         assertEquals(player, worker.GetProprietary());
     }
 
@@ -38,7 +38,7 @@ class WorkerTest extends Object {
         String str = "name";
         Player p = new Player(str);
         int[] pos = new int[2];
-        Worker w = new Worker(p, pos);
+        Worker w = new Worker();
 
 
         pos[0]= 1;

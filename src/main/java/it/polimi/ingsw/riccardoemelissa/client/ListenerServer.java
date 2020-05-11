@@ -4,6 +4,7 @@ import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.GameProxy;
 import it.polimi.ingsw.riccardoemelissa.elements.Player;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
@@ -13,6 +14,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -162,6 +164,24 @@ public class ListenerServer extends Thread {
                             }
                         }
                     }
+
+                    //pos = posizione costruzione
+                    /*
+                    Label setLevel = new Label();
+                    setLevel.setAlignment(Pos.BOTTOM_RIGHT);
+                    setLevel.setText(level);
+                    setLevel.setFont(Font.font("Franklin Gothic Medium Cond"));
+
+                    for (Node child : myboard.getChildren()) {
+                        Integer r = GridPane.getRowIndex(child);
+                        Integer c = GridPane.getColumnIndex(child);
+                        if (r != null && r == pos[0] && c != null && c == pos[1])
+                        {
+                            myboard.add(setLevel, c, r);
+                        }
+                    }
+
+                     */
                 }
             }
 

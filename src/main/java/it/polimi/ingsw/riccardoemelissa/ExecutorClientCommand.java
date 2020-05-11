@@ -28,6 +28,7 @@ public class ExecutorClientCommand {
                 GameState.GetBoard().custom_notifyAll();
                 break;
             case NEWWORKER:
+                ((Worker)cmd.GetObj()).setProprietary(GameState.getActivePlayer());
                 ((Worker)cmd.GetObj()).SetPosition(cmd.GetPos());
                 GameState.GetBoard().setOccupant(cmd.GetPos(),(Worker)cmd.GetObj());
 
@@ -62,9 +63,14 @@ public class ExecutorClientCommand {
                     update(new Command(CommandType.LOSE, null, null));//dafare
                     return;
                 }
-                ((Worker)cmd.GetObj()).GetProprietary().GetGodCard().Move(GameState.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
+                Worker active=GameState.GetBoard().GetOccupant((((Worker) cmd.GetObj()).GetPosition()));
+
+                active.GetProprietary().GetGodCard().Move(GameState.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
+
                 if(((Worker)cmd.GetObj()).GetProprietary().GetGodCard().getCardType()== GodCardType.WIN)
                     this.update(new Command(CommandType.WIN, GameState.getActivePlayer(),null));
+
+                GameState.GetBoard().custom_notifyAll();
                 break;
             case BUILD:
                 if(!GameState.IsPossibleBuild((Worker)cmd.GetObj(),cmd.GetPos())) {

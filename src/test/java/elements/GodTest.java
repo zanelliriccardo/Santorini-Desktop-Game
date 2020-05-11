@@ -1,7 +1,6 @@
 package elements;
 
 
-import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +31,7 @@ class GodTest extends Object {
         Player player = new Player(player_name);
         int[] oldpos = new int[]{2,2};
         int[] newpos = new int[]{2,1};
-        Worker active_worker = new Worker(player, new int[]{2,2});
+        Worker active_worker = new Worker();
         boardGame.GetBoard()[oldpos[0]][oldpos[1]].SetOccupant(active_worker);
 
         active_worker.SetPosition(newpos);
