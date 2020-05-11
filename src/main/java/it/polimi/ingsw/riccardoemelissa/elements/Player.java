@@ -45,7 +45,12 @@ public class Player  implements Serializable {
         nickname=getObj;
     }
 
-    public void setgodImagePath(String path) {
+    public void setGodImagePath(String path) {
         godImagePath=path;
+    }
+
+    public String getGodImagePath()
+    {
+        return godImagePath;
     }
 }

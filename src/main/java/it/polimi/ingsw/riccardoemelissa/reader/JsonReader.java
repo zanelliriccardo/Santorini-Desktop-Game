@@ -26,7 +26,7 @@ public class JsonReader {
 
     public String[] GodsInGame(int n) throws FileNotFoundException, URISyntaxException {
         ArrayList<String> gods = new ArrayList<>();
-        String[] gods_chosen = new String[n*2];
+        String[] gods_chosen = new String[n*3];
 
         //"/Users/Utente/Desktop/PROGETTO INGSW/progettoingsw/src/main/resources/it/polimi/ingsw/riccardoemelissa/reader/GodList.json"
         //"file:/C:/Users/Utente/Desktop/PROGETTO INGSW/progettoingsw/src/main/resources/it/polimi/ingsw/riccardoemelissa/reader/god_list.json
@@ -57,16 +57,18 @@ public class JsonReader {
         Collections.shuffle(gods);
 
         for (int i = 0; i < n; i++) {
-            gods_chosen[i * 2] = gods.get(i);
-            System.out.println("pos " + i*2 + " --> name : " + gods_chosen[i*2]);
+            gods_chosen[i * 3] = gods.get(i);
+            System.out.println("pos " + i*3 + " --> name : " + gods_chosen[i*3]);
 
             for (Object o : god_list) {
                 god = (JSONObject) o;
 
-                if (god.get("name").equals(gods_chosen[i*2]))
+                if (god.get("name").equals(gods_chosen[i*3]))
                 {
-                    gods_chosen[i * 2 + 1] = (String) god.get("path");
-                    System.out.println("pos " + (i*2+1) + " --> path : " + gods_chosen[i*2 + 1]);
+                    gods_chosen[i * 3 + 1] = (String) god.get("path");
+                    gods_chosen[i * 3 + 2] = (String) god.get("opponent_turn");
+                    System.out.println("pos " + (i*3+1) + " --> path : " + gods_chosen[i*3 + 1]);
+                    System.out.println("pos " + (i*3+2) + " --> opp : " + gods_chosen[i*3 + 2]);
                 }
             }
         }

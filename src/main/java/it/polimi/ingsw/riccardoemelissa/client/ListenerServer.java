@@ -2,16 +2,10 @@ package it.polimi.ingsw.riccardoemelissa.client;
 
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.GameProxy;
-import it.polimi.ingsw.riccardoemelissa.GameState;
 import it.polimi.ingsw.riccardoemelissa.elements.Player;
-import it.polimi.ingsw.riccardoemelissa.elements.Worker;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -21,13 +15,14 @@ import javafx.scene.text.FontWeight;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.StreamCorruptedException;
 import java.net.Socket;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ListenerServer extends Thread {
     private static Client client_javafx;
     private Socket socket;
     private GameProxy game;
+    private String godCard;
 
     public ListenerServer(Socket s, Client client) {
         socket=s;
@@ -52,6 +47,8 @@ public class ListenerServer extends Thread {
 
     private void makeBoard()
     {
+        AtomicInteger count = new AtomicInteger();
+
         if(client_javafx.from_server.getPlayers().size()==0)
             return;
 
@@ -70,6 +67,49 @@ public class ListenerServer extends Thread {
                 client_javafx.set_turn.setFont(Font.font(" Franklin Gothic Medium Cond", FontWeight.BOLD, 18));
                 client_javafx.setServerMessage.setText("Hi " + client_javafx.from_server.getActivePlayer().GetNickname()+ "!" +"\nThe first thing you have to do \nis choose the initial position of your workers. \nPlace them in two free boxes.");
                 client_javafx.setServerMessage.setFont(Font.font(" Franklin Gothic Medium Cond", 15));
+
+                for (Player p: client_javafx.from_server.getPlayers())
+                {
+                    if(client_javafx.nickname.getText().compareTo(p.GetNickname()) == 0) {
+                        godCard = "images/card/" + p.getGodImagePath();
+                        client_javafx.set_godcard.setImage(new Image(String.valueOf(getClass().getResource(godCard))));
+                    }
+
+                    else if (client_javafx.from_server.getPlayers().size() == 2) {
+                        client_javafx.opponent2.setVisible(false);
+                        client_javafx.godOpponent2.setVisible(false);
+                        client_javafx.opponent1.setText(p.GetNickname());
+                        client_javafx.opponent1.setFont(Font.font(" Franklin Gothic Medium Cond"));
+                        godCard = "images/card/" + p.getGodImagePath();
+                        client_javafx.godOpponent1.setImage(new Image(String.valueOf(getClass().getResource(godCard))));
+                    }
+
+                    else if (client_javafx.from_server.getPlayers().size() == 3)
+                    {
+                        if(count.get() == 0)
+                        {
+                            client_javafx.opponent1.setText(p.GetNickname());
+                            client_javafx.opponent1.setFont(Font.font(" Franklin Gothic Medium Cond"));
+                            godCard = "images/card/" + p.getGodImagePath();
+                            client_javafx.godOpponent1.setImage(new Image(String.valueOf(getClass().getResource(godCard))));
+                            count.getAndIncrement();
+                        }
+
+                        else
+                        {
+                            client_javafx.opponent2.setText(p.GetNickname());
+                            client_javafx.opponent2.setFont(Font.font(" Franklin Gothic Medium Cond"));
+                            godCard = "images/card/" + p.getGodImagePath();
+                            client_javafx.godOpponent2.setImage(new Image(String.valueOf(getClass().getResource(godCard))));
+                        }
+
+                    }
+
+
+                }
+                System.out.println("Immagine god : " + godCard);
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -105,6 +145,16 @@ public class ListenerServer extends Thread {
                                 break;
                         }
                         client_javafx.myboard.add(worker, j,i);
+                    }
+                    else {
+                        for(Node node : client_javafx.myboard.getChildren()) {
+                            if(node instanceof Circle && GridPane.getRowIndex(node) == i && GridPane.getColumnIndex(node) == j)
+                            {
+                                Circle worker = (Circle) node; // use what you want to remove
+                                client_javafx.myboard.getChildren().remove(worker);
+                                break;
+                            }
+                        }
                     }
                 }
             }

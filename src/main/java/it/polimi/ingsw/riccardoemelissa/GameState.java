@@ -1,14 +1,10 @@
 package it.polimi.ingsw.riccardoemelissa;
 
-import com.sun.prism.paint.Paint;
 import it.polimi.ingsw.riccardoemelissa.reader.JsonReader;
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.elements.Box;
-import it.polimi.ingsw.riccardoemelissa.elements.card.Minotaur;
-import javafx.scene.paint.Color;
 
 
-import java.awt.*;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
@@ -83,17 +79,18 @@ public class GameState {
 
     public static void GodFactory () throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, FileNotFoundException, URISyntaxException {
         JsonReader read_god = new JsonReader();
-        int count = 0;
         //players.add(new Player("gio"));
         //String[] gods  = read_god.GodsInGame(players.size());
         String[] gods_json  = read_god.GodsInGame(players.size());
 
-        for (int i = 0; i < players.size(); i=i+2)
+        for (int i = 0; i < players.size()*3; i=i+3)
         {
-            players.get(i).SetGodCard((God) Class.forName(gods_json[i]).getConstructor().newInstance());
-            System.out.println(players.get(i).GetGodCard().getClass());
-            players.get(i).setgodImagePath(gods_json[i+1]);
-            players.get(i).GetGodCard().setOpponentTrue(gods_json[i+2]);
+            players.get(i/3).SetGodCard((God) Class.forName(gods_json[i]).getConstructor().newInstance());
+            System.out.println("Classe : " + players.get(i/3).GetGodCard().getClass());
+            players.get(i/3).setGodImagePath(gods_json[i+1]);
+            players.get(i/3).GetGodCard().setOpponentTrue(gods_json[i+2]);
+
+            System.out.println("God card : " + gods_json[i+1] + "\nOpponent turn : "+ gods_json[i+2]);
         }
     }
 
@@ -138,6 +135,7 @@ public class GameState {
 
         try {
             GodFactory();
+            System.out.println("Player 1 : " + players.get(0).getGodImagePath() + "\n Player 2 : " + players.get(1).getGodImagePath());
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException | FileNotFoundException | URISyntaxException e) {
             e.printStackTrace();
         }

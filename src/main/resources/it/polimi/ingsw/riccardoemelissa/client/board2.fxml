@@ -45,11 +45,7 @@
       </GridPane>
       <Pane layoutX="781.0" layoutY="224.0" prefHeight="234.0" prefWidth="140.0">
          <children>
-            <ImageView fx:id="set_godcard" fitHeight="239.0" fitWidth="138.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/card/Apollo.png" />
-               </image>
-            </ImageView>
+            <ImageView fx:id="set_godcard" fitHeight="239.0" fitWidth="138.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
       <TextField fx:id="set_turn" alignment="CENTER" editable="false" layoutX="279.0" layoutY="16.0" prefHeight="35.0" prefWidth="395.0" style="-fx-alignment: CENTER;">
@@ -57,7 +53,7 @@
             <Font name="Franklin Gothic Medium Cond" size="14.0" />
          </font>
       </TextField>
-      <TextArea fx:id="setServerMessage" editable="false" layoutX="24.0" layoutY="331.0" prefHeight="153.0" prefWidth="170.0" style="-fx-font-family: Franklin Gothic Medium Cond; -fx-font-size: 15;">
+      <TextArea fx:id="setServerMessage" editable="false" layoutX="7.0" layoutY="7.0" prefHeight="120.0" prefWidth="205.0" style="-fx-font-family: Franklin Gothic Medium Cond; -fx-font-size: 15;">
          <font>
             <Font name="Franklin Gothic Medium Cond" size="14.0" />
          </font>
@@ -72,5 +68,9 @@
             <Image url="@images/heropower_inactive.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="godOpponent2" fitHeight="168.0" fitWidth="100.0" layoutX="110.0" layoutY="337.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="godOpponent1" fitHeight="168.0" fitWidth="105.0" layoutX="7.0" layoutY="337.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField fx:id="opponent1" alignment="CENTER" layoutX="14.0" layoutY="302.0" prefHeight="25.0" prefWidth="85.0" promptText="Opponent 1" style="-fx-font-family: Franklin Gothic Medium Cond;" />
+      <TextField fx:id="opponent2" alignment="CENTER" layoutX="118.0" layoutY="302.0" prefHeight="25.0" prefWidth="85.0" promptText="Opponent 2" style="-fx-font-family: Franklin Gothic Medium Cond;" />
    </children>
 </AnchorPane>

@@ -55,6 +55,18 @@ public class Client extends Application implements CustomObserver {
     public ToggleButton button_setpower;
     @FXML
     public TextArea setServerMessage;
+    @FXML
+    public ImageView set_godcard;
+    @FXML
+    public ImageView godOpponent1;
+    @FXML
+    public ImageView godOpponent2;
+    @FXML
+    public TextField opponent1;
+    @FXML
+    public TextField opponent2;
+
+
 
     @FXML
     public int[] mouseEntered(MouseEvent e) {
@@ -290,6 +302,7 @@ public class Client extends Application implements CustomObserver {
         //else if(set_power.getImage().getUrl().compareTo(String.valueOf(getClass().getResource("images/heropower_inactive.png")))==0)
         {
             System.out.println("cambia potere in attivo");
+            button_setpower.setText("ACTIVE");
             set_power.setImage(new Image(String.valueOf(getClass().getResource("images/heropower_active.png"))));
             activedPower(PowerType.ACTIVE);
         }
@@ -476,10 +489,14 @@ public class Client extends Application implements CustomObserver {
 
     private void activeMoveCells()
     {
+        Pane box;
         possibleCells_activeWorker= checkMoves(from_server.getBoard(),activeWorker);
 
         for (int[] pos :
-                possibleCells_activeWorker) {
+                possibleCells_activeWorker)
+        {
+            box = (Pane) myboard.getChildren().get(pos[0]*5+pos[1]);
+            box.setStyle("-fx-background-color: #1E90FF");
             //colora di blu
         }
     }
