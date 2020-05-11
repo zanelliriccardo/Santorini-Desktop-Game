@@ -30,6 +30,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Client extends Application implements CustomObserver {
 
@@ -71,9 +72,20 @@ public class Client extends Application implements CustomObserver {
     @FXML
     public int[] mouseEntered(MouseEvent e) {
         Node source = e.getPickResult().getIntersectedNode();
-        Integer colIndex = GridPane.getColumnIndex(source);
-        Integer rowIndex = GridPane.getRowIndex(source);
-        System.out.printf("Mouse entered cell [%d, %d]%n", colIndex, rowIndex);
+        Integer colIndex,rowIndex;
+        try {
+            Pane pane=(Pane) source;
+
+            colIndex = GridPane.getColumnIndex(source);
+            rowIndex = GridPane.getRowIndex(source);
+            System.out.printf("Mouse entered cell [%d, %d]%n", colIndex, rowIndex);
+        } catch (Exception exception) {
+            colIndex = GridPane.getColumnIndex(source.getParent());
+            rowIndex = GridPane.getRowIndex(source.getParent());
+            System.out.printf("Mouse entered cell [%d, %d]%n", colIndex, rowIndex);
+        }
+
+
 
         return new int[]{rowIndex, colIndex};
     }
@@ -397,8 +409,8 @@ public class Client extends Application implements CustomObserver {
             for (Player opponent : from_server.getPlayers())
             {
                 if((opponent.GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Move(board, worker_toMove,pos)==CommandType.ERROR);//check move is possible for opponent card
-                possiblemoves.remove(pos);
+                    if(opponent.GetGodCard().Move(board, worker_toMove,pos)==CommandType.ERROR)//check move is possible for opponent card
+                        possiblemoves.remove(pos);
             }
         }
         return possiblemoves;
@@ -459,26 +471,28 @@ public class Client extends Application implements CustomObserver {
                 return;
             messageToServer(CommandType.NEWWORKER, new Worker(from_server.getActivePlayer(),null), new_position);
         }
-        else if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)
+        else if(!from_server.getBoard().GetStateBox(new_position))
         {
-            activeWorker = from_server.getBoard().GetOccupant(new_position);
-            if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE)
-                activeMoveCells();
-            else if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD)
-                activeBuildCells();
+            if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0) {
+                activeWorker = from_server.getBoard().GetOccupant(new_position);
+                if (from_server.getActivePlayer().GetGodCard().getCardType() == GodCardType.MOVE)
+                    activeMoveCells();
+                else if (from_server.getActivePlayer().GetGodCard().getCardType() == GodCardType.BUILD)
+                    activeBuildCells();
+            }
         }
 
         if(activeWorker==null)
         return;
 
-        else if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE&&possibleCells_activeWorker.contains(new_position))
+        else if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE&&contains(new_position))
         {
             //CommandType cmd_type = from_server.getActivePlayer().GetGodCard().Move(from_server.getBoard(), activeWorker, new_position);
             //messageToServer(cmd_type,activeWorker,new_position);
 
             messageToServer(CommandType.MOVE,activeWorker,new_position);
         }
-        else if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD&&possibleCells_activeWorker.contains(new_position))
+        else if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD&&contains(new_position))
         {
             //CommandType cmd_type = from_server.getActivePlayer().GetGodCard().Build(from_server.getBoard(), activeWorker, new_position);
             //messageToServer(cmd_type,activeWorker,new_position);
@@ -487,16 +501,47 @@ public class Client extends Application implements CustomObserver {
         }
     }
 
+    private boolean contains(int[] new_position) {
+            for ( int[] i : possibleCells_activeWorker)
+            {
+                if(Arrays.equals(i, new_position))
+                    return true;
+            }
+            return false;
+    }
+
     private void activeMoveCells()
     {
-        Pane box;
+        for (int[] pos :
+                possibleCells_activeWorker)
+        {
+            for (Node child : myboard.getChildren()) {
+                Pane pane = (Pane) child;
+                Integer r = myboard.getRowIndex(child);
+                Integer c = myboard.getColumnIndex(child);
+                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
+                {
+                    pane.setStyle(null);
+                }
+            }
+        }
+
         possibleCells_activeWorker= checkMoves(from_server.getBoard(),activeWorker);
 
         for (int[] pos :
                 possibleCells_activeWorker)
         {
-            box = (Pane) myboard.getChildren().get(pos[0]*5+pos[1]);
-            box.setStyle("-fx-background-color: #1E90FF");
+            for (Node child : myboard.getChildren()) {
+                Pane pane = (Pane) child;
+                Integer r = myboard.getRowIndex(child);
+                Integer c = myboard.getColumnIndex(child);
+                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
+                {
+                    pane.setStyle("-fx-background-color: #1E90FF");
+                }
+            }
+
+
             //colora di blu
         }
     }

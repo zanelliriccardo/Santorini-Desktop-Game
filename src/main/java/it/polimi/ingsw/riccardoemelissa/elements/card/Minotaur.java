@@ -45,7 +45,7 @@ public class Minotaur extends God implements Serializable {
     @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> adj_boxes = new ArrayList<>();
-        int[] pos = new int[2];
+
 
         for (int x = worker_pos[0] - 1; x <= worker_pos[0] + 1; x++) {
             for (int y = worker_pos[1] - 1; y <= worker_pos[1] + 1; y++) {
@@ -59,9 +59,6 @@ public class Minotaur extends God implements Serializable {
                 if (y > 4 || y < 0)
                     continue;
 
-                pos[0] = x;
-                pos[1] = y;
-
                 int[] newpos_opponent = new int[]{(x - worker_pos[0]) + x, (y - worker_pos[1]) + y};
 
                 if(newpos_opponent[0]>4||newpos_opponent[1]>4)
@@ -70,8 +67,10 @@ public class Minotaur extends God implements Serializable {
                 if(!b.GetStateBox(newpos_opponent))
                     continue;
 
-                if(b.GetLevelBox(pos)==4)
+                if(b.GetLevelBox(x,y)==4)
                     continue;
+
+                int[] pos = new int[]{x,y};
 
                 adj_boxes.add(pos);
             }

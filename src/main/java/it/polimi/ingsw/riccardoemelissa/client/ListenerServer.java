@@ -144,7 +144,13 @@ public class ListenerServer extends Thread {
                                 worker.setFill(Color.GOLD);
                                 break;
                         }
-                        client_javafx.myboard.add(worker, j,i);
+                        for (Node child : client_javafx.myboard.getChildren()) {
+                            Pane pane = (Pane) child;
+                            Integer r = client_javafx.myboard.getRowIndex(child);
+                            Integer c = client_javafx.myboard.getColumnIndex(child);
+                            if(r!=null && r.intValue() == i && c != null && c.intValue() == j)
+                                pane.getChildren().add(worker);
+                        }
                     }
                     else {
                         for(Node node : client_javafx.myboard.getChildren()) {

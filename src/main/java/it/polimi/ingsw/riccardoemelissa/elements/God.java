@@ -81,7 +81,7 @@ public abstract class God implements Serializable {
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos)
     {
         ArrayList<int[]> adj_boxes = new ArrayList<>();
-        int[] pos = new int[2];
+
 
         for (int x = worker_pos[0] - 1; x <= worker_pos[0] + 1; x++) {
             for (int y = worker_pos[1] - 1; y <= worker_pos[1] + 1; y++) {
@@ -94,15 +94,12 @@ public abstract class God implements Serializable {
                 if (y > 4 || y < 0)
                     continue;
 
-                pos[0] = x;
-                pos[1] = y;
-
-                if(!b.GetStateBox(pos))
+                if(!b.GetStateBox(x,y))
                     continue;
 
-                if(b.GetLevelBox(pos)==4)
+                if(b.GetLevelBox(x,y)==4)
                     continue;
-
+                int[] pos=new int[]{x,y};
                 adj_boxes.add(pos);
             }
         }
