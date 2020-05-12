@@ -69,8 +69,13 @@ public class Client extends Application implements CustomObserver {
     @FXML
     public TextField opponent2;
     @FXML
-    public Label setLevel;
-
+    public TextField playerBoard;
+    @FXML
+    public Circle colorPlayerBoard;
+    @FXML
+    public Circle colorOpponent1;
+    @FXML
+    public Circle colorOpponent2;
 
 
     @FXML
