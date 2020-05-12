@@ -522,7 +522,6 @@ public class Client extends Application implements CustomObserver {
                 if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
                 {
                     pane.setStyle("-fx-background-color: transparent");
-                    //pane.setStyle("-fx-background-color: transparent");
                 }
             }
         }
@@ -542,7 +541,6 @@ public class Client extends Application implements CustomObserver {
                 }
             }
 
-
             //colora di blu
         }
     }
@@ -552,6 +550,16 @@ public class Client extends Application implements CustomObserver {
         possibleCells_activeWorker= checkBuilds(from_server.getBoard(),activeWorker);
         for (int[] pos :
                 possibleCells_activeWorker) {
+
+            for (Node child : myboard.getChildren()) {
+                Pane pane = (Pane) child;
+                Integer r = myboard.getRowIndex(child);
+                Integer c = myboard.getColumnIndex(child);
+                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
+                {
+                    pane.setStyle("-fx-background-color: #1E90FF");
+                }
+            }
             //colora di blu
         }
     }

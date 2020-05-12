@@ -63,9 +63,10 @@ public class ExecutorClientCommand {
                     update(new Command(CommandType.LOSE, null, null));//dafare
                     return;
                 }
-                Worker active=GameState.GetBoard().GetOccupant((((Worker) cmd.GetObj()).GetPosition()));
+                Worker move_worker=GameState.GetBoard().GetOccupant((((Worker) cmd.GetObj()).GetPosition()));
+                move_worker.GetProprietary().GetGodCard().setIn_action(((Worker) cmd.GetObj()).GetProprietary().GetGodCard().getIn_action());
 
-                active.GetProprietary().GetGodCard().Move(GameState.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
+                move_worker.GetProprietary().GetGodCard().Move(GameState.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
 
                 if(((Worker)cmd.GetObj()).GetProprietary().GetGodCard().getCardType()== GodCardType.WIN)
                     this.update(new Command(CommandType.WIN, GameState.getActivePlayer(),null));
@@ -77,7 +78,12 @@ public class ExecutorClientCommand {
                     this.update(new Command(CommandType.LOSE, null, null));//dafare
                     return;
                 }
-                ((Worker)cmd.GetObj()).GetProprietary().GetGodCard().Build(GameState.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
+                Worker build_worker=GameState.GetBoard().GetOccupant((((Worker) cmd.GetObj()).GetPosition()));
+                build_worker.GetProprietary().GetGodCard().setIn_action(((Worker) cmd.GetObj()).GetProprietary().GetGodCard().getIn_action());
+
+                build_worker.GetProprietary().GetGodCard().Build(GameState.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
+
+                GameState.GetBoard().custom_notifyAll();
                 break;
             case WIN:
                 GameState.EndGame();

@@ -108,6 +108,8 @@ public abstract class God implements Serializable {
 
     public abstract void setIn_action(PowerType powerSet);
 
+    public abstract PowerType getIn_action();
+
     public void doPower(GameState game, Command cmd)
     {
         return;

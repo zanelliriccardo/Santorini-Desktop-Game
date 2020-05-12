@@ -57,4 +57,9 @@ public class Prometheus extends God implements Serializable {
         }
         type=PowerType.DISABLE;
     }
+
+    @Override
+    public PowerType getIn_action() {
+        return type;
+    }
 }

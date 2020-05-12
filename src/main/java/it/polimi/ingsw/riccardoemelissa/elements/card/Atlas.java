@@ -38,4 +38,9 @@ public class Atlas extends God implements Serializable {
         if(!type.IsPassive())
             type=powerSet;
     }
+
+    @Override
+    public PowerType getIn_action() {
+        return type;
+    }
 }
