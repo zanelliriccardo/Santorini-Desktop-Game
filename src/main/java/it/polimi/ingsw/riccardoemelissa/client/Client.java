@@ -12,6 +12,7 @@ import javafx.fxml.LoadException;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -66,6 +67,8 @@ public class Client extends Application implements CustomObserver {
     public TextField opponent1;
     @FXML
     public TextField opponent2;
+    @FXML
+    public Label setLevel;
 
 
 
@@ -84,9 +87,6 @@ public class Client extends Application implements CustomObserver {
             rowIndex = GridPane.getRowIndex(source.getParent());
             System.out.printf("Mouse entered cell [%d, %d]%n", colIndex, rowIndex);
         }
-
-
-
         return new int[]{rowIndex, colIndex};
     }
 
@@ -159,7 +159,7 @@ public class Client extends Application implements CustomObserver {
         e.printStackTrace();
     }
 
-    primary.setScene(new Scene(root,600,400));
+    primary.setScene(new Scene(root,640,480));
     primary.setTitle("Santorini");
 
     primary.show();
@@ -490,6 +490,9 @@ public class Client extends Application implements CustomObserver {
             //CommandType cmd_type = from_server.getActivePlayer().GetGodCard().Move(from_server.getBoard(), activeWorker, new_position);
             //messageToServer(cmd_type,activeWorker,new_position);
 
+            if(button_setpower.isSelected())
+                activeWorker.GetProprietary().GetGodCard().setIn_action(PowerType.ACTIVE);
+
             messageToServer(CommandType.MOVE,activeWorker,new_position);
         }
         else if(activeWorker.GetProprietary().GetGodCard().getCardType()==GodCardType.BUILD&&contains(new_position))
@@ -557,7 +560,7 @@ public class Client extends Application implements CustomObserver {
                 Integer c = myboard.getColumnIndex(child);
                 if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
                 {
-                    pane.setStyle("-fx-background-color: #1E90FF");
+                    pane.setStyle("-fx-background-color: #FF0000");
                 }
             }
             //colora di blu
@@ -592,6 +595,12 @@ public class Client extends Application implements CustomObserver {
             e.printStackTrace();
         }
 
+    }
+
+    public void setDisable (boolean value)
+    {
+        myboard.setDisable(value);
+        button_setpower.setDisable(value);
     }
 }
 

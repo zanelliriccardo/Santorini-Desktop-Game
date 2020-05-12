@@ -6,7 +6,9 @@ import it.polimi.ingsw.riccardoemelissa.elements.Player;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -14,7 +16,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -72,6 +73,13 @@ public class ListenerServer extends Thread {
 
                 for (Player p: client_javafx.from_server.getPlayers())
                 {
+                    if(p.GetGodCard().getIn_action().IsPassive())
+                    {
+                        client_javafx.button_setpower.setDisable(true);
+                        client_javafx.button_setpower.setText("ACTIVE");
+                        client_javafx.set_power.setImage(new Image((String.valueOf(getClass().getResource("images/heropower_active.png")))));
+
+                    }
                     if(client_javafx.nickname.getText().compareTo(p.GetNickname()) == 0) {
                         godCard = "images/card/" + p.getGodImagePath();
                         client_javafx.set_godcard.setImage(new Image(String.valueOf(getClass().getResource(godCard))));
@@ -119,7 +127,13 @@ public class ListenerServer extends Thread {
             for (int x = 0; x < 5; x++) {
                 for (int y = 0; y < 5; y++) {
                     Pane pane = new Pane();
+                    Label label = new Label();
                     client_javafx.myboard.getChildren().add(pane);
+                    pane.getChildren().add(label);
+                    label.setText(String.valueOf(client_javafx.from_server.getBoard().GetLevelBox(x, y)));
+                    label.setStyle("-fx-background-color: #FFFFFF");
+                    label.setAlignment(Pos.TOP_RIGHT);
+                    label.setFont(Font.font("Franklin Gothic Medium Cond", 10));
                     GridPane.setColumnIndex(pane, x);
                     GridPane.setRowIndex(pane, y);
                 }
@@ -129,7 +143,8 @@ public class ListenerServer extends Thread {
         Platform.runLater(()->
         {
             for(int i = 0; i< 5; i++) {
-                for (int j = 0; j < 5; j++) {
+                for (int j = 0; j < 5; j++)
+                {
                     if (!client_javafx.from_server.getBoard().GetStateBox(i, j)) {
                         System.out.println(client_javafx.from_server.getBoard().GetStateBox(i, j));
                         Circle worker = new Circle(client_javafx.myboard.getHeight()/10, client_javafx.myboard.getWidth()/10, client_javafx.myboard.getHeight()/15);
@@ -165,23 +180,16 @@ public class ListenerServer extends Thread {
                         }
                     }
 
-                    //pos = posizione costruzione
-                    /*
-                    Label setLevel = new Label();
-                    setLevel.setAlignment(Pos.BOTTOM_RIGHT);
-                    setLevel.setText(level);
-                    setLevel.setFont(Font.font("Franklin Gothic Medium Cond"));
-
-                    for (Node child : myboard.getChildren()) {
+                    for (Node child : client_javafx.myboard.getChildren()) {
                         Integer r = GridPane.getRowIndex(child);
                         Integer c = GridPane.getColumnIndex(child);
-                        if (r != null && r == pos[0] && c != null && c == pos[1])
+                        if (r != null && r == i && c != null && c == j)
                         {
-                            myboard.add(setLevel, c, r);
+                            for (Node label : ((Pane) child).getChildren())
+                                if(label instanceof Label)
+                                    ((Label) label).setText(String.valueOf(client_javafx.from_server.getBoard().GetLevelBox(r, c)));
                         }
                     }
-
-                     */
                 }
             }
 
