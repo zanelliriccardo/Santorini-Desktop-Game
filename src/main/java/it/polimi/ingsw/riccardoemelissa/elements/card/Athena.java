@@ -58,7 +58,7 @@ public class Athena extends God implements Serializable {
 
     @Override
     public void setIn_action(PowerType powerSet) {
-        if(!type.IsPassive())
+        if(!type.isPassive())
             type=powerSet;
     }
 

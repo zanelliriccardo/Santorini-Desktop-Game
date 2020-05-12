@@ -22,7 +22,7 @@ public class Hephaestus extends God implements Serializable {
      */
     @Override
     public CommandType Build(BoardGame b, Worker activeWorker, int[] pos) {
-        if(type.IsActive())
+        if(type.isActive())
             super.Build(b,activeWorker,pos);
         return super.Build(b,activeWorker,pos);
     }
@@ -57,7 +57,7 @@ public class Hephaestus extends God implements Serializable {
                 if(b.GetLevelBox(x,y)==4)
                     continue;
 
-                if(b.GetLevelBox(x,y)>1&&type.IsActive())
+                if(b.GetLevelBox(x,y)>1&&type.isActive())
                     continue;
 
                 int[] pos = new int[]{x,y};
@@ -70,7 +70,7 @@ public class Hephaestus extends God implements Serializable {
 
     @Override
     public void setIn_action(PowerType powerSet) {
-        if(!type.IsPassive())
+        if(!type.isPassive())
             type=powerSet;
     }
 

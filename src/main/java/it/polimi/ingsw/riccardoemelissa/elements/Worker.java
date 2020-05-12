@@ -27,8 +27,7 @@ public class Worker implements Serializable
 
     public void SetPosition (int[] pos)
     {
-        position[0] = pos[0];
-        position[1] = pos[1];
+        position=pos;
         //position=pos;
     }
 

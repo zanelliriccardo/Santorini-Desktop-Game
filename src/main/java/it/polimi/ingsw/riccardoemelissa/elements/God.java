@@ -41,9 +41,9 @@ public abstract class God implements Serializable {
      */
     public void SetPosition (Worker active_worker, int[] oldpos, int[] newpos, BoardGame b)
     {
+        GameState.GetBoard().GetBoard()[oldpos[0]][oldpos[1]].removeOccupant();//funziona ma da mettere meglio
         active_worker.SetPosition(newpos);
         GameState.GetBoard().GetBoard()[newpos[0]][newpos[1]].ChangeState(active_worker);
-        GameState.GetBoard().GetBoard()[oldpos[0]][oldpos[1]].removeOccupant();
     }
 
     /**
@@ -110,6 +110,7 @@ public abstract class God implements Serializable {
 
     public abstract PowerType getIn_action();
 
+
     public void doPower(GameState game, Command cmd)
     {
         return;
@@ -128,19 +129,6 @@ public abstract class God implements Serializable {
     }
 
     protected void setCardType(GodCardType type) {
-        switch (type) {
-            case MOVE:
-                this.type=GodCardType.MOVE;
-                break;
-            case BUILD:
-                this.type=GodCardType.BUILD;
-                break;
-            case WIN:
-                this.type=GodCardType.WIN;
-                break;
-            case ENDTURN:
-                this.type=GodCardType.ENDTURN;
-                break;
-        }
+        this.type=type;
     }
 }

@@ -21,7 +21,7 @@ public class Atlas extends God implements Serializable {
     @Override
     public CommandType Build(BoardGame b, Worker activeWorker, int[] pos)
     {
-        if (type.IsActive())
+        if (type.isActive())
         {
             b.BuildDome(pos);
             super.setCardType(GodCardType.ENDTURN);
@@ -35,7 +35,7 @@ public class Atlas extends God implements Serializable {
 
     @Override
     public void setIn_action(PowerType powerSet) {
-        if(!type.IsPassive())
+        if(!type.isPassive())
             type=powerSet;
     }
 

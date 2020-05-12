@@ -8,7 +8,14 @@ public class ExecutorClientCommand {
 
     private static GameState game=new GameState();
 
-
+    /**
+     * manage command received from clients
+     *
+     * this method take an argument that made by a command type(it corresponding to an action
+     * to do on @Gamestate),an obj that will be converted into a specific class and a position
+     * for the command types that require them
+     * @param arg
+     */
     public synchronized void update(Object arg)
     {
         Command cmd=(Command) arg;
@@ -66,7 +73,7 @@ public class ExecutorClientCommand {
                 Worker move_worker=GameState.GetBoard().GetOccupant((((Worker) cmd.GetObj()).GetPosition()));
                 move_worker.GetProprietary().GetGodCard().setIn_action(((Worker) cmd.GetObj()).GetProprietary().GetGodCard().getIn_action());
 
-                move_worker.GetProprietary().GetGodCard().Move(GameState.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
+                move_worker.GetProprietary().GetGodCard().Move(GameState.GetBoard(),move_worker,cmd.GetPos());
 
                 if(((Worker)cmd.GetObj()).GetProprietary().GetGodCard().getCardType()== GodCardType.WIN)
                     this.update(new Command(CommandType.WIN, GameState.getActivePlayer(),null));
@@ -81,7 +88,7 @@ public class ExecutorClientCommand {
                 Worker build_worker=GameState.GetBoard().GetOccupant((((Worker) cmd.GetObj()).GetPosition()));
                 build_worker.GetProprietary().GetGodCard().setIn_action(((Worker) cmd.GetObj()).GetProprietary().GetGodCard().getIn_action());
 
-                build_worker.GetProprietary().GetGodCard().Build(GameState.GetBoard(),(Worker)cmd.GetObj(),cmd.GetPos());
+                build_worker.GetProprietary().GetGodCard().Build(GameState.GetBoard(),build_worker,cmd.GetPos());
 
                 GameState.GetBoard().custom_notifyAll();
                 break;

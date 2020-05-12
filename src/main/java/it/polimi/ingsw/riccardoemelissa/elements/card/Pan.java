@@ -21,7 +21,7 @@ public class Pan extends God implements Serializable {
     @Override
     public CommandType Move (BoardGame b, Worker active_worker, int[] newpos)
     {
-        int[] old_position=active_worker.GetPosition();
+        int[] old_position=active_worker.GetPosition().clone();
         super.Move(b, active_worker, newpos);
 
         if (b.GetLevelBox(old_position) - b.GetLevelBox(newpos) > 1)
@@ -32,7 +32,7 @@ public class Pan extends God implements Serializable {
 
     @Override
     public void setIn_action(PowerType powerSet) {
-        if(!type.IsPassive())
+        if(!type.isPassive())
             type=powerSet;
     }
 

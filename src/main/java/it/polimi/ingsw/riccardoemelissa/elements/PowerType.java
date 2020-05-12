@@ -6,11 +6,11 @@ public enum PowerType implements Serializable
 {
     PASSIVE,ACTIVE,DISABLE;
 
-    public boolean IsActive() {
+    public boolean isActive() {
         return this==ACTIVE;
     }
 
-    public boolean IsPassive() {
+    public boolean isPassive() {
         return this==PASSIVE;
     }
 }

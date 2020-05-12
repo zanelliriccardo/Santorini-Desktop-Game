@@ -2,9 +2,7 @@ package it.polimi.ingsw.riccardoemelissa.elements.card;
 
 
 import it.polimi.ingsw.riccardoemelissa.elements.*;
-import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
-import it.polimi.ingsw.riccardoemelissa.GameState;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -47,7 +45,6 @@ public class Apollo extends God implements Serializable {
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> adj_boxes = new ArrayList<>();
 
-
         for (int x = worker_pos[0] - 1; x <= worker_pos[0] + 1; x++) {
             for (int y = worker_pos[1] - 1; y <= worker_pos[1] + 1; y++) {
 
@@ -61,6 +58,9 @@ public class Apollo extends God implements Serializable {
                     continue;
 
                 if(b.GetLevelBox(x,y)==4)
+                    continue;
+
+                if(b.GetOccupant(x,y).GetProprietary().GetNickname().compareTo(b.GetOccupant(worker_pos).GetProprietary().GetNickname())==0)
                     continue;
 
                 int[] pos = new int[]{x,y};
@@ -88,14 +88,8 @@ public class Apollo extends God implements Serializable {
     }
 
     @Override
-    public void doPower(GameState game, Command cmd)
-    {
-        SetApolloPosition((Worker) cmd.GetObj(),cmd.GetPos(),game.GetBoard());
-    }
-
-    @Override
     public void setIn_action(PowerType powerSet) {
-        if(!type.IsPassive())
+        if(!type.isPassive())
             type=powerSet;
     }
 

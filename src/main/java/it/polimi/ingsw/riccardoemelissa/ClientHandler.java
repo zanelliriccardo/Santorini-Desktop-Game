@@ -21,12 +21,6 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
        socketConnection=socket;
     }
 
-    /*public ClientHandler(Socket socket) throws IOException
-    {
-        ois=new ObjectInputStream(socket.getInputStream());
-        oos=new ObjectOutputStream(socket.getOutputStream());
-    }*/
-
     public ClientHandler(int port) {
         try
         {
@@ -38,22 +32,9 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
     }
 
     /**
-     * This method receives command from it.polimi.ingsw.riccardoemelissa.client
+     * This method receives command from client
      */
     public void run() {
-        /*try {
-            oos = new ObjectOutputStream(socketConnection.getOutputStream());
-            if(GameState.GetPlayerNumber()==1)
-                oos.writeObject(new GameProxy(GameState.GetBoard(),null,GameState.GetPlayers()));
-            else {
-                oos.writeObject(new GameProxy(GameState.GetBoard(), GameState.getActivePlayer(), GameState.GetPlayers()));
-                System.out.println("invio board al giocatore");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-         */
         update(new Object());
         if(!socketConnection.isClosed()&&socketConnection.isConnected())
             while (true) {
@@ -64,12 +45,8 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
 
                     if(cmd.GetType()==CommandType.UPDATE)
                         update(new Object());
-                        //settingClient(new GameProxy(GameState.GetBoard(),GameState.getActivePlayer(),GameState.GetPlayers()));
-
 
                     new ExecutorClientCommand().update(cmd);
-                    //cmd_executor.update(cmd);
-
 
                     if(GameState.GetPlayers()==null) {
                         ois.close();
@@ -89,7 +66,6 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
     /**
      * It manages the board update
      *
-     *
      * @param arg
      */
     @Override
@@ -104,26 +80,9 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
             try {
                 oos=new ObjectOutputStream(socketConnection.getOutputStream());
                 oos.writeObject(toClient);
-                //System.out.println("Giocatori al client = " + toClient.getPlayers().size());
                 oos.flush();
                 break;
             } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void settingClient(GameProxy toClient)
-    {
-        while (true)
-        {
-            try {
-                oos=new ObjectOutputStream(socketConnection.getOutputStream());
-                oos.writeObject(toClient);
-                System.out.println("Mando al client (ClientHandler -> settingClient) : giocatori = " + toClient.getPlayers().size());
-                oos.flush();
-                break;
-            } catch (IOException | NullPointerException e) {
                 e.printStackTrace();
             }
         }

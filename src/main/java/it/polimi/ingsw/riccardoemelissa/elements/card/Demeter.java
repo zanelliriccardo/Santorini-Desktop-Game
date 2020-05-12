@@ -30,7 +30,7 @@ public class Demeter extends God implements Serializable {
             old_position = pos;
             super.Build(b,active_Worker,pos);
 
-            if(type.IsActive())
+            if(type.isActive())
                 super.setCardType(GodCardType.BUILD);
             else
                 super.setCardType(GodCardType.ENDTURN);
@@ -54,7 +54,7 @@ public class Demeter extends God implements Serializable {
     @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> possibleBox=super.adjacentBoxNotOccupiedNotDome(b, worker_pos);
-        if(type.IsActive()&&old_position!=null&&super.getCardType()==GodCardType.BUILD)
+        if(type.isActive()&&old_position!=null&&super.getCardType()==GodCardType.BUILD)
             possibleBox.remove(old_position);
 
         return possibleBox;
@@ -62,7 +62,7 @@ public class Demeter extends God implements Serializable {
 
     @Override
     public void setIn_action(PowerType powerSet) {
-        if(!type.IsPassive())
+        if(!type.isPassive())
             type=powerSet;
     }
 

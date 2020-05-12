@@ -28,19 +28,26 @@ public class GameState {
     };
 
     /**
-     *
-     * @return
+     * return the player number
      */
     public static int GetPlayerNumber()
     {
         return players.size();
     }
 
+    /**
+     * @return list of players in game
+     */
     public static ArrayList<Player> GetPlayers()
     {
         return players;
     }
 
+    /**
+     *
+     * @param nick : nickname of the searched player
+     * @return index of the player in the list
+     */
     public static int GetIndexPlayer(String nick)
     {
         for (int i = 0; i < players.size(); i++)
@@ -50,6 +57,11 @@ public class GameState {
         return -1;
     }
 
+    /**
+     * this method control when every player is connected
+     *
+     * @return true if every player is connected, then the game starts
+     */
     public static boolean GameReady()
     {
         for (Player p : players)
@@ -65,27 +77,33 @@ public class GameState {
         return workers[GetIndexPlayer(nick) + n];
     }
 
-    public static void SetTurnOrder() {
-        //ArrayList<Player> array = new ArrayList<Player>(); //creo array
-
-        /*for (int i = 0; i < players.size(); i++) {
-            array.add(players.get(i));
-        }
-
-         */
+    /**
+     * shuffle the players
+     */
+    public static void SetTurnOrder()
+    {
         Collections.shuffle(players); //mescola array
-        //players = array.toArray(new Player[]{});
     }
 
-    public static void GodFactory () throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, FileNotFoundException, URISyntaxException {
+    /**
+     * initialize the god cards using json
+     */
+    public static void GodFactory () {
         JsonReader read_god = new JsonReader();
-        //players.add(new Player("gio"));
-        //String[] gods  = read_god.GodsInGame(players.size());
-        String[] gods_json  = read_god.GodsInGame(players.size());
+        String[] gods_json  = new String[0];
+        try {
+            gods_json = read_god.GodsInGame(players.size());
+        } catch (FileNotFoundException | URISyntaxException e) {
+            e.printStackTrace();
+        }
 
         for (int i = 0; i < players.size()*3; i=i+3)
         {
-            players.get(i/3).SetGodCard((God) Class.forName(gods_json[i]).getConstructor().newInstance());
+            try {
+                players.get(i/3).SetGodCard((God) Class.forName(gods_json[i]).getConstructor().newInstance());
+            } catch (InstantiationException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
             System.out.println("Classe : " + players.get(i/3).GetGodCard().getClass());
             players.get(i/3).setGodImagePath(gods_json[i+1]);
             players.get(i/3).GetGodCard().setOpponentTrue(gods_json[i+2]);
@@ -94,6 +112,9 @@ public class GameState {
         }
     }
 
+    /**
+     * change turn
+     */
     public static void NextTurn ()
     {
        if (trace < players.size()-1)
@@ -102,6 +123,9 @@ public class GameState {
            trace = 0;
     }
 
+    /**
+     * @return the player
+     */
     public static Player getActivePlayer()
     {
         if(players.isEmpty())
@@ -109,11 +133,17 @@ public class GameState {
         return players.get(trace);
     }
 
+    /**
+     * @return the board
+     */
     public static BoardGame GetBoard()
     {
         return b;
     }
 
+    /**
+     * set game over
+     */
     public static void EndGame()
     {
         b.setGameOver(true);
@@ -124,6 +154,11 @@ public class GameState {
         gameover=b;
     }
 
+    /**
+     * initialize everything requires a number of player
+     *
+     * @param n number of player in the game
+     */
     public static void SetNumPlayer(int n) {
         num_players = n;
 
@@ -133,12 +168,8 @@ public class GameState {
             players.get(i).SetColor(colors.get(i));
         }
 
-        try {
-            GodFactory();
-            System.out.println("Player 1 : " + players.get(0).getGodImagePath() + "\n Player 2 : " + players.get(1).getGodImagePath());
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException | FileNotFoundException | URISyntaxException e) {
-            e.printStackTrace();
-        }
+        GodFactory();
+        System.out.println("Player 1 : " + players.get(0).getGodImagePath() + "\n Player 2 : " + players.get(1).getGodImagePath());
 
         Box[][] boxes = new Box[5][5];
         for (int i = 0; i < boxes.length; i++) {
@@ -150,21 +181,12 @@ public class GameState {
         System.out.println("Inizializzazione array giocatori con dim = " + num_players);
         workers = new Worker[n * 2];
 
-
-
-        /*try {//spostare dopo che parte il gioco cioè qunado abbiamo tutti igiocatori
-            GodFactory();
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
-            e.printStackTrace();
-        }*/
-
-        /*System.out.println(players.length);
-        for (int i = 0; i < players.length; i++) {
-            God g=new Minotaur();
-            players[i].SetGodCard(g);
-        }*/
     }
 
+    /**
+     * set nickname of a new player
+     * @param str nickname
+     */
     public static void NewPlayer(String str)
     {
         /*for(int i=0;i<players.size();i++)
@@ -202,36 +224,27 @@ public class GameState {
         return true;
     }
 
+    /**
+     * check is gameover
+     *
+     * @return
+     */
     public static boolean getGameOver()
     {
         return gameover;
     }
 
+    /**
+     * to do
+     */
     public static void undoTurn() {
     }
 
+    /**
+     * to do
+     */
     public static void RemovePlayer()
     {
-        /*
-        for (int i = 0; i < 5; i++)
-        {
-            for (int j = 0; j < 5; j++)
-            {
-                if(b.GetOccupant(i,j).GetProprietary().GetNickname().compareTo(getActivePlayer().GetNickname())==0)
-                    b.removeWorker(i,j);
-            }
-        }
-
-        for (int i = 0; i < players.size(); i++)
-        {
-            if(i==players.size()-1)
-                players[i]=null;
-            if(players[i].GetNickname().compareTo(getActivePlayer().GetNickname())==0)
-                players[i]=players[i+1];
-        }
-
-         */
-
 
     }
 
@@ -240,6 +253,13 @@ public class GameState {
         b=board;
     }
 
+    /**
+     * this method do a contains for an int array
+     *
+     * @param activeWorker
+     * @param pos
+     * @return
+     */
     public static boolean IsPossibleMove(Worker activeWorker, int[] pos)
     {
         ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
@@ -253,6 +273,13 @@ public class GameState {
         return false;
     }
 
+    /**
+     * this method do a contains for an int array
+     *
+     * @param activeWorker
+     * @param pos
+     * @return
+     */
     public static boolean IsPossibleBuild(Worker activeWorker, int[] pos)
     {
         ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
@@ -266,6 +293,13 @@ public class GameState {
         return false;
     }
 
+    /**
+     * control if the move is allowed
+     *
+     * @param board
+     * @param worker_toMove
+     * @return
+     */
     public static ArrayList<int[]> checkMoves(BoardGame board, Worker worker_toMove)
     {
         ArrayList<int[]> possiblemoves= worker_toMove.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board, worker_toMove.GetPosition());
@@ -284,6 +318,12 @@ public class GameState {
         return possiblemoves;
     }
 
+    /**
+     * control if the build is allowed
+     * @param board
+     * @param builder
+     * @return
+     */
     public static ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
     {
         ArrayList<int[]> possiblebuild=board.AdjacentBox(builder.GetPosition());
@@ -302,6 +342,10 @@ public class GameState {
         return possiblebuild;
     }
 
+    /**
+     * return the list of possible moves, if is empty the player lose
+     * @return
+     */
     public static ArrayList<int[]> possibleMoves()
     {
         ArrayList<Worker> workers=getWorkers();
@@ -314,6 +358,10 @@ public class GameState {
         return possiblemoves;
     }
 
+    /**
+     * return the worker of the active player
+     * @return
+     */
     public static ArrayList<Worker> getWorkers()
     {
         ArrayList<Worker> workers=new ArrayList<Worker>();

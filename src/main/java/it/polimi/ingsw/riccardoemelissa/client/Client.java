@@ -44,6 +44,7 @@ public class Client extends Application implements CustomObserver {
     static Socket socket;
     ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
     Worker activeWorker=null;
+    Boolean modifiable_selectedWorker=true;
 
     @FXML
     public TextField nickname;
@@ -285,13 +286,6 @@ public class Client extends Application implements CustomObserver {
         System.out.println("Premuto ok inserimento nickname");
     }
 
-    private static void sleep(int time) {
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {}
-
-    }
-
     @FXML
     public void showBoard (String active_player_name) throws IOException
     {
@@ -465,13 +459,15 @@ public class Client extends Application implements CustomObserver {
 
         System.out.println("La posizione cliccata è ( " + new_position[0] + " , "+ new_position[1] + ")" );
 
+        //crea worker
         if(nickname.getText().compareTo(from_server.getActivePlayer().GetNickname())==0&&getWorkers().size()<2)
         {
             if(!from_server.getBoard().GetStateBox(new_position))
                 return;
             messageToServer(CommandType.NEWWORKER, new Worker(), new_position);
         }
-        else if(!from_server.getBoard().GetStateBox(new_position))
+        //selezione worker
+        else if(!from_server.getBoard().GetStateBox(new_position) && modifiable_selectedWorker)
         {
             if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0) {
                 activeWorker = from_server.getBoard().GetOccupant(new_position);
@@ -487,19 +483,12 @@ public class Client extends Application implements CustomObserver {
 
         else if(activeWorker.GetProprietary().GetGodCard().getCardType()==GodCardType.MOVE&&contains(new_position))
         {
-            //CommandType cmd_type = from_server.getActivePlayer().GetGodCard().Move(from_server.getBoard(), activeWorker, new_position);
-            //messageToServer(cmd_type,activeWorker,new_position);
-
-            if(button_setpower.isSelected())
-                activeWorker.GetProprietary().GetGodCard().setIn_action(PowerType.ACTIVE);
-
+            modifiable_selectedWorker=false;
             messageToServer(CommandType.MOVE,activeWorker,new_position);
         }
         else if(activeWorker.GetProprietary().GetGodCard().getCardType()==GodCardType.BUILD&&contains(new_position))
         {
-            //CommandType cmd_type = from_server.getActivePlayer().GetGodCard().Build(from_server.getBoard(), activeWorker, new_position);
-            //messageToServer(cmd_type,activeWorker,new_position);
-
+            modifiable_selectedWorker=false;
             messageToServer(CommandType.BUILD,activeWorker,new_position);
         }
     }
@@ -513,7 +502,7 @@ public class Client extends Application implements CustomObserver {
             return false;
     }
 
-    private void activeMoveCells()
+    public void activeMoveCells()
     {
         for (int[] pos :
                 possibleCells_activeWorker)
@@ -548,9 +537,24 @@ public class Client extends Application implements CustomObserver {
         }
     }
 
-    private void activeBuildCells()
+    public void activeBuildCells()
     {
+        for (int[] pos :
+                possibleCells_activeWorker)
+        {
+            for (Node child : myboard.getChildren()) {
+                Pane pane = (Pane) child;
+                Integer r = myboard.getRowIndex(child);
+                Integer c = myboard.getColumnIndex(child);
+                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
+                {
+                    pane.setStyle("-fx-background-color: transparent");
+                }
+            }
+        }
+
         possibleCells_activeWorker= checkBuilds(from_server.getBoard(),activeWorker);
+
         for (int[] pos :
                 possibleCells_activeWorker) {
 
@@ -563,7 +567,7 @@ public class Client extends Application implements CustomObserver {
                     pane.setStyle("-fx-background-color: #FF0000");
                 }
             }
-            //colora di blu
+            //colora di rosso
         }
     }
 

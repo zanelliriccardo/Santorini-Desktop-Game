@@ -36,7 +36,10 @@ public class Prometheus extends God implements Serializable {
                 if (y > 4 || y < 0)
                     continue;
 
-                if(b.GetLevelBox(x,y)>b.GetLevelBox(worker_pos)&&type.IsActive()&&super.getCardType()==GodCardType.MOVE)
+                if(!b.GetStateBox(x,y))
+                    continue;
+
+                if(b.GetLevelBox(x,y)>b.GetLevelBox(worker_pos)&&type.isActive()&&super.getCardType()==GodCardType.MOVE)
                     continue;
 
                 int[] pos = new int[]{x,y};
@@ -49,7 +52,7 @@ public class Prometheus extends God implements Serializable {
 
     @Override
     public void setIn_action(PowerType powerSet) {
-        if(powerSet.IsActive())
+        if(powerSet.isActive())
         {
             type=PowerType.ACTIVE;
             super.setCardType(GodCardType.BUILD);

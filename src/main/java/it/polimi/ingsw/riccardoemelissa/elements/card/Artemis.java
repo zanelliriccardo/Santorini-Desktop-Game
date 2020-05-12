@@ -25,12 +25,14 @@ public class Artemis extends God implements Serializable {
     @Override
     public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
-        if(old_position==null)
+        if(old_position==null&&type.isActive())
         {
-            old_position = active_worker.GetPosition();
+            old_position[0] = active_worker.GetPosition()[0];
+            old_position[1] = active_worker.GetPosition()[1];
+
             super.Move(b,active_worker,newpos);
 
-            if(type.IsActive())
+            if(type.isActive())
                 super.setCardType(GodCardType.MOVE);
             else
                 super.setCardType(GodCardType.BUILD);
@@ -54,7 +56,7 @@ public class Artemis extends God implements Serializable {
     @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> possibleBox=super.adjacentBoxNotOccupiedNotDome(b, worker_pos);
-        if(type.IsActive()&&old_position!=null&&super.getCardType()==GodCardType.MOVE)
+        if(type.isActive()&&old_position!=null&&super.getCardType()==GodCardType.MOVE)
             possibleBox.remove(old_position);
 
         return possibleBox;
@@ -62,7 +64,7 @@ public class Artemis extends God implements Serializable {
 
     @Override
     public void setIn_action(PowerType powerSet) {
-        if(!type.IsPassive())
+        if(!type.isPassive())
             type=powerSet;
     }
 

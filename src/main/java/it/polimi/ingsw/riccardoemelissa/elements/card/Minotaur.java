@@ -59,6 +59,9 @@ public class Minotaur extends God implements Serializable {
                 if (y > 4 || y < 0)
                     continue;
 
+                if(b.GetOccupant(x,y).GetProprietary().GetNickname().compareTo(b.GetOccupant(worker_pos).GetProprietary().GetNickname())==0)
+                    continue;
+
                 int[] newpos_opponent = new int[]{(x - worker_pos[0]) + x, (y - worker_pos[1]) + y};
 
                 if(newpos_opponent[0]>4||newpos_opponent[1]>4||newpos_opponent[0]<0||newpos_opponent[1]<0)
@@ -98,7 +101,7 @@ public class Minotaur extends God implements Serializable {
 
     @Override
     public void setIn_action(PowerType powerSet) {
-        if(!type.IsPassive())
+        if(!type.isPassive())
             type=powerSet;
     }
 

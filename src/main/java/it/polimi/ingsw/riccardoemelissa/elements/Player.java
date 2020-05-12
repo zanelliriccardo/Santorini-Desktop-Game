@@ -1,7 +1,6 @@
 package it.polimi.ingsw.riccardoemelissa.elements;
 
 import it.polimi.ingsw.riccardoemelissa.elements.card.Pan;
-import javafx.scene.paint.Paint;
 
 import java.io.Serializable;
 

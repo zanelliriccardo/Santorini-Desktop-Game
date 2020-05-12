@@ -4,6 +4,10 @@ import it.polimi.ingsw.riccardoemelissa.ClientHandler;
 
 import java.util.ArrayList;
 
+/**
+ * redefinition of java observer because it's deprecated
+ *
+ */
 public class CustomObservable
 {
     private ArrayList<CustomObserver> observers=new ArrayList<CustomObserver>();

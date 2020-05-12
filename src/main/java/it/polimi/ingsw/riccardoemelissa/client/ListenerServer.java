@@ -62,18 +62,16 @@ public class ListenerServer extends Thread {
             }
         }
 
-        if(client_javafx.loader.getLocation()!=getClass().getResource("board2.fxml"))
-        Platform.runLater(()-> {
+        if((client_javafx.loader.getLocation().getPath()).compareTo(getClass().getResource("board2.fxml").getPath())!=0)
+            Platform.runLater(()-> {
             try {
                 client_javafx.changeScene("board2.fxml");
-                client_javafx.set_turn.setText("Turn of " + client_javafx.from_server.getActivePlayer().GetNickname());
-                client_javafx.set_turn.setFont(Font.font(" Franklin Gothic Medium Cond", FontWeight.BOLD, 18));
                 client_javafx.setServerMessage.setText("Hi " + client_javafx.from_server.getActivePlayer().GetNickname()+ "!" +"\nThe first thing you have to do \nis choose the initial position of your workers. \nPlace them in two free boxes.");
                 client_javafx.setServerMessage.setFont(Font.font(" Franklin Gothic Medium Cond", 15));
 
                 for (Player p: client_javafx.from_server.getPlayers())
                 {
-                    if(p.GetGodCard().getIn_action().IsPassive())
+                    if(p.GetGodCard().getIn_action().isPassive())
                     {
                         client_javafx.button_setpower.setDisable(true);
                         client_javafx.button_setpower.setText("ACTIVE");
@@ -112,10 +110,7 @@ public class ListenerServer extends Thread {
                             godCard = "images/card/" + p.getGodImagePath();
                             client_javafx.godOpponent2.setImage(new Image(String.valueOf(getClass().getResource(godCard))));
                         }
-
                     }
-
-
                 }
                 System.out.println("Immagine god : " + godCard);
 
@@ -142,6 +137,9 @@ public class ListenerServer extends Thread {
 
         Platform.runLater(()->
         {
+            client_javafx.set_turn.setText("Turn of " + client_javafx.from_server.getActivePlayer().GetNickname());
+            client_javafx.set_turn.setFont(Font.font(" Franklin Gothic Medium Cond", FontWeight.BOLD, 18));
+
             for(int i = 0; i< 5; i++) {
                 for (int j = 0; j < 5; j++)
                 {
@@ -169,15 +167,25 @@ public class ListenerServer extends Thread {
                                 pane.getChildren().add(worker);
                         }
                     }
+
                     else {
+
                         for(Node node : client_javafx.myboard.getChildren()) {
+
                             if(node instanceof Circle && GridPane.getRowIndex(node) == i && GridPane.getColumnIndex(node) == j)
+
                             {
+
                                 Circle worker = (Circle) node; // use what you want to remove
+
                                 client_javafx.myboard.getChildren().remove(worker);
+
                                 break;
+
                             }
+
                         }
+
                     }
 
                     for (Node child : client_javafx.myboard.getChildren()) {
@@ -190,9 +198,19 @@ public class ListenerServer extends Thread {
                                     ((Label) label).setText(String.valueOf(client_javafx.from_server.getBoard().GetLevelBox(r, c)));
                         }
                     }
+
+                    /*if(!client_javafx.modifiable_selectedWorker) {
+                        if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isBuild())
+                            client_javafx.activeBuildCells();
+                        else if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isMove())
+                            client_javafx.activeMoveCells();
+                    }
+
+                     */
                 }
             }
-
+            //if(client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType())
+            //client_javafx.activeBuildCells();
         }
         );
 
