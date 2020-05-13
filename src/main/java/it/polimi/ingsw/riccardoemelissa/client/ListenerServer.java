@@ -70,7 +70,7 @@ public class ListenerServer extends Thread {
                 client_javafx.setServerMessage.setStyle("-fx-background-color: transparent");
                 client_javafx.setServerMessage.setStyle("-fx-font-size : 15");
                 client_javafx.setServerMessage.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
-                client_javafx.setServerMessage.setText("Hi " + client_javafx.from_server.getActivePlayer().GetNickname()+ "!" +"\nThe first thing you have to do \nis to choose the initial position \nof your workers. \nPlace them in two free boxes.");
+                client_javafx.setServerMessage.setText("Hi " + client_javafx.from_server.getBoard().getActivePlayer().GetNickname()+ "!" +"\nThe first thing you have to do \nis to choose the initial position \nof your workers. \nPlace them in two free boxes.");
 
 
                 for (Player p: client_javafx.from_server.getPlayers())
@@ -159,7 +159,7 @@ public class ListenerServer extends Thread {
 
         Platform.runLater(()->
         {
-            client_javafx.set_turn.setText("Turn of " + client_javafx.from_server.getActivePlayer().GetNickname());
+            client_javafx.set_turn.setText("Turn of " + client_javafx.from_server.getBoard().getActivePlayer().GetNickname());
             client_javafx.set_turn.setFont(Font.font(" Franklin Gothic Medium Cond", FontWeight.BOLD, 18));
 
             for(int i = 0; i< 5; i++) {
@@ -229,8 +229,14 @@ public class ListenerServer extends Thread {
                      */
                 }
             }
-            //if(client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType())
-            //client_javafx.activeBuildCells();
+            if(client_javafx.from_server.getActive_worker()!=null) {
+                client_javafx.activeWorker = client_javafx.from_server.getBoard().GetOccupant(client_javafx.from_server.getActive_worker().GetPosition());
+
+                if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isBuild()&&client_javafx.from_server.getActive_worker().GetProprietary().GetNickname().compareTo(client_javafx.nickname.getText())==0)
+                    client_javafx.activeBuildCells();
+                else if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isMove()&&client_javafx.from_server.getActive_worker().GetProprietary().GetNickname().compareTo(client_javafx.nickname.getText())==0)
+                    client_javafx.activeMoveCells();
+            }
         }
         );
 

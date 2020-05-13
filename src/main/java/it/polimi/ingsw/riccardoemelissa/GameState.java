@@ -26,6 +26,7 @@ public class GameState {
             add("GOLD");
         }
     };
+    private static Worker activeWorker=null;
 
     /**
      * return the player number
@@ -326,7 +327,7 @@ public class GameState {
      */
     public static ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
     {
-        ArrayList<int[]> possiblebuild=board.AdjacentBox(builder.GetPosition());
+        ArrayList<int[]> possiblebuild=board.AdjacentBoxforBuild(builder.GetPosition());
 
         possiblebuild.removeIf(pos -> board.GetLevelBox(pos) == 4);
 
@@ -391,5 +392,12 @@ public class GameState {
         return num_players;
     }
 
-    
+
+    public static void setActiveWorker(int[] getPos) {
+        activeWorker=GameState.GetBoard().GetOccupant(getPos);
+    }
+
+    public static Worker getActiveWorker() {
+        return activeWorker;
+    }
 }

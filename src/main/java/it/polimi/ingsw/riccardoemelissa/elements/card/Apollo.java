@@ -60,6 +60,13 @@ public class Apollo extends God implements Serializable {
                 if(b.GetLevelBox(x,y)==4)
                     continue;
 
+                if(b.GetStateBox(x,y))
+                {
+                    int[] pos = new int[]{x,y};
+                    adj_boxes.add(pos);
+                    continue;
+                }
+
                 if(b.GetOccupant(x,y).GetProprietary().GetNickname().compareTo(b.GetOccupant(worker_pos).GetProprietary().GetNickname())==0)
                     continue;
 

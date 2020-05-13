@@ -12,7 +12,6 @@ import javafx.fxml.LoadException;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -39,11 +38,10 @@ public class Client extends Application implements CustomObserver {
     Stage primary;
     FXMLLoader loader;
     Parent root;
-    static ControllerBoard controller;
     static ListenerServer listener;
     static Socket socket;
     ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
-    Worker activeWorker=null;
+    Worker activeWorker;
     Boolean modifiable_selectedWorker=true;
 
     @FXML
@@ -150,6 +148,7 @@ public class Client extends Application implements CustomObserver {
 
     primary= primaryStage;
     System.out.println("Loading board");
+    activeWorker=null;
 
     loader=new FXMLLoader();
     System.out.println(getClass().getResource("start.fxml"));
@@ -342,7 +341,7 @@ public class Client extends Application implements CustomObserver {
 
         //fare guiii
 
-        if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.ENDTURN)
+        if(from_server.getBoard().getActivePlayer().GetGodCard().getCardType()==GodCardType.ENDTURN)
         {
             //abilita click fine turno bottone di endturn() e disabilita il resto
         }
@@ -351,8 +350,8 @@ public class Client extends Application implements CustomObserver {
     public void activedPower(PowerType powerType)
     {
         messageToServer(CommandType.SETPOWER,powerType);
-        if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE) activeMoveCells();
-        if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD) activeBuildCells();
+        if(from_server.getBoard().getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE) activeMoveCells();
+        if(from_server.getBoard().getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD) activeBuildCells();
     }
 
     public void messageToServer(CommandType cmd_type,Object obj) {
@@ -383,7 +382,7 @@ public class Client extends Application implements CustomObserver {
     }
 
     public void messageToServer(CommandType cmd_type) {
-        Command cmd_toserver=new Command(cmd_type,from_server.getActivePlayer(),null);
+        Command cmd_toserver=new Command(cmd_type,from_server.getBoard().getActivePlayer(),null);
         while (true) {
             try {
                 ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
@@ -407,7 +406,7 @@ public class Client extends Application implements CustomObserver {
         {
             for (Player opponent : from_server.getPlayers())
             {
-                if((opponent.GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                if((opponent.GetNickname().compareTo(from_server.getBoard().getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
                     if(opponent.GetGodCard().Move(board, worker_toMove,pos)==CommandType.ERROR)//check move is possible for opponent card
                         possiblemoves.remove(pos);
             }
@@ -417,7 +416,7 @@ public class Client extends Application implements CustomObserver {
 
     public ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
     {
-        ArrayList<int[]> possiblebuild=board.AdjacentBox(builder.GetPosition());
+        ArrayList<int[]> possiblebuild=board.AdjacentBoxforBuild(builder.GetPosition());
 
         possiblebuild.removeIf(pos -> board.GetLevelBox(pos) == 4);
 
@@ -425,7 +424,7 @@ public class Client extends Application implements CustomObserver {
         {
             for (Player opponent : from_server.getPlayers())
             {
-                if((opponent.GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                if((opponent.GetNickname().compareTo(from_server.getBoard().getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
                     if(opponent.GetGodCard().Build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
                         possiblebuild.remove(pos);
             }
@@ -435,7 +434,7 @@ public class Client extends Application implements CustomObserver {
 
     public void endTurn()
     {
-        from_server.getActivePlayer().GetGodCard().resetCard(GodCardType.MOVE);
+        from_server.getBoard().getActivePlayer().GetGodCard().resetCard(GodCardType.MOVE);
         messageToServer(CommandType.CHANGE_TURN);
     }
 
@@ -465,7 +464,7 @@ public class Client extends Application implements CustomObserver {
         System.out.println("La posizione cliccata è ( " + new_position[0] + " , "+ new_position[1] + ")" );
 
         //crea worker
-        if(nickname.getText().compareTo(from_server.getActivePlayer().GetNickname())==0&&getWorkers().size()<2)
+        if(nickname.getText().compareTo(from_server.getBoard().getActivePlayer().GetNickname())==0&&getWorkers().size()<2)
         {
             if(!from_server.getBoard().GetStateBox(new_position))
                 return;
@@ -474,11 +473,11 @@ public class Client extends Application implements CustomObserver {
         //selezione worker
         else if(!from_server.getBoard().GetStateBox(new_position) && modifiable_selectedWorker)
         {
-            if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0) {
+            if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getBoard().getActivePlayer().GetNickname())==0) {
                 activeWorker = from_server.getBoard().GetOccupant(new_position);
-                if (from_server.getActivePlayer().GetGodCard().getCardType() == GodCardType.MOVE)
+                if (from_server.getBoard().getActivePlayer().GetGodCard().getCardType() == GodCardType.MOVE)
                     activeMoveCells();
-                else if (from_server.getActivePlayer().GetGodCard().getCardType() == GodCardType.BUILD)
+                else if (from_server.getBoard().getActivePlayer().GetGodCard().getCardType() == GodCardType.BUILD)
                     activeBuildCells();
             }
         }
@@ -584,7 +583,7 @@ public class Client extends Application implements CustomObserver {
             for (int j = 0; j < 5; j++)
             {
                 if(!from_server.getBoard().GetStateBox(i,j))
-                    if(from_server.getBoard().GetOccupant(i,j).GetProprietary().GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)
+                    if(from_server.getBoard().GetOccupant(i,j).GetProprietary().GetNickname().compareTo(from_server.getBoard().getActivePlayer().GetNickname())==0)
                         workers.add(from_server.getBoard().GetOccupant(i,j));
             }
         }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.riccardoemelissa.CommandType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Minotaur extends God implements Serializable {
     private PowerType type=PowerType.PASSIVE;
@@ -59,7 +60,17 @@ public class Minotaur extends God implements Serializable {
                 if (y > 4 || y < 0)
                     continue;
 
-                if(b.GetOccupant(x,y).GetProprietary().GetNickname().compareTo(b.GetOccupant(worker_pos).GetProprietary().GetNickname())==0)
+                if(b.GetLevelBox(x,y)==4)
+                    continue;
+
+                if(b.GetStateBox(x,y))
+                {
+                    int[] pos = new int[]{x,y};
+                    adj_boxes.add(pos);
+                    continue;
+                }
+
+                if(Objects.requireNonNull(b.GetOccupant(x,y)).GetProprietary().GetNickname().compareTo(b.GetOccupant(worker_pos).GetProprietary().GetNickname())==0)
                     continue;
 
                 int[] newpos_opponent = new int[]{(x - worker_pos[0]) + x, (y - worker_pos[1]) + y};
@@ -70,8 +81,7 @@ public class Minotaur extends God implements Serializable {
                 if(!b.GetStateBox(newpos_opponent))
                     continue;
 
-                if(b.GetLevelBox(x,y)==4)
-                    continue;
+
 
                 int[] pos = new int[]{x,y};
 

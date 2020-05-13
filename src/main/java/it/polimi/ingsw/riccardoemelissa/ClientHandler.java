@@ -73,7 +73,8 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
     {
         GameProxy toClient;
 
-        toClient = new GameProxy(GameState.GetBoard(), GameState.getActivePlayer(), GameState.GetPlayers());
+        GameState.GetBoard().setActivePlayer(GameState.getActivePlayer());
+        toClient = new GameProxy(GameState.GetBoard(), GameState.getActiveWorker(), GameState.GetPlayers());
 
         while (true)
         {

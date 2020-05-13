@@ -7,17 +7,17 @@ import java.util.ArrayList;
 
 public class GameProxy implements Serializable {
     private BoardGame board_copy;
-    private Player active_player;
+    private Worker active_worker;
     private ArrayList<Player> players;
 
-    public GameProxy(BoardGame getBoard, Player getActivePlayer, ArrayList<Player> players) {
+    public GameProxy(BoardGame getBoard, Worker getActivePlayer, ArrayList<Player> players) {
         board_copy=getBoard;
-        active_player=getActivePlayer;
+        active_worker=getActivePlayer;
         this.players=players;
     }
 
-    public Player getActivePlayer() {
-        return active_player;
+    public Worker getActive_worker() {
+        return active_worker;
     }
 
     public BoardGame getBoard() {
@@ -30,7 +30,7 @@ public class GameProxy implements Serializable {
 
     public void setGame(GameProxy fromServer) {
         this.board_copy=fromServer.getBoard();
-        this.active_player=fromServer.getActivePlayer();
+        this.active_worker=fromServer.getActive_worker();
         this.players=fromServer.getPlayers();
     }
 }

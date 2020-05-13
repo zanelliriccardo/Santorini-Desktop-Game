@@ -230,7 +230,7 @@ public class BoardGame extends CustomObservable implements Serializable {
      */
     public boolean IsAdjacentBox(int[] workerpos, int[] newpos)
     {
-        ArrayList<int[]> adj_boxes = AdjacentBox(workerpos);
+        ArrayList<int[]> adj_boxes = AdjacentBoxforBuild(workerpos);
 
         for ( int[] i : adj_boxes)
         {
@@ -249,7 +249,7 @@ public class BoardGame extends CustomObservable implements Serializable {
      * @param worker_pos
      * @return
      */
-    public ArrayList<int[]> AdjacentBox (int[] worker_pos)
+    public ArrayList<int[]> AdjacentBoxforBuild(int[] worker_pos)
     {
         ArrayList<int[]> adj_boxes = new ArrayList<>();
 
@@ -262,6 +262,12 @@ public class BoardGame extends CustomObservable implements Serializable {
                     continue;
 
                 if (y > 4 || y < 0)
+                    continue;
+
+                if(!GetStateBox(x,y))
+                    continue;
+
+                if(GetLevelBox(x,y)==4)
                     continue;
 
                 adj_boxes.add(new int[]{x, y});
@@ -338,6 +344,10 @@ public class BoardGame extends CustomObservable implements Serializable {
 
     public void setBoxes(Box[][] boxes) {
         Board=boxes;
+    }
+
+    public Player getActivePlayer() {
+        return active_player;
     }
 }
 
