@@ -71,9 +71,18 @@
       </ImageView>
       <ImageView fx:id="godOpponent2" fitHeight="168.0" fitWidth="100.0" layoutX="110.0" layoutY="337.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="godOpponent1" fitHeight="168.0" fitWidth="105.0" layoutX="7.0" layoutY="337.0" pickOnBounds="true" preserveRatio="true" />
-      <TextField fx:id="opponent1" alignment="CENTER" editable="false" layoutX="14.0" layoutY="302.0" prefHeight="25.0" prefWidth="85.0" promptText="Opponent 1" style="-fx-font-family: Franklin Gothic Medium Cond; -fx-background-color: lightseagreen; -fx-alignment: CENTER;" />
-      <TextField fx:id="opponent2" alignment="CENTER" editable="false" layoutX="118.0" layoutY="302.0" prefHeight="25.0" prefWidth="85.0" promptText="Opponent 2" style="-fx-font-family: Franklin Gothic Medium Cond; -fx-background-color: lightseagreen; -fx-alignment: CENTER;" />
-      <TextField fx:id="playerBoard" alignment="CENTER" editable="false" layoutX="825.0" layoutY="211.0" prefHeight="25.0" prefWidth="85.0" promptText="PlayerBoard" style="-fx-font-family: Franklin Gothic Medium Cond; -fx-background-color: transparent; -fx-alignment: CENTER;" />
+      <TextField fx:id="opponent1" alignment="CENTER" editable="false" layoutX="14.0" layoutY="302.0" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: lightseagreen; -fx-alignment: CENTER; -fx-font-family: Franklin Gothic Medium Cond;">
+         <font>
+            <Font name="Franklin Gothic Demi Cond" size="12.0" />
+         </font></TextField>
+      <TextField fx:id="opponent2" alignment="CENTER" editable="false" layoutX="118.0" layoutY="302.0" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: lightseagreen; -fx-alignment: CENTER; -fx-font-family: Franklin Gothic Medium Cond;">
+         <font>
+            <Font name="Franklin Gothic Demi Cond" size="12.0" />
+         </font></TextField>
+      <TextField fx:id="playerBoard" alignment="CENTER" editable="false" layoutX="825.0" layoutY="211.0" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: lightseagreen; -fx-alignment: CENTER; -fx-font-family: Franklin Gothic Medium Cond;">
+         <font>
+            <Font name="Franklin Gothic Medium Cond" size="12.0" />
+         </font></TextField>
       <Circle fx:id="colorPlayerBoard" fill="#1f93ff00" layoutX="934.0" layoutY="224.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="colorOpponent1" fill="#1f93ff00" layoutX="60.0" layoutY="283.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="colorOpponent2" fill="#1f93ff00" layoutX="160.0" layoutY="283.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />

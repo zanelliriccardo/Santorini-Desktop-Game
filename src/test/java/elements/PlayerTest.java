@@ -1,6 +1,5 @@
 package elements;
 
-
 import it.polimi.ingsw.riccardoemelissa.elements.Player;
 import it.polimi.ingsw.riccardoemelissa.elements.card.Apollo;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,7 @@ class PlayerTest extends Object {
 
     @Test
     void getNickname() {
-        String str = "name";
+        String str = "nickname";
         Player p = new Player(str);
 
         assertEquals(str, p.GetNickname());
@@ -19,21 +18,29 @@ class PlayerTest extends Object {
 
     @Test
     void getColor() {
-        String color = "red";
-        Player p= new Player("name");
+        String color = "color";
+        Player p= new Player("nickname");
 
         p.SetColor(color);
-
         assertEquals(color, p.GetColor());
     }
 
     @Test
     void getGodCard() {
         Apollo apollo = new Apollo();
-        Player p = new Player("name");
+        Player p = new Player("nickname");
 
         p.SetGodCard(apollo);
-
         assertEquals(apollo, p.GetGodCard());
+    }
+
+    @Test
+    void getGodImagePath() {
+        Player p = new Player("nickname");
+        String path = "Apollo.png";
+
+        p.setGodImagePath(path);
+
+        assertEquals(path, p.getGodImagePath());
     }
 }

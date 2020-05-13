@@ -9,45 +9,46 @@ class BoxTest extends Object {
 
     @Test
     void getState() {
-        Box b1 = new Box(true, 2);
-        Box b2 = new Box(false, 1);
-        Player player = new Player("name");
+        Box box = new Box(); //state = true, level = 0
         Worker worker = new Worker();
 
-        b2.ChangeState();
+        box.ChangeState(worker); //state=false
+        assertFalse(box.GetState());
 
-        assertTrue(b2.GetState());
+        box.ChangeState();//state = true
+        assertTrue(box.GetState());
 
-        b1.ChangeState(worker);
+        box.SetOccupant(worker);//state=false
+        assertFalse(box.GetState());
 
-        assertFalse(b1.GetState());
+        box.removeOccupant(); //state = true
+        assertTrue(box.GetState());
     }
 
     @Test
     void getLevel()
     {
-        Box b = new Box(true,0);
+        Box box = new Box(); //state = true, level = 0
 
-        b.Build();
+        box.Build(); //level=1
+        assertEquals(1, box.GetLevel());
 
-        assertEquals(1, b.GetLevel());
-
-        b.SetDome();
-
-        assertEquals(4, b.GetLevel());
+        box.SetDome(); //level=4
+        assertEquals(4, box.GetLevel());
     }
 
 
     @Test
     void getOccupant() {
-        Box box = new Box(true, 1);
-        Player player = new Player("name");
+        Box box = new Box(); //state = true, level = 0
         Worker worker = new Worker();
 
-        assertEquals(null, box.GetOccupant());
+        assertNull(box.GetOccupant());
 
-        box.SetOccupant(worker);
-
+        box.SetOccupant(worker); //occupant = worker
         assertEquals(worker, box.GetOccupant());
+
+        box.removeOccupant();
+        assertNull(box.GetOccupant());
     }
 }
