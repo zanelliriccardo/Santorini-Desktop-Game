@@ -202,7 +202,6 @@ public class ListenerServer extends Thread {
 
                         }
                     }
-
                     else {
                         for(Node gridPaneChild : client_javafx.myboard.getChildren()) {
                             Pane pane = (Pane) gridPaneChild;
@@ -226,6 +225,14 @@ public class ListenerServer extends Thread {
                 }
             }
 
+            if(client_javafx.from_server.getBoard().getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
+            {
+                if (client_javafx.from_server.getBoard().getActivePlayer().GetGodCard().getCardType() == GodCardType.WIN)
+                    client_javafx.messageToServer(CommandType.WIN,client_javafx.nickname.getText());
+                if (client_javafx.from_server.getBoard().getActivePlayer().GetGodCard().getCardType() == GodCardType.LOSE)
+                    client_javafx.messageToServer(CommandType.LOSE,client_javafx.nickname.getText());
+            }
+
             if(client_javafx.from_server.getActive_worker()!=null&&client_javafx.from_server.getBoard().getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
             {
                 client_javafx.activeWorker = client_javafx.from_server.getBoard().GetOccupant(client_javafx.from_server.getActive_worker().GetPosition());
@@ -235,7 +242,8 @@ public class ListenerServer extends Thread {
                 else if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isMove()&&client_javafx.from_server.getActive_worker().GetProprietary().GetNickname().compareTo(client_javafx.nickname.getText())==0)
                     client_javafx.activeMoveCells();
             }
-            else {
+            else
+            {
                 for (int[] pos :
                         client_javafx.possibleCells_activeWorker) {
                     for (Node child : client_javafx.myboard.getChildren()) {
@@ -254,6 +262,27 @@ public class ListenerServer extends Thread {
                 client_javafx.setDisable(false);
             else
                 client_javafx.setDisable(true);
+
+            if(client_javafx.from_server.getBoard().getGameover())
+            {
+                if(client_javafx.from_server.getBoard().getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
+                {
+                    try {
+                        client_javafx.changeScene("winner.fxml");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                {
+                    try {
+                        client_javafx.changeScene("loser.fxml");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
         }
 
 

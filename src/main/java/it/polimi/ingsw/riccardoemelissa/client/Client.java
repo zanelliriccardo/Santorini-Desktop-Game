@@ -356,7 +356,6 @@ public class Client extends Application implements CustomObserver {
 
     public void activedPower(PowerType powerType)
     {
-        messageToServer(CommandType.SETPOWER,powerType);
         if(from_server.getBoard().getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE) activeMoveCells();
         if(from_server.getBoard().getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD) activeBuildCells();
     }
@@ -437,6 +436,18 @@ public class Client extends Application implements CustomObserver {
             }
         }
         return possiblebuild;
+    }
+
+    public ArrayList<int[]> possibleMoves()
+    {
+        ArrayList<Worker> workers=getWorkers();
+        ArrayList<int[]> possiblemoves = null;
+
+        for (Worker w : workers)
+        {
+            possiblemoves.addAll(checkMoves(from_server.getBoard(),w));
+        }
+        return possiblemoves;
     }
 
     @FXML
@@ -537,7 +548,19 @@ public class Client extends Application implements CustomObserver {
 
     public void activeMoveCells()
     {
-
+        for (int[] pos :
+                possibleCells_activeWorker)
+        {
+            for (Node child : myboard.getChildren()) {
+                Pane pane = (Pane) child;
+                Integer r = myboard.getRowIndex(child);
+                Integer c = myboard.getColumnIndex(child);
+                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
+                {
+                    pane.setStyle("-fx-background-color: transparent");
+                }
+            }
+        }
 
         possibleCells_activeWorker= checkMoves(from_server.getBoard(),activeWorker);
 
@@ -560,6 +583,19 @@ public class Client extends Application implements CustomObserver {
 
     public void activeBuildCells()
     {
+        for (int[] pos :
+                possibleCells_activeWorker)
+        {
+            for (Node child : myboard.getChildren()) {
+                Pane pane = (Pane) child;
+                Integer r = myboard.getRowIndex(child);
+                Integer c = myboard.getColumnIndex(child);
+                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
+                {
+                    pane.setStyle("-fx-background-color: transparent");
+                }
+            }
+        }
 
         possibleCells_activeWorker= checkBuilds(from_server.getBoard(),activeWorker);
 

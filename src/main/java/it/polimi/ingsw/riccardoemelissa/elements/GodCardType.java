@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public enum GodCardType  implements Serializable
 {
-    PASSIVE,MOVE,BUILD,OK,NOTPOSSIBLE,ENDTURN,WIN;
+    PASSIVE,MOVE,BUILD,OK,NOTPOSSIBLE,ENDTURN,WIN, LOSE;
 
     public boolean isBuild()
     {

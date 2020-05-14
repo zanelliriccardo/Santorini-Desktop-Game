@@ -347,5 +347,9 @@ public class BoardGame extends CustomObservable implements Serializable {
     public Player getActivePlayer() {
         return active_player;
     }
+
+    public boolean getGameover() {
+        return gameover;
+    }
 }
 
