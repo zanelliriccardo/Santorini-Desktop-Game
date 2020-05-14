@@ -1,10 +1,7 @@
 package it.polimi.ingsw.riccardoemelissa.elements.card;
 
 import it.polimi.ingsw.riccardoemelissa.CommandType;
-import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
-import it.polimi.ingsw.riccardoemelissa.elements.God;
-import it.polimi.ingsw.riccardoemelissa.elements.PowerType;
-import it.polimi.ingsw.riccardoemelissa.elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.elements.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -77,5 +74,11 @@ public class Hephaestus extends God implements Serializable {
     @Override
     public PowerType getIn_action() {
         return type;
+    }
+
+    @Override
+    public void resetCard() {
+        super.setCardType(GodCardType.MOVE);
+        setIn_action(PowerType.DISABLE);
     }
 }

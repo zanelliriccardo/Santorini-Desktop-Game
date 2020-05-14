@@ -91,12 +91,6 @@ public class ExecutorClientCommand {
                 System.out.println("build");
                 build_worker.GetProprietary().GetGodCard().Build(GameState.GetBoard(),build_worker,cmd.GetPos());
 
-                if(GameState.getActivePlayer().GetGodCard().getCardType().isEndTurn())
-                {
-                    GameState.getActivePlayer().GetGodCard().resetCard(GodCardType.MOVE);
-                    GameState.NextTurn();
-                    GameState.GetBoard().setActivePlayer(GameState.getActivePlayer());
-                }
                 GameState.GetBoard().custom_notifyAll();
                 break;
             case WIN:
@@ -106,6 +100,7 @@ public class ExecutorClientCommand {
                 GameState.RemovePlayer();
                 break;
             case CHANGE_TURN:
+                GameState.getActivePlayer().GetGodCard().resetCard();
                 GameState.NextTurn();
                 GameState.GetBoard().custom_notifyAll();
                 break;

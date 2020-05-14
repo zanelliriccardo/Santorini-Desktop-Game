@@ -304,15 +304,14 @@ public class Client extends Application implements CustomObserver {
     public void changeButtonImage (MouseEvent mouseEvent) throws IOException
     {
         if (!button_setpower.isSelected())
-        //if(set_power.getImage().getUrl().compareTo(String.valueOf(getClass().getResource("images/heropower_active.png")))==0)
         {
             System.out.println("cambia potere in disattivo");
+            button_setpower.setText("DISABLE");
             set_power.setImage(new Image(String.valueOf((getClass().getResource("images/heropower_inactive.png")))));
             activedPower(PowerType.DISABLE);
         }
 
         if(button_setpower.isSelected())
-        //else if(set_power.getImage().getUrl().compareTo(String.valueOf(getClass().getResource("images/heropower_inactive.png")))==0)
         {
             System.out.println("cambia potere in attivo");
             button_setpower.setText("ACTIVE");
@@ -461,7 +460,6 @@ public class Client extends Application implements CustomObserver {
     @FXML
     public void selectedCell(MouseEvent mouseEvent)
     {
-        setDisable(true);
         int[] new_position= mouseEntered(mouseEvent);
 
         System.out.println("La posizione cliccata è ( " + new_position[0] + " , "+ new_position[1] + ")" );
@@ -472,9 +470,10 @@ public class Client extends Application implements CustomObserver {
             if(!from_server.getBoard().GetStateBox(new_position))
                 return;
             messageToServer(CommandType.NEWWORKER, new Worker(), new_position);
+            setDisable(true);
         }
         //selezione worker
-        else if(!from_server.getBoard().GetStateBox(new_position) && modifiable_selectedWorker)
+        else if(!from_server.getBoard().GetStateBox(new_position))
         {
             if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getBoard().getActivePlayer().GetNickname())==0) {
                 activeWorker = from_server.getBoard().GetOccupant(new_position);
@@ -491,13 +490,39 @@ public class Client extends Application implements CustomObserver {
 
         else if(activeWorker.GetProprietary().GetGodCard().getCardType()==GodCardType.MOVE&&contains(new_position))
         {
-            modifiable_selectedWorker=false;
             messageToServer(CommandType.MOVE,activeWorker,new_position);
+            setDisable(true);
+            for (int[] pos :
+                    possibleCells_activeWorker)
+            {
+                for (Node child : myboard.getChildren()) {
+                    Pane pane = (Pane) child;
+                    Integer r = myboard.getRowIndex(child);
+                    Integer c = myboard.getColumnIndex(child);
+                    if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
+                    {
+                        pane.setStyle("-fx-background-color: transparent");
+                    }
+                }
+            }
         }
         else if(activeWorker.GetProprietary().GetGodCard().getCardType()==GodCardType.BUILD&&contains(new_position))
         {
-            modifiable_selectedWorker=false;
             messageToServer(CommandType.BUILD,activeWorker,new_position);
+            setDisable(true);
+            for (int[] pos :
+                    possibleCells_activeWorker)
+            {
+                for (Node child : myboard.getChildren()) {
+                    Pane pane = (Pane) child;
+                    Integer r = myboard.getRowIndex(child);
+                    Integer c = myboard.getColumnIndex(child);
+                    if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
+                    {
+                        pane.setStyle("-fx-background-color: transparent");
+                    }
+                }
+            }
         }
     }
 
@@ -512,19 +537,7 @@ public class Client extends Application implements CustomObserver {
 
     public void activeMoveCells()
     {
-        for (int[] pos :
-                possibleCells_activeWorker)
-        {
-            for (Node child : myboard.getChildren()) {
-                Pane pane = (Pane) child;
-                Integer r = myboard.getRowIndex(child);
-                Integer c = myboard.getColumnIndex(child);
-                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
-                {
-                    pane.setStyle("-fx-background-color: transparent");
-                }
-            }
-        }
+
 
         possibleCells_activeWorker= checkMoves(from_server.getBoard(),activeWorker);
 
@@ -547,19 +560,6 @@ public class Client extends Application implements CustomObserver {
 
     public void activeBuildCells()
     {
-        for (int[] pos :
-                possibleCells_activeWorker)
-        {
-            for (Node child : myboard.getChildren()) {
-                Pane pane = (Pane) child;
-                Integer r = myboard.getRowIndex(child);
-                Integer c = myboard.getColumnIndex(child);
-                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
-                {
-                    pane.setStyle("-fx-background-color: transparent");
-                }
-            }
-        }
 
         possibleCells_activeWorker= checkBuilds(from_server.getBoard(),activeWorker);
 

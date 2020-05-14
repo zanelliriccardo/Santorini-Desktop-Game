@@ -43,4 +43,10 @@ public class Atlas extends God implements Serializable {
     public PowerType getIn_action() {
         return type;
     }
+
+    @Override
+    public void resetCard() {
+        super.setCardType(GodCardType.MOVE);
+        setIn_action(PowerType.DISABLE);
+    }
 }

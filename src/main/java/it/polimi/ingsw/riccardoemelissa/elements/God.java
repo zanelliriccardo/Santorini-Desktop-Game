@@ -110,15 +110,11 @@ public abstract class God implements Serializable {
 
     public abstract PowerType getIn_action();
 
+    public abstract void resetCard();
 
     public void doPower(GameState game, Command cmd)
     {
         return;
-    }
-
-    public void resetCard(GodCardType move) {
-        request =move;
-        //in_action=false;
     }
 
     public void setOpponentTrue(String s) {

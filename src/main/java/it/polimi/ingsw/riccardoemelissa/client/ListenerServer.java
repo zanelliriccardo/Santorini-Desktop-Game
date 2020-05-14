@@ -162,9 +162,7 @@ public class ListenerServer extends Thread {
 
         Platform.runLater(()->
         {
-            if(!client_javafx.from_server.getBoard().getActivePlayer().GetGodCard().getCardType().isEndTurn())
-                client_javafx.endTurn.setVisible(false);
-            else client_javafx.endTurn.setVisible(true);
+            client_javafx.endTurn.setVisible(client_javafx.from_server.getBoard().getActivePlayer().GetGodCard().getCardType().isEndTurn());
 
             client_javafx.set_turn.setText("Turn of " + client_javafx.from_server.getBoard().getActivePlayer().GetNickname());
             client_javafx.set_turn.setFont(Font.font(" Franklin Gothic Medium Cond", FontWeight.BOLD, 18));
@@ -225,15 +223,6 @@ public class ListenerServer extends Thread {
                                     ((Label) label).setText(String.valueOf(client_javafx.from_server.getBoard().GetLevelBox(r, c)));
                         }
                     }
-
-                    /*if(!client_javafx.modifiable_selectedWorker) {
-                        if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isBuild())
-                            client_javafx.activeBuildCells();
-                        else if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isMove())
-                            client_javafx.activeMoveCells();
-                    }
-
-                     */
                 }
             }
 
