@@ -113,8 +113,4 @@ class BoardGameTest {
         assertFalse(boardGame.IsAdjacentBox(worker_pos, pos2));
         assertFalse(boardGame.IsAdjacentBox(worker_pos, worker_pos));
     }
-
-    @Test //No usato
-    void getWorkers() {
-    }
 }

@@ -12,6 +12,17 @@ class GodTest {
 
     @Test
     void move() {
+        BoardGame boardGame = GameState.GetBoard();
+        Pan pan = new Pan();
+        Worker worker = new Worker();
+        int[] oldpos = new int[]{1,1};
+        int[] newpos = new int[]{1,2};
+
+        worker.SetPosition(oldpos);
+        boardGame.setOccupant(oldpos, worker);
+        pan.Move(boardGame, worker, newpos);
+
+        assertArrayEquals(newpos, worker.GetPosition());
     }
 
     @Test
@@ -41,6 +52,17 @@ class GodTest {
 
     @Test
     void build() {
+        BoardGame boardGame = GameState.GetBoard();
+        Pan pan = new Pan();
+        Worker worker = new Worker();
+        int[] oldpos = new int[]{1,1};
+        int[] newpos = new int[]{1,2};
+
+        worker.SetPosition(oldpos);
+        boardGame.setOccupant(oldpos, worker);
+        pan.Build(boardGame, worker, newpos);
+
+        assertEquals(1, boardGame.GetLevelBox(newpos));
     }
 
     @Test
@@ -54,31 +76,11 @@ class GodTest {
         assertTrue(athena.GetOpponentTurn());
     }
 
-    @Test
-    void getCardType() {
-    }
-
-    @Test
+    @Test //usato in altri metodi
     void adjacentBoxNotOccupiedNotDome() {
     }
 
-    @Test
-    void setIn_action() {
-    }
-
-    @Test
-    void getIn_action() {
-    }
-
-    @Test
+    @Test //No usato
     void doPower() {
-    }
-
-    @Test
-    void resetCard() {
-    }
-
-    @Test
-    void setCardType() {
     }
 }

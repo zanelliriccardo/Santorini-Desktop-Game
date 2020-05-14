@@ -162,7 +162,7 @@ public class ListenerServer extends Thread {
 
         Platform.runLater(()->
         {
-            client_javafx.endTurn.setVisible(client_javafx.from_server.getBoard().getActivePlayer().GetGodCard().getCardType().isEndTurn());
+            client_javafx.endTurn.setVisible(client_javafx.from_server.getBoard().getActivePlayer().GetGodCard().getCardType().isEndTurn()&&client_javafx.from_server.getBoard().getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0);
 
             client_javafx.set_turn.setText("Turn of " + client_javafx.from_server.getBoard().getActivePlayer().GetNickname());
             client_javafx.set_turn.setFont(Font.font(" Franklin Gothic Medium Cond", FontWeight.BOLD, 18));

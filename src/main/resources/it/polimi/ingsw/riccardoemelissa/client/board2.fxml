@@ -90,6 +90,9 @@
          <font>
             <Font name="Impact" size="16.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
       </Button>
    </children>
 </AnchorPane>
