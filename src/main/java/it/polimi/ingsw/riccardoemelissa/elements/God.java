@@ -8,12 +8,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public abstract class God implements Serializable {
-    private GodCardType type;
+    private GodCardType request;
     private boolean opponent_turn;
 
     public God()
     {
-        type=GodCardType.MOVE;
+        request =GodCardType.MOVE;
     }
     /**
      * Move the active worker
@@ -28,7 +28,7 @@ public abstract class God implements Serializable {
     public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
         SetPosition(GameState.GetBoard().GetOccupant(active_worker.GetPosition()), active_worker.GetPosition(), newpos, b);
-        type=GodCardType.BUILD;
+        request =GodCardType.BUILD;
         return CommandType.MOVE;
     }
 
@@ -60,7 +60,7 @@ public abstract class God implements Serializable {
         int[] workerpos = activeWorker.GetPosition();
 
         GameState.GetBoard().DoBuild(pos);
-        this.type=GodCardType.ENDTURN;
+        this.request =GodCardType.ENDTURN;
         return CommandType.BUILD;
     }
 
@@ -69,7 +69,7 @@ public abstract class God implements Serializable {
         return opponent_turn;
     }
 
-    public GodCardType getCardType(){return type;}
+    public GodCardType getCardType(){return request;}
 
     /**
      * get adjacent box where possible moves in
@@ -117,7 +117,7 @@ public abstract class God implements Serializable {
     }
 
     public void resetCard(GodCardType move) {
-        type=move;
+        request =move;
         //in_action=false;
     }
 
@@ -129,6 +129,6 @@ public abstract class God implements Serializable {
     }
 
     protected void setCardType(GodCardType type) {
-        this.type=type;
+        this.request =type;
     }
 }

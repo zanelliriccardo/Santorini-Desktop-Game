@@ -2,6 +2,7 @@ package it.polimi.ingsw.riccardoemelissa.client;
 
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.GameProxy;
+import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
 import it.polimi.ingsw.riccardoemelissa.elements.Player;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -75,7 +76,7 @@ public class ListenerServer extends Thread {
 
                 for (Player p: client_javafx.from_server.getPlayers())
                 {
-                    if(p.GetGodCard().getIn_action().isPassive())
+                    if(p.GetGodCard().getIn_action().isPassive()&&p.GetNickname().compareTo(client_javafx.nickname.getText())==0)
                     {
                         client_javafx.button_setpower.setDisable(true);
                         client_javafx.button_setpower.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
@@ -229,7 +230,9 @@ public class ListenerServer extends Thread {
                      */
                 }
             }
-            if(client_javafx.from_server.getActive_worker()!=null) {
+
+            if(client_javafx.from_server.getActive_worker()!=null&&client_javafx.from_server.getBoard().getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
+            {
                 client_javafx.activeWorker = client_javafx.from_server.getBoard().GetOccupant(client_javafx.from_server.getActive_worker().GetPosition());
 
                 if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isBuild()&&client_javafx.from_server.getActive_worker().GetProprietary().GetNickname().compareTo(client_javafx.nickname.getText())==0)
@@ -237,26 +240,28 @@ public class ListenerServer extends Thread {
                 else if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isMove()&&client_javafx.from_server.getActive_worker().GetProprietary().GetNickname().compareTo(client_javafx.nickname.getText())==0)
                     client_javafx.activeMoveCells();
             }
+            else {
+                for (int[] pos :
+                        client_javafx.possibleCells_activeWorker) {
+                    for (Node child : client_javafx.myboard.getChildren()) {
+                        Pane pane = (Pane) child;
+                        Integer r = client_javafx.myboard.getRowIndex(child);
+                        Integer c = client_javafx.myboard.getColumnIndex(child);
+                        if (r != null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1]) {
+                            pane.setStyle("-fx-background-color: transparent");
+                        }
+                    }
+                }
+                client_javafx.activeWorker=null;
+            }
+
+            if(client_javafx.from_server.getBoard().getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
+                client_javafx.setDisable(false);
+            else
+                client_javafx.setDisable(true);
         }
+
+
         );
-
-
-        //agg scorrere bord per settare worker gia presenti+ livello blocco
-
     }
-
-    public GameProxy getGameProxy() {
-
-        return game;
-    }
-
-    private static void sleep(int time) {
-        try
-        {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {}
-
-    }
-
-
 }

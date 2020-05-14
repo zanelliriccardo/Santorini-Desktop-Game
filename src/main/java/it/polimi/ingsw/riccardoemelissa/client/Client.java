@@ -182,7 +182,7 @@ public class Client extends Application implements CustomObserver {
         try {
             socket = new Socket(InetAddress.getLocalHost(), 33500);
         } catch (IOException e) {
-            System.out.println("socket");
+            //mettere una scena dove diciamo che cè un errore e chiudere il gioco
         }
         System.out.println("Connected to server");
         launch(args);
@@ -432,12 +432,6 @@ public class Client extends Application implements CustomObserver {
         return possiblebuild;
     }
 
-    public void endTurn()
-    {
-        from_server.getBoard().getActivePlayer().GetGodCard().resetCard(GodCardType.MOVE);
-        messageToServer(CommandType.CHANGE_TURN);
-    }
-
     @FXML
     public void checkServerBoard ()
     {
@@ -459,6 +453,7 @@ public class Client extends Application implements CustomObserver {
     @FXML
     public void selectedCell(MouseEvent mouseEvent)
     {
+        setDisable(true);
         int[] new_position= mouseEntered(mouseEvent);
 
         System.out.println("La posizione cliccata è ( " + new_position[0] + " , "+ new_position[1] + ")" );
@@ -480,6 +475,7 @@ public class Client extends Application implements CustomObserver {
                 else if (from_server.getBoard().getActivePlayer().GetGodCard().getCardType() == GodCardType.BUILD)
                     activeBuildCells();
             }
+            setDisable(false);
         }
 
         if(activeWorker==null)
@@ -602,7 +598,28 @@ public class Client extends Application implements CustomObserver {
         {
             e.printStackTrace();
         }
+    }
 
+    @FXML
+    public void endturn(MouseEvent mouseEvent)
+    {
+        if(!from_server.getBoard().getActivePlayer().GetGodCard().getCardType().isEndTurn())
+            return;
+
+        for (int[] pos :
+                possibleCells_activeWorker)
+        {
+            for (Node child : myboard.getChildren()) {
+                Pane pane = (Pane) child;
+                Integer r = myboard.getRowIndex(child);
+                Integer c = myboard.getColumnIndex(child);
+                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
+                {
+                    pane.setStyle("-fx-background-color: transparent");
+                }
+            }
+        }
+        messageToServer(CommandType.CHANGE_TURN);
     }
 
     public void setDisable (boolean value)

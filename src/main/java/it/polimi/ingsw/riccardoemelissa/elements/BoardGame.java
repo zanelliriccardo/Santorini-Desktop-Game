@@ -134,7 +134,6 @@ public class BoardGame extends CustomObservable implements Serializable {
     public void DoBuild(int[] pos)
     {
         Board[pos[0]][pos[1]].Build();
-        custom_notifyAll();
     }
 
     public boolean IsABlockedWorker(int[] pos)
@@ -205,7 +204,6 @@ public class BoardGame extends CustomObservable implements Serializable {
     public boolean BuildDome(int[] pos)
     {
         Board[pos[0]][pos[1]].SetDome();
-        custom_notifyAll();
         return true;
     }
 

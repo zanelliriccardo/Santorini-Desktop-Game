@@ -14,4 +14,8 @@ public enum GodCardType  implements Serializable
     public boolean isMove() {
         return this==MOVE;
     }
+
+    public boolean isEndTurn() {
+        return this==ENDTURN;
+    }
 }

@@ -72,8 +72,9 @@ public class ExecutorClientCommand {
                 }
                 Worker move_worker=GameState.GetBoard().GetOccupant((((Worker) cmd.GetObj()).GetPosition()));
                 move_worker.GetProprietary().GetGodCard().setIn_action(((Worker) cmd.GetObj()).GetProprietary().GetGodCard().getIn_action());
-                move_worker.GetProprietary().GetGodCard().Move(GameState.GetBoard(),move_worker,cmd.GetPos());
 
+                move_worker.GetProprietary().GetGodCard().Move(GameState.GetBoard(),move_worker,cmd.GetPos());
+                System.out.println("move");
                 if(((Worker)cmd.GetObj()).GetProprietary().GetGodCard().getCardType()== GodCardType.WIN)
                     this.update(new Command(CommandType.WIN, GameState.getActivePlayer(),null));
 
@@ -87,9 +88,15 @@ public class ExecutorClientCommand {
                 }
                 Worker build_worker=GameState.GetBoard().GetOccupant((((Worker) cmd.GetObj()).GetPosition()));
                 build_worker.GetProprietary().GetGodCard().setIn_action(((Worker) cmd.GetObj()).GetProprietary().GetGodCard().getIn_action());
-
+                System.out.println("build");
                 build_worker.GetProprietary().GetGodCard().Build(GameState.GetBoard(),build_worker,cmd.GetPos());
 
+                if(GameState.getActivePlayer().GetGodCard().getCardType().isEndTurn())
+                {
+                    GameState.getActivePlayer().GetGodCard().resetCard(GodCardType.MOVE);
+                    GameState.NextTurn();
+                    GameState.GetBoard().setActivePlayer(GameState.getActivePlayer());
+                }
                 GameState.GetBoard().custom_notifyAll();
                 break;
             case WIN:
@@ -98,8 +105,9 @@ public class ExecutorClientCommand {
             case LOSE:
                 GameState.RemovePlayer();
                 break;
-            case NEXTTURN:
+            case CHANGE_TURN:
                 GameState.NextTurn();
+                GameState.GetBoard().custom_notifyAll();
                 break;
             case RESET:
                 GameState.undoTurn();
