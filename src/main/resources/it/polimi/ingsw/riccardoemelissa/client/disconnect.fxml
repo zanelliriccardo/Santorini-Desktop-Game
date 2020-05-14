@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.riccardoemelissa.client.Disconnect">
+   <children>
+      <ImageView fitHeight="480.0" fitWidth="640.0" opacity="0.6">
+         <image>
+            <Image url="@images/Santorini.png" />
+         </image>
+         <effect>
+            <Lighting>
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="80.0" layoutY="142.0" prefHeight="58.0" prefWidth="482.0" style="-fx-background-color: antiquewhite; -fx-text-fill: black; -fx-font-family: Franklin Gothic Medium Cond; -fx-background-radius: 20;" text="The connection is broken!">
+         <font>
+            <Font name="Franklin Gothic Medium Cond" size="40.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="260.0" layoutY="62.0" prefHeight="33.0" prefWidth="121.0" style="-fx-background-color: antiquewhite; -fx-font-family: Franklin Gothic Medium Cond; -fx-text-fill: black; -fx-background-radius: 20;" text="OPS..." textAlignment="JUSTIFY">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="195.0" fitWidth="229.0" layoutX="233.0" layoutY="240.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/disconnection.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

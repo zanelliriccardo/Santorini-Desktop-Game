@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #4169E1;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.riccardoemelissa.client.Winner">
+   <children>
+      <ImageView fitHeight="351.0" fitWidth="600.0" layoutY="60.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/background.jpg" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="87.0" layoutY="84.0" prefHeight="53.0" prefWidth="427.0" style="-fx-background-color: azure; -fx-font-family: Franklin Gothic Medium Cond; -fx-text-fill: black; -fx-background-radius: 20;" text="CONGRATULATIONS!!!" textAlignment="RIGHT">
+         <font>
+            <Font name="Franklin Gothic Medium Cond" size="39.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="119.0" layoutY="161.0" prefHeight="56.0" prefWidth="363.0" style="-fx-background-color: azure; -fx-font-family: Franklin Gothic Medium Cond; -fx-text-fill: black; -fx-background-radius: 20;" text="You are the winner!" textAlignment="RIGHT">
+         <font>
+            <Font name="Franklin Gothic Medium Cond" size="39.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="162.0" fitWidth="161.0" layoutX="220.0" layoutY="226.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/winner.png" />
+         </image>
+      </ImageView>
+      <Text fill="#eeeded" layoutX="73.0" layoutY="43.0" opacity="0.7089" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Franklin Gothic Medium Cond; -fx-font-size: 40; -fx-text-alignment: CENTER;" text="BUILD LIKA A MORTAL," textAlignment="CENTER" wrappingWidth="454.13671875">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="93.0" layoutY="441.0" opacity="0.8" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Franklin Gothic Medium Cond; -fx-text-alignment: CENTER; -fx-font-size: 40;" text="WIN LIKE A GOD!" textAlignment="CENTER" wrappingWidth="413.13671875" />
+   </children>
+</AnchorPane>

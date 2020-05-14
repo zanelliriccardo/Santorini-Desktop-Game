@@ -117,10 +117,6 @@ class GameStateTest {
     }
 
     @Test
-    void getBoard() {
-    }
-
-    @Test
     void endGame() {
     }
 

@@ -12,6 +12,7 @@ import javafx.fxml.LoadException;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -74,6 +75,8 @@ public class Client extends Application implements CustomObserver {
     public Circle colorOpponent1;
     @FXML
     public Circle colorOpponent2;
+    @FXML
+    public Button endTurn;
 
 
     @FXML
@@ -316,7 +319,12 @@ public class Client extends Application implements CustomObserver {
             set_power.setImage(new Image(String.valueOf(getClass().getResource("images/heropower_active.png"))));
             activedPower(PowerType.ACTIVE);
         }
+    }
 
+    @FXML
+    public void clickedButtonEndTurn (MouseEvent event)
+    {
+        messageToServer(CommandType.NEXTTURN);
     }
 
     @Override

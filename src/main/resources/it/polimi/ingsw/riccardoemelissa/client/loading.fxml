@@ -15,7 +15,7 @@
             <Image url="@images/background.jpg" />
          </image>
       </ImageView>
-      <TextField alignment="CENTER" disable="true" editable="false" layoutX="198.0" layoutY="190.0" opacity="0.95" prefHeight="48.0" prefWidth="259.0" style="-fx-background-color: #D3D3D3; -fx-alignment: CENTER; -fx-font-family: Franklin Gothic Medium Cond; -fx-font-size: 22;" text="Waiting for all players...">
+      <TextField alignment="CENTER" disable="true" editable="false" layoutX="198.0" layoutY="190.0" opacity="0.95" prefHeight="48.0" prefWidth="259.0" style="-fx-background-color: #D3D3D3; -fx-alignment: CENTER; -fx-font-family: Franklin Gothic Medium Cond; -fx-font-size: 22; -fx-background-radius: 20;" text="Waiting for all players...">
          <font>
             <Font name="Franklin Gothic Medium Cond" size="21.0" />
          </font>
