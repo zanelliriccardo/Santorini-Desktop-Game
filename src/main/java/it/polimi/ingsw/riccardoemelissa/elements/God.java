@@ -124,7 +124,7 @@ public abstract class God implements Serializable {
             opponent_turn=false;
     }
 
-    protected void setCardType(GodCardType type) {
+    public void setCardType(GodCardType type) {
         this.request =type;
     }
 }

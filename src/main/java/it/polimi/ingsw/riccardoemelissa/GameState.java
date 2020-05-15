@@ -355,7 +355,7 @@ public class GameState {
     public static ArrayList<int[]> possibleMoves()
     {
         ArrayList<Worker> workers=getWorkers();
-        ArrayList<int[]> possiblemoves = null;
+        ArrayList<int[]> possiblemoves = new ArrayList<>();
 
         for (Worker w : workers)
         {
@@ -376,6 +376,8 @@ public class GameState {
         {
             for (int j = 0; j < 5; j++)
             {
+                if(b.GetStateBox(i,j))
+                    continue;
                 if(b.GetOccupant(i,j).GetProprietary().GetNickname().compareTo(getActivePlayer().GetNickname())==0)
                     workers.add(b.GetOccupant(i,j));
             }
