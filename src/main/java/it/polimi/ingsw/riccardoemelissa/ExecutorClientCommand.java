@@ -118,6 +118,7 @@ public class ExecutorClientCommand {
                 if(GameState.possibleMoves().isEmpty()&&GameState.getActivePlayer().GetGodCard().getCardType()!=GodCardType.WIN)
                     GameState.getActivePlayer().GetGodCard().setCardType(GodCardType.LOSE);
 
+                GameState.setActiveWorker(null);
                 GameState.GetBoard().custom_notifyAll();
                 break;
             case RESET:

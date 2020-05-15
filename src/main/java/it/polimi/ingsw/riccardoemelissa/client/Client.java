@@ -308,6 +308,11 @@ public class Client extends Application implements CustomObserver {
             System.out.println("cambia potere in disattivo");
             button_setpower.setText("DISABLE");
             set_power.setImage(new Image(String.valueOf((getClass().getResource("images/heropower_inactive.png")))));
+            for (Player p :
+                    from_server.getPlayers()) {
+                if (p.GetNickname().compareTo(nickname.getText()) == 0)
+                    p.GetGodCard().setIn_action(PowerType.DISABLE);
+            }
             activedPower(PowerType.DISABLE);
         }
 
@@ -316,6 +321,11 @@ public class Client extends Application implements CustomObserver {
             System.out.println("cambia potere in attivo");
             button_setpower.setText("ACTIVE");
             set_power.setImage(new Image(String.valueOf(getClass().getResource("images/heropower_active.png"))));
+            for (Player p :
+                    from_server.getPlayers()) {
+                if (p.GetNickname().compareTo(nickname.getText()) == 0)
+                    p.GetGodCard().setIn_action(PowerType.ACTIVE);
+            }
             activedPower(PowerType.ACTIVE);
         }
     }
@@ -548,6 +558,9 @@ public class Client extends Application implements CustomObserver {
 
     public void activeMoveCells()
     {
+        if(activeWorker==null)
+            return;
+
         for (int[] pos :
                 possibleCells_activeWorker)
         {
@@ -583,6 +596,9 @@ public class Client extends Application implements CustomObserver {
 
     public void activeBuildCells()
     {
+        if(activeWorker==null)
+            return;
+
         for (int[] pos :
                 possibleCells_activeWorker)
         {
@@ -669,7 +685,11 @@ public class Client extends Application implements CustomObserver {
     public void setDisable (boolean value)
     {
         myboard.setDisable(value);
-        button_setpower.setDisable(value);
+        for (Player p : from_server.getPlayers()) {
+            if(!p.GetGodCard().getIn_action().isPassive()&&p.GetNickname().compareTo(nickname.getText())==0)
+                button_setpower.setDisable(value);
+        }
+
     }
 }
 

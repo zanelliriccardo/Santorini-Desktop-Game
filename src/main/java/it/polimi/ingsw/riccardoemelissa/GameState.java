@@ -401,7 +401,10 @@ public class GameState {
 
 
     public static void setActiveWorker(int[] getPos) {
-        activeWorker=GameState.GetBoard().GetOccupant(getPos);
+        if(getPos==null)
+            activeWorker=null;
+        else
+            activeWorker=GameState.GetBoard().GetOccupant(getPos);
     }
 
     public static Worker getActiveWorker() {
