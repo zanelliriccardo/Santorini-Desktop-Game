@@ -1,4 +1,4 @@
-package elements;
+package it.polimi.ingsw.riccardoemelissa.elements;
 
 import it.polimi.ingsw.riccardoemelissa.elements.Player;
 import it.polimi.ingsw.riccardoemelissa.elements.card.Apollo;

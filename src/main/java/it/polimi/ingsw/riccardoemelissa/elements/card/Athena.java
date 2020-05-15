@@ -30,13 +30,16 @@ public class Athena extends God implements Serializable {
     @Override
     public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
+        System.out.println("in action = " + in_action);
         if (active_worker.GetProprietary().GetGodCard() instanceof Athena)
         {
             in_action = SetInAction(active_worker.GetPosition(), newpos, b);
             super.Move(b, active_worker, newpos);
+            System.out.println("in action = " + in_action);
         }
         else if (in_action)
         {
+            System.out.println("in action = " + in_action);
             return RespectAthenaAction(active_worker.GetPosition(), newpos, b);
         }
         return CommandType.BUILD;
@@ -51,7 +54,9 @@ public class Athena extends God implements Serializable {
      * @return
      */
     public CommandType RespectAthenaAction(int[] old_pos, int[] new_pos, BoardGame b) {
-        if ((b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)) < 1)
+        System.out.println("Entra in respectAthenaAction");
+        System.out.println("Differenza " +  new_pos[0] + " , " + new_pos[1] + " - " + old_pos[0] + " , " + old_pos[1] + " = " + (b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)));
+        if ((b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)) > 0)
             return CommandType.ERROR;
         return CommandType.MOVE;
     }

@@ -311,9 +311,14 @@ public class GameState {
         {
             for (Player opponent : players)
             {
-                if((opponent.GetNickname().compareTo(getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Move(board, worker_toMove,pos)==CommandType.ERROR)//check move is possible for opponent card
+                //System.out.println(" Nomi da confrontare " + opponent.GetNickname() + " , " + getActivePlayer().GetNickname());
+                //System.out.println("Ris confronto : " + (opponent.GetNickname().compareTo(getActivePlayer().GetNickname())!=0));
+                //System.out.println(" opp turn : " + opponent.GetGodCard().GetOpponentTurn());
+                if((opponent.GetNickname().compareTo(getActivePlayer().GetNickname())!=0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                    if(opponent.GetGodCard().Move(board, worker_toMove,pos)==CommandType.ERROR) {//check move is possible for opponent card
+                        System.out.println("Posizione da rimuovere é : ( " + pos[0] + " , " + pos[1]);
                         possiblemoves.remove(pos);
+                    }
             }
         }
         return possiblemoves;

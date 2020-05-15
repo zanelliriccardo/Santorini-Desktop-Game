@@ -1,4 +1,4 @@
-package elements;
+package it.polimi.ingsw.riccardoemelissa.elements;
 
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import org.junit.jupiter.api.Test;

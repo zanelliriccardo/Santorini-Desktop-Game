@@ -1,8 +1,7 @@
-package elements;
+package it.polimi.ingsw.riccardoemelissa.elements;
 
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class BoxTest extends Object {

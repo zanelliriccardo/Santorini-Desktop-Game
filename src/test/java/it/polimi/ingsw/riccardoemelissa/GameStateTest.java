@@ -3,6 +3,9 @@ package it.polimi.ingsw.riccardoemelissa;
 import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
 import it.polimi.ingsw.riccardoemelissa.elements.Player;
 import it.polimi.ingsw.riccardoemelissa.elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.elements.card.Apollo;
+import it.polimi.ingsw.riccardoemelissa.elements.card.Artemis;
+import it.polimi.ingsw.riccardoemelissa.elements.card.Pan;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -148,12 +151,8 @@ class GameStateTest {
         //assertEquals(worker2, boardGame.getWorkers(GameState.getPlayer("nickname1")).get(1));
     }
 
-    @Test
+    @Test // ???
     void checkMove() {
-    }
-
-    @Test
-    void getGameOver() {
     }
 
     @Test //codice non presente
@@ -164,43 +163,77 @@ class GameStateTest {
     void removePlayer() {
     }
 
-    @Test
-    void updateBoard() {
-    }
-
+    //God : Pan and Artemis
     @Test
     void isPossibleMove() {
+        setPlayers();
+        BoardGame boardGame = GameState.GetBoard();
+        Worker worker1 = new Worker();
+        Worker worker2 = new Worker();
+        int[] pos1 = new int[]{1,1};
+        int[] pos2 = new int[]{1,2};
+        int[] pos3 = new int[]{0,1};
+        int[] pos4 = new int[]{3,1};
+        int[] pos = new int[]{2,1};
+        worker1.setProprietary(GameState.getPlayer("nickname1"));
+        worker1.SetPosition(pos1);
+        worker1.GetProprietary().SetGodCard(new Pan());
+        worker2.setProprietary(GameState.getPlayer("nickname2"));
+        worker2.GetProprietary().SetGodCard(new Artemis());
+        worker2.SetPosition(pos2);
+        boardGame.setOccupant(pos1, worker1);
+        boardGame.setOccupant(pos2, worker2);
+
+        assertFalse(GameState.IsPossibleMove(worker1, pos2));
+
+        boardGame.DoBuild(pos3);
+        boardGame.DoBuild(pos3);
+
+        assertFalse(GameState.IsPossibleMove(worker1, pos3));
+        assertFalse(GameState.IsPossibleMove(worker1, pos4));
+
+        boardGame.DoBuild(pos);
+        assertTrue(GameState.IsPossibleMove(worker1, pos));
     }
 
-    @Test
+    @Test // Pan and Apollo
     void isPossibleBuild() {
+        setPlayers();
+        BoardGame boardGame = GameState.GetBoard();
+        Worker worker1 = new Worker();
+        Worker worker2 = new Worker();
+        int[] pos1 = new int[]{1,1};
+        int[] pos2 = new int[]{1,2};
+        int[] pos3 = new int[]{0,1};
+        int[] pos4 = new int[]{3,1};
+        worker1.setProprietary(GameState.getPlayer("nickname1"));
+        worker1.SetPosition(pos1);
+        worker1.GetProprietary().SetGodCard(new Pan());
+        worker2.setProprietary(GameState.getPlayer("nickname2"));
+        worker2.GetProprietary().SetGodCard(new Apollo());
+        worker2.SetPosition(pos2);
+        boardGame.setOccupant(pos1, worker1);
+        boardGame.setOccupant(pos2, worker2);
+
+        assertFalse(GameState.IsPossibleBuild(worker1, pos2));
+
+        boardGame.BuildDome(pos3);
+        assertFalse(GameState.IsPossibleBuild(worker1, pos3));
+        assertFalse(GameState.IsPossibleBuild(worker1, pos4));
+
+        int[] pos = new int[]{2,1};
+        assertTrue(GameState.IsPossibleBuild(worker1, pos));
     }
 
-    @Test
+    @Test //usato in isPossibleMove
     void checkMoves() {
     }
 
-    @Test
+    @Test //usato in isPossibleBuild
     void checkBuilds() {
     }
 
-    @Test
-    void possibleMoves() {
-    }
-
-    @Test
+    @Test //non va
     void getWorkers() {
-    }
-
-    @Test
-    void getNumPlayers() {
-    }
-
-    @Test
-    void setActiveWorker() {
-    }
-
-    @Test
-    void getActiveWorker() {
     }
 }
