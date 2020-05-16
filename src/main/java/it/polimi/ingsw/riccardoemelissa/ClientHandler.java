@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Timer;
 
 public class ClientHandler extends CustomObservable implements Runnable, CustomObserver {
     private String nickname;
@@ -40,6 +41,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
             while (true) {
                 try {
                     //server in attesa di messaggi
+
                     ois=new ObjectInputStream(socketConnection.getInputStream());
                     Command cmd = (Command) ois.readObject();
 

@@ -177,6 +177,18 @@ public class BoardGame extends CustomObservable implements Serializable {
         return Board[i][j].GetOccupant();
     }
 
+    public Player GetOccupantProprietary(int[] pos)
+    {
+        return Board[pos[0]][pos[1]].GetOccupant().GetProprietary();
+    }
+
+    public Player GetOccupantProprietary(int i,int j)
+    {
+        return Board[i][j].GetOccupant().GetProprietary();
+    }
+
+
+
     /**
      * Fill a box
      *

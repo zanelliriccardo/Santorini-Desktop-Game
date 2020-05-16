@@ -27,9 +27,7 @@ public class ExecutorClientCommand {
                 GameState.GetBoard().custom_notifyAll();
                 break;
             case NICKNAME:
-                //System.out.println("Ora devo creare giocatore");
                 GameState.NewPlayer((String)cmd.GetObj());
-                //System.out.println("Creazione giocatore");
                 for (Player p : GameState.GetPlayers())
                     System.out.println(p.GetNickname());
                 GameState.GetBoard().custom_notifyAll();

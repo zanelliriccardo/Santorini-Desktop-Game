@@ -33,7 +33,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Client extends Application implements CustomObserver {
+public class Client extends Application {
 
     GameProxy from_server=new GameProxy(null,null,null);
     Stage primary;
@@ -79,6 +79,12 @@ public class Client extends Application implements CustomObserver {
     public Button endTurn;
 
 
+    /**
+     * get the cell clicket by user
+     *
+     * @param e
+     * @return
+     */
     @FXML
     public int[] mouseEntered(MouseEvent e) {
         Node source = e.getPickResult().getIntersectedNode();
@@ -97,6 +103,12 @@ public class Client extends Application implements CustomObserver {
         return new int[]{rowIndex, colIndex};
     }
 
+    /**
+     * create a worker
+     *
+     * @param pos
+     * @param worker_color
+     */
     @FXML
     public void setWorkerPosition (int[] pos, String worker_color)
     {
@@ -122,6 +134,11 @@ public class Client extends Application implements CustomObserver {
         myboard.add(worker, pos[1],pos[0]);
     }
 
+    /**
+     * create the cell on gridpane board
+     *
+     * @param myboard
+     */
     @FXML
     public void initializeBoardgame (GridPane myboard) {
         for (int x = 0; x < 5; x++) {
@@ -145,7 +162,12 @@ public class Client extends Application implements CustomObserver {
         }
     }
 
-
+    /**
+     * set and show gui
+     *
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -171,12 +193,9 @@ public class Client extends Application implements CustomObserver {
     primary.setTitle("Santorini");
 
     primary.show();
-    //controller=new ControllerBoard(socket,this);
-    //controller.start();
     listener = new ListenerServer(socket,this);
     listener.start();
 
-    //initializeBoardgame();
     }
 
     public static void main(String[] args) {
@@ -191,6 +210,12 @@ public class Client extends Application implements CustomObserver {
         launch(args);
     }
 
+    /**
+     * start the game, so if another player have created the game the user join it
+     *
+     * @param mouseEvent
+     * @throws IOException
+     */
     @FXML
     public void startGame(MouseEvent mouseEvent) throws IOException {
         while(true)
@@ -225,6 +250,12 @@ public class Client extends Application implements CustomObserver {
         }
     }
 
+    /**
+     * change the user view
+     *
+     * @param path: fxml path
+     * @throws IOException
+     */
     public void changeScene(String path) throws IOException
     {
         root=null;
@@ -248,34 +279,42 @@ public class Client extends Application implements CustomObserver {
         System.out.println("Cambio scena");
     }
 
+    /*
     @FXML
     public void chooseNickname(MouseEvent mouseEvent) throws IOException {
-        /*while (from_server.getPlayers().size()==0)
-            callUpdate_fromServer();
-
-
-         */
         changeScene("choose_nickname.fxml");
         System.out.println("Passaggio a inserimento nickname");
-
     }
 
+     */
+
+    /**
+     * set number of players and change to nickname view
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void twoPlayers (MouseEvent event) throws IOException {
         messageToServer(CommandType.MODE, 2);
         System.out.println("Premuto 2 gioc");
-        chooseNickname(event);
+        changeScene("choose_nickname.fxml");
     }
 
+    /**
+     * set number of players and change to nickname view
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void threePlayers (MouseEvent event) throws IOException {
         messageToServer(CommandType.MODE, 3);
         System.out.println("Premuto 3 gioc");
-
-        System.out.println("Giocatori collegati = " + from_server.getPlayers().size());
-
-        chooseNickname(event);
+        changeScene("choose_nickname.fxml");
     }
+
+    /*
 
     @FXML
     public void modeOk (MouseEvent event) throws IOException
@@ -284,6 +323,13 @@ public class Client extends Application implements CustomObserver {
         chooseNickname(event);
     }
 
+     */
+
+    /**
+     * set nickname and go to loading view
+     * @param mouseEvent
+     * @throws IOException
+     */
     @FXML
     public void nicknameOk (MouseEvent mouseEvent) throws IOException
     {
@@ -293,6 +339,7 @@ public class Client extends Application implements CustomObserver {
         System.out.println("Premuto ok inserimento nickname");
     }
 
+    /*
     @FXML
     public void showBoard (String active_player_name) throws IOException
     {
@@ -300,6 +347,13 @@ public class Client extends Application implements CustomObserver {
         set_turn.setText("Turn of " + active_player_name);
     }
 
+     */
+    /**
+     * set the power and change image in the selected case
+     *
+     * @param mouseEvent
+     * @throws IOException
+     */
     @FXML
     public void changeButtonImage (MouseEvent mouseEvent) throws IOException
     {
@@ -330,12 +384,36 @@ public class Client extends Application implements CustomObserver {
         }
     }
 
+    /**
+     * clean possible cells colored on board
+     */
+    public void cleanBoard()
+    {
+        for (int[] pos :
+                possibleCells_activeWorker)
+        {
+            for (Node child : myboard.getChildren()) {
+                Pane pane = (Pane) child;
+                Integer r = myboard.getRowIndex(child);
+                Integer c = myboard.getColumnIndex(child);
+                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
+                {
+                    pane.setStyle("-fx-background-color: transparent");
+                }
+            }
+        }
+    }
+
+    /*
     @FXML
     public void clickedButtonEndTurn (MouseEvent event)
     {
         messageToServer(CommandType.NEXTTURN);
     }
 
+     */
+
+    /*
     @Override
     public void update(Object obj)
     {
@@ -364,12 +442,25 @@ public class Client extends Application implements CustomObserver {
         }
     }
 
+     */
+
+    /**
+     * show cells for move or build when the power is activated od deactivated
+     *
+     * @param powerType
+     */
     public void activedPower(PowerType powerType)
     {
-        if(from_server.getBoard().getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE) activeMoveCells();
-        if(from_server.getBoard().getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD) activeBuildCells();
+        if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE) activeMoveCells();
+        if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD) activeBuildCells();
     }
 
+    /**
+     * send a commmand to server
+     *
+     * @param cmd_type
+     * @param obj
+     */
     public void messageToServer(CommandType cmd_type,Object obj) {
         Command cmd_toserver=new Command(cmd_type,obj,null);
         while (true) {
@@ -381,9 +472,15 @@ public class Client extends Application implements CustomObserver {
             }
             catch (IOException io){}
         }
-        //update();
     }
 
+    /**
+     * send a commmand to server
+     *
+     * @param cmd_type
+     * @param obj
+     * @param new_pos
+     */
     public void messageToServer(CommandType cmd_type,Object obj,int[] new_pos) {
         Command cmd_toserver=new Command(cmd_type,obj,new_pos);
         while (true) {
@@ -397,6 +494,11 @@ public class Client extends Application implements CustomObserver {
         }
     }
 
+    /**
+     * send a commmand to server
+     *
+     * @param cmd_type
+     */
     public void messageToServer(CommandType cmd_type) {
         Command cmd_toserver=new Command(cmd_type,from_server.getBoard().getActivePlayer(),null);
         while (true) {
@@ -407,11 +509,17 @@ public class Client extends Application implements CustomObserver {
             }
             catch (IOException io)
             {
-                new SendException("SendMessage error!(code:"+cmd_type+")");
             }
         }
     }
 
+    /**
+     * return the possible moves for the selected worker
+     *
+     * @param board
+     * @param worker_toMove
+     * @return
+     */
     public ArrayList<int[]> checkMoves(BoardGame board, Worker worker_toMove)
     {
         ArrayList<int[]> possiblemoves= worker_toMove.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board, worker_toMove.GetPosition());
@@ -430,6 +538,13 @@ public class Client extends Application implements CustomObserver {
         return possiblemoves;
     }
 
+    /**
+     * return the possible build for the selected worker
+     *
+     * @param board
+     * @param builder
+     * @return
+     */
     public ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
     {
         ArrayList<int[]> possiblebuild=board.AdjacentBoxforBuild(builder.GetPosition());
@@ -440,7 +555,7 @@ public class Client extends Application implements CustomObserver {
         {
             for (Player opponent : from_server.getPlayers())
             {
-                if((opponent.GetNickname().compareTo(from_server.getBoard().getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                if((opponent.GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
                     if(opponent.GetGodCard().Build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
                         possiblebuild.remove(pos);
             }
@@ -448,6 +563,10 @@ public class Client extends Application implements CustomObserver {
         return possiblebuild;
     }
 
+    /**
+     * return the possiblemoves for every workers, so if the array is empty the player lose
+     * @return
+     */
     public ArrayList<int[]> possibleMoves()
     {
         ArrayList<Worker> workers=getWorkers();
@@ -460,6 +579,7 @@ public class Client extends Application implements CustomObserver {
         return possiblemoves;
     }
 
+    /*
     @FXML
     public void checkServerBoard ()
     {
@@ -478,6 +598,12 @@ public class Client extends Application implements CustomObserver {
         }
     }
 
+     */
+
+    /**
+     * manage the click on a cell: create a worker, select a worker, move and build
+     * @param mouseEvent
+     */
     @FXML
     public void selectedCell(MouseEvent mouseEvent)
     {
@@ -486,7 +612,7 @@ public class Client extends Application implements CustomObserver {
         System.out.println("La posizione cliccata è ( " + new_position[0] + " , "+ new_position[1] + ")" );
 
         //crea worker
-        if(nickname.getText().compareTo(from_server.getBoard().getActivePlayer().GetNickname())==0&&getWorkers().size()<2)
+        if(nickname.getText().compareTo(from_server.getActivePlayer().GetNickname())==0&&getWorkers().size()<2)
         {
             if(!from_server.getBoard().GetStateBox(new_position))
                 return;
@@ -496,11 +622,11 @@ public class Client extends Application implements CustomObserver {
         //selezione worker
         else if(!from_server.getBoard().GetStateBox(new_position))
         {
-            if(from_server.getBoard().GetOccupant(new_position).GetProprietary().GetNickname().compareTo(from_server.getBoard().getActivePlayer().GetNickname())==0) {
+            if(from_server.getBoard().GetOccupantProprietary(new_position).GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0) {
                 activeWorker = from_server.getBoard().GetOccupant(new_position);
-                if (from_server.getBoard().getActivePlayer().GetGodCard().getCardType() == GodCardType.MOVE)
+                if (from_server.getActivePlayer().GetGodCard().getCardType() == GodCardType.MOVE)
                     activeMoveCells();
-                else if (from_server.getBoard().getActivePlayer().GetGodCard().getCardType() == GodCardType.BUILD)
+                else if (from_server.getActivePlayer().GetGodCard().getCardType() == GodCardType.BUILD)
                     activeBuildCells();
             }
             setDisable(false);
@@ -513,40 +639,22 @@ public class Client extends Application implements CustomObserver {
         {
             messageToServer(CommandType.MOVE,activeWorker,new_position);
             setDisable(true);
-            for (int[] pos :
-                    possibleCells_activeWorker)
-            {
-                for (Node child : myboard.getChildren()) {
-                    Pane pane = (Pane) child;
-                    Integer r = myboard.getRowIndex(child);
-                    Integer c = myboard.getColumnIndex(child);
-                    if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
-                    {
-                        pane.setStyle("-fx-background-color: transparent");
-                    }
-                }
-            }
+            cleanBoard();
         }
         else if(activeWorker.GetProprietary().GetGodCard().getCardType()==GodCardType.BUILD&&contains(new_position))
         {
             messageToServer(CommandType.BUILD,activeWorker,new_position);
             setDisable(true);
-            for (int[] pos :
-                    possibleCells_activeWorker)
-            {
-                for (Node child : myboard.getChildren()) {
-                    Pane pane = (Pane) child;
-                    Integer r = myboard.getRowIndex(child);
-                    Integer c = myboard.getColumnIndex(child);
-                    if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
-                    {
-                        pane.setStyle("-fx-background-color: transparent");
-                    }
-                }
-            }
+            cleanBoard();
         }
     }
 
+    /**
+     * redefinition of list.contains
+     *
+     * @param new_position
+     * @return
+     */
     private boolean contains(int[] new_position) {
             for ( int[] i : possibleCells_activeWorker)
             {
@@ -556,25 +664,15 @@ public class Client extends Application implements CustomObserver {
             return false;
     }
 
+    /**
+     * show the possible cells to move on it
+     */
     public void activeMoveCells()
     {
         if(activeWorker==null)
             return;
 
-        for (int[] pos :
-                possibleCells_activeWorker)
-        {
-            for (Node child : myboard.getChildren()) {
-                Pane pane = (Pane) child;
-                Integer r = myboard.getRowIndex(child);
-                Integer c = myboard.getColumnIndex(child);
-                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
-                {
-                    pane.setStyle("-fx-background-color: transparent");
-                }
-            }
-        }
-
+        cleanBoard();
         possibleCells_activeWorker= checkMoves(from_server.getBoard(),activeWorker);
 
         for (int[] pos :
@@ -589,30 +687,18 @@ public class Client extends Application implements CustomObserver {
                     pane.setStyle("-fx-background-color: #1E90FF");
                 }
             }
-
-            //colora di blu
         }
     }
 
+    /**
+     * show the cells to build on it
+     */
     public void activeBuildCells()
     {
         if(activeWorker==null)
             return;
 
-        for (int[] pos :
-                possibleCells_activeWorker)
-        {
-            for (Node child : myboard.getChildren()) {
-                Pane pane = (Pane) child;
-                Integer r = myboard.getRowIndex(child);
-                Integer c = myboard.getColumnIndex(child);
-                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
-                {
-                    pane.setStyle("-fx-background-color: transparent");
-                }
-            }
-        }
-
+        cleanBoard();
         possibleCells_activeWorker= checkBuilds(from_server.getBoard(),activeWorker);
 
         for (int[] pos :
@@ -627,10 +713,14 @@ public class Client extends Application implements CustomObserver {
                     pane.setStyle("-fx-background-color: #FF0000");
                 }
             }
-            //colora di rosso
         }
     }
 
+    /**
+     * return the workers of the user
+     *
+     * @return
+     */
     public ArrayList<Worker> getWorkers()
     {
         ArrayList<Worker> workers=new ArrayList<Worker>();
@@ -639,13 +729,14 @@ public class Client extends Application implements CustomObserver {
             for (int j = 0; j < 5; j++)
             {
                 if(!from_server.getBoard().GetStateBox(i,j))
-                    if(from_server.getBoard().GetOccupant(i,j).GetProprietary().GetNickname().compareTo(from_server.getBoard().getActivePlayer().GetNickname())==0)
+                    if(from_server.getBoard().GetOccupantProprietary(i,j).GetNickname().compareTo(from_server.getBoard().getActivePlayer().GetNickname())==0)
                         workers.add(from_server.getBoard().GetOccupant(i,j));
             }
         }
         return workers;
     }
 
+    /*
     public void update()
     {
         try {
@@ -660,28 +751,27 @@ public class Client extends Application implements CustomObserver {
         }
     }
 
+     */
+
+    /**
+     * send end turn to server and clean board
+     *
+     * @param mouseEvent
+     */
     @FXML
     public void endturn(MouseEvent mouseEvent)
     {
-        if(!from_server.getBoard().getActivePlayer().GetGodCard().getCardType().isEndTurn())
+        if(!from_server.getActivePlayer().GetGodCard().getCardType().isEndTurn())
             return;
-
-        for (int[] pos :
-                possibleCells_activeWorker)
-        {
-            for (Node child : myboard.getChildren()) {
-                Pane pane = (Pane) child;
-                Integer r = myboard.getRowIndex(child);
-                Integer c = myboard.getColumnIndex(child);
-                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
-                {
-                    pane.setStyle("-fx-background-color: transparent");
-                }
-            }
-        }
+        cleanBoard();
         messageToServer(CommandType.CHANGE_TURN);
     }
 
+    /**
+     * enable/disable click on board
+     *
+     * @param value
+     */
     public void setDisable (boolean value)
     {
         myboard.setDisable(value);

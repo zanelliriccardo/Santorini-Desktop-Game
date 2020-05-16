@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Artemis extends God implements Serializable {
     private PowerType type=PowerType.DISABLE;
 
-    private int[] old_position=null;
+    private int[] old_position;
 
     /**
      * apply artemis rules if power is active
@@ -27,6 +27,7 @@ public class Artemis extends God implements Serializable {
     {
         if(old_position==null&&type.isActive())
         {
+            old_position=new int[2];
             old_position[0] = active_worker.GetPosition()[0];
             old_position[1] = active_worker.GetPosition()[1];
 

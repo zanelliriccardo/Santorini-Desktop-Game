@@ -64,7 +64,7 @@
             <Font name="Franklin Gothic Medium Cond" size="14.0" />
          </font>
       </ToggleButton>
-      <ImageView fx:id="set_power" fitHeight="79.0" fitWidth="75.0" layoutX="877.0" layoutY="327.0" onMouseClicked="#changeButtonImage" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="set_power" fitHeight="79.0" fitWidth="75.0" layoutX="877.0" layoutY="327.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/heropower_inactive.png" />
          </image>

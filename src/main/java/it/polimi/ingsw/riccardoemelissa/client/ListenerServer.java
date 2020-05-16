@@ -34,6 +34,9 @@ public class ListenerServer extends Thread {
         client_javafx=client;
     }
 
+    /**
+     * wait for an update from server
+     */
     public void run()
     {
         while (true)
@@ -50,6 +53,10 @@ public class ListenerServer extends Thread {
         }
     }
 
+    /**
+     * first platform.runlater set and show the board,
+     * second manage it
+     */
     private void makeBoard()
     {
         AtomicInteger count = new AtomicInteger();
@@ -71,7 +78,7 @@ public class ListenerServer extends Thread {
                 client_javafx.setServerMessage.setStyle("-fx-background-color: transparent");
                 client_javafx.setServerMessage.setStyle("-fx-font-size : 15");
                 client_javafx.setServerMessage.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
-                client_javafx.setServerMessage.setText("Hi " + client_javafx.from_server.getBoard().getActivePlayer().GetNickname()+ "!" +"\nThe first thing you have to do \nis to choose the initial position \nof your workers. \nPlace them in two free boxes.");
+                client_javafx.setServerMessage.setText("Hi " + client_javafx.from_server.getActivePlayer().GetNickname()+ "!" +"\nThe first thing you have to do \nis to choose the initial position \nof your workers. \nPlace them in two free boxes.");
 
 
                 for (Player p: client_javafx.from_server.getPlayers())
@@ -162,9 +169,9 @@ public class ListenerServer extends Thread {
 
         Platform.runLater(()->
         {
-            client_javafx.endTurn.setVisible(client_javafx.from_server.getBoard().getActivePlayer().GetGodCard().getCardType().isEndTurn()&&client_javafx.from_server.getBoard().getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0);
+            client_javafx.endTurn.setVisible(client_javafx.from_server.getActivePlayer().GetGodCard().getCardType().isEndTurn()&&client_javafx.from_server.getBoard().getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0);
 
-            client_javafx.set_turn.setText("Turn of " + client_javafx.from_server.getBoard().getActivePlayer().GetNickname());
+            client_javafx.set_turn.setText("Turn of " + client_javafx.from_server.getActivePlayer().GetNickname());
             client_javafx.set_turn.setFont(Font.font(" Franklin Gothic Medium Cond", FontWeight.BOLD, 18));
 
             for(int i = 0; i< 5; i++) {
@@ -174,7 +181,7 @@ public class ListenerServer extends Thread {
                         System.out.println(client_javafx.from_server.getBoard().GetStateBox(i, j));
                         Circle worker = new Circle(client_javafx.myboard.getHeight()/10, client_javafx.myboard.getWidth()/10, client_javafx.myboard.getHeight()/15);
 
-                        switch (client_javafx.from_server.getBoard().GetOccupant(i,j).GetProprietary().GetColor())
+                        switch (client_javafx.from_server.getBoard().GetOccupantProprietary(i,j).GetColor())
                         {
                             case "MAGENTA":
                                 worker.setFill(Color.MAGENTA);
@@ -225,15 +232,15 @@ public class ListenerServer extends Thread {
                 }
             }
 
-            if(client_javafx.from_server.getBoard().getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
+            if(client_javafx.from_server.getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
             {
-                if (client_javafx.from_server.getBoard().getActivePlayer().GetGodCard().getCardType() == GodCardType.WIN)
+                if (client_javafx.from_server.getActivePlayer().GetGodCard().getCardType() == GodCardType.WIN)
                     client_javafx.messageToServer(CommandType.WIN,client_javafx.nickname.getText());
-                if (client_javafx.from_server.getBoard().getActivePlayer().GetGodCard().getCardType() == GodCardType.LOSE)
+                if (client_javafx.from_server.getActivePlayer().GetGodCard().getCardType() == GodCardType.LOSE)
                     client_javafx.messageToServer(CommandType.LOSE,client_javafx.nickname.getText());
             }
 
-            if(client_javafx.from_server.getActive_worker()!=null&&client_javafx.from_server.getBoard().getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
+            if(client_javafx.from_server.getActive_worker()!=null&&client_javafx.from_server.getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
             {
                 client_javafx.activeWorker = client_javafx.from_server.getBoard().GetOccupant(client_javafx.from_server.getActive_worker().GetPosition());
 
@@ -244,42 +251,27 @@ public class ListenerServer extends Thread {
             }
             else
             {
-                for (int[] pos :
-                        client_javafx.possibleCells_activeWorker) {
-                    for (Node child : client_javafx.myboard.getChildren()) {
-                        Pane pane = (Pane) child;
-                        Integer r = client_javafx.myboard.getRowIndex(child);
-                        Integer c = client_javafx.myboard.getColumnIndex(child);
-                        if (r != null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1]) {
-                            pane.setStyle("-fx-background-color: transparent");
-                        }
-                    }
-                }
+                client_javafx.cleanBoard();
                 client_javafx.activeWorker=null;
             }
 
-            if(client_javafx.from_server.getBoard().getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
+            if(client_javafx.from_server.getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
                 client_javafx.setDisable(false);
             else
                 client_javafx.setDisable(true);
 
             if(client_javafx.from_server.getBoard().getGameover())
             {
-                if(client_javafx.from_server.getBoard().getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
-                {
-                    try {
+                try {
+                    if (client_javafx.from_server.getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText()) == 0) {
                         client_javafx.changeScene("winner.fxml");
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    }
+                    else {
+                        client_javafx.changeScene("loser.fxml");
                     }
                 }
-                else
-                {
-                    try {
-                        client_javafx.changeScene("loser.fxml");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
 

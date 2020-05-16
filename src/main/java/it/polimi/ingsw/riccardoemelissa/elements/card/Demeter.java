@@ -25,9 +25,11 @@ public class Demeter extends God implements Serializable {
     @Override
     public CommandType Build(BoardGame b, Worker active_Worker, int[] pos)
     {
-        if(old_position==null)
+        if(old_position==null&&type.isActive())
         {
-            old_position = pos;
+            old_position=new int[2];
+            old_position[0] = active_Worker.GetPosition()[0];
+            old_position[1] = active_Worker.GetPosition()[1];
             super.Build(b,active_Worker,pos);
 
             if(type.isActive())

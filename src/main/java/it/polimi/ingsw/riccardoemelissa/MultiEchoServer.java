@@ -71,10 +71,6 @@ public class MultiEchoServer {
                 serverSocket.close();
                 System.out.println("gioco pronto");
                 GameState.GetBoard().custom_notifyAll();
-                //firstClient.update(new Object());
-                //clients.forEach(clientHandler -> clientHandler.update(new Object()));
-
-                //GameState.NextTurn();
 
                 if(GameState.getGameOver()) //inserire controllo su fine partita
                     break;

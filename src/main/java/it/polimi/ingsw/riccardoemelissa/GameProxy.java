@@ -33,4 +33,9 @@ public class GameProxy implements Serializable {
         this.active_worker=fromServer.getActive_worker();
         this.players=fromServer.getPlayers();
     }
+
+    public Player getActivePlayer()
+    {
+        return board_copy.getActivePlayer();
+    }
 }
