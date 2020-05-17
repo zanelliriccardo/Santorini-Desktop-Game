@@ -243,10 +243,13 @@ public class GameState {
 
     /**
      * to do
+     * @param player
      */
-    public static void RemovePlayer()
+    public static void RemovePlayer(Player player)
     {
-
+        players.remove(GetIndexPlayer(player.GetNickname()));
+        if(trace>=players.size())
+            trace=0;
     }
 
     public static void UpdateBoard(BoardGame board)
@@ -334,7 +337,7 @@ public class GameState {
      */
     public static ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
     {
-        ArrayList<int[]> possiblebuild=board.AdjacentBoxforBuild(builder.GetPosition());
+        ArrayList<int[]> possiblebuild=builder.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board,builder.GetPosition());
 
         possiblebuild.removeIf(pos -> board.GetLevelBox(pos) == 4);
 

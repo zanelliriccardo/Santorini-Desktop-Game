@@ -18,4 +18,10 @@ public enum GodCardType  implements Serializable
     public boolean isEndTurn() {
         return this==ENDTURN;
     }
+
+    public boolean isWin() {
+        return this==WIN;
+    }
+
+
 }

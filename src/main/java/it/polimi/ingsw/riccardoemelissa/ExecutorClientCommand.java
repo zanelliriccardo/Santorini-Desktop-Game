@@ -37,7 +37,6 @@ public class ExecutorClientCommand {
                 ((Worker)cmd.GetObj()).SetPosition(cmd.GetPos());
                 GameState.GetBoard().setOccupant(cmd.GetPos(),(Worker)cmd.GetObj());
 
-
                 ArrayList<Worker> workers=new ArrayList<Worker>();
 
                 for (int i = 0; i < 5; i++)
@@ -50,22 +49,22 @@ public class ExecutorClientCommand {
                     }
                 }
 
-                if(workers.size()==2)//sipuofarein modo piu intelligg
+                if(workers.size()==2)
                     GameState.NextTurn();
 
                 GameState.GetBoard().custom_notifyAll();
-
-                break;
-            case SETPOWER:
+                break;/*
+            case SETPOWER://inutilizzato
                 GameState.getActivePlayer().GetGodCard().setIn_action((PowerType) cmd.GetObj());
                 break;
+                */
             case DISCONNECTED://da rivedere
                 GameState.EndGame();
                 game=null;
                 break;
             case MOVE:
                 if(!GameState.IsPossibleMove((Worker)cmd.GetObj(),cmd.GetPos())) {
-                    update(new Command(CommandType.LOSE, null, null));//dafare
+                    GameState.RemovePlayer(GameState.getActivePlayer());
                     return;
                 }
                 Worker move_worker=GameState.GetBoard().GetOccupant((((Worker) cmd.GetObj()).GetPosition()));
@@ -75,46 +74,63 @@ public class ExecutorClientCommand {
 
                 System.out.println("move");
 
-                if(GameState.GetBoard().GetLevelBox(move_worker.GetPosition())==3)
-                {    move_worker.GetProprietary().GetGodCard().setCardType(GodCardType.WIN);
-                    GameState.GetBoard().setGameOver(true);
-                }
+                if(GameState.checkMoves(GameState.GetBoard(),move_worker).isEmpty()&&GameState.getActivePlayer().GetGodCard().getCardType().isMove())
+                    lose();
+                if(GameState.checkBuilds(GameState.GetBoard(),move_worker).isEmpty()&&GameState.getActivePlayer().GetGodCard().getCardType().isBuild())
+                    lose();
 
-                GameState.setActiveWorker(cmd.GetPos());
+                if(GameState.GetBoard().GetLevelBox(move_worker.GetPosition())==3||GameState.getActivePlayer().GetGodCard().getCardType().isWin())
+                {
+                    move_worker.GetProprietary().GetGodCard().setCardType(GodCardType.WIN);
+                    GameState.EndGame();
+                    GameState.setActiveWorker(null);
+                }
+                else
+                    GameState.setActiveWorker(cmd.GetPos());
+
                 GameState.GetBoard().custom_notifyAll();
                 break;
             case BUILD:
                 if(!GameState.IsPossibleBuild((Worker)cmd.GetObj(),cmd.GetPos())) {
-                    this.update(new Command(CommandType.LOSE, null, null));//dafare
+                    GameState.RemovePlayer(GameState.getActivePlayer());
                     return;
                 }
                 Worker build_worker=GameState.GetBoard().GetOccupant((((Worker) cmd.GetObj()).GetPosition()));
                 build_worker.GetProprietary().GetGodCard().setIn_action(((Worker) cmd.GetObj()).GetProprietary().GetGodCard().getIn_action());
 
-                System.out.println("build");
-
                 build_worker.GetProprietary().GetGodCard().Build(GameState.GetBoard(),build_worker,cmd.GetPos());
 
+                System.out.println("build");
+
+                if(GameState.checkMoves(GameState.GetBoard(),build_worker).isEmpty()&&GameState.getActivePlayer().GetGodCard().getCardType().isMove())
+                    lose();
+                if(GameState.checkBuilds(GameState.GetBoard(),build_worker).isEmpty()&&GameState.getActivePlayer().GetGodCard().getCardType().isBuild())
+                    lose();
+
                 GameState.GetBoard().custom_notifyAll();
-                break;
-            case WIN:
-                if(GameState.getPlayer((String)cmd.GetObj()).GetGodCard().getCardType()==GodCardType.WIN)
+                break;/*
+            case WIN://inutilizzato
+                if(GameState.getPlayer((String)cmd.GetObj()).GetGodCard().getCardType().isWin())
                 {
                     GameState.EndGame();
                 }
+                GameState.setActiveWorker(null);
+                GameState.GetBoard().custom_notifyAll();
                 break;
-            case LOSE:
+            case LOSE://inutilizzato
                 if(GameState.getPlayer((String)cmd.GetObj()).GetGodCard().getCardType()==GodCardType.LOSE)
                 {
-                    GameState.RemovePlayer();
+                    GameState.RemovePlayer(GameState.getPlayer((String)cmd.GetObj()));
                 }
+                GameState.GetBoard().custom_notifyAll();
                 break;
+                */
             case CHANGE_TURN:
-                GameState.getActivePlayer().GetGodCard().resetCard();
                 GameState.NextTurn();
-
-                if(GameState.possibleMoves().isEmpty()&&GameState.getActivePlayer().GetGodCard().getCardType()!=GodCardType.WIN)
-                    GameState.getActivePlayer().GetGodCard().setCardType(GodCardType.LOSE);
+                if(GameState.possibleMoves().isEmpty()&&GameState.getActivePlayer().GetGodCard().getCardType().isMove())
+                    lose();
+                else
+                    GameState.getActivePlayer().GetGodCard().resetCard();
 
                 GameState.setActiveWorker(null);
                 GameState.GetBoard().custom_notifyAll();
@@ -125,5 +141,16 @@ public class ExecutorClientCommand {
         }
 
         //GameState.GetBoard().custom_notifyAll();
+    }
+
+    private void lose()
+    {
+        GameState.getActivePlayer().GetGodCard().setCardType(GodCardType.LOSE);
+        GameState.RemovePlayer(GameState.getActivePlayer());
+        GameState.setActiveWorker(null);
+        if(GameState.GetNumPlayers()==1) {
+            GameState.GetPlayers().get(0).GetGodCard().setCardType(GodCardType.WIN);
+            GameState.EndGame();
+        }
     }
 }

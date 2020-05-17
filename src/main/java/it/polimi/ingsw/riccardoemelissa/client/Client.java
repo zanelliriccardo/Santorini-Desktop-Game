@@ -547,7 +547,7 @@ public class Client extends Application {
      */
     public ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
     {
-        ArrayList<int[]> possiblebuild=board.AdjacentBoxforBuild(builder.GetPosition());
+        ArrayList<int[]> possiblebuild=builder.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board,builder.GetPosition());
 
         possiblebuild.removeIf(pos -> board.GetLevelBox(pos) == 4);
 
@@ -735,23 +735,6 @@ public class Client extends Application {
         }
         return workers;
     }
-
-    /*
-    public void update()
-    {
-        try {
-            ObjectInputStream in=new ObjectInputStream(socket.getInputStream());
-            System.out.println("in attesa di messaggio dal server");
-            from_server=(GameProxy)in.readObject();
-            System.out.println("ricevuto update dal server (Client -> update): " + from_server.getPlayers().size());
-        }
-        catch (IOException | ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-     */
 
     /**
      * send end turn to server and clean board

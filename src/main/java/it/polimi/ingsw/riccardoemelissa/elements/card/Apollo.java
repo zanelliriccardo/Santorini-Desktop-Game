@@ -44,8 +44,8 @@ public class Apollo extends God implements Serializable {
     @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> adj_boxes = new ArrayList<>();
-
-        for (int x = worker_pos[0] - 1; x <= worker_pos[0] + 1; x++) {
+        if(super.getCardType().isMove())
+            for (int x = worker_pos[0] - 1; x <= worker_pos[0] + 1; x++) {
             for (int y = worker_pos[1] - 1; y <= worker_pos[1] + 1; y++) {
 
                 if (x == worker_pos[0] && y == worker_pos[1])
@@ -75,6 +75,8 @@ public class Apollo extends God implements Serializable {
                 adj_boxes.add(pos);
             }
         }
+        else
+            super.adjacentBoxNotOccupiedNotDome(b,worker_pos);
         return adj_boxes;
     }
 

@@ -37,31 +37,34 @@ public class Hephaestus extends God implements Serializable {
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> adj_boxes = new ArrayList<>();
 
-        for (int x = worker_pos[0] - 1; x <= worker_pos[0] + 1; x++) {
-            for (int y = worker_pos[1] - 1; y <= worker_pos[1] + 1; y++) {
-                if (x == worker_pos[0] && y == worker_pos[1])
-                    continue;
+        if(super.getCardType().isMove())
+            super.adjacentBoxNotOccupiedNotDome(b,worker_pos);
+        else
+            for (int x = worker_pos[0] - 1; x <= worker_pos[0] + 1; x++) {
+                for (int y = worker_pos[1] - 1; y <= worker_pos[1] + 1; y++) {
+                    if (x == worker_pos[0] && y == worker_pos[1])
+                        continue;
 
-                if (x > 4 || x < 0)
-                    continue;
+                    if (x > 4 || x < 0)
+                        continue;
 
-                if (y > 4 || y < 0)
-                    continue;
+                    if (y > 4 || y < 0)
+                        continue;
 
-                if(!b.GetStateBox(x,y))
-                    continue;
+                    if(!b.GetStateBox(x,y))
+                        continue;
 
-                if(b.GetLevelBox(x,y)==4)
-                    continue;
+                    if(b.GetLevelBox(x,y)==4)
+                        continue;
 
-                if(b.GetLevelBox(x,y)>1&&type.isActive())
-                    continue;
+                    if(b.GetLevelBox(x,y)>1&&type.isActive())
+                        continue;
 
-                int[] pos = new int[]{x,y};
+                    int[] pos = new int[]{x,y};
 
-                adj_boxes.add(pos);
+                    adj_boxes.add(pos);
+                }
             }
-        }
         return adj_boxes;
     }
 

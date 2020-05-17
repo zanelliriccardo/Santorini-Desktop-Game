@@ -47,47 +47,49 @@ public class Minotaur extends God implements Serializable {
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> adj_boxes = new ArrayList<>();
 
+        if(super.getCardType().isMove())
+            for (int x = worker_pos[0] - 1; x <= worker_pos[0] + 1; x++) {
+                for (int y = worker_pos[1] - 1; y <= worker_pos[1] + 1; y++) {
 
-        for (int x = worker_pos[0] - 1; x <= worker_pos[0] + 1; x++) {
-            for (int y = worker_pos[1] - 1; y <= worker_pos[1] + 1; y++) {
+                    if (x == worker_pos[0] && y == worker_pos[1])
+                        continue;
 
-                if (x == worker_pos[0] && y == worker_pos[1])
-                    continue;
+                    if (x > 4 || x < 0)
+                        continue;
 
-                if (x > 4 || x < 0)
-                    continue;
+                    if (y > 4 || y < 0)
+                        continue;
 
-                if (y > 4 || y < 0)
-                    continue;
+                    if(b.GetLevelBox(x,y)==4)
+                        continue;
 
-                if(b.GetLevelBox(x,y)==4)
-                    continue;
+                    if(b.GetStateBox(x,y))
+                    {
+                        int[] pos = new int[]{x,y};
+                        adj_boxes.add(pos);
+                        continue;
+                    }
 
-                if(b.GetStateBox(x,y))
-                {
+                    if(Objects.requireNonNull(b.GetOccupant(x,y)).GetProprietary().GetNickname().compareTo(b.GetOccupant(worker_pos).GetProprietary().GetNickname())==0)
+                        continue;
+
+                    int[] newpos_opponent = new int[]{(x - worker_pos[0]) + x, (y - worker_pos[1]) + y};
+
+                    if(newpos_opponent[0]>4||newpos_opponent[1]>4||newpos_opponent[0]<0||newpos_opponent[1]<0)
+                        continue;
+
+                    if(!b.GetStateBox(newpos_opponent))
+                        continue;
+
+
+
                     int[] pos = new int[]{x,y};
+
                     adj_boxes.add(pos);
-                    continue;
                 }
-
-                if(Objects.requireNonNull(b.GetOccupant(x,y)).GetProprietary().GetNickname().compareTo(b.GetOccupant(worker_pos).GetProprietary().GetNickname())==0)
-                    continue;
-
-                int[] newpos_opponent = new int[]{(x - worker_pos[0]) + x, (y - worker_pos[1]) + y};
-
-                if(newpos_opponent[0]>4||newpos_opponent[1]>4||newpos_opponent[0]<0||newpos_opponent[1]<0)
-                    continue;
-
-                if(!b.GetStateBox(newpos_opponent))
-                    continue;
-
-
-
-                int[] pos = new int[]{x,y};
-
-                adj_boxes.add(pos);
             }
-        }
+        else
+            super.adjacentBoxNotOccupiedNotDome(b,worker_pos);
         return adj_boxes;
     }
 

@@ -245,14 +245,6 @@ public class ListenerServer extends Thread {
                 }
             }
 
-            if(client_javafx.from_server.getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
-            {
-                if (client_javafx.from_server.getActivePlayer().GetGodCard().getCardType() == GodCardType.WIN)
-                    client_javafx.messageToServer(CommandType.WIN,client_javafx.nickname.getText());
-                if (client_javafx.from_server.getActivePlayer().GetGodCard().getCardType() == GodCardType.LOSE)
-                    client_javafx.messageToServer(CommandType.LOSE,client_javafx.nickname.getText());
-            }
-
             if(client_javafx.from_server.getActive_worker()!=null&&client_javafx.from_server.getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
             {
                 client_javafx.activeWorker = client_javafx.from_server.getBoard().GetOccupant(client_javafx.from_server.getActive_worker().GetPosition());

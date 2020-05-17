@@ -57,11 +57,11 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
                     }
                 }
                 catch (IOException | ClassNotFoundException e) {
-                    cmd_executor.update(new Command(CommandType.DISCONNECTED,nickname,null));
+                    cmd_executor.update(new Command(CommandType.DISCONNECTED,null,null));
                 }
             }
         //errore per chiusura connessione
-        cmd_executor.update(new Command(CommandType.DISCONNECTED,nickname,null));
+        cmd_executor.update(new Command(CommandType.DISCONNECTED,null,null));
 
     }
 
