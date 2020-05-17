@@ -60,7 +60,7 @@ public class Artemis extends God implements Serializable {
         ArrayList<int[]> possibleBox=super.adjacentBoxNotOccupiedNotDome(b, worker_pos);
         if(type.isActive()&&old_position[0]!=-1&&super.getCardType()==GodCardType.MOVE)
             //possibleBox.remove(old_position);
-            possibleBox.removeIf(pos -> pos[0] == old_position[0] && pos[1] == old_position[1]);
+            possibleBox.removeIf(p -> p[0] == old_position[0] && p[1] == old_position[1]);
 
         return possibleBox;
     }

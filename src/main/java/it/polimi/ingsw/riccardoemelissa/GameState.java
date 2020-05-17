@@ -307,7 +307,8 @@ public class GameState {
 
         possiblemoves.removeIf(pos -> board.GetLevelBox(pos) - board.GetLevelBox(worker_toMove.GetPosition()) > 1);
 
-        for (int[] pos: possiblemoves)
+        //for (int[] pos: possiblemoves)
+        for(int i = 0; i < possiblemoves.size(); i++)
         {
             for (Player opponent : players)
             {
@@ -315,9 +316,10 @@ public class GameState {
                 //System.out.println("Ris confronto : " + (opponent.GetNickname().compareTo(getActivePlayer().GetNickname())!=0));
                 //System.out.println(" opp turn : " + opponent.GetGodCard().GetOpponentTurn());
                 if((opponent.GetNickname().compareTo(getActivePlayer().GetNickname())!=0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Move(board, worker_toMove,pos)==CommandType.ERROR) {//check move is possible for opponent card
-                        System.out.println("Posizione da rimuovere é : ( " + pos[0] + " , " + pos[1]);
-                        possiblemoves.remove(pos);
+                    if(opponent.GetGodCard().Move(board, worker_toMove,possiblemoves.get(i)/*pos*/)==CommandType.ERROR) {//check move is possible for opponent card
+                        System.out.println("Posizione da rimuovere é : ( " + Arrays.toString(possiblemoves.get(i)));
+                        //possiblemoves.remove(pos);
+                        possiblemoves.remove(i);
                     }
             }
         }
