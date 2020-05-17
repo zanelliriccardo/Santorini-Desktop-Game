@@ -76,7 +76,7 @@ public class Apollo extends God implements Serializable {
             }
         }
         else
-            super.adjacentBoxNotOccupiedNotDome(b,worker_pos);
+            adj_boxes= super.adjacentBoxNotOccupiedNotDome(b,worker_pos);
         return adj_boxes;
     }
 

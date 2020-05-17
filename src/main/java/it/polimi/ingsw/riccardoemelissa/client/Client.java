@@ -1,5 +1,6 @@
 package it.polimi.ingsw.riccardoemelissa.client;
 
+import it.polimi.ingsw.riccardoemelissa.GameState;
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
@@ -236,7 +237,7 @@ public class Client extends Application {
         }
     }
 
-    public void callUpdate_fromServer() throws IOException
+    public void callUpdate_fromServer()
     {
         try
         {
@@ -764,6 +765,54 @@ public class Client extends Application {
         }
 
     }
+
+    public void updatePossibleCell()
+    {
+        if(from_server.getActive_worker()!=null&&from_server.getActivePlayer().GetNickname().compareTo(nickname.getText())==0)
+        {
+            activeWorker = from_server.getBoard().GetOccupant(from_server.getActive_worker().GetPosition());
+
+            if (activeWorker.GetProprietary().GetGodCard().getCardType().isMove()&&from_server.getActive_worker().GetProprietary().GetNickname().compareTo(nickname.getText())==0)
+                activeMoveCells();
+            else if (activeWorker.GetProprietary().GetGodCard().getCardType().isBuild()&&from_server.getActive_worker().GetProprietary().GetNickname().compareTo(nickname.getText())==0)
+                activeBuildCells();
+        }
+        else
+        {
+            cleanBoard();
+            activeWorker=null;
+        }
+    }
+
+    public boolean isMyTurn() {
+        return from_server.getBoard().getActivePlayer().GetNickname().compareTo(nickname.getText())==0;
+    }
+
+    public void checkGameOver() {
+        for (Player p : from_server.getPlayers()) {
+            if (p.GetNickname().compareTo(nickname.getText()) == 0)
+                try {
+                    if (p.GetGodCard().getCardType().isWin())
+                        changeScene("winner.fxml");
+                    else if (p.GetGodCard().getCardType().isLose())
+                        changeScene("loser.fxml");
+                }
+                catch (Exception e)
+                {
+                    callUpdate_fromServer();
+                }
+        }
+    }
+/*
+    public void checkLose()
+    {
+        if(checkMoves(from_server.getBoard(),activeWorker).isEmpty()&&from_server.getActivePlayer().GetGodCard().getCardType().isMove())
+            lose();
+        if(checkBuilds(from_server.getBoard(),activeWorker).isEmpty()&&from_server.getActivePlayer().GetGodCard().getCardType().isBuild())
+            lose();
+    }
+
+ */
 }
 
 

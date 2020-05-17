@@ -21,7 +21,7 @@ public class Pan extends God implements Serializable {
     @Override
     public CommandType Move (BoardGame b, Worker active_worker, int[] newpos)
     {
-        int[] old_position=active_worker.GetPosition();//problema reference
+        int[] old_position=active_worker.GetPosition();//problema reference??
         super.Move(b, active_worker, newpos);
 
         if (b.GetLevelBox(old_position) - b.GetLevelBox(newpos) > 1)

@@ -40,7 +40,7 @@ public class Hephaestus extends God implements Serializable {
 
         if(super.getCardType().isMove()) {
             System.out.println("super.adjacentBoxNotOccupiedNotDome");
-            super.adjacentBoxNotOccupiedNotDome(b, worker_pos);
+            adj_boxes= super.adjacentBoxNotOccupiedNotDome(b, worker_pos);
         }
         else {
             System.out.println("Efesto -> .adjacentBoxNotOccupiedNotDome");

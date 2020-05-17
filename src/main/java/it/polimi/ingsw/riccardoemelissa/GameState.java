@@ -122,6 +122,8 @@ public class GameState {
            trace ++;
        else
            trace = 0;
+
+        b.setActivePlayer(players.get(trace));
     }
 
     /**

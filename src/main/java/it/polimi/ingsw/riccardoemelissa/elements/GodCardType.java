@@ -23,5 +23,7 @@ public enum GodCardType  implements Serializable
         return this==WIN;
     }
 
-
+    public boolean isLose() {
+        return this==LOSE;
+    }
 }

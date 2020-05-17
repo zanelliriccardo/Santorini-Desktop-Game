@@ -178,7 +178,7 @@ public class ListenerServer extends Thread {
         Platform.runLater(()->
         {
             //button endturn enable only at the end of the turn
-            client_javafx.endTurn.setVisible(client_javafx.from_server.getActivePlayer().GetGodCard().getCardType().isEndTurn()&&client_javafx.from_server.getBoard().getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0);
+            client_javafx.endTurn.setVisible(client_javafx.from_server.getActivePlayer().GetGodCard().getCardType().isEndTurn()&&client_javafx.isMyTurn());
 
             //Turn of
             client_javafx.set_turn.setText("Turn of " + client_javafx.from_server.getActivePlayer().GetNickname());
@@ -245,14 +245,19 @@ public class ListenerServer extends Thread {
                 }
             }
 
-            if(client_javafx.from_server.getActive_worker()!=null&&client_javafx.from_server.getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
+            client_javafx.checkGameOver();
+
+            client_javafx.updatePossibleCell();
+            client_javafx.setDisable(!client_javafx.isMyTurn());
+
+            /*if(client_javafx.from_server.getActive_worker()!=null&&client_javafx.from_server.getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
             {
                 client_javafx.activeWorker = client_javafx.from_server.getBoard().GetOccupant(client_javafx.from_server.getActive_worker().GetPosition());
 
-                if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isBuild()&&client_javafx.from_server.getActive_worker().GetProprietary().GetNickname().compareTo(client_javafx.nickname.getText())==0)
-                    client_javafx.activeBuildCells();
-                else if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isMove()&&client_javafx.from_server.getActive_worker().GetProprietary().GetNickname().compareTo(client_javafx.nickname.getText())==0)
+                if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isMove()&&client_javafx.from_server.getActive_worker().GetProprietary().GetNickname().compareTo(client_javafx.nickname.getText())==0)
                     client_javafx.activeMoveCells();
+                else if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isBuild()&&client_javafx.from_server.getActive_worker().GetProprietary().GetNickname().compareTo(client_javafx.nickname.getText())==0)
+                    client_javafx.activeBuildCells();
             }
             else
             {
@@ -260,15 +265,18 @@ public class ListenerServer extends Thread {
                 client_javafx.activeWorker=null;
             }
 
+
+
             if(client_javafx.from_server.getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
                 client_javafx.setDisable(false);
             else
                 client_javafx.setDisable(true);
+            */
 
             if(client_javafx.from_server.getBoard().getGameover())
             {
                 try {
-                    if (client_javafx.from_server.getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText()) == 0) {
+                    if (client_javafx.isMyTurn()) {
                         client_javafx.changeScene("winner.fxml");
                     }
                     else {
@@ -285,4 +293,5 @@ public class ListenerServer extends Thread {
 
         );
     }
+
 }
