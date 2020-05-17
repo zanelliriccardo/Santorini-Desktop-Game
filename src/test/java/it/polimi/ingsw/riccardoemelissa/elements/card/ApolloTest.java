@@ -7,8 +7,6 @@ import it.polimi.ingsw.riccardoemelissa.elements.PowerType;
 import it.polimi.ingsw.riccardoemelissa.elements.Worker;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class ApolloTest {

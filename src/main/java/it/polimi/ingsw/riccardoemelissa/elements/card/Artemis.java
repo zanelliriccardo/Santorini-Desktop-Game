@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Artemis extends God implements Serializable {
     private PowerType type=PowerType.DISABLE;
 
-    private int[] old_position;
+    private int[] old_position = new int[]{-1,-1};
 
     /**
      * apply artemis rules if power is active
@@ -25,9 +25,9 @@ public class Artemis extends God implements Serializable {
     @Override
     public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
     {
-        if(old_position==null&&type.isActive())
+        if(old_position[0]==-1&&type.isActive())
         {
-            old_position=new int[2];
+            //old_position=new int[2];
             old_position[0] = active_worker.GetPosition()[0];
             old_position[1] = active_worker.GetPosition()[1];
 
@@ -42,7 +42,8 @@ public class Artemis extends God implements Serializable {
         }
         else
         {
-            old_position=null;
+            //old_position=null;
+            old_position[0] = -1;
             return super.Move(b, active_worker, newpos);
         }
     }
@@ -57,8 +58,9 @@ public class Artemis extends God implements Serializable {
     @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> possibleBox=super.adjacentBoxNotOccupiedNotDome(b, worker_pos);
-        if(type.isActive()&&old_position!=null&&super.getCardType()==GodCardType.MOVE)
-            possibleBox.remove(old_position);
+        if(type.isActive()&&old_position[0]!=-1&&super.getCardType()==GodCardType.MOVE)
+            //possibleBox.remove(old_position);
+            possibleBox.removeIf(pos -> pos[0] == old_position[0] && pos[1] == old_position[1]);
 
         return possibleBox;
     }
