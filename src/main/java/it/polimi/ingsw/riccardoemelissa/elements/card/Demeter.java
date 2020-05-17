@@ -5,11 +5,12 @@ import it.polimi.ingsw.riccardoemelissa.CommandType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Demeter extends God implements Serializable {
     private PowerType type=PowerType.DISABLE;
 
-    private int[] old_position=null;
+    private int[] old_position=new int[]{-1,-1};
 
     /**
      * apply demeter rules if power is active
@@ -25,11 +26,10 @@ public class Demeter extends God implements Serializable {
     @Override
     public CommandType Build(BoardGame b, Worker active_Worker, int[] pos)
     {
-        if(old_position==null&&type.isActive())
+        if(old_position[0]==-1&&type.isActive())
         {
-            old_position=new int[2];
-            old_position[0] = active_Worker.GetPosition()[0];
-            old_position[1] = active_Worker.GetPosition()[1];
+            old_position[0] = pos[0];
+            old_position[1] = pos[1];
             super.Build(b,active_Worker,pos);
 
             if(type.isActive())
@@ -41,7 +41,7 @@ public class Demeter extends God implements Serializable {
         }
         else
         {
-            old_position=null;
+            old_position[0] = -1;
             return super.Build(b, active_Worker, pos);
         }
     }
@@ -56,9 +56,13 @@ public class Demeter extends God implements Serializable {
     @Override
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> possibleBox=super.adjacentBoxNotOccupiedNotDome(b, worker_pos);
-        if(type.isActive()&&old_position!=null&&super.getCardType()==GodCardType.BUILD)
-            possibleBox.remove(old_position);
-
+        if(type.isActive()&&old_position[0]!=-1&&super.getCardType()==GodCardType.BUILD) {
+            //possibleBox.remove(old_position);
+            System.out.println("pos da eliminare : " + Arrays.toString(old_position));
+            possibleBox.removeIf(p -> p[0] == old_position[0] && p[1] == old_position[1]);
+        }
+        for (int[] pos : possibleBox)
+            System.out.println("Demeter -> pos : " + Arrays.toString(pos));
         return possibleBox;
     }
 

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AtlasTest {
+class HephaestusTest {
     private Player player1;
     private Player player2;
     private Worker worker11;
@@ -14,7 +14,7 @@ class AtlasTest {
     private Worker worker21;
     private Worker worker22;
 
-    void startGame (){
+    void startGame() {
         GameState.SetNumPlayer(2);
         GameState.NewPlayer("nickname1");
         player1 = GameState.getPlayer("nickname1");
@@ -30,12 +30,12 @@ class AtlasTest {
         worker22.setProprietary(player2);
     }
 
-    // The power is active -> build a dome
+    //build two blocks
     @Test
-    void buildPowerActive () {
+    void buildPowerActive() {
         startGame();
         BoardGame boardGame = GameState.GetBoard();
-        player1.SetGodCard(new Atlas());
+        player1.SetGodCard(new Hephaestus());
         player2.SetGodCard(new Pan());
         int[] pos11 = new int[]{1, 1};
         worker11.SetPosition(pos11);
@@ -53,20 +53,19 @@ class AtlasTest {
 
         player1.GetGodCard().setIn_action(PowerType.ACTIVE);
         player1.GetGodCard().setCardType(GodCardType.BUILD);
-        assertTrue(GameState.IsPossibleBuild(worker11, new int[]{1,2}));
 
-        player1.GetGodCard().Build(boardGame, worker11, new int[]{1,2});
+        assertTrue(GameState.IsPossibleBuild(worker11, new int[]{1, 2}));
+        player1.GetGodCard().Build(boardGame, worker11, new int[]{1, 2});
+        assertEquals(2, boardGame.GetLevelBox(new int[]{1, 2}));
         assertEquals("ENDTURN", player1.GetGodCard().getCardType().toString());
-        assertEquals(4, boardGame.GetLevelBox(new int[]{1,2}));
     }
 
-
-    // The power is inactive -> build the next block
+    //build one block
     @Test
-    void buildPowerInactive () {
+    void buildPowerInactive() {
         startGame();
         BoardGame boardGame = GameState.GetBoard();
-        player1.SetGodCard(new Atlas());
+        player1.SetGodCard(new Hephaestus());
         player2.SetGodCard(new Pan());
         int[] pos11 = new int[]{1, 1};
         worker11.SetPosition(pos11);
@@ -82,10 +81,11 @@ class AtlasTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
-        assertTrue(GameState.IsPossibleBuild(worker11, new int[]{1,2}));
+        player1.GetGodCard().setCardType(GodCardType.BUILD);
 
-        player1.GetGodCard().Build(boardGame, worker11, new int[]{1,2});
+        assertTrue(GameState.IsPossibleBuild(worker11, new int[]{1, 2}));
+        player1.GetGodCard().Build(boardGame, worker11, new int[]{1, 2});
+        assertEquals(1, boardGame.GetLevelBox(new int[]{1, 2}));
         assertEquals("ENDTURN", player1.GetGodCard().getCardType().toString());
-        assertEquals(1, boardGame.GetLevelBox(new int[]{1,2}));
     }
 }

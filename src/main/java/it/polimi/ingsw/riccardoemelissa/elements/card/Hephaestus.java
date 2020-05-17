@@ -5,6 +5,7 @@ import it.polimi.ingsw.riccardoemelissa.elements.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Hephaestus extends God implements Serializable {
     private PowerType type=PowerType.DISABLE;
@@ -37,9 +38,12 @@ public class Hephaestus extends God implements Serializable {
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> adj_boxes = new ArrayList<>();
 
-        if(super.getCardType().isMove())
-            super.adjacentBoxNotOccupiedNotDome(b,worker_pos);
-        else
+        if(super.getCardType().isMove()) {
+            System.out.println("super.adjacentBoxNotOccupiedNotDome");
+            super.adjacentBoxNotOccupiedNotDome(b, worker_pos);
+        }
+        else {
+            System.out.println("Efesto -> .adjacentBoxNotOccupiedNotDome");
             for (int x = worker_pos[0] - 1; x <= worker_pos[0] + 1; x++) {
                 for (int y = worker_pos[1] - 1; y <= worker_pos[1] + 1; y++) {
                     if (x == worker_pos[0] && y == worker_pos[1])
@@ -51,20 +55,24 @@ public class Hephaestus extends God implements Serializable {
                     if (y > 4 || y < 0)
                         continue;
 
-                    if(!b.GetStateBox(x,y))
+                    if (!b.GetStateBox(x, y))
                         continue;
 
-                    if(b.GetLevelBox(x,y)==4)
+                    if (b.GetLevelBox(x, y) == 4)
                         continue;
 
-                    if(b.GetLevelBox(x,y)>1&&type.isActive())
+                    if (b.GetLevelBox(x, y) > 1 && type.isActive())
                         continue;
 
-                    int[] pos = new int[]{x,y};
+                    int[] pos = new int[]{x, y};
 
                     adj_boxes.add(pos);
                 }
             }
+        }
+
+        for (int[]pos : adj_boxes)
+            System.out.println(" Efesto -> pos : " + Arrays.toString(pos));
         return adj_boxes;
     }
 
