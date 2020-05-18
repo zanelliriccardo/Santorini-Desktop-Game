@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ApolloTest {
+class MinotaurTest {
     private Player player1;
     private Player player2;
     private Worker worker11;
@@ -38,13 +38,13 @@ class ApolloTest {
     void moveInOccupiedBox (){
         startGame();
         BoardGame boardGame = GameState.GetBoard();
-        player1.SetGodCard(new Apollo());
+        player1.SetGodCard(new Minotaur());
         player2.SetGodCard(new Pan());
         int[] pos11 = new int[]{1,1};
         worker11.SetPosition(pos11);
-        int[] pos12 = new int[]{3,3};
+        int[] pos12 = new int[]{3,4};
         worker12.SetPosition(pos12);
-        int[] pos21 = new int[]{2,1};
+        int[] pos21 = new int[]{2,2};
         worker21.SetPosition(pos21);
         int[] pos22 = new int[]{0,3};
         worker22.SetPosition(pos22);
@@ -59,7 +59,7 @@ class ApolloTest {
         player1.GetGodCard().Move(boardGame, worker11, pos21);
         assertEquals("BUILD", player1.GetGodCard().getCardType().toString());
         assertArrayEquals(pos21, worker11.GetPosition());
-        assertArrayEquals(pos11, worker21.GetPosition());
+        assertArrayEquals(new int[]{3,3}, worker21.GetPosition());
     }
 
     //The box is occupied by the player's worker
@@ -67,7 +67,7 @@ class ApolloTest {
     void moveInOccupiedBox2 (){
         startGame();
         BoardGame boardGame = GameState.GetBoard();
-        player1.SetGodCard(new Apollo());
+        player1.SetGodCard(new Minotaur());
         player2.SetGodCard(new Pan());
         int[] pos11 = new int[]{1,1};
         worker11.SetPosition(pos11);
@@ -86,44 +86,12 @@ class ApolloTest {
         assertFalse(GameState.IsPossibleMove(worker11, pos12));
     }
 
-    // The opponent's Godcard is Athena, but she is not in action
+    // The opponent's Godcard is Athena, she is active and the worker wants to move up -> not allowed
     @Test
     void moveAthena (){
         startGame();
         BoardGame boardGame = GameState.GetBoard();
-        player1.SetGodCard(new Apollo());
-        player2.SetGodCard(new Athena());
-        int[] pos11 = new int[]{1,1};
-        worker11.SetPosition(pos11);
-        int[] pos12 = new int[]{3,3};
-        worker12.SetPosition(pos12);
-        int[] pos21 = new int[]{2,1};
-        worker21.SetPosition(pos21);
-        int[] pos22 = new int[]{0,3};
-        worker22.SetPosition(pos22);
-
-        boardGame.setOccupant(pos11, worker11);
-        boardGame.setOccupant(pos12, worker12);
-        boardGame.setOccupant(pos21, worker21);
-        boardGame.setOccupant(pos22, worker22);
-
-        boardGame.DoBuild(pos21);
-        player2.GetGodCard().setIn_action(PowerType.DISABLE);
-
-        assertTrue(GameState.IsPossibleMove(worker11, pos21));
-
-        player1.GetGodCard().Move(boardGame, worker11, pos21);
-        assertEquals("BUILD", player1.GetGodCard().getCardType().toString());
-        assertArrayEquals(pos21, worker11.GetPosition());
-        assertArrayEquals(pos11, worker21.GetPosition());
-    }
-
-    // The opponent's Godcard is Athena and she is in action
-    @Test
-    void moveAthena2 (){
-        startGame();
-        BoardGame boardGame = GameState.GetBoard();
-        player1.SetGodCard(new Apollo());
+        player1.SetGodCard(new Minotaur());
         player2.SetGodCard(new Athena());
         player2.GetGodCard().setOpponentTrue("true");
         int[] pos11 = new int[]{1,1};
@@ -140,13 +108,11 @@ class ApolloTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
-        boardGame.DoBuild(pos21);
-        boardGame.DoBuild(new int[]{0,4});
-        player2.GetGodCard().Move(boardGame, worker22, new int[]{0,4}); //in_action = true
-        String result = player2.GetGodCard().Move(boardGame, worker11, pos21).toString();
+        boardGame.DoBuild(new int[]{1,3});
+        player2.GetGodCard().Move(boardGame, worker22, new int[]{1,3}); //in action = true
 
-        assertEquals("ERROR", result);
+        boardGame.DoBuild(pos21);
+        assertEquals("ERROR", player2.GetGodCard().Move(boardGame, worker11, pos21).toString());
         assertFalse(GameState.IsPossibleMove(worker11, pos21));
     }
-
 }

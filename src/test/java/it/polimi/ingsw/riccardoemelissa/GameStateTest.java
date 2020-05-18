@@ -1,6 +1,7 @@
 package it.polimi.ingsw.riccardoemelissa;
 
 import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
+import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
 import it.polimi.ingsw.riccardoemelissa.elements.Player;
 import it.polimi.ingsw.riccardoemelissa.elements.Worker;
 import it.polimi.ingsw.riccardoemelissa.elements.card.Apollo;
@@ -124,31 +125,23 @@ class GameStateTest {
         BoardGame boardGame = GameState.GetBoard();
         Worker worker1 = new Worker();
         Worker worker2 = new Worker();
+        Player player1 = GameState.getPlayer("nickname1#0");
 
-        boardGame.setActivePlayer(GameState.getPlayer("nickname1"));
-        assertEquals("nickname1", boardGame.getActivePlayer().GetNickname());
-        assertEquals("nickname1", GameState.getActivePlayer().GetNickname());
+        boardGame.setActivePlayer(player1);
+        assertEquals("nickname1#0", boardGame.getActivePlayer().GetNickname());
 
-        worker1.setProprietary(GameState.getPlayer("nickname1"));
-        worker2.setProprietary(GameState.getPlayer("nickname1"));
-        assertEquals("nickname1", worker1.GetProprietary().GetNickname());
-        assertEquals("nickname1", worker2.GetProprietary().GetNickname());
+        worker1.setProprietary(player1);
+        worker2.setProprietary(player1);
+        assertEquals("nickname1#0", worker1.GetProprietary().GetNickname());
+        assertEquals("nickname1#0", worker2.GetProprietary().GetNickname());
 
         GameState.SetNewWorker(worker1);
         GameState.SetNewWorker(worker2);
 
-        boardGame.setOccupant(new int[]{0,0}, worker1);
-        boardGame.setOccupant(new int[]{0,1}, worker2);
-        assertEquals(worker1, boardGame.GetOccupant(new int[]{0,0}));
-        assertEquals(worker2, boardGame.GetOccupant(new int[]{0,1}));
-
-        //ArrayList<Worker> workers = boardGame.getWorkers(GameState.getPlayer("nickname1"));
-
-        //assertEquals(worker1, workers.get(0));
-        //assertEquals(worker2, workers.get(1));
-
-        //assertEquals(worker1, boardGame.getWorkers(GameState.getPlayer("nickname1")).get(0));
-        //assertEquals(worker2, boardGame.getWorkers(GameState.getPlayer("nickname1")).get(1));
+        boardGame.setOccupant(new int[]{0, 0}, worker1);
+        boardGame.setOccupant(new int[]{0, 1}, worker2);
+        assertEquals(worker1, boardGame.GetOccupant(new int[]{0, 0}));
+        assertEquals(worker2, boardGame.GetOccupant(new int[]{0, 1}));
     }
 
     @Test // ???
@@ -170,15 +163,17 @@ class GameStateTest {
         BoardGame boardGame = GameState.GetBoard();
         Worker worker1 = new Worker();
         Worker worker2 = new Worker();
+        Player player1 = GameState.getPlayer("nickname1#0");
+        Player player2= GameState.getPlayer("nickname2#1");
         int[] pos1 = new int[]{1,1};
         int[] pos2 = new int[]{1,2};
         int[] pos3 = new int[]{0,1};
         int[] pos4 = new int[]{3,1};
         int[] pos = new int[]{2,1};
-        worker1.setProprietary(GameState.getPlayer("nickname1"));
+        worker1.setProprietary(player1);
         worker1.SetPosition(pos1);
         worker1.GetProprietary().SetGodCard(new Pan());
-        worker2.setProprietary(GameState.getPlayer("nickname2"));
+        worker2.setProprietary(player2);
         worker2.GetProprietary().SetGodCard(new Artemis());
         worker2.SetPosition(pos2);
         boardGame.setOccupant(pos1, worker1);
@@ -202,18 +197,22 @@ class GameStateTest {
         BoardGame boardGame = GameState.GetBoard();
         Worker worker1 = new Worker();
         Worker worker2 = new Worker();
+        Player player1 = GameState.getPlayer("nickname1#0");
+        Player player2= GameState.getPlayer("nickname2#1");
         int[] pos1 = new int[]{1,1};
         int[] pos2 = new int[]{1,2};
         int[] pos3 = new int[]{0,1};
         int[] pos4 = new int[]{3,1};
-        worker1.setProprietary(GameState.getPlayer("nickname1"));
+        worker1.setProprietary(player1);
         worker1.SetPosition(pos1);
         worker1.GetProprietary().SetGodCard(new Pan());
-        worker2.setProprietary(GameState.getPlayer("nickname2"));
+        worker2.setProprietary(player2);
         worker2.GetProprietary().SetGodCard(new Apollo());
         worker2.SetPosition(pos2);
         boardGame.setOccupant(pos1, worker1);
         boardGame.setOccupant(pos2, worker2);
+
+        player1.GetGodCard().setCardType(GodCardType.BUILD);
 
         assertFalse(GameState.IsPossibleBuild(worker1, pos2));
 
