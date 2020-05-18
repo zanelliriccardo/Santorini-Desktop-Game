@@ -1,10 +1,7 @@
 package it.polimi.ingsw.riccardoemelissa.elements.card;
 
 import it.polimi.ingsw.riccardoemelissa.GameState;
-import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
-import it.polimi.ingsw.riccardoemelissa.elements.Player;
-import it.polimi.ingsw.riccardoemelissa.elements.PowerType;
-import it.polimi.ingsw.riccardoemelissa.elements.Worker;
+import it.polimi.ingsw.riccardoemelissa.elements.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -143,5 +140,32 @@ class ArtemisTest {
 
         boardGame.DoBuild(new int[]{1, 3});
         assertFalse(GameState.IsPossibleMove(worker11, new int[]{1, 3}));
+    }
+
+    @Test
+    void getIn_action() {
+        startGame();
+        player1.SetGodCard(new Artemis());
+        player2.SetGodCard(new Athena());
+        player2.GetGodCard().setOpponentTrue("true");
+
+        player1.GetGodCard().setIn_action(PowerType.ACTIVE);
+        assertEquals("ACTIVE", player1.GetGodCard().getIn_action().toString());
+
+        player1.GetGodCard().setIn_action(PowerType.DISABLE);
+        assertEquals("DISABLE", player1.GetGodCard().getIn_action().toString());
+    }
+
+    @Test
+    void resetCard() {
+        startGame();
+        player1.SetGodCard(new Artemis());
+        player2.SetGodCard(new Athena());
+        player2.GetGodCard().setOpponentTrue("true");
+
+        player1.GetGodCard().setCardType(GodCardType.BUILD);
+        assertEquals("BUILD", player1.GetGodCard().getCardType().toString());
+        player1.GetGodCard().resetCard();
+        assertEquals("MOVE", player1.GetGodCard().getCardType().toString());
     }
 }

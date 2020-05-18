@@ -88,4 +88,31 @@ class HephaestusTest {
         assertEquals(1, boardGame.GetLevelBox(new int[]{1, 2}));
         assertEquals("ENDTURN", player1.GetGodCard().getCardType().toString());
     }
+
+    @Test
+    void getIn_action() {
+        startGame();
+        player1.SetGodCard(new Hephaestus());
+        player2.SetGodCard(new Athena());
+        player2.GetGodCard().setOpponentTrue("true");
+
+        player1.GetGodCard().setIn_action(PowerType.ACTIVE);
+        assertEquals("ACTIVE", player1.GetGodCard().getIn_action().toString());
+
+        player1.GetGodCard().setIn_action(PowerType.DISABLE);
+        assertEquals("DISABLE", player1.GetGodCard().getIn_action().toString());
+    }
+
+    @Test
+    void resetCard() {
+        startGame();
+        player1.SetGodCard(new Hephaestus());
+        player2.SetGodCard(new Athena());
+        player2.GetGodCard().setOpponentTrue("true");
+
+        player1.GetGodCard().setCardType(GodCardType.BUILD);
+        assertEquals("BUILD", player1.GetGodCard().getCardType().toString());
+        player1.GetGodCard().resetCard();
+        assertEquals("MOVE", player1.GetGodCard().getCardType().toString());
+    }
 }

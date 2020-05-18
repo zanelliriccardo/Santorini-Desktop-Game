@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AtlasTest {
+class PrometheusTest {
     private Player player1;
     private Player player2;
     private Worker worker11;
@@ -14,7 +14,7 @@ class AtlasTest {
     private Worker worker21;
     private Worker worker22;
 
-    void startGame (){
+    void startGame() {
         GameState.SetNumPlayer(2);
         GameState.NewPlayer("nickname1");
         player1 = GameState.getPlayer("nickname1#0");
@@ -30,14 +30,15 @@ class AtlasTest {
         worker22.setProprietary(player2);
     }
 
-    // The power is active -> build a dome
+    //build two blocks
     @Test
-    void buildPowerActive () {
+    void powerActive() {
         startGame();
         BoardGame boardGame = GameState.GetBoard();
-        player1.SetGodCard(new Atlas());
-        player2.SetGodCard(new Pan());
-        int[] pos11 = new int[]{1, 1};
+        player1.SetGodCard(new Prometheus());
+        player2.SetGodCard(new Athena());
+        player2.GetGodCard().setOpponentTrue("true");
+        int[] pos11 = new int[]{0, 0};
         worker11.SetPosition(pos11);
         int[] pos12 = new int[]{3, 3};
         worker12.SetPosition(pos12);
@@ -52,23 +53,30 @@ class AtlasTest {
         boardGame.setOccupant(pos22, worker22);
 
         player1.GetGodCard().setIn_action(PowerType.ACTIVE);
-        player1.GetGodCard().setCardType(GodCardType.BUILD);
-        assertTrue(GameState.IsPossibleBuild(worker11, new int[]{1,2}));
+        assertEquals("BUILD", player1.GetGodCard().getCardType().toString());
 
-        player1.GetGodCard().Build(boardGame, worker11, new int[]{1,2});
-        assertEquals("ENDTURN", player1.GetGodCard().getCardType().toString());
-        assertEquals(4, boardGame.GetLevelBox(new int[]{1,2}));
+        boardGame.DoBuild(new int[]{0,4});
+        player2.GetGodCard().Move(boardGame,worker22,new int[]{0,4}); //in action = true
+
+        assertTrue(GameState.IsPossibleBuild(worker11, new int[]{0,1}));
+        player1.GetGodCard().Build(boardGame, worker11, new int[]{0,1});
+        assertEquals("MOVE", player1.GetGodCard().getCardType().toString());
+
+        assertFalse(GameState.IsPossibleMove(worker11, new int[]{0,1}));
+
+        assertTrue(GameState.IsPossibleMove(worker11, new int[]{1,1}));
+        player1.GetGodCard().Move(boardGame,worker11,new int[]{1,1});
+        assertEquals("BUILD", player1.GetGodCard().getCardType().toString());
     }
 
-
-    // The power is inactive -> build the next block
     @Test
-    void buildPowerInactive () {
+    void powerInactive() {
         startGame();
         BoardGame boardGame = GameState.GetBoard();
-        player1.SetGodCard(new Atlas());
-        player2.SetGodCard(new Pan());
-        int[] pos11 = new int[]{1, 1};
+        player1.SetGodCard(new Prometheus());
+        player2.SetGodCard(new Athena());
+        player2.GetGodCard().setOpponentTrue("true");
+        int[] pos11 = new int[]{0, 0};
         worker11.SetPosition(pos11);
         int[] pos12 = new int[]{3, 3};
         worker12.SetPosition(pos12);
@@ -82,17 +90,23 @@ class AtlasTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
-        assertTrue(GameState.IsPossibleBuild(worker11, new int[]{1,2}));
+        assertEquals("MOVE", player1.GetGodCard().getCardType().toString());
 
-        player1.GetGodCard().Build(boardGame, worker11, new int[]{1,2});
-        assertEquals("ENDTURN", player1.GetGodCard().getCardType().toString());
-        assertEquals(1, boardGame.GetLevelBox(new int[]{1,2}));
+        boardGame.DoBuild(new int[]{0,4});
+        player2.GetGodCard().Move(boardGame,worker22,new int[]{0,4}); //in action = true
+
+        boardGame.DoBuild(new int[]{0,1});
+        assertFalse(GameState.IsPossibleMove(worker11, new int[]{0,1}));
+
+        assertTrue(GameState.IsPossibleMove(worker11, new int[]{1,1}));
+        player1.GetGodCard().Move(boardGame,worker11,new int[]{1,1});
+        assertEquals("BUILD", player1.GetGodCard().getCardType().toString());
     }
 
     @Test
     void getIn_action() {
         startGame();
-        player1.SetGodCard(new Atlas());
+        player1.SetGodCard(new Prometheus());
         player2.SetGodCard(new Athena());
         player2.GetGodCard().setOpponentTrue("true");
 
@@ -106,7 +120,7 @@ class AtlasTest {
     @Test
     void resetCard() {
         startGame();
-        player1.SetGodCard(new Atlas());
+        player1.SetGodCard(new Prometheus());
         player2.SetGodCard(new Athena());
         player2.GetGodCard().setOpponentTrue("true");
 
@@ -115,4 +129,5 @@ class AtlasTest {
         player1.GetGodCard().resetCard();
         assertEquals("MOVE", player1.GetGodCard().getCardType().toString());
     }
+
 }

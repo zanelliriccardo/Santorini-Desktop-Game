@@ -38,12 +38,9 @@ public class Hephaestus extends God implements Serializable {
     public ArrayList<int[]> adjacentBoxNotOccupiedNotDome(BoardGame b, int[] worker_pos) {
         ArrayList<int[]> adj_boxes = new ArrayList<>();
 
-        if(super.getCardType().isMove()) {
-            System.out.println("super.adjacentBoxNotOccupiedNotDome");
+        if(super.getCardType().isMove())
             adj_boxes= super.adjacentBoxNotOccupiedNotDome(b, worker_pos);
-        }
         else {
-            System.out.println("Efesto -> .adjacentBoxNotOccupiedNotDome");
             for (int x = worker_pos[0] - 1; x <= worker_pos[0] + 1; x++) {
                 for (int y = worker_pos[1] - 1; y <= worker_pos[1] + 1; y++) {
                     if (x == worker_pos[0] && y == worker_pos[1])
@@ -70,9 +67,6 @@ public class Hephaestus extends God implements Serializable {
                 }
             }
         }
-
-        for (int[]pos : adj_boxes)
-            System.out.println(" Efesto -> pos : " + Arrays.toString(pos));
         return adj_boxes;
     }
 

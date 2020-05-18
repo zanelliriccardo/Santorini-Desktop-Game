@@ -87,18 +87,22 @@ class BoardGameTest {
 
      */
 
-    @Test
+    @Test //mai usato
     void isABlockedWorker() {
     }
 
     @Test
     void getOccupant() {
         int [] pos = new int[]{1,2};
+        int [] pos2 = new int[]{1,3};
         Worker worker = new Worker();
+        Worker worker2 = new Worker();
         BoardGame boardGame = new BoardGame();
 
         boardGame.setOccupant(pos, worker);
         assertEquals(worker, boardGame.GetOccupant(pos));
+        boardGame.setOccupant(pos2, worker2);
+        assertEquals(worker2, boardGame.GetOccupant(pos2[0], pos2[1]));
     }
 
     @Test
@@ -111,5 +115,55 @@ class BoardGameTest {
         assertTrue(boardGame.IsAdjacentBox(worker_pos, pos1));
         assertFalse(boardGame.IsAdjacentBox(worker_pos, pos2));
         assertFalse(boardGame.IsAdjacentBox(worker_pos, worker_pos));
+    }
+
+    @Test
+    void getOccupantProprietary() {
+        BoardGame boardGame = new BoardGame();
+        Player player = new Player("nickname");
+        Worker worker= new Worker();
+        worker.setProprietary(player);
+        int[] pos = new int[]{1,1};
+
+        worker.SetPosition(pos);
+        boardGame.setOccupant(pos , worker);
+
+        assertEquals(player, boardGame.GetOccupantProprietary(pos));
+        assertEquals(player, boardGame.GetOccupantProprietary(pos[0], pos[1]));
+
+    }
+
+    //NON VA IL METODO
+    /*@Test
+    void getWorkers() {
+        BoardGame boardGame = new BoardGame();
+        Player player = new Player("nickname");
+        Worker worker1 = new Worker();
+        Worker worker2 = new Worker();
+        int[] pos1 = new int[]{0,1};
+        int[] pos2 = new int[]{1,1};
+
+        worker1.setProprietary(player);
+        worker1.SetPosition(pos1);
+        boardGame.setOccupant(pos1, worker1);
+
+        worker2.setProprietary(player);
+        worker2.SetPosition(pos2);
+        boardGame.setOccupant(pos2, worker2);
+
+        boardGame.setActivePlayer(player);
+
+        assertEquals(worker1, boardGame.getWorkers(player).get(0));
+        assertEquals(worker2, boardGame.getWorkers(player).get(1));
+    }
+
+     */
+
+    @Test
+    void getGameover() {
+        BoardGame boardGame = new BoardGame();
+
+        boardGame.setGameOver(true);
+        assertTrue(boardGame.getGameover());
     }
 }
