@@ -118,10 +118,7 @@ public abstract class God implements Serializable {
     }
 
     public void setOpponentTrue(String s) {
-        if(s=="true")
-            opponent_turn=true;
-        else
-            opponent_turn=false;
+        opponent_turn= s.equals("true");
     }
 
     public void setCardType(GodCardType type) {

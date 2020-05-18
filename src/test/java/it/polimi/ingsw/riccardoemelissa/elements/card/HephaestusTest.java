@@ -17,9 +17,9 @@ class HephaestusTest {
     void startGame() {
         GameState.SetNumPlayer(2);
         GameState.NewPlayer("nickname1");
-        player1 = GameState.getPlayer("nickname1");
+        player1 = GameState.getPlayer("nickname1#0");
         GameState.NewPlayer("nickname2");
-        player2 = GameState.getPlayer("nickname2");
+        player2 = GameState.getPlayer("nickname2#1");
         worker11 = new Worker();
         worker11.setProprietary(player1);
         worker12 = new Worker();

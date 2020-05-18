@@ -109,7 +109,7 @@ public class GameState {
             players.get(i/3).setGodImagePath(gods_json[i+1]);
             players.get(i/3).GetGodCard().setOpponentTrue(gods_json[i+2]);
 
-            System.out.println("God card : " + gods_json[i+1] + "\nOpponent turn : "+ gods_json[i+2]);
+            System.out.println("God card : " + players.get(i/3).getGodImagePath() + "\nOpponent turn : "+ players.get(i/3).GetGodCard().GetOpponentTurn());
         }
     }
 
