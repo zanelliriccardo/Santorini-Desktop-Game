@@ -8,6 +8,8 @@ import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -70,10 +72,22 @@ public class MultiEchoServer {
                 }
                 serverSocket.close();
                 System.out.println("gioco pronto");
+                Collections.shuffle(GameState.GetPlayers());
                 GameState.GetBoard().custom_notifyAll();
 
-                if(GameState.getGameOver()) //inserire controllo su fine partita
-                    break;
+                while (!GameState.getGameOver())
+                {
+
+                }
+                firstThread.interrupt();
+                for (Thread thread: threads) {
+                    thread.interrupt();
+                }
+                socket.close();
+                for (Socket s: sockets) {
+                    s.close();
+                }
+
             } catch (IOException|NullPointerException e) {
                 break; // entrerei qui se serverSocket venisse chiuso
             }

@@ -29,8 +29,6 @@ public class ExecutorClientCommand {
                 break;
             case NICKNAME:
                 GameState.NewPlayer((String)cmd.GetObj());
-                for (Player p : GameState.GetPlayers())
-                    System.out.println(p.GetNickname());
                 GameState.GetBoard().custom_notifyAll();
                 break;
             case NEWWORKER:
@@ -129,7 +127,8 @@ public class ExecutorClientCommand {
             case CHANGE_TURN:
                 GameState.GetBoard().getActivePlayer().GetGodCard().resetCard();
                 GameState.NextTurn();
-                if(possibleMoves().isEmpty()&&GameState.GetBoard().getActivePlayer().GetGodCard().getCardType().isMove())
+
+                if(GameState.possibleMoves().isEmpty()&&GameState.GetBoard().getActivePlayer().GetGodCard().getCardType().isMove())
                     lose();
                 else
                    GameState.GetBoard().getActivePlayer().GetGodCard().resetCard();
@@ -163,7 +162,7 @@ public class ExecutorClientCommand {
 
         GameState.RemovePlayer(GameState.getActivePlayer());
 
-        if(GameState.GetNumPlayers()==1) {
+        if(GameState.GetPlayers().size()==1) {
             GameState.GetPlayers().get(0).GetGodCard().setCardType(GodCardType.WIN);
             GameState.EndGame();
         }

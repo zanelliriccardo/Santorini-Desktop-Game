@@ -150,7 +150,6 @@ public class GameState {
     public static void EndGame()
     {
         b.setGameOver(true);
-        players=null;
     }
 
     private static void setGameOver(boolean b) {
@@ -192,15 +191,10 @@ public class GameState {
      */
     public static void NewPlayer(String str)
     {
-        /*for(int i=0;i<players.size();i++)
-            if(players.get(i)==null)
-
-         */
-        //players.add(new Player(str));
         for (Player p : players) {
             if(p.GetNickname().compareTo("nome")==0)
             {
-                p.SetNickname(str);
+                p.SetNickname(str.trim()+"#"+GetIndexPlayer("nome"));
                 break;
             }
         }
