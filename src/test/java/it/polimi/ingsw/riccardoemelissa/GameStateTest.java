@@ -31,6 +31,8 @@ class GameStateTest {
         {
             assertEquals(i, GameState.GetIndexPlayer(GameState.GetPlayers().get(i).GetNickname()));
         }
+
+        assertEquals(3, GameState.GetPlayerNumber());
     }
 
     @Test
@@ -232,7 +234,22 @@ class GameStateTest {
     void checkBuilds() {
     }
 
-    @Test //non va
+    /*@Test //non va
     void getWorkers() {
+    }
+
+     */
+
+    @Test
+    void getActiveWorker() {
+        BoardGame boardGame = GameState.GetBoard();
+        Worker worker = new Worker();
+        int[] pos= new int[]{1,1};
+
+        worker.SetPosition(pos);
+        boardGame.setOccupant(pos , worker);
+
+        GameState.setActiveWorker(pos);
+        assertEquals(worker, GameState.getActiveWorker());
     }
 }
