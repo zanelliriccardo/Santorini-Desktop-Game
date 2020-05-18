@@ -1,9 +1,7 @@
 package it.polimi.ingsw.riccardoemelissa.elements.card;
 
-import it.polimi.ingsw.riccardoemelissa.elements.BoardGame;
-import it.polimi.ingsw.riccardoemelissa.elements.God;
-import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
-import it.polimi.ingsw.riccardoemelissa.elements.PowerType;
+import it.polimi.ingsw.riccardoemelissa.CommandType;
+import it.polimi.ingsw.riccardoemelissa.elements.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -52,6 +50,19 @@ public class Prometheus extends God implements Serializable {
             adj_boxes=super.adjacentBoxNotOccupiedNotDome(b,worker_pos);
 
         return adj_boxes;
+    }
+
+    @Override
+    public CommandType Build(BoardGame b, Worker activeWorker, int[] pos) {
+        if(type.isActive())
+        {
+            super.Build(b,activeWorker,pos);
+            super.setCardType(GodCardType.MOVE);
+            type=PowerType.DISABLE;
+            return CommandType.MOVE;
+        }
+        else
+            return super.Build(b,activeWorker,pos);
     }
 
     @Override

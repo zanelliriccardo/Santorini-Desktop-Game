@@ -272,7 +272,7 @@ public class ListenerServer extends Thread {
             else
                 client_javafx.setDisable(true);
             */
-
+/*
             if(client_javafx.from_server.getBoard().getGameover())
             {
                 try {
@@ -287,6 +287,8 @@ public class ListenerServer extends Thread {
                     e.printStackTrace();
                 }
             }
+
+ */
 
         }
 
