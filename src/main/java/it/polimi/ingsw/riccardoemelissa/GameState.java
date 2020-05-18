@@ -73,19 +73,6 @@ public class GameState {
         return true;
     }
 
-    public static Worker GetWorkerToMove(String nick, int n)
-    {
-        return workers[GetIndexPlayer(nick) + n];
-    }
-
-    /**
-     * shuffle the players
-     */
-    public static void SetTurnOrder()
-    {
-        Collections.shuffle(players); //mescola array
-    }
-
     /**
      * initialize the god cards using json
      */
@@ -152,10 +139,6 @@ public class GameState {
         b.setGameOver(true);
     }
 
-    private static void setGameOver(boolean b) {
-        gameover=b;
-    }
-
     /**
      * initialize everything requires a number of player
      *
@@ -200,27 +183,6 @@ public class GameState {
         }
     }
 
-    public static void SetNewWorker(Worker ActiveWorker)
-    {
-        int index=GetIndexPlayer((ActiveWorker.GetProprietary().GetNickname()));
-        if(workers[index*2]==null)
-            workers[index*2]=ActiveWorker;
-        workers[index*2+1]=ActiveWorker;
-    }
-
-    public static boolean CheckMove(Worker getActiveWorker, int[] getPos)
-    {
-        for (Player opponent : players)
-        {
-            if((opponent.GetNickname().compareTo(getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                //if(!opponent.GetGodCard().Move(b,getActiveWorker,getPos));//check move is possible for opponent card
-                    return false;
-        }
-        if(!b.IsAdjacentBox(getActiveWorker.GetPosition(),getPos))//check newposition is adjacent at  actual worker position
-            return false;
-        return true;
-    }
-
     /**
      * check is gameover
      *
@@ -246,11 +208,6 @@ public class GameState {
         players.remove(GetIndexPlayer(player.GetNickname()));
         if(trace>=players.size())
             trace=0;
-    }
-
-    public static void UpdateBoard(BoardGame board)
-    {
-        b=board;
     }
 
     /**
@@ -306,14 +263,10 @@ public class GameState {
 
         possiblemoves.removeIf(pos -> board.GetLevelBox(pos) - board.GetLevelBox(worker_toMove.GetPosition()) > 1);
 
-        //for (int[] pos: possiblemoves)
         for(int i = 0; i < possiblemoves.size(); i++)
         {
             for (Player opponent : players)
             {
-                //System.out.println(" Nomi da confrontare " + opponent.GetNickname() + " , " + getActivePlayer().GetNickname());
-                //System.out.println("Ris confronto : " + (opponent.GetNickname().compareTo(getActivePlayer().GetNickname())!=0));
-                //System.out.println(" opp turn : " + opponent.GetGodCard().GetOpponentTurn());
                 if((opponent.GetNickname().compareTo(getActivePlayer().GetNickname())!=0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
                     if(opponent.GetGodCard().Move(board, worker_toMove,possiblemoves.get(i)/*pos*/)==CommandType.ERROR) {//check move is possible for opponent card
                         System.out.println("Posizione da rimuovere é : ( " + Arrays.toString(possiblemoves.get(i)));
@@ -341,7 +294,7 @@ public class GameState {
         {
             for (Player opponent : players)
             {
-                if((opponent.GetNickname().compareTo(getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                if((opponent.GetNickname().compareTo(getActivePlayer().GetNickname())!=0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
                     if(opponent.GetGodCard().Build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
                         possiblebuild.remove(pos);
             }

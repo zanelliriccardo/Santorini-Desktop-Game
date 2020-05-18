@@ -64,7 +64,7 @@ public class Prometheus extends God implements Serializable {
         else
             return super.Build(b,activeWorker,pos);
     }
-
+    
     @Override
     public void setIn_action(PowerType powerSet) {
         if(powerSet.isActive())

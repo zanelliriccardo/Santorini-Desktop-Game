@@ -153,7 +153,7 @@ public class ExecutorClientCommand {
     {
         GameState.setActiveWorker(null);
         GameState.getActivePlayer().GetGodCard().setCardType(GodCardType.LOSE);
-        ArrayList<Worker> workerToDelete= getWorkers();
+        ArrayList<Worker> workerToDelete= GameState.GetBoard().getWorkers();
 
         for (Worker w : workerToDelete) {
             GameState.GetBoard().removeWorker(w.GetPosition());
@@ -207,18 +207,6 @@ public class ExecutorClientCommand {
                         possiblemoves.remove(i);
                     }
             }
-        }
-        return possiblemoves;
-    }
-
-    public ArrayList<int[]> possibleMoves()
-    {
-        ArrayList<Worker> workers=getWorkers();
-        ArrayList<int[]> possiblemoves = new ArrayList<>();
-
-        for (Worker w : workers)
-        {
-            possiblemoves.addAll(checkMoves(GameState.GetBoard(),w));
         }
         return possiblemoves;
     }
