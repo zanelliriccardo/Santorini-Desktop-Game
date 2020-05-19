@@ -2,7 +2,6 @@ package it.polimi.ingsw.riccardoemelissa.elements;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class BoardGame extends CustomObservable implements Serializable {
     private Box[][] Board;
@@ -27,9 +26,9 @@ public class BoardGame extends CustomObservable implements Serializable {
      * @param pos
      * @return
      */
-    public boolean GetStateBox (int[] pos)
+    public boolean getStateBox(int[] pos)
     {
-        return Board[pos[0]][pos[1]].GetState();
+        return Board[pos[0]][pos[1]].getState();
     }
 
     /**
@@ -43,9 +42,9 @@ public class BoardGame extends CustomObservable implements Serializable {
      * @param j
      * @return
      */
-    public boolean GetStateBox (int i,int j)
+    public boolean getStateBox(int i, int j)
     {
-        return Board[i][j].GetState();
+        return Board[i][j].getState();
     }
 
     /**
@@ -57,9 +56,9 @@ public class BoardGame extends CustomObservable implements Serializable {
      * @param pos
      * @return
      */
-    public int GetLevelBox (int[] pos)
+    public int getLevelBox(int[] pos)
     {
-        return Board[pos[0]][pos[1]].GetLevel();
+        return Board[pos[0]][pos[1]].getLevel();
     }
 
     /**
@@ -73,9 +72,9 @@ public class BoardGame extends CustomObservable implements Serializable {
      * @param j
      * @return
      */
-    public int GetLevelBox(int i, int j)
+    public int getLevelBox(int i, int j)
     {
-        return Board[i][j].GetLevel();
+        return Board[i][j].getLevel();
     }
 
     /**Building a block
@@ -84,9 +83,9 @@ public class BoardGame extends CustomObservable implements Serializable {
      *
      * @param pos
      */
-    public void DoBuild(int[] pos)
+    public void doBuild(int[] pos)
     {
-        Board[pos[0]][pos[1]].Build();
+        Board[pos[0]][pos[1]].build();
     }
 
     /**
@@ -99,9 +98,9 @@ public class BoardGame extends CustomObservable implements Serializable {
      * @param pos
      * @return
      */
-    public Worker GetOccupant(int[] pos)
+    public Worker getOccupant(int[] pos)
     {
-        return Board[pos[0]][pos[1]].GetOccupant();
+        return Board[pos[0]][pos[1]].getOccupant();
     }
 
     /**
@@ -115,18 +114,18 @@ public class BoardGame extends CustomObservable implements Serializable {
      * @param j
      * @return
      */
-    public Worker GetOccupant(int i, int j) {
-        return Board[i][j].GetOccupant();
+    public Worker getOccupant(int i, int j) {
+        return Board[i][j].getOccupant();
     }
 
-    public Player GetOccupantProprietary(int[] pos)
+    public Player getOccupantProprietary(int[] pos)
     {
-        return Board[pos[0]][pos[1]].GetOccupant().GetProprietary();
+        return Board[pos[0]][pos[1]].getOccupant().getProprietary();
     }
 
-    public Player GetOccupantProprietary(int i,int j)
+    public Player getOccupantProprietary(int i, int j)
     {
-        return Board[i][j].GetOccupant().GetProprietary();
+        return Board[i][j].getOccupant().getProprietary();
     }
 
 
@@ -143,7 +142,7 @@ public class BoardGame extends CustomObservable implements Serializable {
      */
     public void setOccupant(int[] pos, Worker worker)
     {
-        Board[pos[0]][pos[1]].SetOccupant(worker);
+        Board[pos[0]][pos[1]].setOccupant(worker);
     }
 
     /**
@@ -155,9 +154,9 @@ public class BoardGame extends CustomObservable implements Serializable {
      * @param pos
      * @return
      */
-    public boolean BuildDome(int[] pos)
+    public boolean buildDome(int[] pos)
     {
-        Board[pos[0]][pos[1]].SetDome();
+        Board[pos[0]][pos[1]].setDome();
         return true;
     }
 
@@ -166,7 +165,7 @@ public class BoardGame extends CustomObservable implements Serializable {
      *
      * @return
      */
-    public Box[][] GetBoard()
+    public Box[][] getBoard()
     {
         return Board;
     }
@@ -196,8 +195,8 @@ public class BoardGame extends CustomObservable implements Serializable {
         ArrayList<Worker> workers=new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                if(Board[i][j].GetOccupant().GetProprietary().GetNickname().compareTo(active_player.GetNickname())==0)
-                    workers.add(Board[i][j].GetOccupant());
+                if(Board[i][j].getOccupant().getProprietary().getNickname().compareTo(active_player.getNickname())==0)
+                    workers.add(Board[i][j].getOccupant());
             }
         }
         return workers;

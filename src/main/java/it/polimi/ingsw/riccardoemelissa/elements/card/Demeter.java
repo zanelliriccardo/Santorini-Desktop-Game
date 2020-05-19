@@ -24,13 +24,13 @@ public class Demeter extends God implements Serializable {
      * @return
      */
     @Override
-    public CommandType Build(BoardGame b, Worker active_Worker, int[] pos)
+    public CommandType build(BoardGame b, Worker active_Worker, int[] pos)
     {
         if(old_position[0]==-1&&type.isActive())
         {
             old_position[0] = pos[0];
             old_position[1] = pos[1];
-            super.Build(b,active_Worker,pos);
+            super.build(b,active_Worker,pos);
 
             if(type.isActive())
                 super.setCardType(GodCardType.BUILD);
@@ -42,7 +42,7 @@ public class Demeter extends God implements Serializable {
         else
         {
             old_position[0] = -1;
-            return super.Build(b, active_Worker, pos);
+            return super.build(b, active_Worker, pos);
         }
     }
 

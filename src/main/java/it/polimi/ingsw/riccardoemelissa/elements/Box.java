@@ -17,42 +17,42 @@ public class Box implements Serializable {
         this.level=level;
     }
 
-    public void ChangeState(Worker worker)
+    public void changeState(Worker worker)
     {
         occupant=worker;
         state=false;
     }
 
-    public void ChangeState()
+    public void changeState()
     {
         state=true;
     }
 
-    public boolean GetState ()
+    public boolean getState()
     {
         return state;
     }
 
-    public int GetLevel ()
+    public int getLevel()
     {
         return level;
     }
 
-    public void Build()
+    public void build()
     {
         level++;
     }
 
-    public Worker GetOccupant() {
+    public Worker getOccupant() {
         return occupant;
     }
 
-    public void SetOccupant(Worker worker) {
+    public void setOccupant(Worker worker) {
         occupant= worker;
         state=false;
     }
 
-    public void SetDome()
+    public void setDome()
     {
         level=4;
     }

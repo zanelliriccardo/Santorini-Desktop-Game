@@ -23,15 +23,15 @@ public class Artemis extends God implements Serializable {
      * @return
      */
     @Override
-    public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
+    public CommandType move(BoardGame b, Worker active_worker, int[] newpos)
     {
         if(old_position[0]==-1&&type.isActive())
         {
             //old_position=new int[2];
-            old_position[0] = active_worker.GetPosition()[0];
-            old_position[1] = active_worker.GetPosition()[1];
+            old_position[0] = active_worker.getPosition()[0];
+            old_position[1] = active_worker.getPosition()[1];
 
-            super.Move(b,active_worker,newpos);
+            super.move(b,active_worker,newpos);
 
             if(type.isActive())
                 super.setCardType(GodCardType.MOVE);
@@ -44,7 +44,7 @@ public class Artemis extends God implements Serializable {
         {
             //old_position=null;
             old_position[0] = -1;
-            return super.Move(b, active_worker, newpos);
+            return super.move(b, active_worker, newpos);
         }
     }
 

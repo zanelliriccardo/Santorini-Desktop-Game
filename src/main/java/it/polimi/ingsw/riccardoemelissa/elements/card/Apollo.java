@@ -21,12 +21,12 @@ public class Apollo extends God implements Serializable {
      * @return
      */
     @Override
-    public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
+    public CommandType move(BoardGame b, Worker active_worker, int[] newpos)
     {
-        if (!b.GetStateBox(newpos))
+        if (!b.getStateBox(newpos))
             SetApolloPosition(active_worker, newpos, b);
         else
-            super.SetPosition(active_worker, active_worker.GetPosition(), newpos, b);
+            super.setPosition(active_worker, active_worker.getPosition(), newpos, b);
 
         super.setCardType(GodCardType.BUILD);
         return CommandType.MOVE;
@@ -57,17 +57,17 @@ public class Apollo extends God implements Serializable {
                 if (y > 4 || y < 0)
                     continue;
 
-                if(b.GetLevelBox(x,y)==4)
+                if(b.getLevelBox(x,y)==4)
                     continue;
 
-                if(b.GetStateBox(x,y))
+                if(b.getStateBox(x,y))
                 {
                     int[] pos = new int[]{x,y};
                     adj_boxes.add(pos);
                     continue;
                 }
 
-                if(b.GetOccupant(x,y).GetProprietary().GetNickname().compareTo(b.GetOccupant(worker_pos).GetProprietary().GetNickname())==0)
+                if(b.getOccupant(x,y).getProprietary().getNickname().compareTo(b.getOccupant(worker_pos).getProprietary().getNickname())==0)
                     continue;
 
                 int[] pos = new int[]{x,y};
@@ -89,10 +89,10 @@ public class Apollo extends God implements Serializable {
      */
     public void SetApolloPosition(Worker active_worker, int[] newpos, BoardGame b)
     {
-        b.GetOccupant(newpos).SetPosition(active_worker.GetPosition());//da controllare
-        b.setOccupant(active_worker.GetPosition(),b.GetOccupant(newpos));
+        b.getOccupant(newpos).setPosition(active_worker.getPosition());//da controllare
+        b.setOccupant(active_worker.getPosition(),b.getOccupant(newpos));
 
-        active_worker.SetPosition(newpos);
+        active_worker.setPosition(newpos);
         b.setOccupant(newpos,active_worker);
     }
 

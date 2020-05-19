@@ -13,14 +13,14 @@ class BoardGameTest {
         Worker worker1 = new Worker();
         Worker worker2 = new Worker();
 
-        boardGame.GetBoard()[pos1[0]][pos1[1]].ChangeState(worker1);
-        assertFalse(boardGame.GetStateBox(pos1));
+        boardGame.getBoard()[pos1[0]][pos1[1]].changeState(worker1);
+        assertFalse(boardGame.getStateBox(pos1));
 
         boardGame.setOccupant(pos2, worker2);
-        assertFalse(boardGame.GetStateBox(pos2));
+        assertFalse(boardGame.getStateBox(pos2));
 
         boardGame.removeWorker(pos2);
-        assertTrue(boardGame.GetStateBox(pos2));
+        assertTrue(boardGame.getStateBox(pos2));
     }
 
     @Test
@@ -29,11 +29,11 @@ class BoardGameTest {
         int[] pos1 = new int[] {1,4};
         int[] pos2 = new int[] {1,1};
 
-        boardGame.DoBuild(pos1);
-        assertEquals(1, boardGame.GetLevelBox(pos1));
+        boardGame.doBuild(pos1);
+        assertEquals(1, boardGame.getLevelBox(pos1));
 
-        boardGame.BuildDome(pos2);
-        assertEquals(4, boardGame.GetLevelBox(pos2));
+        boardGame.buildDome(pos2);
+        assertEquals(4, boardGame.getLevelBox(pos2));
     }
 
    /* @Test
@@ -99,9 +99,9 @@ class BoardGameTest {
         BoardGame boardGame = new BoardGame();
 
         boardGame.setOccupant(pos, worker);
-        assertEquals(worker, boardGame.GetOccupant(pos));
+        assertEquals(worker, boardGame.getOccupant(pos));
         boardGame.setOccupant(pos2, worker2);
-        assertEquals(worker2, boardGame.GetOccupant(pos2[0], pos2[1]));
+        assertEquals(worker2, boardGame.getOccupant(pos2[0], pos2[1]));
     }
 
     /*@Test
@@ -126,11 +126,11 @@ class BoardGameTest {
         worker.setProprietary(player);
         int[] pos = new int[]{1,1};
 
-        worker.SetPosition(pos);
+        worker.setPosition(pos);
         boardGame.setOccupant(pos , worker);
 
-        assertEquals(player, boardGame.GetOccupantProprietary(pos));
-        assertEquals(player, boardGame.GetOccupantProprietary(pos[0], pos[1]));
+        assertEquals(player, boardGame.getOccupantProprietary(pos));
+        assertEquals(player, boardGame.getOccupantProprietary(pos[0], pos[1]));
 
     }
 
@@ -175,11 +175,11 @@ class BoardGameTest {
         Worker worker = new Worker();
         int pos[] = new int[]{4,4};
 
-        worker.SetPosition(pos);
+        worker.setPosition(pos);
         boardGame.setOccupant(pos, worker);
-        assertEquals(worker, boardGame.GetOccupant(pos));
+        assertEquals(worker, boardGame.getOccupant(pos));
 
         boardGame.removeWorker(pos);
-        assertNull(boardGame.GetOccupant(pos));
+        assertNull(boardGame.getOccupant(pos));
     }
 }

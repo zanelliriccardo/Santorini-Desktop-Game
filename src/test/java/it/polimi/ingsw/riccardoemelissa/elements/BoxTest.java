@@ -1,6 +1,5 @@
 package it.polimi.ingsw.riccardoemelissa.elements;
 
-import it.polimi.ingsw.riccardoemelissa.elements.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,17 +10,17 @@ class BoxTest extends Object {
         Box box = new Box(); //state = true, level = 0
         Worker worker = new Worker();
 
-        box.ChangeState(worker); //state=false
-        assertFalse(box.GetState());
+        box.changeState(worker); //state=false
+        assertFalse(box.getState());
 
-        box.ChangeState();//state = true
-        assertTrue(box.GetState());
+        box.changeState();//state = true
+        assertTrue(box.getState());
 
-        box.SetOccupant(worker);//state=false
-        assertFalse(box.GetState());
+        box.setOccupant(worker);//state=false
+        assertFalse(box.getState());
 
         box.removeOccupant(); //state = true
-        assertTrue(box.GetState());
+        assertTrue(box.getState());
     }
 
     @Test
@@ -29,11 +28,11 @@ class BoxTest extends Object {
     {
         Box box = new Box(); //state = true, level = 0
 
-        box.Build(); //level=1
-        assertEquals(1, box.GetLevel());
+        box.build(); //level=1
+        assertEquals(1, box.getLevel());
 
-        box.SetDome(); //level=4
-        assertEquals(4, box.GetLevel());
+        box.setDome(); //level=4
+        assertEquals(4, box.getLevel());
     }
 
 
@@ -42,12 +41,12 @@ class BoxTest extends Object {
         Box box = new Box(); //state = true, level = 0
         Worker worker = new Worker();
 
-        assertNull(box.GetOccupant());
+        assertNull(box.getOccupant());
 
-        box.SetOccupant(worker); //occupant = worker
-        assertEquals(worker, box.GetOccupant());
+        box.setOccupant(worker); //occupant = worker
+        assertEquals(worker, box.getOccupant());
 
         box.removeOccupant();
-        assertNull(box.GetOccupant());
+        assertNull(box.getOccupant());
     }
 }

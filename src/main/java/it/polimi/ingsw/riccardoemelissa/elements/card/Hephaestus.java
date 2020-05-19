@@ -5,7 +5,6 @@ import it.polimi.ingsw.riccardoemelissa.elements.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Hephaestus extends God implements Serializable {
     private PowerType type=PowerType.DISABLE;
@@ -19,10 +18,10 @@ public class Hephaestus extends God implements Serializable {
      * @return
      */
     @Override
-    public CommandType Build(BoardGame b, Worker activeWorker, int[] pos) {
+    public CommandType build(BoardGame b, Worker activeWorker, int[] pos) {
         if(type.isActive())
-            super.Build(b,activeWorker,pos);
-        return super.Build(b,activeWorker,pos);
+            super.build(b,activeWorker,pos);
+        return super.build(b,activeWorker,pos);
     }
 
     /**
@@ -52,13 +51,13 @@ public class Hephaestus extends God implements Serializable {
                     if (y > 4 || y < 0)
                         continue;
 
-                    if (!b.GetStateBox(x, y))
+                    if (!b.getStateBox(x, y))
                         continue;
 
-                    if (b.GetLevelBox(x, y) == 4)
+                    if (b.getLevelBox(x, y) == 4)
                         continue;
 
-                    if (b.GetLevelBox(x, y) > 1 && type.isActive())
+                    if (b.getLevelBox(x, y) > 1 && type.isActive())
                         continue;
 
                     int[] pos = new int[]{x, y};

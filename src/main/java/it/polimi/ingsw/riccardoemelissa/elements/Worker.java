@@ -7,31 +7,31 @@ public class Worker implements Serializable
     private int[] position=new int[]{-1,-1};
     private Player proprietary;
 
-    public int GetX() {
+    public int getX() {
         return position[0];
     }
 
-    public int GetY() {
+    public int getY() {
         return position[1];
     }
 
-    public Player GetProprietary() {
+    public Player getProprietary() {
         return proprietary;
     }
 
-    public void SetPosition (int x, int y)
+    public void setPosition(int x, int y)
     {
         position[0] = x;
         position[1] = y;
     }
 
-    public void SetPosition (int[] pos)
+    public void setPosition(int[] pos)
     {
         position=pos;
         //position=pos;
     }
 
-    public int[] GetPosition() {
+    public int[] getPosition() {
         return position;
     }
 

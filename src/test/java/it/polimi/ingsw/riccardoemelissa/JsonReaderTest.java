@@ -14,7 +14,7 @@ class JsonReaderTest extends Object {
     void godsInGame() throws FileNotFoundException, URISyntaxException {
         JsonReader jsonReader = new JsonReader();
         int num_players = 3;
-        String[] gods = jsonReader.GodsInGame(num_players);
+        String[] gods = jsonReader.godsInGame(num_players);
         int count = 0;
 
         for(int i = 0; i < gods.length; i= i+3)

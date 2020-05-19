@@ -2,14 +2,11 @@ package it.polimi.ingsw.riccardoemelissa.client;
 
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.GameProxy;
-import it.polimi.ingsw.riccardoemelissa.elements.GodCardType;
 import it.polimi.ingsw.riccardoemelissa.elements.Player;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -65,7 +62,7 @@ public class ListenerServer extends Thread {
             return;
 
         for (Player p : client_javafx.from_server.getPlayers()) {
-            if(p.GetNickname().compareTo("nome")==0) {
+            if(p.getNickname().compareTo("nome")==0) {
                 return;
             }
         }
@@ -79,7 +76,7 @@ public class ListenerServer extends Thread {
                 client_javafx.setServerMessage.setStyle("-fx-background-color: transparent");
                 client_javafx.setServerMessage.setStyle("-fx-font-size : 15");
                 client_javafx.setServerMessage.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
-                client_javafx.setServerMessage.setText("Hi " + client_javafx.from_server.getActivePlayer().GetNickname()+ "!" +"\nThe first thing you have to do \nis to choose the initial position \nof your workers. \nPlace them in two free boxes.");
+                client_javafx.setServerMessage.setText("Hi " + client_javafx.from_server.getActivePlayer().getNickname()+ "!" +"\nThe first thing you have to do \nis to choose the initial position \nof your workers. \nPlace them in two free boxes.");
 
 
                 for (Player p: client_javafx.from_server.getPlayers())
@@ -87,7 +84,7 @@ public class ListenerServer extends Thread {
                     client_javafx.endTurn.setVisible(false); // endturn not visible when the players are setting the initial position of their workers
 
                     //if the godcard's power of the active player is passive, the button used to active the power is disable and the power is always active
-                    if(p.GetGodCard().getIn_action().isPassive()&&p.GetNickname().compareTo(client_javafx.nickname.getText())==0)
+                    if(p.getGodCard().getIn_action().isPassive()&&p.getNickname().compareTo(client_javafx.nickname.getText())==0)
                     {
                         client_javafx.button_setpower.setDisable(true);
                         client_javafx.button_setpower.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
@@ -97,11 +94,11 @@ public class ListenerServer extends Thread {
                     }
 
                     //if is the active player, this part of the method sets his name, his worker color and his godcard
-                    if(client_javafx.nickname.getText().compareTo(p.GetNickname()) == 0) {
-                        client_javafx.playerBoard.setText(p.GetNickname());
+                    if(client_javafx.nickname.getText().compareTo(p.getNickname()) == 0) {
+                        client_javafx.playerBoard.setText(p.getNickname());
                         client_javafx.playerBoard.setStyle("-fx-background-color: #20B2AA");
                         client_javafx.playerBoard.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
-                        String color = p.GetColor();
+                        String color = p.getColor();
                         client_javafx.colorPlayerBoard.setFill(Paint.valueOf(color));
                         godCard = "images/card/" + p.getGodImagePath();
                         client_javafx.set_godcard.setImage(new Image(String.valueOf(getClass().getResource(godCard))));
@@ -114,8 +111,8 @@ public class ListenerServer extends Thread {
                         client_javafx.colorOpponent2.setVisible(false);
                         client_javafx.opponent1.setStyle("-fx-background-color: #20B2AA");
                         client_javafx.opponent1.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
-                        client_javafx.opponent1.setText(p.GetNickname());
-                        String color = p.GetColor();
+                        client_javafx.opponent1.setText(p.getNickname());
+                        String color = p.getColor();
                         client_javafx.colorOpponent1.setFill(Paint.valueOf(color));
                         godCard = "images/card/" + p.getGodImagePath();
                         client_javafx.godOpponent1.setImage(new Image(String.valueOf(getClass().getResource(godCard))));
@@ -128,8 +125,8 @@ public class ListenerServer extends Thread {
                         {
                             client_javafx.opponent1.setStyle("-fx-background-color: #20B2AA");
                             client_javafx.opponent1.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
-                            client_javafx.opponent1.setText(p.GetNickname());
-                            String color = p.GetColor();
+                            client_javafx.opponent1.setText(p.getNickname());
+                            String color = p.getColor();
                             client_javafx.colorOpponent1.setFill(Paint.valueOf(color));
                             godCard = "images/card/" + p.getGodImagePath();
                             client_javafx.godOpponent1.setImage(new Image(String.valueOf(getClass().getResource(godCard))));
@@ -140,8 +137,8 @@ public class ListenerServer extends Thread {
                         {
                             client_javafx.opponent2.setFont(Font.font(" Franklin Gothic Medium Cond"));
                             client_javafx.opponent2.setStyle("-fx-background-color: #20B2AA");
-                            client_javafx.opponent2.setText(p.GetNickname());
-                            String color = p.GetColor();
+                            client_javafx.opponent2.setText(p.getNickname());
+                            String color = p.getColor();
                             client_javafx.colorOpponent2.setFill(Paint.valueOf(color));
                             godCard = "images/card/" + p.getGodImagePath();
                             client_javafx.godOpponent2.setImage(new Image(String.valueOf(getClass().getResource(godCard))));
@@ -164,7 +161,7 @@ public class ListenerServer extends Thread {
                     label.setStyle("-fx-font-size : 15");
                     label.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
                     pane.getChildren().add(label);
-                    label.setText(String.valueOf(client_javafx.from_server.getBoard().GetLevelBox(x, y)));
+                    label.setText(String.valueOf(client_javafx.from_server.getBoard().getLevelBox(x, y)));
                     GridPane.setColumnIndex(pane, x);
                     GridPane.setRowIndex(pane, y);
                 }
@@ -174,20 +171,20 @@ public class ListenerServer extends Thread {
         Platform.runLater(()->
         {
             //button endturn enable only at the end of the turn
-            client_javafx.endTurn.setVisible(client_javafx.from_server.getActivePlayer().GetGodCard().getCardType().isEndTurn()&&client_javafx.isMyTurn());
+            client_javafx.endTurn.setVisible(client_javafx.from_server.getActivePlayer().getGodCard().getCardType().isEndTurn()&&client_javafx.isMyTurn());
 
             //Turn of
-            client_javafx.set_turn.setText("Turn of " + client_javafx.from_server.getActivePlayer().GetNickname());
+            client_javafx.set_turn.setText("Turn of " + client_javafx.from_server.getActivePlayer().getNickname());
             client_javafx.set_turn.setFont(Font.font(" Franklin Gothic Medium Cond", FontWeight.BOLD, 18));
 
             for(int i = 0; i< 5; i++) {
                 for (int j = 0; j < 5; j++)
                 {
-                    if (!client_javafx.from_server.getBoard().GetStateBox(i, j)) {
-                        System.out.println(client_javafx.from_server.getBoard().GetStateBox(i, j));
+                    if (!client_javafx.from_server.getBoard().getStateBox(i, j)) {
+                        System.out.println(client_javafx.from_server.getBoard().getStateBox(i, j));
                         Circle worker = new Circle(client_javafx.myboard.getHeight()/10, client_javafx.myboard.getWidth()/10, client_javafx.myboard.getHeight()/15);
 
-                        switch (client_javafx.from_server.getBoard().GetOccupantProprietary(i,j).GetColor())
+                        switch (client_javafx.from_server.getBoard().getOccupantProprietary(i,j).getColor())
                         {
                             case "MAGENTA":
                                 worker.setFill(Color.MAGENTA);
@@ -235,7 +232,7 @@ public class ListenerServer extends Thread {
                         {
                             for (Node label : ((Pane) child).getChildren())
                                 if(label instanceof Label)
-                                    ((Label) label).setText(String.valueOf(client_javafx.from_server.getBoard().GetLevelBox(r, c)));
+                                    ((Label) label).setText(String.valueOf(client_javafx.from_server.getBoard().getLevelBox(r, c)));
                         }
                     }
                 }

@@ -3,17 +3,10 @@ package it.polimi.ingsw.riccardoemelissa;
 
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Scanner;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 public class MultiEchoServer {
@@ -40,29 +33,29 @@ public class MultiEchoServer {
             try {
                 Socket socket = serverSocket.accept();
                 ClientHandler firstClient=new ClientHandler(socket);
-                GameState.GetBoard().addObserver(firstClient);
+                GameState.getBoard().addObserver(firstClient);
                 Thread firstThread=new Thread(firstClient);
                 firstThread.start();
                 System.out.println("First player connected");
 
                 serverSocket.close();
 
-                while (GameState.GetNumPlayers()==10) {
-                     System.out.println(GameState.GetNumPlayers());
+                while (GameState.getNumPlayers()==10) {
+                     System.out.println(GameState.getNumPlayers());
                 }
-                System.out.println("choose to play with: "+ GameState.GetNumPlayers());
+                System.out.println("choose to play with: "+ GameState.getNumPlayers());
 
-                serverSocket=new ServerSocket(port,GameState.GetNumPlayers());
+                serverSocket=new ServerSocket(port,GameState.getNumPlayers());
 
                 ArrayList<Socket> sockets=new ArrayList<Socket>();
                 ArrayList<ClientHandler> clients=new ArrayList<ClientHandler>();
                 ArrayList<Thread> threads=new ArrayList<Thread>();
 
-                for(int i=0;i<GameState.GetNumPlayers()-1;i++)
+                for(int i = 0; i<GameState.getNumPlayers()-1; i++)
                     try {
                         sockets.add(serverSocket.accept());
                         clients.add(new ClientHandler(sockets.get(i)));
-                        GameState.GetBoard().addObserver(clients.get(i));
+                        GameState.getBoard().addObserver(clients.get(i));
                         threads.add(new Thread(clients.get(i)));
                         threads.get(i).start();
                         System.out.println("Another player connected(num:"+(i+1));
@@ -71,14 +64,14 @@ public class MultiEchoServer {
                         break;
                     }
 
-                while (!GameState.GameReady())
+                while (!GameState.gameReady())
                 {
 
                 }
                 serverSocket.close();
                 System.out.println("gioco pronto");
-                Collections.shuffle(GameState.GetPlayers());
-                GameState.GetBoard().custom_notifyAll();
+                Collections.shuffle(GameState.getPlayers());
+                GameState.getBoard().custom_notifyAll();
 
                 while (!GameState.getGameOver())
                 {

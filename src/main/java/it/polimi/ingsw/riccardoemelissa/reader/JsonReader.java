@@ -24,7 +24,18 @@ public class JsonReader {
         obj = null;
     }
 
-    public String[] GodsInGame(int n) throws FileNotFoundException, URISyntaxException {
+    /**
+     * Choose Gods in game
+     *
+     * Based on the number of players chosen for the game, which is indicate by the parameter n,
+     * this method randomly chooses n gods
+     *
+     * @param n
+     * @return
+     * @throws FileNotFoundException
+     * @throws URISyntaxException
+     */
+    public String[] godsInGame(int n) throws FileNotFoundException, URISyntaxException {
         ArrayList<String> gods = new ArrayList<>();
         String[] gods_chosen = new String[n*3];
 

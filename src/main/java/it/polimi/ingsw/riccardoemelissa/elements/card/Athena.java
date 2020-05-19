@@ -10,8 +10,8 @@ public class Athena extends God implements Serializable {
 
     private boolean in_action=false;
 
-    public boolean SetInAction(int[] old_pos, int[] new_pos, BoardGame b) {
-        if ((b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)) == 1)
+    public boolean setInAction(int[] old_pos, int[] new_pos, BoardGame b) {
+        if ((b.getLevelBox(new_pos) - b.getLevelBox(old_pos)) == 1)
             return true;
         return false;
     }
@@ -28,19 +28,19 @@ public class Athena extends God implements Serializable {
      * @return
      */
     @Override
-    public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
+    public CommandType move(BoardGame b, Worker active_worker, int[] newpos)
     {
         System.out.println("in action = " + in_action);
-        if (active_worker.GetProprietary().GetGodCard() instanceof Athena)
+        if (active_worker.getProprietary().getGodCard() instanceof Athena)
         {
-            in_action = SetInAction(active_worker.GetPosition(), newpos, b);
-            super.Move(b, active_worker, newpos);
+            in_action = setInAction(active_worker.getPosition(), newpos, b);
+            super.move(b, active_worker, newpos);
             System.out.println("in action = " + in_action);
         }
         else if (in_action)
         {
             System.out.println("in action = " + in_action);
-            return RespectAthenaAction(active_worker.GetPosition(), newpos, b);
+            return RespectAthenaAction(active_worker.getPosition(), newpos, b);
         }
         return CommandType.BUILD;
     }
@@ -55,8 +55,8 @@ public class Athena extends God implements Serializable {
      */
     public CommandType RespectAthenaAction(int[] old_pos, int[] new_pos, BoardGame b) {
         System.out.println("Entra in respectAthenaAction");
-        System.out.println("Differenza " +  new_pos[0] + " , " + new_pos[1] + " - " + old_pos[0] + " , " + old_pos[1] + " = " + (b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)));
-        if ((b.GetLevelBox(new_pos) - b.GetLevelBox(old_pos)) > 0)
+        System.out.println("Differenza " +  new_pos[0] + " , " + new_pos[1] + " - " + old_pos[0] + " , " + old_pos[1] + " = " + (b.getLevelBox(new_pos) - b.getLevelBox(old_pos)));
+        if ((b.getLevelBox(new_pos) - b.getLevelBox(old_pos)) > 0)
             return CommandType.ERROR;
         return CommandType.MOVE;
     }

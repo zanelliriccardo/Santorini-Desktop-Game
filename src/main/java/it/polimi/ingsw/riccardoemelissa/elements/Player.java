@@ -14,30 +14,30 @@ public class Player  implements Serializable {
     }
 
 
-    public String GetNickname() {
+    public String getNickname() {
         return nickname;
     }
 
-    public void SetGodCard(God god) {
+    public void setGodCard(God god) {
         god_card=god;
     }
 
-    public void SetColor(String color)
+    public void setColor(String color)
     {
         this.color = color;
     }
 
-    public String GetColor()
+    public String getColor()
     {
         return color;
     }
 
-    public God GetGodCard()
+    public God getGodCard()
     {
         return god_card;
     }
 
-    public void SetNickname(String getObj)
+    public void setNickname(String getObj)
     {
         nickname=getObj;
     }

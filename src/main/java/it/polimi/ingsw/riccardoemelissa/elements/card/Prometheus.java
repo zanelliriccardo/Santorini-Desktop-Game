@@ -35,10 +35,10 @@ public class Prometheus extends God implements Serializable {
                     if (y > 4 || y < 0)
                         continue;
 
-                    if(!b.GetStateBox(x,y))
+                    if(!b.getStateBox(x,y))
                         continue;
 
-                    if(b.GetLevelBox(x,y)>b.GetLevelBox(worker_pos)&&type.isActive()&&super.getCardType()==GodCardType.MOVE)
+                    if(b.getLevelBox(x,y)>b.getLevelBox(worker_pos)&&type.isActive()&&super.getCardType()==GodCardType.MOVE)
                         continue;
 
                     int[] pos = new int[]{x,y};
@@ -61,16 +61,16 @@ public class Prometheus extends God implements Serializable {
      * @return
      */
     @Override
-    public CommandType Build(BoardGame b, Worker activeWorker, int[] pos) {
+    public CommandType build(BoardGame b, Worker activeWorker, int[] pos) {
         if(type.isActive())
         {
-            super.Build(b,activeWorker,pos);
+            super.build(b,activeWorker,pos);
             super.setCardType(GodCardType.MOVE);
             type=PowerType.DISABLE;
             return CommandType.MOVE;
         }
         else
-            return super.Build(b,activeWorker,pos);
+            return super.build(b,activeWorker,pos);
     }
 
     @Override

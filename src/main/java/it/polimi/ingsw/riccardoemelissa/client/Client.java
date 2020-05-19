@@ -1,6 +1,5 @@
 package it.polimi.ingsw.riccardoemelissa.client;
 
-import it.polimi.ingsw.riccardoemelissa.GameState;
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
@@ -20,12 +19,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -80,7 +77,7 @@ public class Client extends Application {
 
 
     /**
-     * get the cell clicket by user
+     * get the cell clicked by user
      *
      * @param e
      * @return
@@ -104,7 +101,7 @@ public class Client extends Application {
     }
 
     /**
-     * create the cell on gridpane board
+     * create the cells on gridpane board
      *
      * @param myboard
      */
@@ -270,7 +267,7 @@ public class Client extends Application {
         players.addAll(from_server.getPlayers());
         messageToServer(CommandType.NICKNAME,nickname.getText());
         for (int i = 0; i < players.size(); i++) {
-            if(players.get(i).GetNickname().compareTo("nome")==0)
+            if(players.get(i).getNickname().compareTo("nome")==0)
             {
                 nickname.setText(nickname.getText()+"#"+i);
                 break;
@@ -297,8 +294,8 @@ public class Client extends Application {
             set_power.setImage(new Image(String.valueOf((getClass().getResource("images/heropower_inactive.png")))));
             for (Player p :
                     from_server.getPlayers()) {
-                if (p.GetNickname().compareTo(nickname.getText()) == 0)
-                    p.GetGodCard().setIn_action(PowerType.DISABLE);
+                if (p.getNickname().compareTo(nickname.getText()) == 0)
+                    p.getGodCard().setIn_action(PowerType.DISABLE);
             }
             activedPower(PowerType.DISABLE);
         }
@@ -310,8 +307,8 @@ public class Client extends Application {
             set_power.setImage(new Image(String.valueOf(getClass().getResource("images/heropower_active.png"))));
             for (Player p :
                     from_server.getPlayers()) {
-                if (p.GetNickname().compareTo(nickname.getText()) == 0)
-                    p.GetGodCard().setIn_action(PowerType.ACTIVE);
+                if (p.getNickname().compareTo(nickname.getText()) == 0)
+                    p.getGodCard().setIn_action(PowerType.ACTIVE);
             }
             activedPower(PowerType.ACTIVE);
         }
@@ -344,8 +341,8 @@ public class Client extends Application {
      */
     public void activedPower(PowerType powerType)
     {
-        if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.MOVE) activeMoveCells();
-        if(from_server.getActivePlayer().GetGodCard().getCardType()==GodCardType.BUILD) activeBuildCells();
+        if(from_server.getActivePlayer().getGodCard().getCardType()==GodCardType.MOVE) activeMoveCells();
+        if(from_server.getActivePlayer().getGodCard().getCardType()==GodCardType.BUILD) activeBuildCells();
     }
 
     /**
@@ -415,16 +412,16 @@ public class Client extends Application {
      */
     public ArrayList<int[]> checkMoves(BoardGame board, Worker worker_toMove)
     {
-        ArrayList<int[]> possiblemoves= worker_toMove.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board, worker_toMove.GetPosition());
+        ArrayList<int[]> possiblemoves= worker_toMove.getProprietary().getGodCard().adjacentBoxNotOccupiedNotDome(board, worker_toMove.getPosition());
 
-        possiblemoves.removeIf(pos -> board.GetLevelBox(pos) - board.GetLevelBox(worker_toMove.GetPosition()) > 1);
+        possiblemoves.removeIf(pos -> board.getLevelBox(pos) - board.getLevelBox(worker_toMove.getPosition()) > 1);
 
         for (int[] pos: possiblemoves)
         {
             for (Player opponent : from_server.getPlayers())
             {
-                if((opponent.GetNickname().compareTo(from_server.getBoard().getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Move(board, worker_toMove,pos)==CommandType.ERROR)//check move is possible for opponent card
+                if((opponent.getNickname().compareTo(from_server.getBoard().getActivePlayer().getNickname())==0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                    if(opponent.getGodCard().move(board, worker_toMove,pos)==CommandType.ERROR)//check move is possible for opponent card
                         possiblemoves.remove(pos);
             }
         }
@@ -440,16 +437,16 @@ public class Client extends Application {
      */
     public ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
     {
-        ArrayList<int[]> possiblebuild=builder.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board,builder.GetPosition());
+        ArrayList<int[]> possiblebuild=builder.getProprietary().getGodCard().adjacentBoxNotOccupiedNotDome(board,builder.getPosition());
 
-        possiblebuild.removeIf(pos -> board.GetLevelBox(pos) == 4);
+        possiblebuild.removeIf(pos -> board.getLevelBox(pos) == 4);
 
         for (int[] pos: possiblebuild)
         {
             for (Player opponent : from_server.getPlayers())
             {
-                if((opponent.GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
+                if((opponent.getNickname().compareTo(from_server.getActivePlayer().getNickname())==0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                    if(opponent.getGodCard().build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
                         possiblebuild.remove(pos);
             }
         }
@@ -468,21 +465,21 @@ public class Client extends Application {
         System.out.println("La posizione cliccata è ( " + new_position[0] + " , "+ new_position[1] + ")" );
 
         //create a worker
-        if(nickname.getText().compareTo(from_server.getActivePlayer().GetNickname())==0&&getWorkers().size()<2)
+        if(nickname.getText().compareTo(from_server.getActivePlayer().getNickname())==0&&getWorkers().size()<2)
         {
-            if(!from_server.getBoard().GetStateBox(new_position))
+            if(!from_server.getBoard().getStateBox(new_position))
                 return;
             messageToServer(CommandType.NEWWORKER, new Worker(), new_position);
             setDisable(true);
         }
         //select worker
-        else if(!from_server.getBoard().GetStateBox(new_position))
+        else if(!from_server.getBoard().getStateBox(new_position))
         {
-            if(from_server.getBoard().GetOccupantProprietary(new_position).GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0) {
-                activeWorker = from_server.getBoard().GetOccupant(new_position);
-                if (from_server.getActivePlayer().GetGodCard().getCardType() == GodCardType.MOVE)
+            if(from_server.getBoard().getOccupantProprietary(new_position).getNickname().compareTo(from_server.getActivePlayer().getNickname())==0) {
+                activeWorker = from_server.getBoard().getOccupant(new_position);
+                if (from_server.getActivePlayer().getGodCard().getCardType() == GodCardType.MOVE)
                     activeMoveCells();
-                else if (from_server.getActivePlayer().GetGodCard().getCardType() == GodCardType.BUILD)
+                else if (from_server.getActivePlayer().getGodCard().getCardType() == GodCardType.BUILD)
                     activeBuildCells();
             }
             setDisable(false);
@@ -491,14 +488,14 @@ public class Client extends Application {
         if(activeWorker==null)
         return;
         // do move
-        else if(activeWorker.GetProprietary().GetGodCard().getCardType()==GodCardType.MOVE&&contains(new_position))
+        else if(activeWorker.getProprietary().getGodCard().getCardType()==GodCardType.MOVE&&contains(new_position))
         {
             messageToServer(CommandType.MOVE,activeWorker,new_position);
             setDisable(true);
             cleanBoard();
         }
         // do build
-        else if(activeWorker.GetProprietary().GetGodCard().getCardType()==GodCardType.BUILD&&contains(new_position))
+        else if(activeWorker.getProprietary().getGodCard().getCardType()==GodCardType.BUILD&&contains(new_position))
         {
             messageToServer(CommandType.BUILD,activeWorker,new_position);
             setDisable(true);
@@ -585,9 +582,9 @@ public class Client extends Application {
         {
             for (int j = 0; j < 5; j++)
             {
-                if(!from_server.getBoard().GetStateBox(i,j))
-                    if(from_server.getBoard().GetOccupantProprietary(i,j).GetNickname().compareTo(from_server.getBoard().getActivePlayer().GetNickname())==0)
-                        workers.add(from_server.getBoard().GetOccupant(i,j));
+                if(!from_server.getBoard().getStateBox(i,j))
+                    if(from_server.getBoard().getOccupantProprietary(i,j).getNickname().compareTo(from_server.getBoard().getActivePlayer().getNickname())==0)
+                        workers.add(from_server.getBoard().getOccupant(i,j));
             }
         }
         return workers;
@@ -599,9 +596,9 @@ public class Client extends Application {
      * @param mouseEvent
      */
     @FXML
-    public void endturn(MouseEvent mouseEvent)
+    public void endTurn (MouseEvent mouseEvent)
     {
-        if(!from_server.getActivePlayer().GetGodCard().getCardType().isEndTurn())
+        if(!from_server.getActivePlayer().getGodCard().getCardType().isEndTurn())
             return;
         cleanBoard();
         messageToServer(CommandType.CHANGE_TURN);
@@ -616,7 +613,7 @@ public class Client extends Application {
     {
         myboard.setDisable(value);
         for (Player p : from_server.getPlayers()) {
-            if(!p.GetGodCard().getIn_action().isPassive()&&p.GetNickname().compareTo(nickname.getText())==0)
+            if(!p.getGodCard().getIn_action().isPassive()&&p.getNickname().compareTo(nickname.getText())==0)
                 button_setpower.setDisable(value);
         }
 
@@ -627,13 +624,13 @@ public class Client extends Application {
      */
     public void updatePossibleCell()
     {
-        if(from_server.getActive_worker()!=null&&from_server.getActivePlayer().GetNickname().compareTo(nickname.getText())==0)
+        if(from_server.getActive_worker()!=null&&from_server.getActivePlayer().getNickname().compareTo(nickname.getText())==0)
         {
-            activeWorker = from_server.getBoard().GetOccupant(from_server.getActive_worker().GetPosition());
+            activeWorker = from_server.getBoard().getOccupant(from_server.getActive_worker().getPosition());
 
-            if (activeWorker.GetProprietary().GetGodCard().getCardType().isMove()&&from_server.getActive_worker().GetProprietary().GetNickname().compareTo(nickname.getText())==0)
+            if (activeWorker.getProprietary().getGodCard().getCardType().isMove()&&from_server.getActive_worker().getProprietary().getNickname().compareTo(nickname.getText())==0)
                 activeMoveCells();
-            else if (activeWorker.GetProprietary().GetGodCard().getCardType().isBuild()&&from_server.getActive_worker().GetProprietary().GetNickname().compareTo(nickname.getText())==0)
+            else if (activeWorker.getProprietary().getGodCard().getCardType().isBuild()&&from_server.getActive_worker().getProprietary().getNickname().compareTo(nickname.getText())==0)
                 activeBuildCells();
         }
         else
@@ -644,7 +641,7 @@ public class Client extends Application {
     }
 
     public boolean isMyTurn() {
-        return from_server.getBoard().getActivePlayer().GetNickname().compareTo(nickname.getText())==0;
+        return from_server.getBoard().getActivePlayer().getNickname().compareTo(nickname.getText())==0;
     }
 
     /**
@@ -652,13 +649,13 @@ public class Client extends Application {
      */
     public void checkGameOver() {
         for (Player p : from_server.getPlayers()) {
-            if (p.GetNickname().compareTo(nickname.getText()) == 0)
+            if (p.getNickname().compareTo(nickname.getText()) == 0)
                 try {
-                    if (p.GetGodCard().getCardType().isWin()) {
+                    if (p.getGodCard().getCardType().isWin()) {
                         changeScene("winner.fxml");
                         socket.close();
                     }
-                    else if (p.GetGodCard().getCardType().isLose()) {
+                    else if (p.getGodCard().getCardType().isLose()) {
                         changeScene("loser.fxml");
                         socket.close();
                     }

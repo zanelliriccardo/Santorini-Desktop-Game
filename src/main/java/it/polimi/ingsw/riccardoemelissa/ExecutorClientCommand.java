@@ -22,17 +22,17 @@ public class ExecutorClientCommand {
         switch (cmd.getType())
         {
             case MODE:
-                GameState.SetNumPlayer((int) cmd.getObj());
-                GameState.GetBoard().custom_notifyAll();
+                GameState.setNumPlayer((int) cmd.getObj());
+                GameState.getBoard().custom_notifyAll();
                 break;
             case NICKNAME:
-                GameState.NewPlayer((String)cmd.getObj());
-                GameState.GetBoard().custom_notifyAll();
+                GameState.newPlayer((String)cmd.getObj());
+                GameState.getBoard().custom_notifyAll();
                 break;
             case NEWWORKER:
                 ((Worker)cmd.getObj()).setProprietary(GameState.getActivePlayer());
-                ((Worker)cmd.getObj()).SetPosition(cmd.getPos());
-                GameState.GetBoard().setOccupant(cmd.getPos(),(Worker)cmd.getObj());
+                ((Worker)cmd.getObj()).setPosition(cmd.getPos());
+                GameState.getBoard().setOccupant(cmd.getPos(),(Worker)cmd.getObj());
 
                 ArrayList<Worker> workers=new ArrayList<Worker>();
 
@@ -40,79 +40,79 @@ public class ExecutorClientCommand {
                 {
                     for (int j = 0; j < 5; j++)
                     {
-                        if(!GameState.GetBoard().GetStateBox(i,j))
-                            if(GameState.GetBoard().GetOccupant(i,j).GetProprietary().GetNickname().compareTo(GameState.getActivePlayer().GetNickname())==0)
-                                workers.add(GameState.GetBoard().GetOccupant(i,j));
+                        if(!GameState.getBoard().getStateBox(i,j))
+                            if(GameState.getBoard().getOccupant(i,j).getProprietary().getNickname().compareTo(GameState.getActivePlayer().getNickname())==0)
+                                workers.add(GameState.getBoard().getOccupant(i,j));
                     }
                 }
 
                 if(workers.size()==2)
-                    GameState.NextTurn();
+                    GameState.nextTurn();
 
-                GameState.GetBoard().custom_notifyAll();
+                GameState.getBoard().custom_notifyAll();
                 break;
             case DISCONNECTED://da rivedere
-                GameState.EndGame();
+                GameState.endGame();
                 break;
             case MOVE:
-                if(!GameState.IsPossibleMove((Worker)cmd.getObj(),cmd.getPos())) {
-                    GameState.RemovePlayer(GameState.getActivePlayer());
+                if(!GameState.isPossibleMove((Worker)cmd.getObj(),cmd.getPos())) {
+                    GameState.removePlayer(GameState.getActivePlayer());
                     return;
                 }
-                Worker move_worker=GameState.GetBoard().GetOccupant((((Worker) cmd.getObj()).GetPosition()));
-                move_worker.GetProprietary().GetGodCard().setIn_action(((Worker) cmd.getObj()).GetProprietary().GetGodCard().getIn_action());
+                Worker move_worker=GameState.getBoard().getOccupant((((Worker) cmd.getObj()).getPosition()));
+                move_worker.getProprietary().getGodCard().setIn_action(((Worker) cmd.getObj()).getProprietary().getGodCard().getIn_action());
 
-                move_worker.GetProprietary().GetGodCard().Move(GameState.GetBoard(),move_worker,cmd.getPos());
+                move_worker.getProprietary().getGodCard().move(GameState.getBoard(),move_worker,cmd.getPos());
 
                 System.out.println("move");
 
-                if(checkMoves(GameState.GetBoard(),move_worker).isEmpty()&&GameState.getActivePlayer().GetGodCard().getCardType().isMove())
+                if(checkMoves(GameState.getBoard(),move_worker).isEmpty()&&GameState.getActivePlayer().getGodCard().getCardType().isMove())
                     lose();
-                if(checkBuilds(GameState.GetBoard(),move_worker).isEmpty()&&GameState.getActivePlayer().GetGodCard().getCardType().isBuild())
+                if(checkBuilds(GameState.getBoard(),move_worker).isEmpty()&&GameState.getActivePlayer().getGodCard().getCardType().isBuild())
                     lose();
 
-                if(GameState.GetBoard().GetLevelBox(move_worker.GetPosition())==3||GameState.getActivePlayer().GetGodCard().getCardType().isWin())
+                if(GameState.getBoard().getLevelBox(move_worker.getPosition())==3||GameState.getActivePlayer().getGodCard().getCardType().isWin())
                 {
-                    move_worker.GetProprietary().GetGodCard().setCardType(GodCardType.WIN);
-                    GameState.EndGame();
+                    move_worker.getProprietary().getGodCard().setCardType(GodCardType.WIN);
+                    GameState.endGame();
                     GameState.setActiveWorker(null);
                 }
                 else
                     GameState.setActiveWorker(cmd.getPos());
 
-                GameState.GetBoard().custom_notifyAll();
+                GameState.getBoard().custom_notifyAll();
                 break;
             case BUILD:
-                if(!GameState.IsPossibleBuild((Worker)cmd.getObj(),cmd.getPos())) {
-                    GameState.RemovePlayer(GameState.getActivePlayer());
+                if(!GameState.isPossibleBuild((Worker)cmd.getObj(),cmd.getPos())) {
+                    GameState.removePlayer(GameState.getActivePlayer());
                     return;
                 }
-                Worker build_worker=GameState.GetBoard().GetOccupant((((Worker) cmd.getObj()).GetPosition()));
-                build_worker.GetProprietary().GetGodCard().setIn_action(((Worker) cmd.getObj()).GetProprietary().GetGodCard().getIn_action());
+                Worker build_worker=GameState.getBoard().getOccupant((((Worker) cmd.getObj()).getPosition()));
+                build_worker.getProprietary().getGodCard().setIn_action(((Worker) cmd.getObj()).getProprietary().getGodCard().getIn_action());
 
-                build_worker.GetProprietary().GetGodCard().Build(GameState.GetBoard(),build_worker,cmd.getPos());
+                build_worker.getProprietary().getGodCard().build(GameState.getBoard(),build_worker,cmd.getPos());
 
                 System.out.println("build");
 
-                if(checkMoves(GameState.GetBoard(),build_worker).isEmpty()&&GameState.getActivePlayer().GetGodCard().getCardType().isMove())
+                if(checkMoves(GameState.getBoard(),build_worker).isEmpty()&&GameState.getActivePlayer().getGodCard().getCardType().isMove())
                     lose();
-                if(checkBuilds(GameState.GetBoard(),build_worker).isEmpty()&&GameState.getActivePlayer().GetGodCard().getCardType().isBuild())
+                if(checkBuilds(GameState.getBoard(),build_worker).isEmpty()&&GameState.getActivePlayer().getGodCard().getCardType().isBuild())
                     lose();
 
-                GameState.GetBoard().custom_notifyAll();
+                GameState.getBoard().custom_notifyAll();
                 break;
             case CHANGE_TURN:
-                GameState.GetBoard().getActivePlayer().GetGodCard().resetCard();
-                GameState.NextTurn();
+                GameState.getBoard().getActivePlayer().getGodCard().resetCard();
+                GameState.nextTurn();
 
-                if(GameState.possibleMoves().isEmpty()&&GameState.GetBoard().getActivePlayer().GetGodCard().getCardType().isMove())
+                if(GameState.possibleMoves().isEmpty()&&GameState.getBoard().getActivePlayer().getGodCard().getCardType().isMove())
                     lose();
                 else
-                   GameState.GetBoard().getActivePlayer().GetGodCard().resetCard();
+                   GameState.getBoard().getActivePlayer().getGodCard().resetCard();
 
 
                 GameState.setActiveWorker(null);
-                GameState.GetBoard().custom_notifyAll();
+                GameState.getBoard().custom_notifyAll();
                 break;
         }
 
@@ -122,34 +122,34 @@ public class ExecutorClientCommand {
     public void lose()
     {
         GameState.setActiveWorker(null);
-        GameState.getActivePlayer().GetGodCard().setCardType(GodCardType.LOSE);
-        ArrayList<Worker> workerToDelete= GameState.GetBoard().getWorkers();
+        GameState.getActivePlayer().getGodCard().setCardType(GodCardType.LOSE);
+        ArrayList<Worker> workerToDelete= GameState.getBoard().getWorkers();
 
         for (Worker w : workerToDelete) {
-            GameState.GetBoard().removeWorker(w.GetPosition());
+            GameState.getBoard().removeWorker(w.getPosition());
         }
-        GameState.GetBoard().custom_notifyAll();
+        GameState.getBoard().custom_notifyAll();
 
-        GameState.RemovePlayer(GameState.getActivePlayer());
+        GameState.removePlayer(GameState.getActivePlayer());
 
-        if(GameState.GetPlayers().size()==1) {
-            GameState.GetPlayers().get(0).GetGodCard().setCardType(GodCardType.WIN);
-            GameState.EndGame();
+        if(GameState.getPlayers().size()==1) {
+            GameState.getPlayers().get(0).getGodCard().setCardType(GodCardType.WIN);
+            GameState.endGame();
         }
     }
 
     public ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
     {
-        ArrayList<int[]> possiblebuild=builder.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board,builder.GetPosition());
+        ArrayList<int[]> possiblebuild=builder.getProprietary().getGodCard().adjacentBoxNotOccupiedNotDome(board,builder.getPosition());
 
-        possiblebuild.removeIf(pos -> board.GetLevelBox(pos) == 4);
+        possiblebuild.removeIf(pos -> board.getLevelBox(pos) == 4);
 
         for (int[] pos: possiblebuild)
         {
-            for (Player opponent : GameState.GetPlayers())
+            for (Player opponent : GameState.getPlayers())
             {
-                if((opponent.GetNickname().compareTo(GameState.getActivePlayer().GetNickname())!=0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
+                if((opponent.getNickname().compareTo(GameState.getActivePlayer().getNickname())!=0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                    if(opponent.getGodCard().build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
                         possiblebuild.remove(pos);
             }
         }
@@ -158,20 +158,20 @@ public class ExecutorClientCommand {
 
     public ArrayList<int[]> checkMoves(BoardGame board, Worker worker_toMove)
     {
-        ArrayList<int[]> possiblemoves= worker_toMove.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board, worker_toMove.GetPosition());
+        ArrayList<int[]> possiblemoves= worker_toMove.getProprietary().getGodCard().adjacentBoxNotOccupiedNotDome(board, worker_toMove.getPosition());
 
-        possiblemoves.removeIf(pos -> board.GetLevelBox(pos) - board.GetLevelBox(worker_toMove.GetPosition()) > 1);
+        possiblemoves.removeIf(pos -> board.getLevelBox(pos) - board.getLevelBox(worker_toMove.getPosition()) > 1);
 
         //for (int[] pos: possiblemoves)
         for(int i = 0; i < possiblemoves.size(); i++)
         {
-            for (Player opponent : GameState.GetPlayers())
+            for (Player opponent : GameState.getPlayers())
             {
                 //System.out.println(" Nomi da confrontare " + opponent.GetNickname() + " , " + getActivePlayer().GetNickname());
                 //System.out.println("Ris confronto : " + (opponent.GetNickname().compareTo(getActivePlayer().GetNickname())!=0));
                 //System.out.println(" opp turn : " + opponent.GetGodCard().GetOpponentTurn());
-                if((opponent.GetNickname().compareTo(GameState.getActivePlayer().GetNickname())!=0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Move(board, worker_toMove,possiblemoves.get(i)/*pos*/)==CommandType.ERROR) {//check move is possible for opponent card
+                if((opponent.getNickname().compareTo(GameState.getActivePlayer().getNickname())!=0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                    if(opponent.getGodCard().move(board, worker_toMove,possiblemoves.get(i)/*pos*/)==CommandType.ERROR) {//check move is possible for opponent card
                         System.out.println("Posizione da rimuovere é : ( " + Arrays.toString(possiblemoves.get(i)));
                         //possiblemoves.remove(pos);
                         possiblemoves.remove(i);
@@ -189,10 +189,10 @@ public class ExecutorClientCommand {
         {
             for (int j = 0; j < 5; j++)
             {
-                if(GameState.GetBoard().GetStateBox(i,j))
+                if(GameState.getBoard().getStateBox(i,j))
                     continue;
-                if(GameState.GetBoard().GetOccupant(i,j).GetProprietary().GetNickname().compareTo(GameState.getActivePlayer().GetNickname())==0)
-                    workers.add(GameState.GetBoard().GetOccupant(i,j));
+                if(GameState.getBoard().getOccupant(i,j).getProprietary().getNickname().compareTo(GameState.getActivePlayer().getNickname())==0)
+                    workers.add(GameState.getBoard().getOccupant(i,j));
             }
         }
         return workers;

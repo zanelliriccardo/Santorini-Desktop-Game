@@ -1,6 +1,5 @@
 package it.polimi.ingsw.riccardoemelissa.elements;
 
-import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.GameState;
 
@@ -25,9 +24,9 @@ public abstract class God implements Serializable {
      * @param newpos : position chosen by player
      * @return
      */
-    public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
+    public CommandType move(BoardGame b, Worker active_worker, int[] newpos)
     {
-        SetPosition(GameState.GetBoard().GetOccupant(active_worker.GetPosition()), active_worker.GetPosition(), newpos, b);
+        setPosition(GameState.getBoard().getOccupant(active_worker.getPosition()), active_worker.getPosition(), newpos, b);
         request =GodCardType.BUILD;
         return CommandType.MOVE;
     }
@@ -39,11 +38,11 @@ public abstract class God implements Serializable {
      * @param newpos : new position choose by the player
      * @param b
      */
-    public void SetPosition (Worker active_worker, int[] oldpos, int[] newpos, BoardGame b)
+    public void setPosition(Worker active_worker, int[] oldpos, int[] newpos, BoardGame b)
     {
-        GameState.GetBoard().GetBoard()[oldpos[0]][oldpos[1]].removeOccupant();//funziona ma da mettere meglio
-        active_worker.SetPosition(newpos);
-        GameState.GetBoard().GetBoard()[newpos[0]][newpos[1]].ChangeState(active_worker);
+        GameState.getBoard().getBoard()[oldpos[0]][oldpos[1]].removeOccupant();//funziona ma da mettere meglio
+        active_worker.setPosition(newpos);
+        GameState.getBoard().getBoard()[newpos[0]][newpos[1]].changeState(active_worker);
     }
 
     /**
@@ -55,11 +54,11 @@ public abstract class God implements Serializable {
      * @param pos -> the build position given by the player belongs to an adjacent box
      * @return
      */
-    public CommandType Build(BoardGame b, Worker activeWorker, int[] pos)
+    public CommandType build(BoardGame b, Worker activeWorker, int[] pos)
     {
-        int[] workerpos = activeWorker.GetPosition();
+        int[] workerpos = activeWorker.getPosition();
 
-        GameState.GetBoard().DoBuild(pos);
+        GameState.getBoard().doBuild(pos);
         this.request =GodCardType.ENDTURN;
         return CommandType.BUILD;
     }
@@ -94,10 +93,10 @@ public abstract class God implements Serializable {
                 if (y > 4 || y < 0)
                     continue;
 
-                if(!b.GetStateBox(x,y))
+                if(!b.getStateBox(x,y))
                     continue;
 
-                if(b.GetLevelBox(x,y)==4)
+                if(b.getLevelBox(x,y)==4)
                     continue;
                 int[] pos=new int[]{x,y};
                 adj_boxes.add(pos);

@@ -19,17 +19,17 @@ public class Atlas extends God implements Serializable {
      * @return
      */
     @Override
-    public CommandType Build(BoardGame b, Worker activeWorker, int[] pos)
+    public CommandType build(BoardGame b, Worker activeWorker, int[] pos)
     {
         if (type.isActive())
         {
-            b.BuildDome(pos);
+            b.buildDome(pos);
             super.setCardType(GodCardType.ENDTURN);
             return CommandType.BUILD;
         }
         else
         {
-            return super.Build(b,activeWorker,pos);
+            return super.build(b,activeWorker,pos);
         }
     }
 

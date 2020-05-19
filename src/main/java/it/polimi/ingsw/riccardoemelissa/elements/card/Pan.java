@@ -19,12 +19,12 @@ public class Pan extends God implements Serializable {
      * @return
      */
     @Override
-    public CommandType Move (BoardGame b, Worker active_worker, int[] newpos)
+    public CommandType move(BoardGame b, Worker active_worker, int[] newpos)
     {
-        int[] old_position=active_worker.GetPosition();//problema reference??
-        super.Move(b, active_worker, newpos);
+        int[] old_position=active_worker.getPosition();//problema reference??
+        super.move(b, active_worker, newpos);
 
-        if (b.GetLevelBox(old_position) - b.GetLevelBox(newpos) > 1)
+        if (b.getLevelBox(old_position) - b.getLevelBox(newpos) > 1)
             super.setCardType(GodCardType.WIN); //settare anche position??? provare a mandare fake comando a executor con win da server
 
        return CommandType.BUILD;

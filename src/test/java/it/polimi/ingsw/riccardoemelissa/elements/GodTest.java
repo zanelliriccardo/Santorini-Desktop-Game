@@ -12,24 +12,24 @@ class GodTest {
 
     @Test
     void move() {
-        BoardGame boardGame = GameState.GetBoard();
+        BoardGame boardGame = GameState.getBoard();
         Pan pan = new Pan();
         Worker worker = new Worker();
         int[] oldpos = new int[]{1,1};
         int[] newpos = new int[]{1,2};
 
-        worker.SetPosition(oldpos);
+        worker.setPosition(oldpos);
         boardGame.setOccupant(oldpos, worker);
-        pan.Move(boardGame, worker, newpos);
+        pan.move(boardGame, worker, newpos);
 
-        assertArrayEquals(newpos, worker.GetPosition());
+        assertArrayEquals(newpos, worker.getPosition());
     }
 
     @Test
     void setPosition() {
-        BoardGame boardGame = GameState.GetBoard();
+        BoardGame boardGame = GameState.getBoard();
 
-        assertNull(boardGame.GetOccupant(new int []{0,0}));
+        assertNull(boardGame.getOccupant(new int []{0,0}));
 
         int[] oldpos = new int[]{2,3};
         int[] newpos = new int[]{3,3};
@@ -40,29 +40,29 @@ class GodTest {
         Worker active_worker = new Worker();
         //active_worker.setProprietary(player);
 
-        active_worker.SetPosition(oldpos);
+        active_worker.setPosition(oldpos);
         boardGame.setOccupant(oldpos, active_worker);
-        assertEquals(active_worker, boardGame.GetOccupant(oldpos));
+        assertEquals(active_worker, boardGame.getOccupant(oldpos));
 
-        pan.SetPosition(active_worker, oldpos, newpos, boardGame);
-        assertNull(boardGame.GetOccupant(oldpos));
-        assertArrayEquals(newpos, active_worker.GetPosition());
-        assertEquals(active_worker, boardGame.GetOccupant(newpos));
+        pan.setPosition(active_worker, oldpos, newpos, boardGame);
+        assertNull(boardGame.getOccupant(oldpos));
+        assertArrayEquals(newpos, active_worker.getPosition());
+        assertEquals(active_worker, boardGame.getOccupant(newpos));
     }
 
     @Test
     void build() {
-        BoardGame boardGame = GameState.GetBoard();
+        BoardGame boardGame = GameState.getBoard();
         Pan pan = new Pan();
         Worker worker = new Worker();
         int[] oldpos = new int[]{1,1};
         int[] newpos = new int[]{1,2};
 
-        worker.SetPosition(oldpos);
+        worker.setPosition(oldpos);
         boardGame.setOccupant(oldpos, worker);
-        pan.Build(boardGame, worker, newpos);
+        pan.build(boardGame, worker, newpos);
 
-        assertEquals(1, boardGame.GetLevelBox(newpos));
+        assertEquals(1, boardGame.getLevelBox(newpos));
     }
 
     @Test

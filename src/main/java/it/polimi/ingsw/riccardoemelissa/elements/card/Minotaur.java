@@ -21,15 +21,15 @@ public class Minotaur extends God implements Serializable {
      * @return
      */
     @Override
-    public CommandType Move(BoardGame b, Worker active_worker, int[] newpos)
+    public CommandType move(BoardGame b, Worker active_worker, int[] newpos)
     {
-        if (!b.GetStateBox(newpos))
+        if (!b.getStateBox(newpos))
         {
-            SetMinotaurPosition(active_worker, newpos, b);
+            setMinotaurPosition(active_worker, newpos, b);
             super.setCardType(GodCardType.BUILD);
         }
         else
-            super.Move(b,active_worker,newpos);
+            super.move(b,active_worker,newpos);
 
         return CommandType.MOVE;
     }
@@ -60,17 +60,17 @@ public class Minotaur extends God implements Serializable {
                     if (y > 4 || y < 0)
                         continue;
 
-                    if(b.GetLevelBox(x,y)==4)
+                    if(b.getLevelBox(x,y)==4)
                         continue;
 
-                    if(b.GetStateBox(x,y))
+                    if(b.getStateBox(x,y))
                     {
                         int[] pos = new int[]{x,y};
                         adj_boxes.add(pos);
                         continue;
                     }
 
-                    if(Objects.requireNonNull(b.GetOccupant(x,y)).GetProprietary().GetNickname().compareTo(b.GetOccupant(worker_pos).GetProprietary().GetNickname())==0)
+                    if(Objects.requireNonNull(b.getOccupant(x,y)).getProprietary().getNickname().compareTo(b.getOccupant(worker_pos).getProprietary().getNickname())==0)
                         continue;
 
                     int[] newpos_opponent = new int[]{(x - worker_pos[0]) + x, (y - worker_pos[1]) + y};
@@ -78,7 +78,7 @@ public class Minotaur extends God implements Serializable {
                     if(newpos_opponent[0]>4||newpos_opponent[1]>4||newpos_opponent[0]<0||newpos_opponent[1]<0)
                         continue;
 
-                    if(!b.GetStateBox(newpos_opponent))
+                    if(!b.getStateBox(newpos_opponent))
                         continue;
 
 
@@ -100,15 +100,15 @@ public class Minotaur extends God implements Serializable {
      * @param newpos : position chosen by player
      * @param b : board
      */
-    public void SetMinotaurPosition (Worker active_worker, int[] newpos, BoardGame b)
+    public void setMinotaurPosition(Worker active_worker, int[] newpos, BoardGame b)
     {
-        int[] newpos_opponent = new int[]{(newpos[0] - active_worker.GetX()) + newpos[0], (newpos[1] - active_worker.GetY()) + newpos[1]};
+        int[] newpos_opponent = new int[]{(newpos[0] - active_worker.getX()) + newpos[0], (newpos[1] - active_worker.getY()) + newpos[1]};
 
-        b.GetOccupant(newpos).SetPosition(newpos_opponent);
-        b.setOccupant(newpos_opponent,b.GetOccupant(newpos));
+        b.getOccupant(newpos).setPosition(newpos_opponent);
+        b.setOccupant(newpos_opponent,b.getOccupant(newpos));
         b.setOccupant(newpos,active_worker);
-        b.removeWorker(active_worker.GetPosition());
-        active_worker.SetPosition(newpos);
+        b.removeWorker(active_worker.getPosition());
+        active_worker.setPosition(newpos);
     }
 
     @Override

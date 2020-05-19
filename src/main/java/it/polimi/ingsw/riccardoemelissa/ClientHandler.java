@@ -49,7 +49,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
 
                     new ExecutorClientCommand().update(cmd);
 
-                    if(GameState.GetPlayers()==null) {
+                    if(GameState.getPlayers()==null) {
                         ois.close();
                         oos.close();
                         socketConnection.close();
@@ -74,8 +74,8 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
     {
         GameProxy toClient;
 
-        GameState.GetBoard().setActivePlayer(GameState.getActivePlayer());
-        toClient = new GameProxy(GameState.GetBoard(), GameState.getActiveWorker(), GameState.GetPlayers());
+        GameState.getBoard().setActivePlayer(GameState.getActivePlayer());
+        toClient = new GameProxy(GameState.getBoard(), GameState.getActiveWorker(), GameState.getPlayers());
 
         while (true)
         {

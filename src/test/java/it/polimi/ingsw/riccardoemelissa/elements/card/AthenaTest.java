@@ -18,10 +18,10 @@ class AthenaTest {
     private Worker worker22;
 
     void startGame (){
-        GameState.SetNumPlayer(2);
-        GameState.NewPlayer("nickname1");
+        GameState.setNumPlayer(2);
+        GameState.newPlayer("nickname1");
         player1 = GameState.getPlayer("nickname1#0");
-        GameState.NewPlayer("nickname2");
+        GameState.newPlayer("nickname2");
         player2 = GameState.getPlayer("nickname2#1");
         worker11 = new Worker();
         worker11.setProprietary(player1);
@@ -35,24 +35,24 @@ class AthenaTest {
     @Test
     void getIn_action() {
         startGame();
-        player1.SetGodCard(new Artemis());
-        player2.SetGodCard(new Athena());
-        player2.GetGodCard().setOpponentTrue("true");
+        player1.setGodCard(new Artemis());
+        player2.setGodCard(new Athena());
+        player2.getGodCard().setOpponentTrue("true");
 
-        player2.GetGodCard().setIn_action(PowerType.ACTIVE);
-        assertEquals("PASSIVE", player2.GetGodCard().getIn_action().toString());
+        player2.getGodCard().setIn_action(PowerType.ACTIVE);
+        assertEquals("PASSIVE", player2.getGodCard().getIn_action().toString());
     }
 
     @Test
     void resetCard() {
         startGame();
-        player1.SetGodCard(new Artemis());
-        player2.SetGodCard(new Athena());
-        player2.GetGodCard().setOpponentTrue("true");
+        player1.setGodCard(new Artemis());
+        player2.setGodCard(new Athena());
+        player2.getGodCard().setOpponentTrue("true");
 
-        player2.GetGodCard().setCardType(GodCardType.BUILD);
-        assertEquals("BUILD", player2.GetGodCard().getCardType().toString());
-        player2.GetGodCard().resetCard();
-        assertEquals("MOVE", player2.GetGodCard().getCardType().toString());
+        player2.getGodCard().setCardType(GodCardType.BUILD);
+        assertEquals("BUILD", player2.getGodCard().getCardType().toString());
+        player2.getGodCard().resetCard();
+        assertEquals("MOVE", player2.getGodCard().getCardType().toString());
     }
 }

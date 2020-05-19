@@ -31,7 +31,7 @@ public class GameState {
     /**
      * return the player number
      */
-    public static int GetPlayerNumber()
+    public static int getPlayerNumber()
     {
         return players.size();
     }
@@ -39,7 +39,7 @@ public class GameState {
     /**
      * @return list of players in game
      */
-    public static ArrayList<Player> GetPlayers()
+    public static ArrayList<Player> getPlayers()
     {
         return players;
     }
@@ -49,10 +49,10 @@ public class GameState {
      * @param nick : nickname of the searched player
      * @return index of the player in the list
      */
-    public static int GetIndexPlayer(String nick)
+    public static int getIndexPlayer(String nick)
     {
         for (int i = 0; i < players.size(); i++)
-            if (players.get(i).GetNickname().equals(nick))
+            if (players.get(i).getNickname().equals(nick))
                 return i;
 
         return -1;
@@ -63,11 +63,11 @@ public class GameState {
      *
      * @return true if every player is connected, then the game starts
      */
-    public static boolean GameReady()
+    public static boolean gameReady()
     {
         for (Player p : players)
         {
-            if (p.GetNickname().compareTo("nome") == 0)
+            if (p.getNickname().compareTo("nome") == 0)
                 return false;
         }
         return true;
@@ -76,11 +76,11 @@ public class GameState {
     /**
      * initialize the god cards using json
      */
-    public static void GodFactory () {
+    public static void godFactory() {
         JsonReader read_god = new JsonReader();
         String[] gods_json  = new String[0];
         try {
-            gods_json = read_god.GodsInGame(players.size());
+            gods_json = read_god.godsInGame(players.size());
         } catch (FileNotFoundException | URISyntaxException e) {
             e.printStackTrace();
         }
@@ -88,22 +88,22 @@ public class GameState {
         for (int i = 0; i < players.size()*3; i=i+3)
         {
             try {
-                players.get(i/3).SetGodCard((God) Class.forName(gods_json[i]).getConstructor().newInstance());
+                players.get(i/3).setGodCard((God) Class.forName(gods_json[i]).getConstructor().newInstance());
             } catch (InstantiationException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 e.printStackTrace();
             }
-            System.out.println("Classe : " + players.get(i/3).GetGodCard().getClass());
+            System.out.println("Classe : " + players.get(i/3).getGodCard().getClass());
             players.get(i/3).setGodImagePath(gods_json[i+1]);
-            players.get(i/3).GetGodCard().setOpponentTrue(gods_json[i+2]);
+            players.get(i/3).getGodCard().setOpponentTrue(gods_json[i+2]);
 
-            System.out.println("God card : " + players.get(i/3).getGodImagePath() + "\nOpponent turn : "+ players.get(i/3).GetGodCard().GetOpponentTurn());
+            System.out.println("God card : " + players.get(i/3).getGodImagePath() + "\nOpponent turn : "+ players.get(i/3).getGodCard().GetOpponentTurn());
         }
     }
 
     /**
      * change turn
      */
-    public static void NextTurn ()
+    public static void nextTurn()
     {
        if (trace < players.size()-1)
            trace ++;
@@ -126,7 +126,7 @@ public class GameState {
     /**
      * @return the board
      */
-    public static BoardGame GetBoard()
+    public static BoardGame getBoard()
     {
         return b;
     }
@@ -134,7 +134,7 @@ public class GameState {
     /**
      * set game over
      */
-    public static void EndGame()
+    public static void endGame()
     {
         b.setGameOver(true);
     }
@@ -144,16 +144,16 @@ public class GameState {
      *
      * @param n number of player in the game
      */
-    public static void SetNumPlayer(int n) {
+    public static void setNumPlayer(int n) {
         num_players = n;
 
         for(int i =0; i<n; i++)
         {
             players.add(new Player("nome"));//cambiare nome
-            players.get(i).SetColor(colors.get(i));
+            players.get(i).setColor(colors.get(i));
         }
 
-        GodFactory();
+        godFactory();
         System.out.println("Player 1 : " + players.get(0).getGodImagePath() + "\n Player 2 : " + players.get(1).getGodImagePath());
 
         Box[][] boxes = new Box[5][5];
@@ -172,12 +172,12 @@ public class GameState {
      * set nickname of a new player
      * @param str nickname
      */
-    public static void NewPlayer(String str)
+    public static void newPlayer(String str)
     {
         for (Player p : players) {
-            if(p.GetNickname().compareTo("nome")==0)
+            if(p.getNickname().compareTo("nome")==0)
             {
-                p.SetNickname(str.trim()+"#"+GetIndexPlayer("nome"));
+                p.setNickname(str.trim()+"#"+ getIndexPlayer("nome"));
                 break;
             }
         }
@@ -203,9 +203,9 @@ public class GameState {
      * to do
      * @param player
      */
-    public static void RemovePlayer(Player player)
+    public static void removePlayer(Player player)
     {
-        players.remove(GetIndexPlayer(player.GetNickname()));
+        players.remove(getIndexPlayer(player.getNickname()));
         if(trace>=players.size())
             trace=0;
     }
@@ -217,7 +217,7 @@ public class GameState {
      * @param pos
      * @return
      */
-    public static boolean IsPossibleMove(Worker activeWorker, int[] pos)
+    public static boolean isPossibleMove(Worker activeWorker, int[] pos)
     {
         ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
         possibleCells_activeWorker= checkMoves(b,activeWorker);
@@ -237,7 +237,7 @@ public class GameState {
      * @param pos
      * @return
      */
-    public static boolean IsPossibleBuild(Worker activeWorker, int[] pos)
+    public static boolean isPossibleBuild(Worker activeWorker, int[] pos)
     {
         ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
         possibleCells_activeWorker= checkBuilds(b,activeWorker);
@@ -259,16 +259,16 @@ public class GameState {
      */
     public static ArrayList<int[]> checkMoves(BoardGame board, Worker worker_toMove)
     {
-        ArrayList<int[]> possiblemoves= worker_toMove.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board, worker_toMove.GetPosition());
+        ArrayList<int[]> possiblemoves= worker_toMove.getProprietary().getGodCard().adjacentBoxNotOccupiedNotDome(board, worker_toMove.getPosition());
 
-        possiblemoves.removeIf(pos -> board.GetLevelBox(pos) - board.GetLevelBox(worker_toMove.GetPosition()) > 1);
+        possiblemoves.removeIf(pos -> board.getLevelBox(pos) - board.getLevelBox(worker_toMove.getPosition()) > 1);
 
         for(int i = 0; i < possiblemoves.size(); i++)
         {
             for (Player opponent : players)
             {
-                if((opponent.GetNickname().compareTo(getActivePlayer().GetNickname())!=0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Move(board, worker_toMove,possiblemoves.get(i)/*pos*/)==CommandType.ERROR) {//check move is possible for opponent card
+                if((opponent.getNickname().compareTo(getActivePlayer().getNickname())!=0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                    if(opponent.getGodCard().move(board, worker_toMove,possiblemoves.get(i)/*pos*/)==CommandType.ERROR) {//check move is possible for opponent card
                         System.out.println("Posizione da rimuovere é : ( " + Arrays.toString(possiblemoves.get(i)));
                         //possiblemoves.remove(pos);
                         possiblemoves.remove(i);
@@ -286,16 +286,16 @@ public class GameState {
      */
     public static ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
     {
-        ArrayList<int[]> possiblebuild=builder.GetProprietary().GetGodCard().adjacentBoxNotOccupiedNotDome(board,builder.GetPosition());
+        ArrayList<int[]> possiblebuild=builder.getProprietary().getGodCard().adjacentBoxNotOccupiedNotDome(board,builder.getPosition());
 
-        possiblebuild.removeIf(pos -> board.GetLevelBox(pos) == 4);
+        possiblebuild.removeIf(pos -> board.getLevelBox(pos) == 4);
 
         for (int[] pos: possiblebuild)
         {
             for (Player opponent : players)
             {
-                if((opponent.GetNickname().compareTo(getActivePlayer().GetNickname())!=0)&&opponent.GetGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.GetGodCard().Build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
+                if((opponent.getNickname().compareTo(getActivePlayer().getNickname())!=0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                    if(opponent.getGodCard().build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
                         possiblebuild.remove(pos);
             }
         }
@@ -330,10 +330,10 @@ public class GameState {
         {
             for (int j = 0; j < 5; j++)
             {
-                if(b.GetStateBox(i,j))
+                if(b.getStateBox(i,j))
                     continue;
-                if(b.GetOccupant(i,j).GetProprietary().GetNickname().compareTo(getActivePlayer().GetNickname())==0)
-                    workers.add(b.GetOccupant(i,j));
+                if(b.getOccupant(i,j).getProprietary().getNickname().compareTo(getActivePlayer().getNickname())==0)
+                    workers.add(b.getOccupant(i,j));
             }
         }
         return workers;
@@ -343,13 +343,13 @@ public class GameState {
     {
         for (Player p : players)
         {
-            if (p.GetNickname().compareTo(nickname) == 0)
+            if (p.getNickname().compareTo(nickname) == 0)
                 return p;
         }
         return null;
     }
 
-    public static int GetNumPlayers() {
+    public static int getNumPlayers() {
         return num_players;
     }
 
@@ -358,7 +358,7 @@ public class GameState {
         if(getPos==null)
             activeWorker=null;
         else
-            activeWorker=GameState.GetBoard().GetOccupant(getPos);
+            activeWorker=GameState.getBoard().getOccupant(getPos);
     }
 
     public static Worker getActiveWorker() {
