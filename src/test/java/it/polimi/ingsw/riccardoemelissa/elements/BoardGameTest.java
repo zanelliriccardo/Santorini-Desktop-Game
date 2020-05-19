@@ -36,7 +36,7 @@ class BoardGameTest {
         assertEquals(4, boardGame.GetLevelBox(pos2));
     }
 
-    @Test
+   /* @Test
     void isAPossibleMove() {
         BoardGame boardGame = new BoardGame();
 
@@ -66,6 +66,9 @@ class BoardGameTest {
         assertFalse(boardGame.IsAPossibleMove(newpos3, oldpos));
     }
 
+    */
+
+
     //MAI USATO :
     /*@Test
     void isAPossibleBuild() {
@@ -87,10 +90,6 @@ class BoardGameTest {
 
      */
 
-    @Test //mai usato
-    void isABlockedWorker() {
-    }
-
     @Test
     void getOccupant() {
         int [] pos = new int[]{1,2};
@@ -105,7 +104,7 @@ class BoardGameTest {
         assertEquals(worker2, boardGame.GetOccupant(pos2[0], pos2[1]));
     }
 
-    @Test
+    /*@Test
     void isAdjacentBox() {
         BoardGame boardGame = new BoardGame();
         int[] worker_pos = new int[]{1, 2};
@@ -116,6 +115,8 @@ class BoardGameTest {
         assertFalse(boardGame.IsAdjacentBox(worker_pos, pos2));
         assertFalse(boardGame.IsAdjacentBox(worker_pos, worker_pos));
     }
+
+     */
 
     @Test
     void getOccupantProprietary() {
@@ -133,7 +134,7 @@ class BoardGameTest {
 
     }
 
-    //NON VA IL METODO
+    //NON VA IL METODO --> executor client command TEST
     /*@Test
     void getWorkers() {
         BoardGame boardGame = new BoardGame();
@@ -165,5 +166,20 @@ class BoardGameTest {
 
         boardGame.setGameOver(true);
         assertTrue(boardGame.getGameover());
+    }
+
+    @Test
+    void removeWorker()
+    {
+        BoardGame boardGame = new BoardGame();
+        Worker worker = new Worker();
+        int pos[] = new int[]{4,4};
+
+        worker.SetPosition(pos);
+        boardGame.setOccupant(pos, worker);
+        assertEquals(worker, boardGame.GetOccupant(pos));
+
+        boardGame.removeWorker(pos);
+        assertNull(boardGame.GetOccupant(pos));
     }
 }

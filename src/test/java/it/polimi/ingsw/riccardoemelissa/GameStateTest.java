@@ -6,10 +6,13 @@ import it.polimi.ingsw.riccardoemelissa.elements.Player;
 import it.polimi.ingsw.riccardoemelissa.elements.Worker;
 import it.polimi.ingsw.riccardoemelissa.elements.card.Apollo;
 import it.polimi.ingsw.riccardoemelissa.elements.card.Artemis;
+import it.polimi.ingsw.riccardoemelissa.elements.card.Athena;
 import it.polimi.ingsw.riccardoemelissa.elements.card.Pan;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,13 +44,17 @@ class GameStateTest {
         assertTrue(GameState.GameReady());
     }
 
-    @Test
+   /* @Test
     void getWorkerToMove() {
     }
+
+
 
     @Test
     void setTurnOrder() {
     }
+
+    */
 
     @Test //godfactory è usato in setPlayers
     void godFactory() {
@@ -116,11 +123,13 @@ class GameStateTest {
         assertEquals(3, count);
     }
 
-    @Test
+   /* @Test
     void endGame() {
     }
 
-    @Test
+    */
+
+    /*@Test
     void setNewWorker() {
         setPlayers();
 
@@ -145,6 +154,8 @@ class GameStateTest {
         assertEquals(worker1, boardGame.GetOccupant(new int[]{0, 0}));
         assertEquals(worker2, boardGame.GetOccupant(new int[]{0, 1}));
     }
+
+     */
 
     @Test // ???
     void checkMove() {
@@ -174,9 +185,10 @@ class GameStateTest {
         int[] pos = new int[]{2,1};
         worker1.setProprietary(player1);
         worker1.SetPosition(pos1);
-        worker1.GetProprietary().SetGodCard(new Pan());
+        player1.SetGodCard(new Pan());
         worker2.setProprietary(player2);
-        worker2.GetProprietary().SetGodCard(new Artemis());
+        player2.SetGodCard(new Athena());
+        player2.GetGodCard().setOpponentTrue("true");
         worker2.SetPosition(pos2);
         boardGame.setOccupant(pos1, worker1);
         boardGame.setOccupant(pos2, worker2);
@@ -187,10 +199,17 @@ class GameStateTest {
         boardGame.DoBuild(pos3);
 
         assertFalse(GameState.IsPossibleMove(worker1, pos3));
-        assertFalse(GameState.IsPossibleMove(worker1, pos4));
 
         boardGame.DoBuild(pos);
         assertTrue(GameState.IsPossibleMove(worker1, pos));
+        player1.GetGodCard().Move(boardGame, worker1, pos);
+
+        boardGame.DoBuild(new int[]{1,3});
+        player2.GetGodCard().Move(boardGame, worker2, new int[]{1,3}); //in action = true
+
+        boardGame.DoBuild(new int[]{2,2});
+        boardGame.DoBuild(new int[]{2,2});
+        assertFalse(GameState.IsPossibleMove(worker1, new int[]{2,2}));
     }
 
     @Test // Pan and Apollo
@@ -226,13 +245,15 @@ class GameStateTest {
         assertTrue(GameState.IsPossibleBuild(worker1, pos));
     }
 
-    @Test //usato in isPossibleMove
+    /*@Test //usato in isPossibleMove
     void checkMoves() {
     }
 
     @Test //usato in isPossibleBuild
     void checkBuilds() {
     }
+
+     */
 
     /*@Test //non va
     void getWorkers() {
@@ -251,5 +272,32 @@ class GameStateTest {
 
         GameState.setActiveWorker(pos);
         assertEquals(worker, GameState.getActiveWorker());
+    }
+
+    @Test
+    void possibleMoves(){
+        setPlayers();
+        BoardGame boardGame = GameState.GetBoard();
+        Worker worker1 = new Worker();
+        Worker worker2 = new Worker();
+        Player player1 = GameState.getPlayer("nickname1#0");
+        Player player2= GameState.getPlayer("nickname2#1");
+        int[] pos1 = new int[]{1,1};
+        int[] pos2 = new int[]{1,2};
+
+        worker1.setProprietary(player1);
+        worker1.SetPosition(pos1);
+        player1.SetGodCard(new Pan());
+        worker2.setProprietary(player2);
+        player2.SetGodCard(new Athena());
+        player2.GetGodCard().setOpponentTrue("true");
+        worker2.SetPosition(pos2);
+        boardGame.setOccupant(pos1, worker1);
+        boardGame.setOccupant(pos2, worker2);
+
+        ArrayList<int[]> moves = GameState.possibleMoves();
+        for(int[] pos : moves)
+            if(Arrays.equals(pos, new int[]{1,2}))
+                assertTrue(GameState.IsPossibleMove(worker1, new int[]{1,2}));
     }
 }
