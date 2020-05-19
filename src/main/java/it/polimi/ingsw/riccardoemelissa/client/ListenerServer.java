@@ -65,7 +65,6 @@ public class ListenerServer extends Thread {
             return;
 
         for (Player p : client_javafx.from_server.getPlayers()) {
-            System.out.println(p.GetNickname());
             if(p.GetNickname().compareTo("nome")==0) {
                 return;
             }
@@ -149,9 +148,6 @@ public class ListenerServer extends Thread {
                         }
                     }
                 }
-                //System.out.println("Immagine god : " + godCard);
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -246,53 +242,9 @@ public class ListenerServer extends Thread {
             }
 
             client_javafx.checkGameOver();
-
             client_javafx.updatePossibleCell();
             client_javafx.setDisable(!client_javafx.isMyTurn());
-
-            /*if(client_javafx.from_server.getActive_worker()!=null&&client_javafx.from_server.getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
-            {
-                client_javafx.activeWorker = client_javafx.from_server.getBoard().GetOccupant(client_javafx.from_server.getActive_worker().GetPosition());
-
-                if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isMove()&&client_javafx.from_server.getActive_worker().GetProprietary().GetNickname().compareTo(client_javafx.nickname.getText())==0)
-                    client_javafx.activeMoveCells();
-                else if (client_javafx.activeWorker.GetProprietary().GetGodCard().getCardType().isBuild()&&client_javafx.from_server.getActive_worker().GetProprietary().GetNickname().compareTo(client_javafx.nickname.getText())==0)
-                    client_javafx.activeBuildCells();
-            }
-            else
-            {
-                client_javafx.cleanBoard();
-                client_javafx.activeWorker=null;
-            }
-
-
-
-            if(client_javafx.from_server.getActivePlayer().GetNickname().compareTo(client_javafx.nickname.getText())==0)
-                client_javafx.setDisable(false);
-            else
-                client_javafx.setDisable(true);
-            */
-/*
-            if(client_javafx.from_server.getBoard().getGameover())
-            {
-                try {
-                    if (client_javafx.isMyTurn()) {
-                        client_javafx.changeScene("winner.fxml");
-                    }
-                    else {
-                        client_javafx.changeScene("loser.fxml");
-                    }
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
- */
-
         }
-
-
         );
     }
 

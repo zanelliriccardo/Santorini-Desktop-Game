@@ -52,6 +52,14 @@ public class Prometheus extends God implements Serializable {
         return adj_boxes;
     }
 
+    /**
+     * build using prometeo power
+     *
+     * @param b : board
+     * @param activeWorker : worker chosen to do the build
+     * @param pos -> the build position given by the player belongs to an adjacent box
+     * @return
+     */
     @Override
     public CommandType Build(BoardGame b, Worker activeWorker, int[] pos) {
         if(type.isActive())
@@ -64,7 +72,7 @@ public class Prometheus extends God implements Serializable {
         else
             return super.Build(b,activeWorker,pos);
     }
-    
+
     @Override
     public void setIn_action(PowerType powerSet) {
         if(powerSet.isActive())

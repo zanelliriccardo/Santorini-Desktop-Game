@@ -5,7 +5,6 @@ import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.Command;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.GameProxy;
-import it.polimi.ingsw.riccardoemelissa.exception.SendException;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -105,37 +104,6 @@ public class Client extends Application {
     }
 
     /**
-     * create a worker
-     *
-     * @param pos
-     * @param worker_color
-     */
-    @FXML
-    public void setWorkerPosition (int[] pos, String worker_color)
-    {
-        Pane box = (Pane) myboard.getChildren();
-
-        Circle worker = new Circle(box.getHeight()/2, box.getWidth()/2, box.getHeight()/3);
-
-        switch (worker_color)
-        {
-            case "magenta":
-                worker.setFill(Color.MAGENTA);
-                break;
-
-            case "aquamarine":
-                worker.setFill(Color.AQUAMARINE);
-                break;
-
-            case "gold":
-                worker.setFill(Color.GOLD);
-                break;
-        }
-
-        myboard.add(worker, pos[1],pos[0]);
-    }
-
-    /**
      * create the cell on gridpane board
      *
      * @param myboard
@@ -149,17 +117,6 @@ public class Client extends Application {
                 GridPane.setColumnIndex(pane, x);
                 GridPane.setRowIndex(pane, y);
             }
-        }
-    }
-
-    public void loadingBoard(GridPane myboard)
-    {
-        myboard=new GridPane();
-        initializeBoardgame(myboard);
-        try {
-            changeScene("board2.fxml");
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -243,7 +200,6 @@ public class Client extends Application {
         {
             System.out.println("Chiedo update al server");
             messageToServer(CommandType.UPDATE);
-            //update();
         }
         catch (Exception e)
         {
@@ -263,31 +219,18 @@ public class Client extends Application {
         loader=null;
         loader=new FXMLLoader();
 
-        //System.out.println(getClass().getResource(path));
         URL newresource=getClass().getResource(path);
 
-        //Scene s = primary.getScene();
-        //loader.setController(this);
         loader.setLocation(newresource);
         loader.setController(this);
         root = loader.load();
 
         Scene s=new Scene(root);
-        //s.setRoot(root);
         primary.setScene(s);
 
         primary.show();
         System.out.println("Cambio scena");
     }
-
-    /*
-    @FXML
-    public void chooseNickname(MouseEvent mouseEvent) throws IOException {
-        changeScene("choose_nickname.fxml");
-        System.out.println("Passaggio a inserimento nickname");
-    }
-
-     */
 
     /**
      * set number of players and change to nickname view
@@ -315,17 +258,6 @@ public class Client extends Application {
         changeScene("choose_nickname.fxml");
     }
 
-    /*
-
-    @FXML
-    public void modeOk (MouseEvent event) throws IOException
-    {
-        System.out.println("Premuto ok mode giocatori");
-        chooseNickname(event);
-    }
-
-     */
-
     /**
      * set nickname and go to loading view
      * @param mouseEvent
@@ -334,21 +266,21 @@ public class Client extends Application {
     @FXML
     public void nicknameOk (MouseEvent mouseEvent) throws IOException
     {
+        ArrayList<Player> players=new ArrayList<Player>();
+        players.addAll(from_server.getPlayers());
         messageToServer(CommandType.NICKNAME,nickname.getText());
+        for (int i = 0; i < players.size(); i++) {
+            if(players.get(i).GetNickname().compareTo("nome")==0)
+            {
+                nickname.setText(nickname.getText()+"#"+i);
+                break;
+            }
+        }
         changeScene("loading.fxml");
 
         System.out.println("Premuto ok inserimento nickname");
     }
 
-    /*
-    @FXML
-    public void showBoard (String active_player_name) throws IOException
-    {
-        changeScene("board2.fxml");
-        set_turn.setText("Turn of " + active_player_name);
-    }
-
-     */
     /**
      * set the power and change image in the selected case
      *
@@ -404,46 +336,6 @@ public class Client extends Application {
             }
         }
     }
-
-    /*
-    @FXML
-    public void clickedButtonEndTurn (MouseEvent event)
-    {
-        messageToServer(CommandType.NEXTTURN);
-    }
-
-     */
-
-    /*
-    @Override
-    public void update(Object obj)
-    {
-        from_server=(GameProxy) obj;
-
-        ArrayList<Worker> workers=getWorkers();
-
-        for (Worker w : workers)
-        {
-            possibleCells_activeWorker.addAll(checkMoves(from_server.getBoard(),w));
-        }
-
-        if(possibleCells_activeWorker.isEmpty())
-        {
-            messageToServer(CommandType.LOSE);
-            //schermata sconfitta
-            return;
-        }
-        possibleCells_activeWorker.clear();
-
-        //fare guiii
-
-        if(from_server.getBoard().getActivePlayer().GetGodCard().getCardType()==GodCardType.ENDTURN)
-        {
-            //abilita click fine turno bottone di endturn() e disabilita il resto
-        }
-    }
-
-     */
 
     /**
      * show cells for move or build when the power is activated od deactivated
@@ -565,43 +457,6 @@ public class Client extends Application {
     }
 
     /**
-     * return the possiblemoves for every workers, so if the array is empty the player lose
-     * @return
-     */
-    public ArrayList<int[]> possibleMoves()
-    {
-        ArrayList<Worker> workers=getWorkers();
-        ArrayList<int[]> possiblemoves = null;
-
-        for (Worker w : workers)
-        {
-            possiblemoves.addAll(checkMoves(from_server.getBoard(),w));
-        }
-        return possiblemoves;
-    }
-
-    /*
-    @FXML
-    public void checkServerBoard ()
-    {
-        Worker worker;
-
-        for(int i = 0; i< 5; i++)
-        {
-            for (int j=0; j< 5; j++)
-            {
-                if(!from_server.getBoard().GetStateBox(i,j)) {
-                    System.out.println(from_server.getBoard().GetStateBox(i,j));
-                    worker = from_server.getBoard().GetOccupant(i, j);
-                    setWorkerPosition(worker.GetPosition(), "magenta");
-                }
-            }
-        }
-    }
-
-     */
-
-    /**
      * manage the click on a cell: create a worker, select a worker, move and build
      * @param mouseEvent
      */
@@ -612,7 +467,7 @@ public class Client extends Application {
 
         System.out.println("La posizione cliccata è ( " + new_position[0] + " , "+ new_position[1] + ")" );
 
-        //crea worker
+        //create a worker
         if(nickname.getText().compareTo(from_server.getActivePlayer().GetNickname())==0&&getWorkers().size()<2)
         {
             if(!from_server.getBoard().GetStateBox(new_position))
@@ -620,7 +475,7 @@ public class Client extends Application {
             messageToServer(CommandType.NEWWORKER, new Worker(), new_position);
             setDisable(true);
         }
-        //selezione worker
+        //select worker
         else if(!from_server.getBoard().GetStateBox(new_position))
         {
             if(from_server.getBoard().GetOccupantProprietary(new_position).GetNickname().compareTo(from_server.getActivePlayer().GetNickname())==0) {
@@ -635,13 +490,14 @@ public class Client extends Application {
 
         if(activeWorker==null)
         return;
-
+        // do move
         else if(activeWorker.GetProprietary().GetGodCard().getCardType()==GodCardType.MOVE&&contains(new_position))
         {
             messageToServer(CommandType.MOVE,activeWorker,new_position);
             setDisable(true);
             cleanBoard();
         }
+        // do build
         else if(activeWorker.GetProprietary().GetGodCard().getCardType()==GodCardType.BUILD&&contains(new_position))
         {
             messageToServer(CommandType.BUILD,activeWorker,new_position);
@@ -766,6 +622,9 @@ public class Client extends Application {
 
     }
 
+    /**
+     * update the possible cell for move/build using the active worker
+     */
     public void updatePossibleCell()
     {
         if(from_server.getActive_worker()!=null&&from_server.getActivePlayer().GetNickname().compareTo(nickname.getText())==0)
@@ -788,21 +647,30 @@ public class Client extends Application {
         return from_server.getBoard().getActivePlayer().GetNickname().compareTo(nickname.getText())==0;
     }
 
+    /**
+     * check if this client win or lose, change scene and close the connection to server
+     */
     public void checkGameOver() {
         for (Player p : from_server.getPlayers()) {
             if (p.GetNickname().compareTo(nickname.getText()) == 0)
                 try {
-                    if (p.GetGodCard().getCardType().isWin())
+                    if (p.GetGodCard().getCardType().isWin()) {
                         changeScene("winner.fxml");
-                    else if (p.GetGodCard().getCardType().isLose())
+                        socket.close();
+                    }
+                    else if (p.GetGodCard().getCardType().isLose()) {
                         changeScene("loser.fxml");
+                        socket.close();
+                    }
                 }
                 catch (Exception e)
                 {
                     callUpdate_fromServer();
                 }
+
         }
     }
+
 /*
     public void checkLose()
     {

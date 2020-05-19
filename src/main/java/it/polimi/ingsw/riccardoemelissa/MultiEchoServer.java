@@ -26,12 +26,17 @@ public class MultiEchoServer {
         this.port = port;
     }
 
+    /**
+     * Accept connection from a client and start thread to manage it, so
+     * if gameover close all connection and wait for another player who wants start a game
+     * @throws IOException
+     */
     public void startServer() throws IOException {
-        ServerSocket serverSocket=new ServerSocket(port);
-
         System.out.println("Server ready");
 
         while (true) {
+            ServerSocket serverSocket=new ServerSocket(port);
+
             try {
                 Socket socket = serverSocket.accept();
                 ClientHandler firstClient=new ClientHandler(socket);
@@ -63,7 +68,7 @@ public class MultiEchoServer {
                         System.out.println("Another player connected(num:"+(i+1));
                     }
                     catch(IOException e) {
-                        break; // entrerei qui se serverSocket venisse chiuso
+                        break;
                     }
 
                 while (!GameState.GameReady())
@@ -91,12 +96,9 @@ public class MultiEchoServer {
             } catch (IOException|NullPointerException e) {
                 break; // entrerei qui se serverSocket venisse chiuso
             }
+            serverSocket.close();
         }
 
-        try {
-            serverSocket.close();
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
+
     }
 }

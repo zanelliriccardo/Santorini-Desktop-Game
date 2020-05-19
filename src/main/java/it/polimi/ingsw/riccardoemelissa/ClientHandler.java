@@ -8,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Timer;
 
 public class ClientHandler extends CustomObservable implements Runnable, CustomObserver {
     private String nickname;
@@ -45,7 +44,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
                     ois=new ObjectInputStream(socketConnection.getInputStream());
                     Command cmd = (Command) ois.readObject();
 
-                    if(cmd.GetType()==CommandType.UPDATE)
+                    if(cmd.getType()==CommandType.UPDATE)
                         update(new Object());
 
                     new ExecutorClientCommand().update(cmd);
@@ -66,7 +65,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
     }
 
     /**
-     * It manages the board update
+     * Send the board update to client
      *
      * @param arg
      */

@@ -7,8 +7,6 @@ import java.util.Arrays;
 
 public class ExecutorClientCommand {
 
-    private static GameState game=new GameState();
-
     /**
      * manage command received from clients
      *
@@ -21,20 +19,20 @@ public class ExecutorClientCommand {
     {
         Command cmd=(Command) arg;
 
-        switch (cmd.GetType())
+        switch (cmd.getType())
         {
             case MODE:
-                GameState.SetNumPlayer((int) cmd.GetObj());
+                GameState.SetNumPlayer((int) cmd.getObj());
                 GameState.GetBoard().custom_notifyAll();
                 break;
             case NICKNAME:
-                GameState.NewPlayer((String)cmd.GetObj());
+                GameState.NewPlayer((String)cmd.getObj());
                 GameState.GetBoard().custom_notifyAll();
                 break;
             case NEWWORKER:
-                ((Worker)cmd.GetObj()).setProprietary(GameState.getActivePlayer());
-                ((Worker)cmd.GetObj()).SetPosition(cmd.GetPos());
-                GameState.GetBoard().setOccupant(cmd.GetPos(),(Worker)cmd.GetObj());
+                ((Worker)cmd.getObj()).setProprietary(GameState.getActivePlayer());
+                ((Worker)cmd.getObj()).SetPosition(cmd.getPos());
+                GameState.GetBoard().setOccupant(cmd.getPos(),(Worker)cmd.getObj());
 
                 ArrayList<Worker> workers=new ArrayList<Worker>();
 
@@ -52,24 +50,19 @@ public class ExecutorClientCommand {
                     GameState.NextTurn();
 
                 GameState.GetBoard().custom_notifyAll();
-                break;/*
-            case SETPOWER://inutilizzato
-                GameState.getActivePlayer().GetGodCard().setIn_action((PowerType) cmd.GetObj());
                 break;
-                */
             case DISCONNECTED://da rivedere
                 GameState.EndGame();
-                game=null;
                 break;
             case MOVE:
-                if(!GameState.IsPossibleMove((Worker)cmd.GetObj(),cmd.GetPos())) {
+                if(!GameState.IsPossibleMove((Worker)cmd.getObj(),cmd.getPos())) {
                     GameState.RemovePlayer(GameState.getActivePlayer());
                     return;
                 }
-                Worker move_worker=GameState.GetBoard().GetOccupant((((Worker) cmd.GetObj()).GetPosition()));
-                move_worker.GetProprietary().GetGodCard().setIn_action(((Worker) cmd.GetObj()).GetProprietary().GetGodCard().getIn_action());
+                Worker move_worker=GameState.GetBoard().GetOccupant((((Worker) cmd.getObj()).GetPosition()));
+                move_worker.GetProprietary().GetGodCard().setIn_action(((Worker) cmd.getObj()).GetProprietary().GetGodCard().getIn_action());
 
-                move_worker.GetProprietary().GetGodCard().Move(GameState.GetBoard(),move_worker,cmd.GetPos());
+                move_worker.GetProprietary().GetGodCard().Move(GameState.GetBoard(),move_worker,cmd.getPos());
 
                 System.out.println("move");
 
@@ -85,19 +78,19 @@ public class ExecutorClientCommand {
                     GameState.setActiveWorker(null);
                 }
                 else
-                    GameState.setActiveWorker(cmd.GetPos());
+                    GameState.setActiveWorker(cmd.getPos());
 
                 GameState.GetBoard().custom_notifyAll();
                 break;
             case BUILD:
-                if(!GameState.IsPossibleBuild((Worker)cmd.GetObj(),cmd.GetPos())) {
+                if(!GameState.IsPossibleBuild((Worker)cmd.getObj(),cmd.getPos())) {
                     GameState.RemovePlayer(GameState.getActivePlayer());
                     return;
                 }
-                Worker build_worker=GameState.GetBoard().GetOccupant((((Worker) cmd.GetObj()).GetPosition()));
-                build_worker.GetProprietary().GetGodCard().setIn_action(((Worker) cmd.GetObj()).GetProprietary().GetGodCard().getIn_action());
+                Worker build_worker=GameState.GetBoard().GetOccupant((((Worker) cmd.getObj()).GetPosition()));
+                build_worker.GetProprietary().GetGodCard().setIn_action(((Worker) cmd.getObj()).GetProprietary().GetGodCard().getIn_action());
 
-                build_worker.GetProprietary().GetGodCard().Build(GameState.GetBoard(),build_worker,cmd.GetPos());
+                build_worker.GetProprietary().GetGodCard().Build(GameState.GetBoard(),build_worker,cmd.getPos());
 
                 System.out.println("build");
 
@@ -108,22 +101,6 @@ public class ExecutorClientCommand {
 
                 GameState.GetBoard().custom_notifyAll();
                 break;
-            case WIN://inutilizzato
-                if(GameState.getPlayer((String)cmd.GetObj()).GetGodCard().getCardType().isWin())
-                {
-                    GameState.EndGame();
-                }
-                GameState.setActiveWorker(null);
-                GameState.GetBoard().custom_notifyAll();
-                break;
-            case LOSE://inutilizzato
-                if(GameState.getPlayer((String)cmd.GetObj()).GetGodCard().getCardType()==GodCardType.LOSE)
-                {
-                    GameState.RemovePlayer(GameState.getPlayer((String)cmd.GetObj()));
-                }
-                GameState.GetBoard().custom_notifyAll();
-                break;
-
             case CHANGE_TURN:
                 GameState.GetBoard().getActivePlayer().GetGodCard().resetCard();
                 GameState.NextTurn();
@@ -137,19 +114,12 @@ public class ExecutorClientCommand {
                 GameState.setActiveWorker(null);
                 GameState.GetBoard().custom_notifyAll();
                 break;
-            case RESET:
-                GameState.undoTurn();
-                break;
         }
 
         //GameState.GetBoard().custom_notifyAll();
     }
 
-    private Player getActivePlayer() {
-        return GameState.getActivePlayer();
-    }
-
-    private void lose()
+    public void lose()
     {
         GameState.setActiveWorker(null);
         GameState.getActivePlayer().GetGodCard().setCardType(GodCardType.LOSE);

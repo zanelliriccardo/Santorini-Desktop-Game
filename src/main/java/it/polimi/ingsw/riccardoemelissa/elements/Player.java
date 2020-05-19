@@ -1,7 +1,5 @@
 package it.polimi.ingsw.riccardoemelissa.elements;
 
-import it.polimi.ingsw.riccardoemelissa.elements.card.Pan;
-
 import java.io.Serializable;
 
 public class Player  implements Serializable {

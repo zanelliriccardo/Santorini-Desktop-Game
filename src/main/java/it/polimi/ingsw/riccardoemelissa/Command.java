@@ -15,16 +15,16 @@ public class Command implements Serializable {
         newpos=pos;
     }
 
-    public CommandType GetType() {
+    public CommandType getType() {
         return type;
     }
 
-    public int[] GetPos()
+    public int[] getPos()
     {
         return newpos;
     }
 
-    public Object GetObj()
+    public Object getObj()
     {
         return Obj;
     }
