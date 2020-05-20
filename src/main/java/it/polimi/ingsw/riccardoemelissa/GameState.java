@@ -325,15 +325,13 @@ public class GameState {
     public static ArrayList<Worker> getWorkers()
     {
         ArrayList<Worker> workers=new ArrayList<Worker>();
-
         for (int i = 0; i < 5; i++)
         {
             for (int j = 0; j < 5; j++)
             {
-                if(b.getStateBox(i,j))
-                    continue;
-                if(b.getOccupant(i,j).getProprietary().getNickname().compareTo(getActivePlayer().getNickname())==0)
-                    workers.add(b.getOccupant(i,j));
+                if(!GameState.getBoard().getStateBox(i,j))
+                    if(GameState.getBoard().getOccupantProprietary(i,j).getNickname().compareTo(GameState.getBoard().getActivePlayer().getNickname())==0)
+                        workers.add(GameState.getBoard().getOccupant(i,j));
             }
         }
         return workers;

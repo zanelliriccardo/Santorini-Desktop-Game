@@ -5,6 +5,7 @@ import it.polimi.ingsw.riccardoemelissa.elements.Player;
 import it.polimi.ingsw.riccardoemelissa.elements.Worker;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.GenericArrayType;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -122,6 +123,17 @@ class ExecutorClientCommandTest {
         workers.add(worker1);
         workers.add(worker2);
 
-        assertEquals(workers,(new ExecutorClientCommand()).getWorkers());
+        ArrayList<Worker> workersToControl=new ArrayList<Worker>();
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                if(!GameState.getBoard().getStateBox(i,j))
+                    if(GameState.getBoard().getOccupantProprietary(i,j).getNickname().compareTo(GameState.getBoard().getActivePlayer().getNickname())==0)
+                        workersToControl.add(GameState.getBoard().getOccupant(i,j));
+            }
+        }
+
+        assertEquals(workers,workersToControl);
     }
 }

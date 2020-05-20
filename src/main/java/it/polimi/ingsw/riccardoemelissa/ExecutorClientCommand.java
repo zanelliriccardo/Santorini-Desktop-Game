@@ -184,15 +184,13 @@ public class ExecutorClientCommand {
     public ArrayList<Worker> getWorkers()
     {
         ArrayList<Worker> workers=new ArrayList<Worker>();
-
         for (int i = 0; i < 5; i++)
         {
             for (int j = 0; j < 5; j++)
             {
-                if(GameState.getBoard().getStateBox(i,j))
-                    continue;
-                if(GameState.getBoard().getOccupant(i,j).getProprietary().getNickname().compareTo(GameState.getActivePlayer().getNickname())==0)
-                    workers.add(GameState.getBoard().getOccupant(i,j));
+                if(!GameState.getBoard().getStateBox(i,j))
+                    if(GameState.getBoard().getOccupantProprietary(i,j).getNickname().compareTo(GameState.getBoard().getActivePlayer().getNickname())==0)
+                        workers.add(GameState.getBoard().getOccupant(i,j));
             }
         }
         return workers;

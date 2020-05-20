@@ -86,7 +86,7 @@
       <Circle fx:id="colorPlayerBoard" fill="#1f93ff00" layoutX="872.0" layoutY="225.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="colorOpponent1" fill="#1f93ff00" layoutX="60.0" layoutY="283.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="colorOpponent2" fill="#1f93ff00" layoutX="160.0" layoutY="283.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-      <Button fx:id="endTurn" alignment="CENTER" layoutX="859.0" layoutY="471.0" mnemonicParsing="false" onMouseClicked="#endturn" opacity="0.9" prefHeight="52.0" prefWidth="85.0" style="-fx-background-radius: 10; -fx-background-color: darkslategray;" text="END TURN" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="endTurn" alignment="CENTER" layoutX="859.0" layoutY="471.0" mnemonicParsing="false" onMouseClicked="#endTurn" opacity="0.9" prefHeight="52.0" prefWidth="85.0" style="-fx-background-radius: 10; -fx-background-color: darkslategray;" text="END TURN" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Impact" size="16.0" />
          </font>
