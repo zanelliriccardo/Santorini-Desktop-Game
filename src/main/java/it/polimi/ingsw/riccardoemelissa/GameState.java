@@ -1,5 +1,6 @@
 package it.polimi.ingsw.riccardoemelissa;
 
+import it.polimi.ingsw.riccardoemelissa.elements.card.Athena;
 import it.polimi.ingsw.riccardoemelissa.reader.JsonReader;
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.elements.Box;
@@ -154,6 +155,7 @@ public class GameState {
         }
 
         godFactory();
+        //players.get(0).setGodCard(new Athena());
         System.out.println("Player 1 : " + players.get(0).getGodImagePath() + "\n Player 2 : " + players.get(1).getGodImagePath());
 
         Box[][] boxes = new Box[5][5];
@@ -268,7 +270,7 @@ public class GameState {
             for (Player opponent : players)
             {
                 if((opponent.getNickname().compareTo(getActivePlayer().getNickname())!=0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.getGodCard().move(board, worker_toMove,possiblemoves.get(i)/*pos*/)==CommandType.ERROR) {//check move is possible for opponent card
+                    if(opponent.getGodCard().move(board, worker_toMove,possiblemoves.get(i))==CommandType.ERROR) {//check move is possible for opponent card
                         System.out.println("Posizione da rimuovere é : ( " + Arrays.toString(possiblemoves.get(i)));
                         //possiblemoves.remove(pos);
                         possiblemoves.remove(i);
@@ -329,9 +331,9 @@ public class GameState {
         {
             for (int j = 0; j < 5; j++)
             {
-                if(!GameState.getBoard().getStateBox(i,j))
-                    if(GameState.getBoard().getOccupantProprietary(i,j).getNickname().compareTo(GameState.getBoard().getActivePlayer().getNickname())==0)
-                        workers.add(GameState.getBoard().getOccupant(i,j));
+                if(!b.getStateBox(i,j))
+                    if(b.getOccupantProprietary(i,j).getNickname().compareTo(b.getActivePlayer().getNickname())==0)
+                        workers.add(b.getOccupant(i,j));
             }
         }
         return workers;

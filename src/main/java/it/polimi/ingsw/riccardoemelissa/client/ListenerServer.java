@@ -3,6 +3,7 @@ package it.polimi.ingsw.riccardoemelissa.client;
 import it.polimi.ingsw.riccardoemelissa.CommandType;
 import it.polimi.ingsw.riccardoemelissa.GameProxy;
 import it.polimi.ingsw.riccardoemelissa.elements.Player;
+import it.polimi.ingsw.riccardoemelissa.elements.PowerType;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -237,10 +238,23 @@ public class ListenerServer extends Thread {
                     }
                 }
             }
+            if(client_javafx.from_server.getActive_worker()==null&&client_javafx.isMyTurn()&&!client_javafx.from_server.getActivePlayer().getGodCard().getIn_action().isPassive())
+            {
+                client_javafx.button_setpower.setDisable(false);
+                client_javafx.button_setpower.setSelected(false);
+                client_javafx.button_setpower.setText("DISABLE");
+                client_javafx.set_power.setImage(new Image(String.valueOf((getClass().getResource("images/heropower_inactive.png")))));
+                for (Player p :
+                        client_javafx.from_server.getPlayers()) {
+                    if (p.getNickname().compareTo(client_javafx.nickname.getText()) == 0)
+                        p.getGodCard().setIn_action(PowerType.DISABLE);
+                }
+                client_javafx.activedPower(PowerType.DISABLE);
+            }
 
             client_javafx.checkGameOver();
             client_javafx.updatePossibleCell();
-            client_javafx.setDisable(!client_javafx.isMyTurn());
+            client_javafx.myboard.setDisable(!client_javafx.isMyTurn());
         }
         );
     }

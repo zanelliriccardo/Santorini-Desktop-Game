@@ -1,5 +1,7 @@
 package it.polimi.ingsw.riccardoemelissa.elements;
 
+import it.polimi.ingsw.riccardoemelissa.GameState;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -192,11 +194,14 @@ public class BoardGame extends CustomObservable implements Serializable {
      * @return
      */
     public ArrayList<Worker> getWorkers() {
-        ArrayList<Worker> workers=new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                if(Board[i][j].getOccupant().getProprietary().getNickname().compareTo(active_player.getNickname())==0)
-                    workers.add(Board[i][j].getOccupant());
+        ArrayList<Worker> workers=new ArrayList<Worker>();
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                if(!getStateBox(i,j))
+                    if(getOccupantProprietary(i,j).getNickname().compareTo(getActivePlayer().getNickname())==0)
+                        workers.add(getOccupant(i,j));
             }
         }
         return workers;

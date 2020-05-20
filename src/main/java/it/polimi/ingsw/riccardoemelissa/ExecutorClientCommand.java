@@ -51,7 +51,7 @@ public class ExecutorClientCommand {
 
                 GameState.getBoard().custom_notifyAll();
                 break;
-            case DISCONNECTED://da rivedere
+            case DISCONNECTED:
                 GameState.endGame();
                 break;
             case MOVE:
@@ -162,37 +162,16 @@ public class ExecutorClientCommand {
 
         possiblemoves.removeIf(pos -> board.getLevelBox(pos) - board.getLevelBox(worker_toMove.getPosition()) > 1);
 
-        //for (int[] pos: possiblemoves)
         for(int i = 0; i < possiblemoves.size(); i++)
         {
             for (Player opponent : GameState.getPlayers())
             {
-                //System.out.println(" Nomi da confrontare " + opponent.GetNickname() + " , " + getActivePlayer().GetNickname());
-                //System.out.println("Ris confronto : " + (opponent.GetNickname().compareTo(getActivePlayer().GetNickname())!=0));
-                //System.out.println(" opp turn : " + opponent.GetGodCard().GetOpponentTurn());
                 if((opponent.getNickname().compareTo(GameState.getActivePlayer().getNickname())!=0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
                     if(opponent.getGodCard().move(board, worker_toMove,possiblemoves.get(i)/*pos*/)==CommandType.ERROR) {//check move is possible for opponent card
-                        System.out.println("Posizione da rimuovere é : ( " + Arrays.toString(possiblemoves.get(i)));
-                        //possiblemoves.remove(pos);
                         possiblemoves.remove(i);
                     }
             }
         }
         return possiblemoves;
-    }
-
-    public ArrayList<Worker> getWorkers()
-    {
-        ArrayList<Worker> workers=new ArrayList<Worker>();
-        for (int i = 0; i < 5; i++)
-        {
-            for (int j = 0; j < 5; j++)
-            {
-                if(!GameState.getBoard().getStateBox(i,j))
-                    if(GameState.getBoard().getOccupantProprietary(i,j).getNickname().compareTo(GameState.getBoard().getActivePlayer().getNickname())==0)
-                        workers.add(GameState.getBoard().getOccupant(i,j));
-            }
-        }
-        return workers;
     }
 }

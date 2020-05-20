@@ -420,7 +420,7 @@ public class Client extends Application {
         {
             for (Player opponent : from_server.getPlayers())
             {
-                if((opponent.getNickname().compareTo(from_server.getBoard().getActivePlayer().getNickname())==0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                if((opponent.getNickname().compareTo(from_server.getBoard().getActivePlayer().getNickname())!=0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
                     if(opponent.getGodCard().move(board, worker_toMove,pos)==CommandType.ERROR)//check move is possible for opponent card
                         possiblemoves.remove(pos);
             }
@@ -445,7 +445,7 @@ public class Client extends Application {
         {
             for (Player opponent : from_server.getPlayers())
             {
-                if((opponent.getNickname().compareTo(from_server.getActivePlayer().getNickname())==0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                if((opponent.getNickname().compareTo(from_server.getActivePlayer().getNickname())!=0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
                     if(opponent.getGodCard().build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
                         possiblebuild.remove(pos);
             }
@@ -482,7 +482,6 @@ public class Client extends Application {
                 else if (from_server.getActivePlayer().getGodCard().getCardType() == GodCardType.BUILD)
                     activeBuildCells();
             }
-            setDisable(false);
         }
 
         if(activeWorker==null)
@@ -491,14 +490,16 @@ public class Client extends Application {
         else if(activeWorker.getProprietary().getGodCard().getCardType()==GodCardType.MOVE&&contains(new_position))
         {
             messageToServer(CommandType.MOVE,activeWorker,new_position);
-            setDisable(true);
+            myboard.setDisable(true);
+            button_setpower.setDisable(true);
             cleanBoard();
         }
         // do build
         else if(activeWorker.getProprietary().getGodCard().getCardType()==GodCardType.BUILD&&contains(new_position))
         {
             messageToServer(CommandType.BUILD,activeWorker,new_position);
-            setDisable(true);
+            myboard.setDisable(true);
+            button_setpower.setDisable(true);
             cleanBoard();
         }
     }
@@ -655,7 +656,7 @@ public class Client extends Application {
                         changeScene("winner.fxml");
                         socket.close();
                     }
-                    else if (p.getGodCard().getCardType().isLose()) {
+                    else if (p.getGodCard().getCardType().isLose()||from_server.getBoard().getGameover()) {
                         changeScene("loser.fxml");
                         socket.close();
                     }
