@@ -22,6 +22,7 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -131,7 +132,12 @@ public class Client extends Application {
     primary.show();
     listener = new ListenerServer(socket,this);
     listener.start();
+    }
 
+    @Override
+    public void stop() throws Exception {
+        socket.close();
+        super.stop();
     }
 
     public static void main(String[] args) {

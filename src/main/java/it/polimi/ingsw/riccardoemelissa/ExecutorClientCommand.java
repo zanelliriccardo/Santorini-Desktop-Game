@@ -53,6 +53,7 @@ public class ExecutorClientCommand {
                 break;
             case DISCONNECTED:
                 GameState.endGame();
+                GameState.getBoard().custom_notifyAll();
                 break;
             case MOVE:
                 if(!GameState.isPossibleMove((Worker)cmd.getObj(),cmd.getPos())) {

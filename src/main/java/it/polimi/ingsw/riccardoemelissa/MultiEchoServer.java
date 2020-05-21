@@ -64,19 +64,16 @@ public class MultiEchoServer {
                         break;
                     }
 
-                while (!GameState.gameReady())
-                {
+                while (!GameState.gameReady()) {}
 
-                }
                 serverSocket.close();
                 System.out.println("gioco pronto");
                 Collections.shuffle(GameState.getPlayers());
                 GameState.getBoard().custom_notifyAll();
 
-                while (!GameState.getGameOver())
-                {
+                while (!GameState.getGameOver()) {}
 
-                }
+                GameState.reset();
                 firstThread.interrupt();
                 for (Thread thread: threads) {
                     thread.interrupt();
@@ -87,7 +84,7 @@ public class MultiEchoServer {
                 }
 
             } catch (IOException|NullPointerException e) {
-                break; // entrerei qui se serverSocket venisse chiuso
+                break;
             }
             serverSocket.close();
         }

@@ -1,5 +1,11 @@
 {
   "GodList": [
+    {
+      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Athena",
+      "path" : "Athena.png",
+      "opponent_turn" : "true"
+    },
+
 {
   "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Prometheus",
   "path" : "Prometheus.png",
@@ -14,11 +20,6 @@
       "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Artemis",
       "path" : "Artemis.png",
       "opponent_turn" : "false"
-    },
-    {
-      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Athena",
-      "path" : "Athena.png",
-      "opponent_turn" : "true"
     },
     {
       "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Atlas",
