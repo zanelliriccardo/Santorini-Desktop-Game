@@ -134,6 +134,7 @@ public class Client extends Application {
 
     @Override
     public void stop() throws Exception {
+        messageToServer(CommandType.DISCONNECTED);
         socket.close();
         super.stop();
     }
@@ -404,15 +405,18 @@ public class Client extends Application {
 
         possiblemoves.removeIf(pos -> board.getLevelBox(pos) - board.getLevelBox(worker_toMove.getPosition()) > 1);
 
+        ArrayList<int[]> removes=new ArrayList<>();
+
         for (int[] pos: possiblemoves)
         {
             for (Player opponent : from_server.getPlayers())
             {
                 if((opponent.getNickname().compareTo(from_server.getBoard().getActivePlayer().getNickname())!=0)&&opponent.getGodCard().getOpponentTurn())//check is an opponent && check opponent card act in active player turn
                     if(opponent.getGodCard().move(board, worker_toMove,pos)==CommandType.ERROR)//check move is possible for opponent card
-                        possiblemoves.remove(pos);
+                        removes.add(pos);
             }
         }
+        possiblemoves.removeAll(removes);
         return possiblemoves;
     }
 
@@ -429,6 +433,7 @@ public class Client extends Application {
 
         possiblebuild.removeIf(pos -> board.getLevelBox(pos) == 4);
 
+        /*
         for (int[] pos: possiblebuild)
         {
             for (Player opponent : from_server.getPlayers())
@@ -438,6 +443,8 @@ public class Client extends Application {
                         possiblebuild.remove(pos);
             }
         }
+
+         */
         return possiblebuild;
     }
 

@@ -264,18 +264,18 @@ public class GameState {
 
         possiblemoves.removeIf(pos -> board.getLevelBox(pos) - board.getLevelBox(worker_toMove.getPosition()) > 1);
 
-        for(int i = 0; i < possiblemoves.size(); i++)
+        ArrayList<int[]> removes=new ArrayList<>();
+
+        for (int[] pos: possiblemoves)
         {
-            for (Player opponent : players)
+            for (Player opponent : getPlayers())
             {
-                if((opponent.getNickname().compareTo(getActivePlayer().getNickname())!=0)&&opponent.getGodCard().getOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.getGodCard().move(board, worker_toMove,possiblemoves.get(i))==CommandType.ERROR) {//check move is possible for opponent card
-                        System.out.println("Posizione da rimuovere é : ( " + Arrays.toString(possiblemoves.get(i)));
-                        //possiblemoves.remove(pos);
-                        possiblemoves.remove(i);
-                    }
+                if((opponent.getNickname().compareTo(b.getActivePlayer().getNickname())!=0)&&opponent.getGodCard().getOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                    if(opponent.getGodCard().move(board, worker_toMove,pos)==CommandType.ERROR)//check move is possible for opponent card
+                        removes.add(pos);
             }
         }
+        possiblemoves.removeAll(removes);
         return possiblemoves;
     }
 
@@ -291,6 +291,7 @@ public class GameState {
 
         possiblebuild.removeIf(pos -> board.getLevelBox(pos) == 4);
 
+        /*
         for (int[] pos: possiblebuild)
         {
             for (Player opponent : players)
@@ -300,6 +301,8 @@ public class GameState {
                         possiblebuild.remove(pos);
             }
         }
+
+         */
         return possiblebuild;
     }
 

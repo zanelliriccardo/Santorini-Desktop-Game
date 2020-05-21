@@ -44,8 +44,10 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
                     ois=new ObjectInputStream(socketConnection.getInputStream());
                     Command cmd = (Command) ois.readObject();
 
-                    if(cmd.getType()==CommandType.UPDATE)
-                        update(new Object());
+                    if(cmd.getType()==CommandType.DISCONNECTED)
+                    {
+                        socketConnection.close();
+                    }
 
                     new ExecutorClientCommand().update(cmd);
 
@@ -77,16 +79,12 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
         GameState.getBoard().setActivePlayer(GameState.getActivePlayer());
         toClient = new GameProxy(GameState.getBoard(), GameState.getActiveWorker(), GameState.getPlayers());
 
-        while (true)
-        {
-            try {
-                oos=new ObjectOutputStream(socketConnection.getOutputStream());
-                oos.writeObject(toClient);
-                oos.flush();
-                break;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            oos=new ObjectOutputStream(socketConnection.getOutputStream());
+            oos.writeObject(toClient);
+            oos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
