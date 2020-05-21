@@ -72,8 +72,8 @@ class GodTest {
         apollo.setOpponentTrue("false");
         athena.setOpponentTrue("true");
 
-        assertFalse(apollo.GetOpponentTurn());
-        assertTrue(athena.GetOpponentTurn());
+        assertFalse(apollo.getOpponentTurn());
+        assertTrue(athena.getOpponentTurn());
     }
 
     @Test //usato in altri metodi

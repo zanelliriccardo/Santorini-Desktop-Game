@@ -12,7 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
@@ -22,7 +21,6 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -410,7 +408,7 @@ public class Client extends Application {
         {
             for (Player opponent : from_server.getPlayers())
             {
-                if((opponent.getNickname().compareTo(from_server.getBoard().getActivePlayer().getNickname())!=0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                if((opponent.getNickname().compareTo(from_server.getBoard().getActivePlayer().getNickname())!=0)&&opponent.getGodCard().getOpponentTurn())//check is an opponent && check opponent card act in active player turn
                     if(opponent.getGodCard().move(board, worker_toMove,pos)==CommandType.ERROR)//check move is possible for opponent card
                         possiblemoves.remove(pos);
             }
@@ -435,7 +433,7 @@ public class Client extends Application {
         {
             for (Player opponent : from_server.getPlayers())
             {
-                if((opponent.getNickname().compareTo(from_server.getActivePlayer().getNickname())!=0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                if((opponent.getNickname().compareTo(from_server.getActivePlayer().getNickname())!=0)&&opponent.getGodCard().getOpponentTurn())//check is an opponent && check opponent card act in active player turn
                     if(opponent.getGodCard().build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
                         possiblebuild.remove(pos);
             }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.riccardoemelissa;
 
-import it.polimi.ingsw.riccardoemelissa.elements.card.Athena;
 import it.polimi.ingsw.riccardoemelissa.reader.JsonReader;
 import it.polimi.ingsw.riccardoemelissa.elements.*;
 import it.polimi.ingsw.riccardoemelissa.elements.Box;
@@ -97,7 +96,7 @@ public class GameState {
             players.get(i/3).setGodImagePath(gods_json[i+1]);
             players.get(i/3).getGodCard().setOpponentTrue(gods_json[i+2]);
 
-            System.out.println("God card : " + players.get(i/3).getGodImagePath() + "\nOpponent turn : "+ players.get(i/3).getGodCard().GetOpponentTurn());
+            System.out.println("God card : " + players.get(i/3).getGodImagePath() + "\nOpponent turn : "+ players.get(i/3).getGodCard().getOpponentTurn());
         }
     }
 
@@ -269,7 +268,7 @@ public class GameState {
         {
             for (Player opponent : players)
             {
-                if((opponent.getNickname().compareTo(getActivePlayer().getNickname())!=0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                if((opponent.getNickname().compareTo(getActivePlayer().getNickname())!=0)&&opponent.getGodCard().getOpponentTurn())//check is an opponent && check opponent card act in active player turn
                     if(opponent.getGodCard().move(board, worker_toMove,possiblemoves.get(i))==CommandType.ERROR) {//check move is possible for opponent card
                         System.out.println("Posizione da rimuovere é : ( " + Arrays.toString(possiblemoves.get(i)));
                         //possiblemoves.remove(pos);
@@ -296,7 +295,7 @@ public class GameState {
         {
             for (Player opponent : players)
             {
-                if((opponent.getNickname().compareTo(getActivePlayer().getNickname())!=0)&&opponent.getGodCard().GetOpponentTurn())//check is an opponent && check opponent card act in active player turn
+                if((opponent.getNickname().compareTo(getActivePlayer().getNickname())!=0)&&opponent.getGodCard().getOpponentTurn())//check is an opponent && check opponent card act in active player turn
                     if(opponent.getGodCard().build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
                         possiblebuild.remove(pos);
             }

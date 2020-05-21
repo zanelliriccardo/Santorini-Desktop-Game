@@ -63,7 +63,7 @@ public abstract class God implements Serializable {
         return CommandType.BUILD;
     }
 
-    public boolean GetOpponentTurn()
+    public boolean getOpponentTurn()
     {
         return opponent_turn;
     }
