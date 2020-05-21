@@ -18,6 +18,7 @@ class AthenaTest {
     private Worker worker22;
 
     void startGame (){
+        GameState.reset();
         GameState.setNumPlayer(2);
         GameState.newPlayer("nickname1");
         player1 = GameState.getPlayer("nickname1#0");
