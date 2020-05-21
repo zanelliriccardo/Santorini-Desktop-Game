@@ -99,6 +99,7 @@ public class ExecutorClientCommand {
                 if(checkBuilds(GameState.getBoard(),build_worker).isEmpty()&&GameState.getActivePlayer().getGodCard().getCardType().isBuild())
                     lose();
 
+                GameState.setActiveWorker(((Worker)cmd.getObj()).getPosition());
                 GameState.getBoard().custom_notifyAll();
                 break;
             case CHANGE_TURN:

@@ -238,6 +238,7 @@ public class ListenerServer extends Thread {
                     }
                 }
             }
+
             if(client_javafx.from_server.getActive_worker()==null&&client_javafx.isMyTurn()&&!client_javafx.from_server.getActivePlayer().getGodCard().getIn_action().isPassive())
             {
                 client_javafx.button_setpower.setDisable(false);

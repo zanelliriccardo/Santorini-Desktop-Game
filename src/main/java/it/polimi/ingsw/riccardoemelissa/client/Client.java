@@ -473,7 +473,7 @@ public class Client extends Application {
             setDisable(true);
         }
         //select worker
-        else if(!from_server.getBoard().getStateBox(new_position))
+        else if(!from_server.getBoard().getStateBox(new_position)&&modifiable_selectedWorker)
         {
             if(from_server.getBoard().getOccupantProprietary(new_position).getNickname().compareTo(from_server.getActivePlayer().getNickname())==0) {
                 activeWorker = from_server.getBoard().getOccupant(new_position);
@@ -492,6 +492,7 @@ public class Client extends Application {
             messageToServer(CommandType.MOVE,activeWorker,new_position);
             myboard.setDisable(true);
             button_setpower.setDisable(true);
+            modifiable_selectedWorker=false;
             cleanBoard();
         }
         // do build
@@ -500,6 +501,7 @@ public class Client extends Application {
             messageToServer(CommandType.BUILD,activeWorker,new_position);
             myboard.setDisable(true);
             button_setpower.setDisable(true);
+            modifiable_selectedWorker=false;
             cleanBoard();
         }
     }
@@ -633,11 +635,13 @@ public class Client extends Application {
                 activeMoveCells();
             else if (activeWorker.getProprietary().getGodCard().getCardType().isBuild()&&from_server.getActive_worker().getProprietary().getNickname().compareTo(nickname.getText())==0)
                 activeBuildCells();
+            modifiable_selectedWorker=false;
         }
         else
         {
             cleanBoard();
             activeWorker=null;
+            modifiable_selectedWorker=true;
         }
     }
 

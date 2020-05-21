@@ -65,7 +65,7 @@ public class JsonReader {
             gods.add((String) god.get("name"));
         }
 
-        Collections.shuffle(gods);
+        //Collections.shuffle(gods);
 
         for (int i = 0; i < n; i++) {
             gods_chosen[i * 3] = gods.get(i);

@@ -1,5 +1,10 @@
 {
   "GodList": [
+{
+  "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Prometheus",
+  "path" : "Prometheus.png",
+  "opponent_turn" : "false"
+},
     {
       "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Apollo",
       "path" : "Apollo.png",
@@ -38,11 +43,6 @@
     {
       "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Pan",
       "path" : "Pan.png",
-      "opponent_turn" : "false"
-    },
-    {
-      "name": "it.polimi.ingsw.riccardoemelissa.elements.card.Prometheus",
-      "path" : "Prometheus.png",
       "opponent_turn" : "false"
     }
   ]
