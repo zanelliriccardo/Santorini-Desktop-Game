@@ -364,4 +364,16 @@ public class GameState {
     public static Worker getActiveWorker() {
         return activeWorker;
     }
+
+    public static void reset()
+    {
+        players = new ArrayList<Player>();
+        Worker[] workers;
+        trace = 0;
+        b=new BoardGame();
+        gameover=false;
+        num_players=10;
+        gods=new ArrayList<String>();
+        godsImagePath=new ArrayList<>();
+    }
 }
