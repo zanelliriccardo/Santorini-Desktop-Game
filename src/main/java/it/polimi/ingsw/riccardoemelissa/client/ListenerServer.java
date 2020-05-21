@@ -73,13 +73,6 @@ public class ListenerServer extends Thread {
             try {
                 client_javafx.changeScene("board2.fxml");
 
-                //Put a TextArea on top-left
-                client_javafx.setServerMessage.setStyle("-fx-background-color: transparent");
-                client_javafx.setServerMessage.setStyle("-fx-font-size : 15");
-                client_javafx.setServerMessage.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
-                client_javafx.setServerMessage.setText("Hi " + client_javafx.from_server.getActivePlayer().getNickname()+ "!" +"\nThe first thing you have to do \nis to choose the initial position \nof your workers. \nPlace them in two free boxes.");
-
-
                 for (Player p: client_javafx.from_server.getPlayers())
                 {
                     client_javafx.endTurn.setVisible(false); // endturn not visible when the players are setting the initial position of their workers
@@ -88,7 +81,7 @@ public class ListenerServer extends Thread {
                     if(p.getGodCard().getIn_action().isPassive()&&p.getNickname().compareTo(client_javafx.nickname.getText())==0)
                     {
                         client_javafx.button_setpower.setDisable(true);
-                        client_javafx.button_setpower.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
+                        //client_javafx.button_setpower.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
                         client_javafx.button_setpower.setText("ACTIVE");
                         client_javafx.set_power.setImage(new Image((String.valueOf(getClass().getResource("images/heropower_active.png")))));
 
@@ -97,8 +90,6 @@ public class ListenerServer extends Thread {
                     //if is the active player, this part of the method sets his name, his worker color and his godcard
                     if(client_javafx.nickname.getText().compareTo(p.getNickname()) == 0) {
                         client_javafx.playerBoard.setText(p.getNickname());
-                        client_javafx.playerBoard.setStyle("-fx-background-color: #20B2AA");
-                        client_javafx.playerBoard.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
                         String color = p.getColor();
                         client_javafx.colorPlayerBoard.setFill(Paint.valueOf(color));
                         godCard = "images/card/" + p.getGodImagePath();
@@ -110,8 +101,6 @@ public class ListenerServer extends Thread {
                         client_javafx.opponent2.setVisible(false);
                         client_javafx.godOpponent2.setVisible(false);
                         client_javafx.colorOpponent2.setVisible(false);
-                        client_javafx.opponent1.setStyle("-fx-background-color: #20B2AA");
-                        client_javafx.opponent1.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
                         client_javafx.opponent1.setText(p.getNickname());
                         String color = p.getColor();
                         client_javafx.colorOpponent1.setFill(Paint.valueOf(color));
@@ -124,8 +113,6 @@ public class ListenerServer extends Thread {
                     {
                         if(count.get() == 0)
                         {
-                            client_javafx.opponent1.setStyle("-fx-background-color: #20B2AA");
-                            client_javafx.opponent1.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
                             client_javafx.opponent1.setText(p.getNickname());
                             String color = p.getColor();
                             client_javafx.colorOpponent1.setFill(Paint.valueOf(color));
@@ -136,8 +123,6 @@ public class ListenerServer extends Thread {
 
                         else
                         {
-                            client_javafx.opponent2.setFont(Font.font(" Franklin Gothic Medium Cond"));
-                            client_javafx.opponent2.setStyle("-fx-background-color: #20B2AA");
                             client_javafx.opponent2.setText(p.getNickname());
                             String color = p.getColor();
                             client_javafx.colorOpponent2.setFill(Paint.valueOf(color));
@@ -156,13 +141,10 @@ public class ListenerServer extends Thread {
                     Pane pane = new Pane();
                     Label label = new Label();
                     client_javafx.myboard.getChildren().add(pane);
-                    label.setStyle("-fx-alignment : TOP_RIGHT");
                     label.setPrefSize(21,21);
-                    label.setStyle("-fx-background-color: #90EE90");
                     label.setStyle("-fx-font-size : 15");
-                    label.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
                     pane.getChildren().add(label);
-                    label.setText(String.valueOf(client_javafx.from_server.getBoard().getLevelBox(x, y)));
+                    label.setText(String.valueOf(" " + client_javafx.from_server.getBoard().getLevelBox(x, y)));
                     GridPane.setColumnIndex(pane, x);
                     GridPane.setRowIndex(pane, y);
                 }
@@ -176,7 +158,6 @@ public class ListenerServer extends Thread {
 
             //Turn of
             client_javafx.set_turn.setText("Turn of " + client_javafx.from_server.getActivePlayer().getNickname());
-            client_javafx.set_turn.setFont(Font.font(" Franklin Gothic Medium Cond", FontWeight.BOLD, 18));
 
             for(int i = 0; i< 5; i++) {
                 for (int j = 0; j < 5; j++)
@@ -233,7 +214,7 @@ public class ListenerServer extends Thread {
                         {
                             for (Node label : ((Pane) child).getChildren())
                                 if(label instanceof Label)
-                                    ((Label) label).setText(String.valueOf(client_javafx.from_server.getBoard().getLevelBox(r, c)));
+                                    ((Label) label).setText(" "+String.valueOf(client_javafx.from_server.getBoard().getLevelBox(r, c)));
                         }
                     }
                 }
@@ -243,7 +224,7 @@ public class ListenerServer extends Thread {
             {
                 client_javafx.button_setpower.setDisable(false);
                 client_javafx.button_setpower.setSelected(false);
-                client_javafx.button_setpower.setText("DISABLE");
+                client_javafx.button_setpower.setText("INACTIVE");
                 client_javafx.set_power.setImage(new Image(String.valueOf((getClass().getResource("images/heropower_inactive.png")))));
                 for (Player p :
                         client_javafx.from_server.getPlayers()) {

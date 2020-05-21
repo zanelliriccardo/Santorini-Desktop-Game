@@ -53,8 +53,6 @@ public class Client extends Application {
     @FXML
     public ToggleButton button_setpower;
     @FXML
-    public TextArea setServerMessage;
-    @FXML
     public ImageView set_godcard;
     @FXML
     public ImageView godOpponent1;
@@ -290,7 +288,7 @@ public class Client extends Application {
         if (!button_setpower.isSelected())
         {
             System.out.println("cambia potere in disattivo");
-            button_setpower.setText("DISABLE");
+            button_setpower.setText("INACTIVE");
             set_power.setImage(new Image(String.valueOf((getClass().getResource("images/heropower_inactive.png")))));
             for (Player p :
                     from_server.getPlayers()) {
