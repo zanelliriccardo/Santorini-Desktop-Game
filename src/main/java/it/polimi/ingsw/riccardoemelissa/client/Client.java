@@ -99,23 +99,6 @@ public class Client extends Application {
     }
 
     /**
-     * create the cells on gridpane board
-     *
-     * @param myboard
-     */
-    @FXML
-    public void initializeBoardgame (GridPane myboard) {
-        for (int x = 0; x < 5; x++) {
-            for (int y = 0; y < 5; y++) {
-                Pane pane = new Pane();
-                myboard.getChildren().add(pane);
-                GridPane.setColumnIndex(pane, x);
-                GridPane.setRowIndex(pane, y);
-            }
-        }
-    }
-
-    /**
      * set and show gui
      *
      * @param primaryStage
@@ -189,6 +172,9 @@ public class Client extends Application {
         }
     }
 
+    /**
+     * Ask for an update on the status of the game
+     */
     public void callUpdate_fromServer()
     {
         try
@@ -643,6 +629,10 @@ public class Client extends Application {
         }
     }
 
+    /**
+     * check if is the player turn
+     * @return
+     */
     public boolean isMyTurn() {
         return from_server.getBoard().getActivePlayer().getNickname().compareTo(nickname.getText())==0;
     }

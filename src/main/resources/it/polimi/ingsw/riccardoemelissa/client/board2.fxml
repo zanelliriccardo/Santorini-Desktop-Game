@@ -43,11 +43,7 @@
             <Cursor fx:constant="CLOSED_HAND" />
          </cursor>
       </GridPane>
-      <ImageView fx:id="set_godcard" fitHeight="213.0" fitWidth="138.0" layoutX="744.0" layoutY="249.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@images/card/Apollo.png" />
-         </image>
-      </ImageView>
+      <ImageView fx:id="set_godcard" fitHeight="213.0" fitWidth="138.0" layoutX="744.0" layoutY="249.0" pickOnBounds="true" preserveRatio="true" />
       <TextField fx:id="set_turn" alignment="CENTER" editable="false" layoutX="359.0" layoutY="14.0" prefHeight="35.0" prefWidth="244.0" style="-fx-alignment: CENTER; -fx-background-color: lightgreen; -fx-font-size: 18; -fx-font-family: Franklin Gothic Medium Cond;">
          <font>
             <Font name="Franklin Gothic Medium Cond" size="14.0" />

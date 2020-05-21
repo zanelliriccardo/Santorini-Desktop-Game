@@ -73,6 +73,10 @@ public class Prometheus extends God implements Serializable {
             return super.build(b,activeWorker,pos);
     }
 
+    /** set the status of the power
+     *
+     * @param powerSet
+     */
     @Override
     public void setIn_action(PowerType powerSet) {
         if(powerSet.isActive())
@@ -84,11 +88,18 @@ public class Prometheus extends God implements Serializable {
         type=PowerType.DISABLE;
     }
 
+    /**
+     * get the status of the
+     * @return
+     */
     @Override
     public PowerType getIn_action() {
         return type;
     }
 
+    /**
+     * reset the God card
+     */
     @Override
     public void resetCard() {
         super.setCardType(GodCardType.MOVE);

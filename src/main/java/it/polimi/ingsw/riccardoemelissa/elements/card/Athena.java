@@ -40,7 +40,7 @@ public class Athena extends God implements Serializable {
         else if (in_action)
         {
             System.out.println("in action = " + in_action);
-            return RespectAthenaAction(active_worker.getPosition(), newpos, b);
+            return respectAthenaAction(active_worker.getPosition(), newpos, b);
         }
         return CommandType.BUILD;
     }
@@ -53,7 +53,7 @@ public class Athena extends God implements Serializable {
      * @param b : board
      * @return
      */
-    public CommandType RespectAthenaAction(int[] old_pos, int[] new_pos, BoardGame b) {
+    public CommandType respectAthenaAction(int[] old_pos, int[] new_pos, BoardGame b) {
         System.out.println("Entra in respectAthenaAction");
         System.out.println("Differenza " +  new_pos[0] + " , " + new_pos[1] + " - " + old_pos[0] + " , " + old_pos[1] + " = " + (b.getLevelBox(new_pos) - b.getLevelBox(old_pos)));
         if ((b.getLevelBox(new_pos) - b.getLevelBox(old_pos)) > 0)
@@ -61,17 +61,28 @@ public class Athena extends God implements Serializable {
         return CommandType.MOVE;
     }
 
+    /**
+     * set the status of the power
+     * @param powerSet
+     */
     @Override
     public void setIn_action(PowerType powerSet) {
         if(!type.isPassive())
             type=powerSet;
     }
 
+    /**
+     * get the status of the power
+     * @return
+     */
     @Override
     public PowerType getIn_action() {
         return type;
     }
 
+    /**
+     * reset the God card
+     */
     @Override
     public void resetCard() {
         super.setCardType(GodCardType.MOVE);

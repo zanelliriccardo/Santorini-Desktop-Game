@@ -24,7 +24,7 @@ public class Apollo extends God implements Serializable {
     public CommandType move(BoardGame b, Worker active_worker, int[] newpos)
     {
         if (!b.getStateBox(newpos))
-            SetApolloPosition(active_worker, newpos, b);
+            setApolloPosition(active_worker, newpos, b);
         else
             super.setPosition(active_worker, active_worker.getPosition(), newpos, b);
 
@@ -87,7 +87,7 @@ public class Apollo extends God implements Serializable {
      * @param newpos : position chosen by player
      * @param b : board
      */
-    public void SetApolloPosition(Worker active_worker, int[] newpos, BoardGame b)
+    public void setApolloPosition(Worker active_worker, int[] newpos, BoardGame b)
     {
         b.getOccupant(newpos).setPosition(active_worker.getPosition());//da controllare
         b.setOccupant(active_worker.getPosition(),b.getOccupant(newpos));
@@ -96,17 +96,28 @@ public class Apollo extends God implements Serializable {
         b.setOccupant(newpos,active_worker);
     }
 
+    /**
+     * set the status of the power
+     * @param powerSet
+     */
     @Override
     public void setIn_action(PowerType powerSet) {
         if(!type.isPassive())
             type=powerSet;
     }
 
+    /**
+     * get the status of the power
+     * @return
+     */
     @Override
     public PowerType getIn_action() {
         return type;
     }
 
+    /**
+     * reset the God card
+     */
     @Override
     public void resetCard() {
         super.setCardType(GodCardType.MOVE);

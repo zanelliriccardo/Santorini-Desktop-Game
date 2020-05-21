@@ -66,17 +66,28 @@ public class Demeter extends God implements Serializable {
         return possibleBox;
     }
 
+    /**
+     * set the status of the power
+     * @param powerSet
+     */
     @Override
     public void setIn_action(PowerType powerSet) {
         if(!type.isPassive())
             type=powerSet;
     }
 
+    /**
+     * get the status of the power
+     * @return
+     */
     @Override
     public PowerType getIn_action() {
         return type;
     }
 
+    /**
+     * reset the God card
+     */
     @Override
     public void resetCard() {
         super.setCardType(GodCardType.MOVE);
