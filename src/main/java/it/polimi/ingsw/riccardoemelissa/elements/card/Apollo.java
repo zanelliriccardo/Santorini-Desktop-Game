@@ -11,11 +11,11 @@ public class Apollo extends God implements Serializable {
     private PowerType type=PowerType.PASSIVE;
 
     /**
-     * do move following apollo rules
+     * Do move following Apollo rules
      *
-     * if position is occupied, the method call method for switch worker position
+     * If position is occupied, the method call method for switch worker position
      *
-     * @param b : board
+     * @param b
      * @param active_worker : worker chosen to do the move
      * @param newpos : position chosen by player
      * @return
@@ -33,9 +33,9 @@ public class Apollo extends God implements Serializable {
     }
 
     /**
-     * get the box where is possible moves in
+     * Get the box where is possible moves in
      *
-     * get the box where is possible moves in, following apollo rules
+     * Get the box where is possible moves in, following apollo rules
      *
      * @param b : board
      * @param worker_pos : actual position of worker
@@ -81,7 +81,7 @@ public class Apollo extends God implements Serializable {
     }
 
     /**
-     * switch worker position
+     * Switch worker position
      *
      * @param active_worker : worker chosen to move by player
      * @param newpos : position chosen by player
@@ -89,7 +89,7 @@ public class Apollo extends God implements Serializable {
      */
     public void setApolloPosition(Worker active_worker, int[] newpos, BoardGame b)
     {
-        b.getOccupant(newpos).setPosition(active_worker.getPosition());//da controllare
+        b.getOccupant(newpos).setPosition(active_worker.getPosition());
         b.setOccupant(active_worker.getPosition(),b.getOccupant(newpos));
 
         active_worker.setPosition(newpos);
@@ -97,7 +97,7 @@ public class Apollo extends God implements Serializable {
     }
 
     /**
-     * set the status of the power
+     * Set the status of the power
      * @param powerSet
      */
     @Override
@@ -107,7 +107,7 @@ public class Apollo extends God implements Serializable {
     }
 
     /**
-     * get the status of the power
+     * Get the status of the power
      * @return
      */
     @Override
@@ -116,7 +116,7 @@ public class Apollo extends God implements Serializable {
     }
 
     /**
-     * reset the God card
+     * Set to default value
      */
     @Override
     public void resetCard() {

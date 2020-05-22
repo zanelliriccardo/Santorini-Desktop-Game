@@ -14,11 +14,13 @@ public abstract class God implements Serializable {
     {
         request =GodCardType.MOVE;
     }
+
     /**
      * Move the active worker
      *
      * The method accepts the active worker and the position where he would like to move.
      * "newpos" is a permitted move, so here's the move by changing the active worker's position.
+     *
      * @param b : board
      * @param active_worker : worker chosen to do the move
      * @param newpos : position chosen by player
@@ -33,6 +35,7 @@ public abstract class God implements Serializable {
 
     /**
      * This method sets the new worker's position
+     *
      * @param active_worker : worker chosen to do the move
      * @param oldpos : initial position
      * @param newpos : new position choose by the player
@@ -46,32 +49,43 @@ public abstract class God implements Serializable {
     }
 
     /**
-     * This method is used to build:
+     * This method is used to build
+     *
      * if the pos respects the classic conditions of build,
      * the worker does his build and the method returns true
+     *
      * @param b : board
      * @param activeWorker : worker chosen to do the build
-     * @param pos -> the build position given by the player belongs to an adjacent box
+     * @param pos : position chosen by player
      * @return
      */
     public CommandType build(BoardGame b, Worker activeWorker, int[] pos)
     {
-        int[] workerpos = activeWorker.getPosition();
-
         GameState.getBoard().doBuild(pos);
         this.request =GodCardType.ENDTURN;
         return CommandType.BUILD;
     }
 
+    /**
+     * Get the value of opponent turn
+     *
+     * Opponent turn indicates if a God can act during an opponent's turn
+     *
+     * @return
+     */
     public boolean getOpponentTurn()
     {
         return opponent_turn;
     }
 
+    /**
+     * Get the current type of a God card
+     * @return
+     */
     public GodCardType getCardType(){return request;}
 
     /**
-     * get adjacent box where possible moves in
+     * Get adjacent box where possible moves in
      *
      * @param b : board
      * @param worker_pos : actual position of worker
@@ -105,19 +119,38 @@ public abstract class God implements Serializable {
         return adj_boxes;
     }
 
+    /**
+     * Set the status of the power
+     * @param powerSet
+     */
     public abstract void setIn_action(PowerType powerSet);
 
+    /**
+     * Get the status of the power
+     * @return
+     */
     public abstract PowerType getIn_action();
 
     /**
-     * set to default value
+     * Set to default value
      */
     public abstract void resetCard();
 
+    /**
+     * Set the boolean value opponent turn
+     *
+     * Opponent turn indicates if a God can act during an opponent's turn
+     *
+     * @param s
+     */
     public void setOpponentTrue(String s) {
         opponent_turn= s.equals("true");
     }
 
+    /**
+     * Set the type of a God card
+     * @param type
+     */
     public void setCardType(GodCardType type) {
         this.request =type;
     }

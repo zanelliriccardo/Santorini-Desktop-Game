@@ -9,13 +9,13 @@ public class Atlas extends God implements Serializable {
     private PowerType type=PowerType.DISABLE;
 
     /**
-     * apply atlas rules if power is active
+     * Apply atlas rules if power is active
      *
-     * if power is active build a dome
+     * If power is active build a dome
      *
      * @param b:board
      * @param activeWorker : worker chosen to do the build
-     * @param pos -> the build position given by the player belongs to an adjacent box
+     * @param pos : position chosen by player
      * @return
      */
     @Override
@@ -34,7 +34,7 @@ public class Atlas extends God implements Serializable {
     }
 
     /**
-     * set the status of the power
+     * Set the status of the power
      * @param powerSet
      */
     @Override
@@ -44,7 +44,7 @@ public class Atlas extends God implements Serializable {
     }
 
     /**
-     * get the status of the power
+     * Get the status of the power
      * @return
      */
     @Override
@@ -54,7 +54,7 @@ public class Atlas extends God implements Serializable {
 
 
     /**
-     * reset the God card
+     * Set to default value
      */
     @Override
     public void resetCard() {

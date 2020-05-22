@@ -13,14 +13,14 @@ public class Demeter extends God implements Serializable {
     private int[] old_position=new int[]{-1,-1};
 
     /**
-     * apply demeter rules if power is active
+     * Apply demeter rules if power is active
      *
-     * if is the first build of turn, saves the position and during the next build
+     * If is the first build of turn, saves the position and during the next build
      * of this turn check they is different
      *
      * @param b : board
-     * @param active_Worker
-     * @param pos -> the build position given by the player belongs to an adjacent box
+     * @param active_Worker : worker chosen to do the build
+     * @param pos : position chosen by player
      * @return
      */
     @Override
@@ -47,7 +47,7 @@ public class Demeter extends God implements Serializable {
     }
 
     /**
-     * get adjacent box where possible moves in following demeter rules
+     * Get adjacent box where possible moves in following demeter rules
      *
      * @param b : board
      * @param worker_pos : actual position of worker
@@ -67,7 +67,7 @@ public class Demeter extends God implements Serializable {
     }
 
     /**
-     * set the status of the power
+     * Set the status of the power
      * @param powerSet
      */
     @Override
@@ -77,7 +77,7 @@ public class Demeter extends God implements Serializable {
     }
 
     /**
-     * get the status of the power
+     * Get the status of the power
      * @return
      */
     @Override
@@ -86,7 +86,7 @@ public class Demeter extends God implements Serializable {
     }
 
     /**
-     * reset the God card
+     * Set to default value
      */
     @Override
     public void resetCard() {

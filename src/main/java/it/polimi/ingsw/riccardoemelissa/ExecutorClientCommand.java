@@ -7,9 +7,9 @@ import java.util.ArrayList;
 public class ExecutorClientCommand {
 
     /**
-     * manage command received from clients
+     * Manage command received from clients
      *
-     * this method take an argument that made by a command type(it corresponding to an action
+     * This method take an argument that made by a command type(it corresponding to an action
      * to do on @Gamestate),an obj that will be converted into a specific class and a position
      * for the command types that require them
      * @param arg
@@ -64,8 +64,6 @@ public class ExecutorClientCommand {
 
                 move_worker.getProprietary().getGodCard().move(GameState.getBoard(),move_worker,cmd.getPos());
 
-                System.out.println("move");
-
                 if(checkMoves(GameState.getBoard(),move_worker).isEmpty()&&GameState.getActivePlayer().getGodCard().getCardType().isMove())
                     lose();
                 if(checkBuilds(GameState.getBoard(),move_worker).isEmpty()&&GameState.getActivePlayer().getGodCard().getCardType().isBuild())
@@ -91,8 +89,6 @@ public class ExecutorClientCommand {
                 build_worker.getProprietary().getGodCard().setIn_action(((Worker) cmd.getObj()).getProprietary().getGodCard().getIn_action());
 
                 build_worker.getProprietary().getGodCard().build(GameState.getBoard(),build_worker,cmd.getPos());
-
-                System.out.println("build");
 
                 if(checkMoves(GameState.getBoard(),build_worker).isEmpty()&&GameState.getActivePlayer().getGodCard().getCardType().isMove())
                     lose();
@@ -145,7 +141,7 @@ public class ExecutorClientCommand {
 
         possiblebuild.removeIf(pos -> board.getLevelBox(pos) == 4);
 
-        /*for (int[] pos: possiblebuild)
+        for (int[] pos: possiblebuild)
         {
             for (Player opponent : GameState.getPlayers())
             {
@@ -154,8 +150,6 @@ public class ExecutorClientCommand {
                         possiblebuild.remove(pos);
             }
         }
-
-         */
         return possiblebuild;
     }
 

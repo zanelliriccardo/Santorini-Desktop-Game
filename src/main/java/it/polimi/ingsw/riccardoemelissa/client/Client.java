@@ -74,7 +74,7 @@ public class Client extends Application {
 
 
     /**
-     * get the cell clicked by user
+     * Get the cell clicked by user
      *
      * @param e
      * @return
@@ -84,21 +84,17 @@ public class Client extends Application {
         Node source = e.getPickResult().getIntersectedNode();
         Integer colIndex,rowIndex;
         try {
-            Pane pane=(Pane) source;
-
             colIndex = GridPane.getColumnIndex(source);
             rowIndex = GridPane.getRowIndex(source);
-            System.out.printf("Mouse entered cell [%d, %d]%n", colIndex, rowIndex);
         } catch (Exception exception) {
             colIndex = GridPane.getColumnIndex(source.getParent());
             rowIndex = GridPane.getRowIndex(source.getParent());
-            System.out.printf("Mouse entered cell [%d, %d]%n", colIndex, rowIndex);
         }
         return new int[]{rowIndex, colIndex};
     }
 
     /**
-     * set and show gui
+     * Set and show gui
      *
      * @param primaryStage
      * @throws Exception
@@ -107,11 +103,9 @@ public class Client extends Application {
     public void start(Stage primaryStage) throws Exception {
 
     primary= primaryStage;
-    System.out.println("Loading board");
     activeWorker=null;
-
     loader=new FXMLLoader();
-    System.out.println(getClass().getResource("start.fxml"));
+
     URL resource=getClass().getResource("start.fxml");
     loader.setController(this);
     loader.setLocation(resource);
@@ -132,6 +126,11 @@ public class Client extends Application {
     listener.start();
     }
 
+    /**
+     * Notify the server that a user has closed the game
+     *
+     * @throws Exception
+     */
     @Override
     public void stop() throws Exception {
         messageToServer(CommandType.DISCONNECTED);
@@ -144,15 +143,13 @@ public class Client extends Application {
 
         try {
             socket = new Socket(InetAddress.getLocalHost(), 33500);
-        } catch (IOException e) {
-            //mettere una scena dove diciamo che cè un errore e chiudere il gioco
+        } catch (IOException ignored) {
         }
-        System.out.println("Connected to server");
         launch(args);
     }
 
     /**
-     * start the game, so if another player have created the game the user join it
+     * Start the game, so if another player have created the game the user join it
      *
      * @param mouseEvent
      * @throws IOException
@@ -168,11 +165,8 @@ public class Client extends Application {
 
         if(from_server.getPlayers().size()<1) {
             changeScene("mode.fxml");
-            System.out.println("Sono il primo giocatore");
-            //showBoard(active_player_name);
         }
         else {
-            System.out.println("Connessione a partita già esistente");
             changeScene("choose_nickname.fxml");
         }
     }
@@ -184,7 +178,6 @@ public class Client extends Application {
     {
         try
         {
-            System.out.println("Chiedo update al server");
             messageToServer(CommandType.UPDATE);
         }
         catch (Exception e)
@@ -194,7 +187,7 @@ public class Client extends Application {
     }
 
     /**
-     * change the user view
+     * Change the user view
      *
      * @param path: fxml path
      * @throws IOException
@@ -215,11 +208,10 @@ public class Client extends Application {
         primary.setScene(s);
 
         primary.show();
-        System.out.println("Cambio scena");
     }
 
     /**
-     * set number of players and change to nickname view
+     * Set number of players and change to nickname view
      *
      * @param event
      * @throws IOException
@@ -227,12 +219,11 @@ public class Client extends Application {
     @FXML
     public void twoPlayers (MouseEvent event) throws IOException {
         messageToServer(CommandType.MODE, 2);
-        System.out.println("Premuto 2 gioc");
         changeScene("choose_nickname.fxml");
     }
 
     /**
-     * set number of players and change to nickname view
+     * Set number of players and change to nickname view
      *
      * @param event
      * @throws IOException
@@ -240,12 +231,11 @@ public class Client extends Application {
     @FXML
     public void threePlayers (MouseEvent event) throws IOException {
         messageToServer(CommandType.MODE, 3);
-        System.out.println("Premuto 3 gioc");
         changeScene("choose_nickname.fxml");
     }
 
     /**
-     * set nickname and go to loading view
+     * Set nickname and go to loading view
      * @param mouseEvent
      * @throws IOException
      */
@@ -263,12 +253,10 @@ public class Client extends Application {
             }
         }
         changeScene("loading.fxml");
-
-        System.out.println("Premuto ok inserimento nickname");
     }
 
     /**
-     * set the power and change image in the selected case
+     * Set the power and change image in the selected case
      *
      * @param mouseEvent
      * @throws IOException
@@ -278,7 +266,6 @@ public class Client extends Application {
     {
         if (!button_setpower.isSelected())
         {
-            System.out.println("cambia potere in disattivo");
             button_setpower.setText("INACTIVE");
             set_power.setImage(new Image(String.valueOf((getClass().getResource("images/heropower_inactive.png")))));
             for (Player p :
@@ -291,7 +278,6 @@ public class Client extends Application {
 
         if(button_setpower.isSelected())
         {
-            System.out.println("cambia potere in attivo");
             button_setpower.setText("ACTIVE");
             set_power.setImage(new Image(String.valueOf(getClass().getResource("images/heropower_active.png"))));
             for (Player p :
@@ -304,7 +290,7 @@ public class Client extends Application {
     }
 
     /**
-     * clean possible cells colored on board
+     * Clean possible cells colored on board
      */
     public void cleanBoard()
     {
@@ -313,9 +299,9 @@ public class Client extends Application {
         {
             for (Node child : myboard.getChildren()) {
                 Pane pane = (Pane) child;
-                Integer r = myboard.getRowIndex(child);
-                Integer c = myboard.getColumnIndex(child);
-                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
+                Integer r = GridPane.getRowIndex(child);
+                Integer c = GridPane.getColumnIndex(child);
+                if(r!=null && r == pos[0] && c != null && c == pos[1])
                 {
                     pane.setStyle("-fx-background-color: transparent");
                 }
@@ -324,7 +310,7 @@ public class Client extends Application {
     }
 
     /**
-     * show cells for move or build when the power is activated od deactivated
+     * Show cells for move or build when the power is activated od deactivated
      *
      * @param powerType
      */
@@ -335,7 +321,7 @@ public class Client extends Application {
     }
 
     /**
-     * send a commmand to server
+     * Send a commmand to server
      *
      * @param cmd_type
      * @param obj
@@ -349,12 +335,12 @@ public class Client extends Application {
                 out.flush();
                 break;
             }
-            catch (IOException io){}
+            catch (IOException ignored){}
         }
     }
 
     /**
-     * send a commmand to server
+     * Send a commmand to server
      *
      * @param cmd_type
      * @param obj
@@ -364,17 +350,16 @@ public class Client extends Application {
         Command cmd_toserver=new Command(cmd_type,obj,new_pos);
         while (true) {
             try {
-                System.out.println("message to server: "+new_pos[0]+","+new_pos[1]);
                 ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
                 out.writeObject(cmd_toserver);
                 break;
             }
-            catch (IOException io){}
+            catch (IOException ignored){}
         }
     }
 
     /**
-     * send a commmand to server
+     * Send a commmand to server
      *
      * @param cmd_type
      */
@@ -386,14 +371,14 @@ public class Client extends Application {
                 out.writeObject(cmd_toserver);
                 break;
             }
-            catch (IOException io)
+            catch (IOException ignored)
             {
             }
         }
     }
 
     /**
-     * return the possible moves for the selected worker
+     * Return the possible moves for the selected worker
      *
      * @param board
      * @param worker_toMove
@@ -421,7 +406,7 @@ public class Client extends Application {
     }
 
     /**
-     * return the possible build for the selected worker
+     * Return the possible build for the selected worker
      *
      * @param board
      * @param builder
@@ -433,31 +418,26 @@ public class Client extends Application {
 
         possiblebuild.removeIf(pos -> board.getLevelBox(pos) == 4);
 
-        /*
         for (int[] pos: possiblebuild)
         {
             for (Player opponent : from_server.getPlayers())
             {
                 if((opponent.getNickname().compareTo(from_server.getActivePlayer().getNickname())!=0)&&opponent.getGodCard().getOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.getGodCard().build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
+                    if(opponent.getGodCard().build(board,builder,pos)==CommandType.ERROR) //check build is possible for opponent card
                         possiblebuild.remove(pos);
             }
         }
-
-         */
         return possiblebuild;
     }
 
     /**
-     * manage the click on a cell: create a worker, select a worker, move and build
+     * Manage the click on a cell: create a worker, select a worker, move and build
      * @param mouseEvent
      */
     @FXML
     public void selectedCell(MouseEvent mouseEvent)
     {
         int[] new_position= mouseEntered(mouseEvent);
-
-        System.out.println("La posizione cliccata è ( " + new_position[0] + " , "+ new_position[1] + ")" );
 
         //create a worker
         if(nickname.getText().compareTo(from_server.getActivePlayer().getNickname())==0&&getWorkers().size()<2)
@@ -502,7 +482,7 @@ public class Client extends Application {
     }
 
     /**
-     * redefinition of list.contains
+     * Redefinition of list.contains
      *
      * @param new_position
      * @return
@@ -517,7 +497,7 @@ public class Client extends Application {
     }
 
     /**
-     * show the possible cells to move on it
+     * Show the possible cells to move on it
      */
     public void activeMoveCells()
     {
@@ -532,9 +512,9 @@ public class Client extends Application {
         {
             for (Node child : myboard.getChildren()) {
                 Pane pane = (Pane) child;
-                Integer r = myboard.getRowIndex(child);
-                Integer c = myboard.getColumnIndex(child);
-                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
+                Integer r = GridPane.getRowIndex(child);
+                Integer c = GridPane.getColumnIndex(child);
+                if(r!=null && r == pos[0] && c != null && c == pos[1])
                 {
                     pane.setStyle("-fx-background-color: #1E90FF");
                 }
@@ -543,7 +523,7 @@ public class Client extends Application {
     }
 
     /**
-     * show the cells to build on it
+     * Show the cells to build on it
      */
     public void activeBuildCells()
     {
@@ -558,9 +538,9 @@ public class Client extends Application {
 
             for (Node child : myboard.getChildren()) {
                 Pane pane = (Pane) child;
-                Integer r = myboard.getRowIndex(child);
-                Integer c = myboard.getColumnIndex(child);
-                if(r!=null && r.intValue() == pos[0] && c != null && c.intValue() == pos[1])
+                Integer r = GridPane.getRowIndex(child);
+                Integer c = GridPane.getColumnIndex(child);
+                if(r!=null && r == pos[0] && c != null && c == pos[1])
                 {
                     pane.setStyle("-fx-background-color: #FF0000");
                 }
@@ -569,7 +549,7 @@ public class Client extends Application {
     }
 
     /**
-     * return the workers of the user
+     * Return the workers of the user
      *
      * @return
      */
@@ -589,7 +569,7 @@ public class Client extends Application {
     }
 
     /**
-     * send end turn to server and clean board
+     * Send end turn to server and clean board
      *
      * @param mouseEvent
      */
@@ -603,7 +583,7 @@ public class Client extends Application {
     }
 
     /**
-     * enable/disable click on board
+     * Enable/disable click on board
      *
      * @param value
      */
@@ -618,7 +598,7 @@ public class Client extends Application {
     }
 
     /**
-     * update the possible cell for move/build using the active worker
+     * Update the possible cell for move/build using the active worker
      */
     public void updatePossibleCell()
     {
@@ -641,7 +621,7 @@ public class Client extends Application {
     }
 
     /**
-     * check if is the player turn
+     * Check if is the player turn
      * @return
      */
     public boolean isMyTurn() {
@@ -649,7 +629,7 @@ public class Client extends Application {
     }
 
     /**
-     * check if this client win or lose, change scene and close the connection to server
+     * Check if this client win or lose, change scene and close the connection to server
      */
     public void checkGameOver() {
         for (Player p : from_server.getPlayers()) {
@@ -676,17 +656,6 @@ public class Client extends Application {
 
         }
     }
-
-/*
-    public void checkLose()
-    {
-        if(checkMoves(from_server.getBoard(),activeWorker).isEmpty()&&from_server.getActivePlayer().GetGodCard().getCardType().isMove())
-            lose();
-        if(checkBuilds(from_server.getBoard(),activeWorker).isEmpty()&&from_server.getActivePlayer().GetGodCard().getCardType().isBuild())
-            lose();
-    }
-
- */
 }
 
 

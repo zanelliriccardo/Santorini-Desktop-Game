@@ -7,19 +7,27 @@ import java.io.Serializable;
 
 public class Athena extends God implements Serializable {
     private PowerType type=PowerType.PASSIVE;
-
     private boolean in_action=false;
 
+    /**
+     * Manage Athena's power
+     *
+     * If the difference between the level of the new position and the level of the old position is one,
+     * Athena's power is active until the next turn
+     *
+     * @param old_pos
+     * @param new_pos
+     * @param b
+     * @return
+     */
     public boolean setInAction(int[] old_pos, int[] new_pos, BoardGame b) {
-        if ((b.getLevelBox(new_pos) - b.getLevelBox(old_pos)) == 1)
-            return true;
-        return false;
+        return (b.getLevelBox(new_pos) - b.getLevelBox(old_pos)) == 1;
     }
 
     /**
-     * check athena power in opponent turn and set athena power in owner turn
+     * Check athena power in opponent turn and set athena power in owner turn
      *
-     * if the active player is the athena owner set athena power on if player moves on,
+     * If the active player is the athena owner set athena power on if player moves on,
      * if the active player is an opponent of athena return true if athena allow the chosen move
      *
      * @param b : board
@@ -30,23 +38,20 @@ public class Athena extends God implements Serializable {
     @Override
     public CommandType move(BoardGame b, Worker active_worker, int[] newpos)
     {
-        System.out.println("in action = " + in_action);
         if (active_worker.getProprietary().getGodCard() instanceof Athena)
         {
             in_action = setInAction(active_worker.getPosition(), newpos, b);
             super.move(b, active_worker, newpos);
-            System.out.println("in action = " + in_action);
         }
         else if (in_action)
         {
-            System.out.println("in action = " + in_action);
             return respectAthenaAction(active_worker.getPosition(), newpos, b);
         }
         return CommandType.BUILD;
     }
 
     /**
-     * check is a move-on moves
+     * Check is a move-on moves
      *
      * @param old_pos : actual opponent worker position
      * @param new_pos : next opponent worker position
@@ -54,15 +59,13 @@ public class Athena extends God implements Serializable {
      * @return
      */
     public CommandType respectAthenaAction(int[] old_pos, int[] new_pos, BoardGame b) {
-        System.out.println("Entra in respectAthenaAction");
-        System.out.println("Differenza " +  new_pos[0] + " , " + new_pos[1] + " - " + old_pos[0] + " , " + old_pos[1] + " = " + (b.getLevelBox(new_pos) - b.getLevelBox(old_pos)));
         if ((b.getLevelBox(new_pos) - b.getLevelBox(old_pos)) > 0)
             return CommandType.ERROR;
         return CommandType.MOVE;
     }
 
     /**
-     * set the status of the power
+     * Set the status of the power
      * @param powerSet
      */
     @Override
@@ -72,7 +75,7 @@ public class Athena extends God implements Serializable {
     }
 
     /**
-     * get the status of the power
+     * Get the status of the power
      * @return
      */
     @Override
@@ -81,7 +84,7 @@ public class Athena extends God implements Serializable {
     }
 
     /**
-     * reset the God card
+     * Set to default value
      */
     @Override
     public void resetCard() {

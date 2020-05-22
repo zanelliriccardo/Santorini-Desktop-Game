@@ -9,9 +9,9 @@ public class Pan extends God implements Serializable {
     private PowerType type=PowerType.PASSIVE;
 
     /**
-     * manage win condition following rules pan
+     * Manage win condition following rules pan
      *
-     * if different level is 2 or plus active player win the game
+     * If different level is 2 or plus active player win the game
      *
      * @param b : board
      * @param active_worker : worker chosen to do the move
@@ -21,17 +21,17 @@ public class Pan extends God implements Serializable {
     @Override
     public CommandType move(BoardGame b, Worker active_worker, int[] newpos)
     {
-        int[] old_position=active_worker.getPosition();//problema reference??
+        int[] old_position=active_worker.getPosition();
         super.move(b, active_worker, newpos);
 
         if (b.getLevelBox(old_position) - b.getLevelBox(newpos) > 1)
-            super.setCardType(GodCardType.WIN); //settare anche position??? provare a mandare fake comando a executor con win da server
+            super.setCardType(GodCardType.WIN);
 
        return CommandType.BUILD;
     }
 
     /**
-     * set the status of the power
+     * Set the status of the power
      * @param powerSet
      */
     @Override
@@ -41,7 +41,7 @@ public class Pan extends God implements Serializable {
     }
 
     /**
-     * get the status of the power
+     * Get the status of the power
      * @return
      */
     @Override
@@ -50,7 +50,7 @@ public class Pan extends God implements Serializable {
     }
 
     /**
-     * reset the God card
+     * Set to default value
      */
     @Override
     public void resetCard() {

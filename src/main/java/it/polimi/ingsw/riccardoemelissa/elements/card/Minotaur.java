@@ -11,9 +11,9 @@ public class Minotaur extends God implements Serializable {
     private PowerType type=PowerType.PASSIVE;
 
     /**
-     * do move following apollo rules
+     * Do move following Minotaur rules
      *
-     * if position is occupied, the method call method for manage worker position
+     * If position is occupied, the method call method for manage worker position
      *
      * @param b : board
      * @param active_worker : worker chosen to do the move
@@ -35,9 +35,9 @@ public class Minotaur extends God implements Serializable {
     }
 
     /**
-     * get the box where is possible moves in
+     * Get the box where is possible moves in
      *
-     * get the box where is possible moves in, following minotaur rules
+     * Get the box where is possible moves in, following minotaur rules
      *
      * @param b : board
      * @param worker_pos : actual position of worker
@@ -94,7 +94,7 @@ public class Minotaur extends God implements Serializable {
     }
 
     /**
-     * manage worker position following minotaur rules
+     * Manage worker position following minotaur rules
      *
      * @param active_worker : worker chosen to move by player
      * @param newpos : position chosen by player
@@ -112,7 +112,7 @@ public class Minotaur extends God implements Serializable {
     }
 
     /**
-     * set the status of the power
+     * Set the status of the power
      * @param powerSet
      */
     @Override
@@ -122,7 +122,7 @@ public class Minotaur extends God implements Serializable {
     }
 
     /**
-     * get the status of the power
+     * Get the status of the power
      * @return
      */
     @Override
@@ -131,7 +131,7 @@ public class Minotaur extends God implements Serializable {
     }
 
     /**
-     * reset the God card
+     * Set to default value
      */
     @Override
     public void resetCard() {

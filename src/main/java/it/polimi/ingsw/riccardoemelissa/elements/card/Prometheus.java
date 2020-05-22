@@ -10,9 +10,9 @@ public class Prometheus extends God implements Serializable {
     private PowerType type=PowerType.DISABLE;
 
     /**
-     * manage turn following prometheus rules
+     * Manage turn following prometheus rules
      *
-     * if power is active before move active player do a build
+     * If power is active before move active player do a build
      *
      * @param b : board
      * @param worker_pos : actual position of worker
@@ -53,7 +53,7 @@ public class Prometheus extends God implements Serializable {
     }
 
     /**
-     * build using prometeo power
+     * Build using prometeo power
      *
      * @param b : board
      * @param activeWorker : worker chosen to do the build
@@ -73,7 +73,7 @@ public class Prometheus extends God implements Serializable {
             return super.build(b,activeWorker,pos);
     }
 
-    /** set the status of the power
+    /** Set the status of the power
      *
      * @param powerSet
      */
@@ -89,7 +89,7 @@ public class Prometheus extends God implements Serializable {
     }
 
     /**
-     * get the status of the
+     * Get the status of the
      * @return
      */
     @Override
@@ -98,7 +98,7 @@ public class Prometheus extends God implements Serializable {
     }
 
     /**
-     * reset the God card
+     * Set to default value
      */
     @Override
     public void resetCard() {

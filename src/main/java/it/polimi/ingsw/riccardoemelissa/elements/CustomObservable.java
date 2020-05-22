@@ -5,7 +5,7 @@ import it.polimi.ingsw.riccardoemelissa.ClientHandler;
 import java.util.ArrayList;
 
 /**
- * redefinition of java observer because it's deprecated
+ * Redefinition of java observer because it's deprecated
  *
  */
 public class CustomObservable
@@ -20,7 +20,6 @@ public class CustomObservable
     public void custom_notifyAll(){
         for (CustomObserver obs :
                 observers) {
-            System.out.println("notifica a :"+obs.toString());
             obs.update(this);
         }
     }

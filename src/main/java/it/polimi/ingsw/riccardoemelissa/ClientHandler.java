@@ -39,7 +39,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
         if(!socketConnection.isClosed()&&socketConnection.isConnected())
             while (true) {
                 try {
-                    //server in attesa di messaggi
+                    //server waiting for messages
 
                     ois=new ObjectInputStream(socketConnection.getInputStream());
                     Command cmd = (Command) ois.readObject();

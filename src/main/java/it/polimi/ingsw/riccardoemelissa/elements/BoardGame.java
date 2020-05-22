@@ -130,8 +130,6 @@ public class BoardGame extends CustomObservable implements Serializable {
         return Board[i][j].getOccupant().getProprietary();
     }
 
-
-
     /**
      * Fill a box
      *
@@ -240,14 +238,26 @@ public class BoardGame extends CustomObservable implements Serializable {
         gameover=b;
     }
 
+    /**
+     * Set box of the board
+     * @param boxes
+     */
     public void setBoxes(Box[][] boxes) {
         Board=boxes;
     }
 
+    /**
+     * Get the active player
+     * @return
+     */
     public Player getActivePlayer() {
         return active_player;
     }
 
+    /**
+     * Check gameover
+     * @return
+     */
     public boolean getGameover() {
         return gameover;
     }

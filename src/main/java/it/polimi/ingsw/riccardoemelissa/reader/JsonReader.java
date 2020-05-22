@@ -39,13 +39,7 @@ public class JsonReader {
         ArrayList<String> gods = new ArrayList<>();
         String[] gods_chosen = new String[n*3];
 
-        //"/Users/Utente/Desktop/PROGETTO INGSW/progettoingsw/src/main/resources/it/polimi/ingsw/riccardoemelissa/reader/GodList.json"
-        //"file:/C:/Users/Utente/Desktop/PROGETTO INGSW/progettoingsw/src/main/resources/it/polimi/ingsw/riccardoemelissa/reader/god_list.json
-
         String path = (getClass().getResource("god_list.json")).getPath();
-        //String path =  "/Users/Utente/Desktop/PROGETTOINGSW/progettoingsw/src/main/resources/it/polimi/ingsw/riccardoemelissa/reader/god_list.json";
-
-        System.out.println("The path is : " + path);
 
         try {
             obj = (JSONObject) parser.parse(new FileReader(path));
@@ -65,11 +59,10 @@ public class JsonReader {
             gods.add((String) god.get("name"));
         }
 
-        //Collections.shuffle(gods);
+        Collections.shuffle(gods);
 
         for (int i = 0; i < n; i++) {
             gods_chosen[i * 3] = gods.get(i);
-            System.out.println("pos " + i*3 + " --> name : " + gods_chosen[i*3]);
 
             for (Object o : god_list) {
                 god = (JSONObject) o;
@@ -78,23 +71,10 @@ public class JsonReader {
                 {
                     gods_chosen[i * 3 + 1] = (String) god.get("path");
                     gods_chosen[i * 3 + 2] = (String) god.get("opponent_turn");
-                    System.out.println("pos " + (i*3+1) + " --> path : " + gods_chosen[i*3 + 1]);
-                    System.out.println("pos " + (i*3+2) + " --> opp : " + gods_chosen[i*3 + 2]);
                 }
             }
         }
 
         return gods_chosen;
     }
-
-    /*public static void main( String[] args ) throws IOException, ParseException, URISyntaxException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        JsonReader jsonReader = new JsonReader();
-        //jsonReader.GodsInGame(3);
-
-        GameState.GodFactory();
-    }
-
-     */
-
-
 }

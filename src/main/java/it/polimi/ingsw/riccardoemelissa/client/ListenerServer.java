@@ -31,7 +31,7 @@ public class ListenerServer extends Thread {
     }
 
     /**
-     * wait for an update from server
+     * Wait for an update from server
      */
     public void run()
     {
@@ -50,7 +50,7 @@ public class ListenerServer extends Thread {
     }
 
     /**
-     * first platform.runlater set and show the board,
+     * First platform.runlater set and show the board,
      * second manage it
      */
     private void makeBoard()
@@ -79,7 +79,6 @@ public class ListenerServer extends Thread {
                     if(p.getGodCard().getIn_action().isPassive()&&p.getNickname().compareTo(client_javafx.nickname.getText())==0)
                     {
                         client_javafx.button_setpower.setDisable(true);
-                        //client_javafx.button_setpower.setStyle("-fx-font-family : Franklin Gothic Medium Cond");
                         client_javafx.button_setpower.setText("ACTIVE");
                         client_javafx.set_power.setImage(new Image((String.valueOf(getClass().getResource("images/heropower_active.png")))));
 
@@ -181,8 +180,6 @@ public class ListenerServer extends Thread {
                         for (Node gridPaneChild : client_javafx.myboard.getChildren())
                         {
                             Pane pane = (Pane) gridPaneChild;
-                            //Integer r = client_javafx.myboard.getRowIndex(gridPaneChild);
-                            //Integer c = client_javafx.myboard.getColumnIndex(gridPaneChild);
                             if(GridPane.getRowIndex(pane) == i && GridPane.getColumnIndex(pane) == j)
                             {
                                 if(pane.getChildren().size()>2) {

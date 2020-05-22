@@ -10,11 +10,11 @@ public class Hephaestus extends God implements Serializable {
     private PowerType type=PowerType.DISABLE;
 
     /**
-     * double build if power is active
+     * Double build if power is active
      *
      * @param b : board
      * @param activeWorker : worker chosen to do the build
-     * @param pos -> the build position given by the player belongs to an adjacent box
+     * @param pos : worker chosen to do the build
      * @return
      */
     @Override
@@ -25,9 +25,9 @@ public class Hephaestus extends God implements Serializable {
     }
 
     /**
-     * get adjacent box where possible build on
+     * Get adjacent box where possible build on
      *
-     * if power is active check the box is max of level 2 to do a double build
+     * If power is active check the box is max of level 2 to do a double build
      *
      * @param b : board
      * @param worker_pos : actual position of worker
@@ -70,7 +70,7 @@ public class Hephaestus extends God implements Serializable {
     }
 
     /**
-     * set the status of the power
+     * Set the status of the power
      * @param powerSet
      */
     @Override
@@ -80,7 +80,7 @@ public class Hephaestus extends God implements Serializable {
     }
 
     /**
-     * get the status of the power
+     * Get the status of the power
      * @return
      */
     @Override
@@ -89,7 +89,7 @@ public class Hephaestus extends God implements Serializable {
     }
 
     /**
-     * reset the God card
+     * Set to default value
      */
     @Override
     public void resetCard() {
