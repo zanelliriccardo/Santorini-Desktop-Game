@@ -29,7 +29,7 @@ public class GameState {
     private static Worker activeWorker=null;
 
     /**
-     * return the player number
+     * Return the player number
      */
     public static int getPlayerNumber()
     {
@@ -59,7 +59,7 @@ public class GameState {
     }
 
     /**
-     * this method control when every player is connected
+     * This method control when every player is connected
      *
      * @return true if every player is connected, then the game starts
      */
@@ -74,7 +74,7 @@ public class GameState {
     }
 
     /**
-     * initialize the god cards using json
+     * Initialize the god cards using json
      */
     public static void godFactory() {
         JsonReader read_god = new JsonReader();
@@ -85,23 +85,19 @@ public class GameState {
             e.printStackTrace();
         }
 
-        for (int i = 0; i < players.size()*3; i=i+3)
-        {
+        for (int i = 0; i < players.size()*3; i=i+3) {
             try {
-                players.get(i/3).setGodCard((God) Class.forName(gods_json[i]).getConstructor().newInstance());
+                players.get(i / 3).setGodCard((God) Class.forName(gods_json[i]).getConstructor().newInstance());
             } catch (InstantiationException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 e.printStackTrace();
             }
-            System.out.println("Classe : " + players.get(i/3).getGodCard().getClass());
-            players.get(i/3).setGodImagePath(gods_json[i+1]);
-            players.get(i/3).getGodCard().setOpponentTrue(gods_json[i+2]);
-
-            System.out.println("God card : " + players.get(i/3).getGodImagePath() + "\nOpponent turn : "+ players.get(i/3).getGodCard().getOpponentTurn());
+            players.get(i / 3).setGodImagePath(gods_json[i + 1]);
+            players.get(i / 3).getGodCard().setOpponentTrue(gods_json[i + 2]);
         }
     }
 
     /**
-     * change turn
+     * Change turn
      */
     public static void nextTurn()
     {
@@ -132,7 +128,7 @@ public class GameState {
     }
 
     /**
-     * set game over
+     * Set game over
      */
     public static void endGame()
     {
@@ -149,13 +145,11 @@ public class GameState {
 
         for(int i =0; i<n; i++)
         {
-            players.add(new Player("nome"));//cambiare nome
+            players.add(new Player("nome"));
             players.get(i).setColor(colors.get(i));
         }
 
         godFactory();
-        //players.get(0).setGodCard(new Athena());
-        System.out.println("Player 1 : " + players.get(0).getGodImagePath() + "\n Player 2 : " + players.get(1).getGodImagePath());
 
         Box[][] boxes = new Box[5][5];
         for (int i = 0; i < boxes.length; i++) {
@@ -164,13 +158,13 @@ public class GameState {
         }
 
         b.setBoxes(boxes);
-        System.out.println("Inizializzazione array giocatori con dim = " + num_players);
         workers = new Worker[n * 2];
 
     }
 
     /**
-     * set nickname of a new player
+     * Set nickname of a new player
+     *
      * @param str nickname
      */
     public static void newPlayer(String str)
@@ -195,13 +189,7 @@ public class GameState {
     }
 
     /**
-     * to do
-     */
-    public static void undoTurn() {
-    }
-
-    /**
-     * to do
+     * Remove a player
      * @param player
      */
     public static void removePlayer(Player player)
@@ -212,7 +200,7 @@ public class GameState {
     }
 
     /**
-     * this method do a contains for an int array
+     * This method do a contains for an int array
      *
      * @param activeWorker
      * @param pos
@@ -220,7 +208,7 @@ public class GameState {
      */
     public static boolean isPossibleMove(Worker activeWorker, int[] pos)
     {
-        ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
+        ArrayList<int[]> possibleCells_activeWorker;
         possibleCells_activeWorker= checkMoves(b,activeWorker);
 
         for ( int[] i : possibleCells_activeWorker)
@@ -232,7 +220,7 @@ public class GameState {
     }
 
     /**
-     * this method do a contains for an int array
+     * This method do a contains for an int array
      *
      * @param activeWorker
      * @param pos
@@ -240,7 +228,7 @@ public class GameState {
      */
     public static boolean isPossibleBuild(Worker activeWorker, int[] pos)
     {
-        ArrayList<int[]> possibleCells_activeWorker =new ArrayList<>();
+        ArrayList<int[]> possibleCells_activeWorker;
         possibleCells_activeWorker= checkBuilds(b,activeWorker);
 
         for ( int[] i : possibleCells_activeWorker)
@@ -252,7 +240,7 @@ public class GameState {
     }
 
     /**
-     * control if the move is allowed
+     * Control if the move is allowed
      *
      * @param board
      * @param worker_toMove
@@ -280,7 +268,7 @@ public class GameState {
     }
 
     /**
-     * control if the build is allowed
+     * Control if the build is allowed
      * @param board
      * @param builder
      * @return
@@ -291,7 +279,6 @@ public class GameState {
 
         possiblebuild.removeIf(pos -> board.getLevelBox(pos) == 4);
 
-        /*
         for (int[] pos: possiblebuild)
         {
             for (Player opponent : players)
@@ -301,13 +288,12 @@ public class GameState {
                         possiblebuild.remove(pos);
             }
         }
-
-         */
         return possiblebuild;
     }
 
     /**
-     * return the list of possible moves, if is empty the player lose
+     * Return the list of possible moves, if is empty the player lose
+     *
      * @return
      */
     public static ArrayList<int[]> possibleMoves()
@@ -323,7 +309,8 @@ public class GameState {
     }
 
     /**
-     * return the worker of the active player
+     * Return the worker of the active player
+     *
      * @return
      */
     public static ArrayList<Worker> getWorkers()

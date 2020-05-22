@@ -52,6 +52,8 @@ class ArtemisTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player1);
+
         player1.getGodCard().setIn_action(PowerType.ACTIVE);
 
         assertTrue(GameState.isPossibleMove(worker11, new int[]{1,2}));
@@ -96,6 +98,8 @@ class ArtemisTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player1);
+
         player1.getGodCard().setIn_action(PowerType.ACTIVE);
 
         assertTrue(GameState.isPossibleMove(worker11, new int[]{1, 2}));
@@ -128,16 +132,17 @@ class ArtemisTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player2);
+
         boardGame.doBuild(new int[]{2, 2});
         player2.getGodCard().move(boardGame, worker21, new int[]{2, 2});
+
+        boardGame.setActivePlayer(player1);
 
         player1.getGodCard().setIn_action(PowerType.ACTIVE);
 
         assertTrue(GameState.isPossibleMove(worker11, new int[]{1, 2}));
         player1.getGodCard().move(boardGame, worker11, new int[]{1, 2});
-        //assertArrayEquals(new int[]{1, 2}, worker11.GetPosition());
-        //assertEquals("MOVE", player1.GetGodCard().getCardType().toString());
-        //worker11.SetPosition(new int[]{1, 2});
 
         boardGame.doBuild(new int[]{1, 3});
         assertFalse(GameState.isPossibleMove(worker11, new int[]{1, 3}));

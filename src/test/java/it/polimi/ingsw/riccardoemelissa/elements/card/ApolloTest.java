@@ -51,6 +51,8 @@ class ApolloTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player1);
+
         assertTrue(GameState.isPossibleMove(worker11, new int[]{0,1}));
         player1.getGodCard().move(boardGame, worker11, new int[]{0,1});
         assertEquals("BUILD", player1.getGodCard().getCardType().toString());
@@ -87,6 +89,8 @@ class ApolloTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player1);
+
         assertTrue(GameState.isPossibleMove(worker11, pos21));
 
         player1.getGodCard().move(boardGame, worker11, pos21);
@@ -116,6 +120,8 @@ class ApolloTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player1);
+
         assertFalse(GameState.isPossibleMove(worker11, pos12));
     }
 
@@ -140,8 +146,12 @@ class ApolloTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player2);
+
         boardGame.doBuild(pos21);
         player2.getGodCard().setIn_action(PowerType.DISABLE);
+
+        boardGame.setActivePlayer(player1);
 
         assertTrue(GameState.isPossibleMove(worker11, pos21));
 
@@ -173,12 +183,15 @@ class ApolloTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player2);
+
         boardGame.doBuild(pos21);
         boardGame.doBuild(new int[]{0,4});
         player2.getGodCard().move(boardGame, worker22, new int[]{0,4}); //in_action = true
-        String result = player2.getGodCard().move(boardGame, worker11, pos21).toString();
 
-        assertEquals("ERROR", result);
+        boardGame.setActivePlayer(player1);
+
+        assertEquals("ERROR", player2.getGodCard().move(boardGame, worker11, pos21).toString());
         assertFalse(GameState.isPossibleMove(worker11, pos21));
     }
 

@@ -52,6 +52,8 @@ class MinotaurTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player1);
+
         assertTrue(GameState.isPossibleMove(worker11, pos21));
 
         player1.getGodCard().move(boardGame, worker11, pos21);
@@ -81,6 +83,8 @@ class MinotaurTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player1);
+
         assertFalse(GameState.isPossibleMove(worker11, pos12));
     }
 
@@ -106,8 +110,12 @@ class MinotaurTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player2);
+
         boardGame.doBuild(new int[]{1,3});
         player2.getGodCard().move(boardGame, worker22, new int[]{1,3}); //in action = true
+
+        boardGame.setActivePlayer(player1);
 
         boardGame.doBuild(pos21);
         assertEquals("ERROR", player2.getGodCard().move(boardGame, worker11, pos21).toString());

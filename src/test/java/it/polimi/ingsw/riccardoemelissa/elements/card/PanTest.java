@@ -51,6 +51,8 @@ class PanTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player1);
+
         boardGame.doBuild(pos11);
         boardGame.doBuild(pos11);
         assertEquals(2, boardGame.getLevelBox(pos11));

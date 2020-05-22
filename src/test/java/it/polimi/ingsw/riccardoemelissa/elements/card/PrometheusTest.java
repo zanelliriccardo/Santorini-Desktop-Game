@@ -53,11 +53,17 @@ class PrometheusTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player1);
+
         player1.getGodCard().setIn_action(PowerType.ACTIVE);
         assertEquals("BUILD", player1.getGodCard().getCardType().toString());
 
+        boardGame.setActivePlayer(player2);
+
         boardGame.doBuild(new int[]{0,4});
         player2.getGodCard().move(boardGame,worker22,new int[]{0,4}); //in action = true
+
+        boardGame.setActivePlayer(player1);
 
         assertTrue(GameState.isPossibleBuild(worker11, new int[]{0,1}));
         player1.getGodCard().build(boardGame, worker11, new int[]{0,1});
@@ -65,8 +71,8 @@ class PrometheusTest {
 
         assertFalse(GameState.isPossibleMove(worker11, new int[]{0,1}));
 
-        assertTrue(GameState.isPossibleMove(worker11, new int[]{1,1}));
-        player1.getGodCard().move(boardGame,worker11,new int[]{1,1});
+        assertTrue(GameState.isPossibleMove(worker11, new int[]{1,0}));
+        player1.getGodCard().move(boardGame,worker11,new int[]{1,0});
         assertEquals("BUILD", player1.getGodCard().getCardType().toString());
     }
 
@@ -91,10 +97,14 @@ class PrometheusTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player2);
+
         assertEquals("MOVE", player1.getGodCard().getCardType().toString());
 
         boardGame.doBuild(new int[]{0,4});
         player2.getGodCard().move(boardGame,worker22,new int[]{0,4}); //in action = true
+
+        boardGame.setActivePlayer(player1);
 
         boardGame.doBuild(new int[]{0,1});
         assertFalse(GameState.isPossibleMove(worker11, new int[]{0,1}));

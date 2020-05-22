@@ -52,6 +52,8 @@ class DemeterTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player1);
+
         player1.getGodCard().setIn_action(PowerType.ACTIVE);
         player1.getGodCard().setCardType(GodCardType.BUILD);
 
@@ -87,6 +89,8 @@ class DemeterTest {
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
 
+        boardGame.setActivePlayer(player1);
+
         player1.getGodCard().setIn_action(PowerType.ACTIVE);
         player1.getGodCard().setCardType(GodCardType.BUILD);
 
@@ -117,6 +121,8 @@ class DemeterTest {
         boardGame.setOccupant(pos12, worker12);
         boardGame.setOccupant(pos21, worker21);
         boardGame.setOccupant(pos22, worker22);
+
+        boardGame.setActivePlayer(player1);
 
         player1.getGodCard().setCardType(GodCardType.BUILD);
 
