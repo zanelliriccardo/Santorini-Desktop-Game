@@ -24,4 +24,8 @@ public class CustomObservable
             obs.update(this);
         }
     }
+
+    public void removeObserver(ClientHandler clientHandler) {
+        observers.remove(clientHandler);
+    }
 }

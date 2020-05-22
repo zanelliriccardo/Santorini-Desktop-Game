@@ -46,6 +46,7 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
 
                     if(cmd.getType()==CommandType.DISCONNECTED)
                     {
+                        GameState.getBoard().removeObserver(this);
                         socketConnection.close();
                     }
 
@@ -57,13 +58,8 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
                         socketConnection.close();
                     }
                 }
-                catch (IOException | ClassNotFoundException e) {
-                    cmd_executor.update(new Command(CommandType.DISCONNECTED,null,null));
-                }
+                catch (IOException | ClassNotFoundException e) { break;}
             }
-        //errore per chiusura connessione
-        cmd_executor.update(new Command(CommandType.DISCONNECTED,null,null));
-
     }
 
     /**
