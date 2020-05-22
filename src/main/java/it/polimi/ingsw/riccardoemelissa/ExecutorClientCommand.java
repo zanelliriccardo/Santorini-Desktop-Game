@@ -26,7 +26,7 @@ public class ExecutorClientCommand {
                 break;
             case NICKNAME:
                 GameState.newPlayer((String)cmd.getObj());
-                GameState.getBoard().custom_notifyAll();
+                //GameState.getBoard().custom_notifyAll();
                 break;
             case NEWWORKER:
                 ((Worker)cmd.getObj()).setProprietary(GameState.getActivePlayer());
