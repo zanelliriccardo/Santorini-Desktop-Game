@@ -59,13 +59,13 @@
             <Image url="@images/heropower_inactive.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="godOpponent2" fitHeight="168.0" fitWidth="100.0" layoutX="110.0" layoutY="337.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="godOpponent1" fitHeight="168.0" fitWidth="105.0" layoutX="7.0" layoutY="337.0" pickOnBounds="true" preserveRatio="true" />
-      <TextField fx:id="opponent1" alignment="CENTER" editable="false" layoutX="6.0" layoutY="302.0" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: lightseagreen; -fx-alignment: CENTER; -fx-font-family: Franklin Gothic Medium Cond;">
+      <ImageView fx:id="godOpponent2" fitHeight="168.0" fitWidth="100.0" layoutX="59.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="godOpponent1" fitHeight="168.0" fitWidth="105.0" layoutX="57.0" layoutY="356.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField fx:id="opponent1" alignment="CENTER" editable="false" layoutX="59.0" layoutY="315.0" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: lightseagreen; -fx-alignment: CENTER; -fx-font-family: Franklin Gothic Medium Cond;">
          <font>
             <Font name="Franklin Gothic Demi Cond" size="12.0" />
          </font></TextField>
-      <TextField fx:id="opponent2" alignment="CENTER" editable="false" layoutX="110.0" layoutY="302.0" prefHeight="25.0" prefWidth="105.0" style="-fx-background-color: lightseagreen; -fx-alignment: CENTER; -fx-font-family: Franklin Gothic Medium Cond;">
+      <TextField fx:id="opponent2" alignment="CENTER" editable="false" layoutX="56.0" layoutY="53.0" prefHeight="25.0" prefWidth="105.0" style="-fx-background-color: lightseagreen; -fx-alignment: CENTER; -fx-font-family: Franklin Gothic Medium Cond;">
          <font>
             <Font name="Franklin Gothic Demi Cond" size="12.0" />
          </font></TextField>
@@ -74,9 +74,9 @@
             <Font name="Franklin Gothic Medium Cond" size="12.0" />
          </font></TextField>
       <Circle fx:id="colorPlayerBoard" fill="#1f93ff00" layoutX="872.0" layoutY="225.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-      <Circle fx:id="colorOpponent1" fill="#1f93ff00" layoutX="56.0" layoutY="283.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-      <Circle fx:id="colorOpponent2" fill="#1f93ff00" layoutX="163.0" layoutY="283.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-      <Button fx:id="endTurn" alignment="CENTER" layoutX="859.0" layoutY="471.0" mnemonicParsing="false" onMouseClicked="#endTurn" opacity="0.9" prefHeight="52.0" prefWidth="85.0" style="-fx-background-radius: 10; -fx-background-color: darkslategray;" text="END TURN" textAlignment="CENTER" textFill="WHITE">
+      <Circle fx:id="colorOpponent1" fill="#1f93ff00" layoutX="109.0" layoutY="292.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="colorOpponent2" fill="#1f93ff00" layoutX="109.0" layoutY="27.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+      <Button fx:id="endTurn" alignment="CENTER" layoutX="802.0" layoutY="471.0" mnemonicParsing="false" onMouseClicked="#endTurn" opacity="0.9" prefHeight="52.0" prefWidth="85.0" style="-fx-background-radius: 10; -fx-background-color: darkslategray;" text="END TURN" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Impact" size="16.0" />
          </font>
