@@ -279,15 +279,6 @@ public class GameState {
 
         possiblebuild.removeIf(pos -> board.getLevelBox(pos) == 4);
 
-        for (int[] pos: possiblebuild)
-        {
-            for (Player opponent : players)
-            {
-                if((opponent.getNickname().compareTo(getActivePlayer().getNickname())!=0)&&opponent.getGodCard().getOpponentTurn())//check is an opponent && check opponent card act in active player turn
-                    if(opponent.getGodCard().build(board,builder,pos)==CommandType.ERROR)//check build is possible for opponent card
-                        possiblebuild.remove(pos);
-            }
-        }
         return possiblebuild;
     }
 

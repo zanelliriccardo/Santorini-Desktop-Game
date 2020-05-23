@@ -85,6 +85,8 @@ class ExecutorClientCommandTest {
         possiblebuild.add(new int[]{0,1});
         possiblebuild.add(new int[]{1,0});
 
+        GameState.getBoard().setActivePlayer(GameState.getPlayer("nickname1#0"));
+
         ArrayList<int[]> checkbuild=ecc.checkBuilds(GameState.getBoard(),worker1);
 
         assertEquals(possiblebuild.get(0)[0],checkbuild.get(0)[0]);
@@ -117,6 +119,7 @@ class ExecutorClientCommandTest {
         possiblemoves.add(new int[]{0,1});
         possiblemoves.add(new int[]{1,0});
 
+        GameState.getBoard().setActivePlayer(GameState.getPlayer("nickname1#0"));
 
         ArrayList<int[]> checkmoves=ecc.checkMoves(GameState.getBoard(),worker1);
         assertEquals(possiblemoves.get(0)[0],checkmoves.get(0)[0]);

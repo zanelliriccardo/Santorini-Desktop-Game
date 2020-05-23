@@ -18,6 +18,7 @@ class GameStateTest {
 
     void setPlayers()
     {
+        GameState.reset();
         GameState.setNumPlayer(3);
         GameState.newPlayer("nickname1");
         GameState.newPlayer("nickname2");
@@ -41,18 +42,6 @@ class GameStateTest {
         getPlayers();
         assertTrue(GameState.gameReady());
     }
-
-   /* @Test
-    void getWorkerToMove() {
-    }
-
-
-
-    @Test
-    void setTurnOrder() {
-    }
-
-    */
 
     @Test //godfactory è usato in setPlayers
     void godFactory() {
@@ -121,52 +110,6 @@ class GameStateTest {
         assertEquals(3, count);
     }
 
-   /* @Test
-    void endGame() {
-    }
-
-    */
-
-    /*@Test
-    void setNewWorker() {
-        setPlayers();
-
-        BoardGame boardGame = GameState.GetBoard();
-        Worker worker1 = new Worker();
-        Worker worker2 = new Worker();
-        Player player1 = GameState.getPlayer("nickname1#0");
-
-        boardGame.setActivePlayer(player1);
-        assertEquals("nickname1#0", boardGame.getActivePlayer().GetNickname());
-
-        worker1.setProprietary(player1);
-        worker2.setProprietary(player1);
-        assertEquals("nickname1#0", worker1.GetProprietary().GetNickname());
-        assertEquals("nickname1#0", worker2.GetProprietary().GetNickname());
-
-        GameState.SetNewWorker(worker1);
-        GameState.SetNewWorker(worker2);
-
-        boardGame.setOccupant(new int[]{0, 0}, worker1);
-        boardGame.setOccupant(new int[]{0, 1}, worker2);
-        assertEquals(worker1, boardGame.GetOccupant(new int[]{0, 0}));
-        assertEquals(worker2, boardGame.GetOccupant(new int[]{0, 1}));
-    }
-
-     */
-
-    @Test // ???
-    void checkMove() {
-    }
-
-    @Test //codice non presente
-    void undoTurn() {
-    }
-
-    @Test //codice non presente
-    void removePlayer() {
-    }
-
     //God : Pan and Artemis
     @Test
     void isPossibleMove() {
@@ -179,8 +122,8 @@ class GameStateTest {
         int[] pos1 = new int[]{1,1};
         int[] pos2 = new int[]{1,2};
         int[] pos3 = new int[]{0,1};
-        int[] pos4 = new int[]{3,1};
         int[] pos = new int[]{2,1};
+
         worker1.setProprietary(player1);
         worker1.setPosition(pos1);
         player1.setGodCard(new Pan());
@@ -190,6 +133,8 @@ class GameStateTest {
         worker2.setPosition(pos2);
         boardGame.setOccupant(pos1, worker1);
         boardGame.setOccupant(pos2, worker2);
+
+        boardGame.setActivePlayer(player1);
 
         assertFalse(GameState.isPossibleMove(worker1, pos2));
 
@@ -202,8 +147,12 @@ class GameStateTest {
         assertTrue(GameState.isPossibleMove(worker1, pos));
         player1.getGodCard().move(boardGame, worker1, pos);
 
+        boardGame.setActivePlayer(player2);
+
         boardGame.doBuild(new int[]{1,3});
         player2.getGodCard().move(boardGame, worker2, new int[]{1,3}); //in action = true
+
+        boardGame.setActivePlayer(player1);
 
         boardGame.doBuild(new int[]{2,2});
         boardGame.doBuild(new int[]{2,2});
@@ -222,6 +171,7 @@ class GameStateTest {
         int[] pos2 = new int[]{1,2};
         int[] pos3 = new int[]{0,1};
         int[] pos4 = new int[]{3,1};
+
         worker1.setProprietary(player1);
         worker1.setPosition(pos1);
         worker1.getProprietary().setGodCard(new Pan());
@@ -231,6 +181,7 @@ class GameStateTest {
         boardGame.setOccupant(pos1, worker1);
         boardGame.setOccupant(pos2, worker2);
 
+        boardGame.setActivePlayer(player1);
         player1.getGodCard().setCardType(GodCardType.BUILD);
 
         assertFalse(GameState.isPossibleBuild(worker1, pos2));
@@ -242,22 +193,6 @@ class GameStateTest {
         int[] pos = new int[]{2,1};
         assertTrue(GameState.isPossibleBuild(worker1, pos));
     }
-
-    /*@Test //usato in isPossibleMove
-    void checkMoves() {
-    }
-
-    @Test //usato in isPossibleBuild
-    void checkBuilds() {
-    }
-
-     */
-
-    /*@Test //non va
-    void getWorkers() {
-    }
-
-     */
 
     @Test
     void getActiveWorker() {
@@ -293,9 +228,18 @@ class GameStateTest {
         boardGame.setOccupant(pos1, worker1);
         boardGame.setOccupant(pos2, worker2);
 
+        boardGame.setActivePlayer(player1);
+        boardGame.doBuild(new int[]{0,1});
+        boardGame.doBuild(new int[]{0,1});
+
         ArrayList<int[]> moves = GameState.possibleMoves();
-        for(int[] pos : moves)
-            if(Arrays.equals(pos, new int[]{1,2}))
-                assertTrue(GameState.isPossibleMove(worker1, new int[]{1,2}));
+        for(int[] pos : moves) {
+            if (Arrays.equals(pos, new int[]{1, 2}))
+                assertFalse(GameState.isPossibleMove(worker1, new int[]{1, 2}));
+            if (Arrays.equals(pos, new int[]{0, 1}))
+                assertFalse(GameState.isPossibleMove(worker1, new int[]{0, 1}));
+            if (Arrays.equals(pos, new int[]{1, 0}))
+                assertTrue(GameState.isPossibleMove(worker1, new int[]{1, 0}));
+        }
     }
 }
