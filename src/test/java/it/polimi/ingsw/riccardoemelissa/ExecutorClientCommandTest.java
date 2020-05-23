@@ -25,11 +25,12 @@ class ExecutorClientCommandTest {
         ecc.update(new Command(CommandType.NICKNAME,"gioc1",null));
         assertEquals(GameState.getPlayers().get(0).getNickname(),"gioc1#0");
 
+        Player player=new Player("gioc1#0");
         Worker w=new Worker();
         w.setPosition(2,2);
-        w.setProprietary(new Player("gioc1#0"));
+        w.setProprietary(player);
         w.getProprietary().setGodCard(new Apollo());
-
+        GameState.getBoard().setActivePlayer(player);
         ecc.update(new Command(CommandType.NEWWORKER,new Worker(),new int[]{2,2}));
         assertFalse(GameState.getBoard().getStateBox(2, 2));
 
@@ -37,12 +38,13 @@ class ExecutorClientCommandTest {
         assertFalse(GameState.getBoard().getStateBox(3, 2));
 
         w.getProprietary().getGodCard().setCardType(GodCardType.BUILD);
+        w.setPosition(3,2);
         ecc.update(new Command(CommandType.BUILD,w,new int[]{4,2}));
         assertEquals(GameState.getBoard().getLevelBox(4,2),1);
 
-        ecc.update(new Command(CommandType.NICKNAME,"gioc2",null));
+        GameState.newPlayer("gioc1");
         ecc.update(new Command(CommandType.CHANGE_TURN,null,null));
-        assertEquals(GameState.getBoard().getActivePlayer(), GameState.getPlayers().get(1));
+        assertEquals(GameState.getBoard().getActivePlayer(), GameState.getPlayers().get(0));
     }
 
     @Test

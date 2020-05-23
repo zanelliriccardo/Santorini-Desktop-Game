@@ -55,10 +55,6 @@ public class ExecutorClientCommand {
                 GameState.getBoard().custom_notifyAll();
                 break;
             case MOVE:
-                if(!GameState.isPossibleMove((Worker)cmd.getObj(),cmd.getPos())) {
-                    GameState.removePlayer(GameState.getActivePlayer());
-                    return;
-                }
                 Worker move_worker=GameState.getBoard().getOccupant((((Worker) cmd.getObj()).getPosition()));
                 move_worker.getProprietary().getGodCard().setIn_action(((Worker) cmd.getObj()).getProprietary().getGodCard().getIn_action());
 
@@ -81,10 +77,6 @@ public class ExecutorClientCommand {
                 GameState.getBoard().custom_notifyAll();
                 break;
             case BUILD:
-                if(!GameState.isPossibleBuild((Worker)cmd.getObj(),cmd.getPos())) {
-                    GameState.removePlayer(GameState.getActivePlayer());
-                    return;
-                }
                 Worker build_worker=GameState.getBoard().getOccupant((((Worker) cmd.getObj()).getPosition()));
                 build_worker.getProprietary().getGodCard().setIn_action(((Worker) cmd.getObj()).getProprietary().getGodCard().getIn_action());
 
@@ -102,8 +94,9 @@ public class ExecutorClientCommand {
                 GameState.getBoard().getActivePlayer().getGodCard().resetCard();
                 GameState.nextTurn();
 
-                if(GameState.possibleMoves().isEmpty()&&GameState.getBoard().getActivePlayer().getGodCard().getCardType().isMove())
+                if(GameState.possibleMoves().isEmpty()&&GameState.getBoard().getActivePlayer().getGodCard().getCardType().isMove()) {
                     lose();
+                }
                 else
                    GameState.getBoard().getActivePlayer().getGodCard().resetCard();
 
@@ -116,6 +109,9 @@ public class ExecutorClientCommand {
         //GameState.GetBoard().custom_notifyAll();
     }
 
+    /**
+     * this method manage loser data
+     */
     public void lose()
     {
         GameState.setActiveWorker(null);
@@ -133,8 +129,16 @@ public class ExecutorClientCommand {
             GameState.getPlayers().get(0).getGodCard().setCardType(GodCardType.WIN);
             GameState.endGame();
         }
+        if(!GameState.getPlayers().contains(GameState.getBoard().getActivePlayer()))
+            GameState.nextTurn();
     }
 
+    /**
+     * Control if the build is allowed
+     * @param board
+     * @param builder
+     * @return
+     */
     public ArrayList<int[]> checkBuilds(BoardGame board, Worker builder)
     {
         ArrayList<int[]> possiblebuild=builder.getProprietary().getGodCard().adjacentBoxNotOccupiedNotDome(board,builder.getPosition());
@@ -153,6 +157,12 @@ public class ExecutorClientCommand {
         return possiblebuild;
     }
 
+    /**
+     * Control if the move is allowed
+     * @param board
+     * @param worker_toMove
+     * @return
+     */
     public ArrayList<int[]> checkMoves(BoardGame board, Worker worker_toMove)
     {
         ArrayList<int[]> possiblemoves= worker_toMove.getProprietary().getGodCard().adjacentBoxNotOccupiedNotDome(board, worker_toMove.getPosition());
