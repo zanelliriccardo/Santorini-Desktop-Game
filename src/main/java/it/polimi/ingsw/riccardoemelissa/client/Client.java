@@ -84,8 +84,11 @@ public class Client extends Application {
         Node source = e.getPickResult().getIntersectedNode();
         Integer colIndex,rowIndex;
         try {
+            Pane pane=(Pane) source;
+
             colIndex = GridPane.getColumnIndex(source);
             rowIndex = GridPane.getRowIndex(source);
+
         } catch (Exception exception) {
             colIndex = GridPane.getColumnIndex(source.getParent());
             rowIndex = GridPane.getRowIndex(source.getParent());
