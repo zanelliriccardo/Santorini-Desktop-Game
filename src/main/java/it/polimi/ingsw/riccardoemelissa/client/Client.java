@@ -638,7 +638,7 @@ public class Client extends Application {
                         changeScene("loser.fxml");
                         socket.close();
                     }
-                    else if(from_server.getBoard().getGameover())
+                    else if(p.getGodCard().getCardType().isLose())
                     {
                         changeScene("disconnect.fxml");
                         socket.close();
