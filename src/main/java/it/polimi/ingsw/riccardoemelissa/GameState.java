@@ -185,7 +185,7 @@ public class GameState {
      */
     public static boolean getGameOver()
     {
-        return gameover;
+        return b.getGameover();
     }
 
     /**

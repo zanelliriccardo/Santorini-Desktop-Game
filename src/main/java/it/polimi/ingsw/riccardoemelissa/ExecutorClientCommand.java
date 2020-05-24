@@ -68,6 +68,11 @@ public class ExecutorClientCommand {
                 if(GameState.getBoard().getLevelBox(move_worker.getPosition())==3||GameState.getActivePlayer().getGodCard().getCardType().isWin())
                 {
                     move_worker.getProprietary().getGodCard().setCardType(GodCardType.WIN);
+                    for (Player p :
+                            GameState.getPlayers()) {
+                        if (p.getNickname().compareTo(GameState.getActivePlayer().getNickname()) != 0)
+                            p.getGodCard().setCardType(GodCardType.LOSE);
+                    }
                     GameState.endGame();
                     GameState.setActiveWorker(null);
                 }

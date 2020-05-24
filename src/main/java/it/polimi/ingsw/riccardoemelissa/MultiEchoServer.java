@@ -62,7 +62,21 @@ public class MultiEchoServer {
                     }
 
                 while (!GameState.gameReady()) {}
+                Thread t = new Thread(new Runnable() {
 
+                    @Override
+                    public void run() {
+                        while (true) {
+                            try {
+                                GameState.getBoard().custom_notifyAll();
+                                Thread.sleep(3000);
+                            } catch (InterruptedException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+                });
+                t.start();
                 serverSocket.close();
 
                 Collections.shuffle(GameState.getPlayers());
@@ -71,10 +85,7 @@ public class MultiEchoServer {
                 while (!GameState.getGameOver()) {}
 
                 GameState.reset();
-                firstThread.interrupt();
-                for (Thread thread: threads) {
-                    thread.interrupt();
-                }
+                threads.clear();
                 socket.close();
                 for (Socket s: sockets) {
                     s.close();

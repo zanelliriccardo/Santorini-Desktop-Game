@@ -17,7 +17,7 @@ public class CustomObservable
         observers.add(new_observer);
     }
 
-    public void custom_notifyAll(){
+    public synchronized void custom_notifyAll(){
         for (CustomObserver obs :
                 observers) {
             obs.update(this);

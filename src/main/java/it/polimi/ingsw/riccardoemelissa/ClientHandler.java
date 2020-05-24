@@ -47,6 +47,8 @@ public class ClientHandler extends CustomObservable implements Runnable, CustomO
                     if(cmd.getType()==CommandType.DISCONNECTED)
                     {
                         GameState.getBoard().removeObserver(this);
+                        ois.close();
+                        oos.close();
                         socketConnection.close();
                     }
 

@@ -136,7 +136,8 @@ public class Client extends Application {
      */
     @Override
     public void stop() throws Exception {
-        messageToServer(CommandType.DISCONNECTED);
+        if((loader.getLocation().getPath()).compareTo(getClass().getResource("board2.fxml").getPath())==0)
+            messageToServer(CommandType.DISCONNECTED);
         socket.close();
         super.stop();
     }
