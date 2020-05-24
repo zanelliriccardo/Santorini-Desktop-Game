@@ -307,7 +307,7 @@ public class Client extends Application {
                 Integer c = GridPane.getColumnIndex(child);
                 if(r!=null && r == pos[0] && c != null && c == pos[1])
                 {
-                    pane.setStyle("-fx-background-color: transparent");
+                    pane.setStyle("-fx-background-color: default");
                 }
             }
         }

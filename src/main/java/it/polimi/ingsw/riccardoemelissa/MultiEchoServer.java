@@ -62,6 +62,7 @@ public class MultiEchoServer {
                     }
 
                 while (!GameState.gameReady()) {}
+                /*
                 Thread t = new Thread(new Runnable() {
 
                     @Override
@@ -77,6 +78,8 @@ public class MultiEchoServer {
                     }
                 });
                 t.start();
+
+                 */
                 serverSocket.close();
 
                 Collections.shuffle(GameState.getPlayers());
