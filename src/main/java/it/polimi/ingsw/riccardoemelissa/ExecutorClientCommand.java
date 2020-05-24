@@ -51,12 +51,8 @@ public class ExecutorClientCommand {
                 GameState.getBoard().custom_notifyAll();
                 break;
             case DISCONNECTED:
-                for (Player p :
-                        GameState.getPlayers()) {
-                    p.getGodCard().setCardType(GodCardType.LOSE);
-                }
-                GameState.getBoard().custom_notifyAll();
                 GameState.endGame();
+                GameState.getBoard().custom_notifyAll();
                 break;
             case MOVE:
                 Worker move_worker=GameState.getBoard().getOccupant((((Worker) cmd.getObj()).getPosition()));

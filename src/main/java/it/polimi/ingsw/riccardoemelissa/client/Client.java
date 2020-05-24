@@ -634,11 +634,11 @@ public class Client extends Application {
                         changeScene("winner.fxml");
                         socket.close();
                     }
-                    else if (p.getGodCard().getCardType().isLose()&&from_server.getBoard().getGameover()) {
+                    else if (p.getGodCard().getCardType().isLose()) {
                         changeScene("loser.fxml");
                         socket.close();
                     }
-                    else if(p.getGodCard().getCardType().isLose())
+                    else if(from_server.getBoard().getGameover())
                     {
                         changeScene("disconnect.fxml");
                         socket.close();
