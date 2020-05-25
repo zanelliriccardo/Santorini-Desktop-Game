@@ -12,8 +12,6 @@ import java.util.Collections;
 public class MultiEchoServer {
     private int port;
 
-    private ExecutorClientCommand cmd_executor =new ExecutorClientCommand();
-
     public MultiEchoServer(int port)
     {
         this.port = port;
