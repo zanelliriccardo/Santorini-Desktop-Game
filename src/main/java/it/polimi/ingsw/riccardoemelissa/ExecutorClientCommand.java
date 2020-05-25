@@ -109,6 +109,7 @@ public class ExecutorClientCommand {
 
                 if(GameState.possibleMoves().isEmpty()&&GameState.getBoard().getActivePlayer().getGodCard().getCardType().isMove()) {
                     lose();
+                    GameState.nextTurn();
                 }
                 else
                    GameState.getBoard().getActivePlayer().getGodCard().resetCard();
@@ -132,16 +133,16 @@ public class ExecutorClientCommand {
         for (Worker w : workerToDelete) {
             GameState.getBoard().removeWorker(w.getPosition());
         }
-        GameState.getBoard().custom_notifyAll();
+        //GameState.getBoard().custom_notifyAll();
 
-        GameState.removePlayer(GameState.getActivePlayer());
+        //GameState.removePlayer(GameState.getActivePlayer());
 
         if(GameState.getPlayers().size()==1) {
             GameState.getPlayers().get(0).getGodCard().setCardType(GodCardType.WIN);
             GameState.endGame();
         }
-        if(!GameState.getPlayers().contains(GameState.getBoard().getActivePlayer()))
-            GameState.nextTurn();
+        //if(!GameState.getPlayers().contains(GameState.getBoard().getActivePlayer()))
+            //GameState.nextTurn();
     }
 
     /**

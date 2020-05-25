@@ -106,6 +106,10 @@ public class GameState {
        else
            trace = 0;
 
+       if(players.get(trace).getGodCard().getCardType().isLose()) {
+           nextTurn();
+           return;
+       }
         b.setActivePlayer(players.get(trace));
     }
 
