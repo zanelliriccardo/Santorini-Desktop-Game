@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Redefinition of java observer because it's deprecated
  *
  */
-public class CustomObservable
+public abstract class CustomObservable
 {
     private ArrayList<CustomObserver> observers=new ArrayList<CustomObserver>();
 

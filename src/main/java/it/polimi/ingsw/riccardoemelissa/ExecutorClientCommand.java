@@ -55,6 +55,10 @@ public class ExecutorClientCommand {
                 GameState.getBoard().custom_notifyAll();
                 break;
             case MOVE:
+                if(!GameState.isPossibleMove((Worker) cmd.getObj(),cmd.getPos()))
+                {
+                    return;
+                }
                 Worker move_worker=GameState.getBoard().getOccupant((((Worker) cmd.getObj()).getPosition()));
                 move_worker.getProprietary().getGodCard().setIn_action(((Worker) cmd.getObj()).getProprietary().getGodCard().getIn_action());
 
@@ -82,6 +86,10 @@ public class ExecutorClientCommand {
                 GameState.getBoard().custom_notifyAll();
                 break;
             case BUILD:
+                if(!GameState.isPossibleBuild((Worker) cmd.getObj(),cmd.getPos()))
+                {
+                    return;
+                }
                 Worker build_worker=GameState.getBoard().getOccupant((((Worker) cmd.getObj()).getPosition()));
                 build_worker.getProprietary().getGodCard().setIn_action(((Worker) cmd.getObj()).getProprietary().getGodCard().getIn_action());
 
@@ -110,8 +118,6 @@ public class ExecutorClientCommand {
                 GameState.getBoard().custom_notifyAll();
                 break;
         }
-
-        //GameState.GetBoard().custom_notifyAll();
     }
 
     /**

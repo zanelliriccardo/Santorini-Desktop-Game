@@ -632,15 +632,18 @@ public class Client extends Application {
                 try {
                     if (p.getGodCard().getCardType().isWin()) {
                         changeScene("winner.fxml");
+                        listener.interrupt();
                         socket.close();
                     }
                     else if (p.getGodCard().getCardType().isLose()) {
                         changeScene("loser.fxml");
+                        listener.interrupt();
                         socket.close();
                     }
                     else if(from_server.getBoard().getGameover())
                     {
                         changeScene("disconnect.fxml");
+                        listener.interrupt();
                         socket.close();
                     }
                 }
