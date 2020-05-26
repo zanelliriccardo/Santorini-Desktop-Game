@@ -57,6 +57,7 @@ public class ExecutorClientCommand {
             case MOVE:
                 if(!GameState.isPossibleMove((Worker) cmd.getObj(),cmd.getPos()))
                 {
+                    GameState.getBoard().custom_notifyAll();
                     return;
                 }
                 Worker move_worker=GameState.getBoard().getOccupant((((Worker) cmd.getObj()).getPosition()));
@@ -88,6 +89,7 @@ public class ExecutorClientCommand {
             case BUILD:
                 if(!GameState.isPossibleBuild((Worker) cmd.getObj(),cmd.getPos()))
                 {
+                    GameState.getBoard().custom_notifyAll();
                     return;
                 }
                 Worker build_worker=GameState.getBoard().getOccupant((((Worker) cmd.getObj()).getPosition()));

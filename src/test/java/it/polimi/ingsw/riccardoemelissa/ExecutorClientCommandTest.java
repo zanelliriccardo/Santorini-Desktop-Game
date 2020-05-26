@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ExecutorClientCommandTest {
+class ExecutorClientCommandTest extends MultiEchoServer {
     @Test
     void update()
     {
