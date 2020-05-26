@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Prometheus extends God implements Serializable {
     private PowerType type=PowerType.DISABLE;
 
+    private Boolean malus=false;
     /**
      * Manage turn following prometheus rules
      *
@@ -38,7 +39,7 @@ public class Prometheus extends God implements Serializable {
                     if(!b.getStateBox(x,y))
                         continue;
 
-                    if(b.getLevelBox(x,y)>b.getLevelBox(worker_pos)&&type.isActive()&&super.getCardType()==GodCardType.MOVE)
+                    if(b.getLevelBox(x,y)>b.getLevelBox(worker_pos)&&malus&&super.getCardType()==GodCardType.MOVE)
                         continue;
 
                     int[] pos = new int[]{x,y};
@@ -53,7 +54,7 @@ public class Prometheus extends God implements Serializable {
     }
 
     /**
-     * Build using Prometheus power
+     * Build using prometeo power
      *
      * @param b : board
      * @param activeWorker : worker chosen to do the build
@@ -67,6 +68,7 @@ public class Prometheus extends God implements Serializable {
             super.build(b,activeWorker,pos);
             super.setCardType(GodCardType.MOVE);
             type=PowerType.DISABLE;
+            malus=true;
             return CommandType.MOVE;
         }
         else
@@ -103,6 +105,8 @@ public class Prometheus extends God implements Serializable {
     @Override
     public void resetCard() {
         super.setCardType(GodCardType.MOVE);
+        malus=false;
         setIn_action(PowerType.DISABLE);
     }
 }
+
