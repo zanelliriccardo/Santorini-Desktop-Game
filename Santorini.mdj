@@ -2353,7 +2353,7 @@
 											"top": 2483,
 											"width": 312.5078125,
 											"height": 13,
-											"text": "+move(): null",
+											"text": "+move(): CommandType",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2387,7 +2387,7 @@
 											"top": 2513,
 											"width": 312.5078125,
 											"height": 13,
-											"text": "+build(): null",
+											"text": "+build(): CommandType",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3454,7 +3454,7 @@
 											"top": 2363,
 											"width": 311,
 											"height": 13,
-											"text": "+move(): null",
+											"text": "+move(): CommandType",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3787,7 +3787,7 @@
 											"top": 2586,
 											"width": 312.5078125,
 											"height": 13,
-											"text": "+move(): null",
+											"text": "+move(): CommandType",
 											"horizontalAlignment": 0
 										},
 										{
@@ -4306,7 +4306,7 @@
 											"top": 2801,
 											"width": 236.64697265625,
 											"height": 13,
-											"text": "+move(): null",
+											"text": "+move(): CommandType",
 											"horizontalAlignment": 0
 										},
 										{
@@ -4323,7 +4323,7 @@
 											"top": 2816,
 											"width": 236.64697265625,
 											"height": 13,
-											"text": "+respectAthenaAction(): null",
+											"text": "+respectAthenaAction(): CommandType",
 											"horizontalAlignment": 0
 										},
 										{
@@ -4698,7 +4698,7 @@
 											"top": 3003,
 											"width": 196.88525390625,
 											"height": 13,
-											"text": "+build(): null",
+											"text": "+build(): CommandType",
 											"horizontalAlignment": 0
 										},
 										{
@@ -5090,7 +5090,7 @@
 											"top": 3026,
 											"width": 312.5078125,
 											"height": 13,
-											"text": "+build(): null",
+											"text": "+build(): CommandType",
 											"horizontalAlignment": 0
 										},
 										{
@@ -5389,7 +5389,7 @@
 											"top": 3019,
 											"width": 312.5078125,
 											"height": 13,
-											"text": "+build(): null",
+											"text": "+build(): CommandType",
 											"horizontalAlignment": 0
 										},
 										{
@@ -5688,7 +5688,7 @@
 											"top": 2907,
 											"width": 312.5078125,
 											"height": 13,
-											"text": "+move(): null",
+											"text": "+move(): CommandType",
 											"horizontalAlignment": 0
 										},
 										{
@@ -6004,7 +6004,7 @@
 											"top": 2699,
 											"width": 159.3388671875,
 											"height": 13,
-											"text": "+move(): null",
+											"text": "+move(): CommandType",
 											"horizontalAlignment": 0
 										},
 										{
@@ -6286,7 +6286,7 @@
 											"top": 2483,
 											"width": 312.5078125,
 											"height": 13,
-											"text": "+build(): null",
+											"text": "+build(): CommandType",
 											"horizontalAlignment": 0
 										},
 										{
@@ -16795,7 +16795,9 @@
 													"_parent": {
 														"$ref": "AAAAAAFxsmGB+Dq6ma8="
 													},
-													"type": "",
+													"type": {
+														"$ref": "AAAAAAFyN/uZR2Q7oVU="
+													},
 													"direction": "return"
 												}
 											]
@@ -16953,7 +16955,9 @@
 													"_parent": {
 														"$ref": "AAAAAAFxsmMHlzrYumw="
 													},
-													"type": "",
+													"type": {
+														"$ref": "AAAAAAFyN/uZR2Q7oVU="
+													},
 													"direction": "return"
 												}
 											]
@@ -17111,7 +17115,9 @@
 													"_parent": {
 														"$ref": "AAAAAAFxsmZb3Tsf6Hk="
 													},
-													"type": "",
+													"type": {
+														"$ref": "AAAAAAFyN/uZR2Q7oVU="
+													},
 													"direction": "return"
 												}
 											]
@@ -17130,7 +17136,9 @@
 													"_parent": {
 														"$ref": "AAAAAAFxsmazYTsm0SI="
 													},
-													"type": "",
+													"type": {
+														"$ref": "AAAAAAFyN/uZR2Q7oVU="
+													},
 													"direction": "return"
 												}
 											]
@@ -17240,7 +17248,9 @@
 													"_parent": {
 														"$ref": "AAAAAAFxsmdWPDs2k+s="
 													},
-													"type": "",
+													"type": {
+														"$ref": "AAAAAAFyN/uZR2Q7oVU="
+													},
 													"direction": "return"
 												}
 											]
@@ -17360,7 +17370,9 @@
 													"_parent": {
 														"$ref": "AAAAAAFxsmh1KTtUdv0="
 													},
-													"type": "",
+													"type": {
+														"$ref": "AAAAAAFyN/uZR2Q7oVU="
+													},
 													"direction": "return"
 												}
 											]
@@ -17489,7 +17501,9 @@
 													"_parent": {
 														"$ref": "AAAAAAFxsmqUOTuHmqw="
 													},
-													"type": "",
+													"type": {
+														"$ref": "AAAAAAFyN/uZR2Q7oVU="
+													},
 													"direction": "return"
 												}
 											]
@@ -17618,7 +17632,9 @@
 													"_parent": {
 														"$ref": "AAAAAAFxsmuLmTufGF4="
 													},
-													"type": "",
+													"type": {
+														"$ref": "AAAAAAFyN/uZR2Q7oVU="
+													},
 													"direction": "return"
 												}
 											]
@@ -17766,7 +17782,9 @@
 													"_parent": {
 														"$ref": "AAAAAAFxsmzW+TvGj/8="
 													},
-													"type": "",
+													"type": {
+														"$ref": "AAAAAAFyN/uZR2Q7oVU="
+													},
 													"direction": "return"
 												}
 											]
@@ -17876,7 +17894,9 @@
 													"_parent": {
 														"$ref": "AAAAAAFyNxq2Z/r/9l8="
 													},
-													"type": "",
+													"type": {
+														"$ref": "AAAAAAFyN/uZR2Q7oVU="
+													},
 													"direction": "return"
 												}
 											]
@@ -18767,7 +18787,9 @@
 											"_parent": {
 												"$ref": "AAAAAAFxsnjoqDztGVU="
 											},
-											"type": "",
+											"type": {
+												"$ref": "AAAAAAFyN/uZR2Q7oVU="
+											},
 											"direction": "return"
 										}
 									]
@@ -18805,7 +18827,9 @@
 											"_parent": {
 												"$ref": "AAAAAAFxsnkYLzz5u+I="
 											},
-											"type": "",
+											"type": {
+												"$ref": "AAAAAAFyN/uZR2Q7oVU="
+											},
 											"direction": "return"
 										}
 									]
