@@ -35,7 +35,7 @@ public class Apollo extends God implements Serializable {
     /**
      * Get the box where is possible moves in
      *
-     * Get the box where is possible moves in, following apollo rules
+     * Get the box where is possible moves in, following Apollo rules
      *
      * @param b : board
      * @param worker_pos : actual position of worker

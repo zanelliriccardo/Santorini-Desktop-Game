@@ -9,7 +9,7 @@ public class Pan extends God implements Serializable {
     private PowerType type=PowerType.PASSIVE;
 
     /**
-     * Manage win condition following rules pan
+     * Manage win condition following rules Pan
      *
      * If different level is 2 or plus active player win the game
      *

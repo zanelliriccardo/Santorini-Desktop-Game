@@ -53,7 +53,7 @@ public class Prometheus extends God implements Serializable {
     }
 
     /**
-     * Build using prometeo power
+     * Build using Prometheus power
      *
      * @param b : board
      * @param activeWorker : worker chosen to do the build

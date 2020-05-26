@@ -13,7 +13,7 @@ public class Demeter extends God implements Serializable {
     private int[] old_position=new int[]{-1,-1};
 
     /**
-     * Apply demeter rules if power is active
+     * Apply Demeter rules if power is active
      *
      * If is the first build of turn, saves the position and during the next build
      * of this turn check they is different
@@ -47,7 +47,7 @@ public class Demeter extends God implements Serializable {
     }
 
     /**
-     * Get adjacent box where possible moves in following demeter rules
+     * Get adjacent box where possible moves in following Demeter rules
      *
      * @param b : board
      * @param worker_pos : actual position of worker

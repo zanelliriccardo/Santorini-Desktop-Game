@@ -37,7 +37,7 @@ public class Minotaur extends God implements Serializable {
     /**
      * Get the box where is possible moves in
      *
-     * Get the box where is possible moves in, following minotaur rules
+     * Get the box where is possible moves in, following Minotaur rules
      *
      * @param b : board
      * @param worker_pos : actual position of worker

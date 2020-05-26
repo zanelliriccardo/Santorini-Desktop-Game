@@ -25,7 +25,7 @@ public class Athena extends God implements Serializable {
     }
 
     /**
-     * Check athena power in opponent turn and set athena power in owner turn
+     * Check Athena power in opponent turn and set athena power in owner turn
      *
      * If the active player is the athena owner set athena power on if player moves on,
      * if the active player is an opponent of athena return true if athena allow the chosen move

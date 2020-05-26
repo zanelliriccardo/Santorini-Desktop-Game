@@ -35,10 +35,7 @@ class GodTest {
         int[] newpos = new int[]{3,3};
 
         Pan pan = new Pan();
-        //Player player = new Player("nickname");
-        //player.SetGodCard(pan);
         Worker active_worker = new Worker();
-        //active_worker.setProprietary(player);
 
         active_worker.setPosition(oldpos);
         boardGame.setOccupant(oldpos, active_worker);
@@ -74,13 +71,5 @@ class GodTest {
 
         assertFalse(apollo.getOpponentTurn());
         assertTrue(athena.getOpponentTurn());
-    }
-
-    @Test //usato in altri metodi
-    void adjacentBoxNotOccupiedNotDome() {
-    }
-
-    @Test //No usato
-    void doPower() {
     }
 }

@@ -12,7 +12,7 @@ public class Artemis extends God implements Serializable {
     private int[] old_position = new int[]{-1,-1};
 
     /**
-     * Apply artemis rules if power is active
+     * Apply Artemis rules if power is active
      *
      * If is the first move of turn, saves the position and during the next move
      * of this turn check they is different
@@ -47,7 +47,7 @@ public class Artemis extends God implements Serializable {
     }
 
     /**
-     * Get adjacent box where possible moves in, follow artemis rules
+     * Get adjacent box where possible moves in, follow Artemis rules
      *
      * @param b : board
      * @param worker_pos : actual position of worker

@@ -9,7 +9,7 @@ public class Atlas extends God implements Serializable {
     private PowerType type=PowerType.DISABLE;
 
     /**
-     * Apply atlas rules if power is active
+     * Apply Atlas rules if power is active
      *
      * If power is active build a dome
      *
