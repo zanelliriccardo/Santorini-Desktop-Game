@@ -43,7 +43,7 @@ class GameStateTest extends ExecutorClientCommand {
         assertTrue(GameState.gameReady());
     }
 
-    @Test //godfactory è usato in setPlayers
+    @Test
     void godFactory() {
         int count = 0;
         setPlayers();
