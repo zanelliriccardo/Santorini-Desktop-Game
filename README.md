@@ -1,5 +1,4 @@
 # Project Template - (Bachelor's) Software Engineering
-# lebestie_ingsw2020
 
 ## PROJECT
 The aim of the project is to implement the board game **Santorini** following the architectural model (MVC) for the realization of the model according to the object-oriented programming paradigm (OOP).
